@@ -1,0 +1,53 @@
+{% spaceless   %}
+             
+                          
+         <div class="row">
+        <div class="col-md-12">         
+            <div class="panel bg-grd-light" data-fill-color="true">
+                <div class="panel-body">
+
+                        <div class="col-md-7">  
+                              {# <p class="text"><i class=""> Tratamiento </i> </p> #}
+                            {{ form_row(form.tratamiento) }}
+                          </div> 
+                         
+                          <div class="col-md-5">
+                           {#   <p class="text"><i class=""> Sesiones </i> </p> #}
+                            {{ form_row(form.numSesiones) }}
+                          </div>
+
+                </div><!-- /.panel-body -->
+              </div><!-- /.panel -->        
+                          
+           </div>  
+          </div>      
+                          
+                          
+ {% block javascripts_step %}
+    
+   <script> 
+       
+     $(document).ready(function(){
+         
+        
+         $('.tratamientoPaquete').select2();
+         {# $('#dgplusbellebundle_paquete_placas_0_tratamiento').select2();
+          $('#dgplusbellebundle_paquete_placas_1_tratamiento').select2();
+          $('#dgplusbellebundle_paquete_placas_2_tratamiento').select2();
+          $('#dgplusbellebundle_paquete_placas_3_tratamiento').select2();
+          $('#dgplusbellebundle_paquete_placas_4_tratamiento').select2();
+          $('#dgplusbellebundle_paquete_placas_5_tratamiento').select2();
+          $('#dgplusbellebundle_paquete_placas_6_tratamiento').select2();
+          $('#dgplusbellebundle_paquete_placas_7_tratamiento').select2();
+          $('#dgplusbellebundle_paquete_placas_8_tratamiento').select2();
+          $('#dgplusbellebundle_paquete_placas_9_tratamiento').select2();
+          $('#dgplusbellebundle_paquete_placas_10_tratamiento').select2();
+          $('#dgplusbellebundle_paquete_placas_11_tratamiento').select2();#}
+     
+     });//Fin document ready 
+  
+  </script>  
+  
+{% endblock %}                           
+             
+{% endspaceless   %}

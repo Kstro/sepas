@@ -1,0 +1,472 @@
+{% extends 'DGPlusbelleBundle:Layout:layout.html.twig' %}
+
+{% block css %}
+    {{parent()}}
+    <style>
+        
+        //Posicion del boton agregar
+        .placas>div:last-child {
+            position:absolute;
+        }
+        div.placas > div:nth-child(2) > div:nth-child(2) > div > a{
+            display: none;
+        }
+        .addItem{
+            position: absolute;
+            height: 50px;
+            float: right;
+            margin-bottom: 50px;
+            padding-bottom: 100px;
+            top: -15px;
+            left: -2px;
+        }
+        
+            .addItem div {
+                position: absolute;
+            }
+        
+        .col-md-4{
+            padding-top: 40px;
+        }
+        
+        #dgplusbellebundle_consulta_horaInicio_hourSelectBoxItContainer, #dgplusbellebundle_consulta_horaInicio_minuteSelectBoxItContainer,
+        #dgplusbellebundle_consulta_horaFin_hourSelectBoxItContainer, #dgplusbellebundle_consulta_horaFin_minuteSelectBoxItContainer{
+            width:75px;
+        }
+        
+            #dgplusbellebundle_consulta_horaInicio_hourSelectBoxItContainer,#dgplusbellebundle_consulta_horaFin_hourSelectBoxItContainer {
+                float: left;
+            }
+            #dgplusbellebundle_consulta_horaInicio_minuteSelectBoxItContainer, #dgplusbellebundle_consulta_horaFin_minuteSelectBoxItContainer {
+                float: right;
+            }
+            #dgplusbellebundle_consulta_horaInicio, #dgplusbellebundle_consulta_horaFin{
+                width: 155px;
+            }
+          
+    </style>
+    
+    {% endblock %}
+
+{% block contenido -%}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <p>Registrar nueva sesión del tratamiento {{ personaTratamiento.tratamiento.nombre }}</p>
+        </div>
+
+        <div class="panel-body">
+            {{ form_start(form) }}
+            {{ form_errors(form) }}
+           <div class="row">
+                <div class="col-md-10 col-md-offset-1">
+                    <table id="tabla" <div class="row">
+                <div class="col-md-10 col-md-offset-1">
+                    <table id="tabla" class="table table-bordered table-condensed">
+                        <tbody>
+                            <tr>
+                                <th>Tratamiento vendido</th>
+                                <td>{{ personaTratamiento.tratamiento.nombre }}</td>
+                            </tr>
+                            <tr>
+                                <th>Costo del tratamiento</th>
+                                <td>$ {{ (personaTratamiento.costoConsulta - ((personaTratamiento.costoConsulta * personaTratamiento.descuento.porcentaje) / 100))|number_format(2,'.',',') }}</td>
+                            </tr>
+                            <tr>
+                                <th>Fecha de venta</th>
+                                <td>{% if personaTratamiento.fechaVenta %}{{ personaTratamiento.fechaVenta|date('d/m/Y') }}{% endif %}</td>
+                            </tr>
+                            <tr>
+                                <th>Vendido por</th>
+                                <td>{{ personaTratamiento.empleado }}</td>
+                            </tr>
+                            <tr>
+                                <th>Nombre del paciente</th>
+                                <td>{{ personaTratamiento.paciente }}</td>
+                            </tr>
+                           {# <tr>
+                                <th>Sesión No.</th>
+                                <td>{{ seguimiento[0].numSesion + 1 }}</td>
+                            </tr> #}
+                        </tbody>
+                    </table>
+                </div>    
+            </div>  
+            
+            <div class="row" style="margin-top: 25px">
+                 <div class="col-md-3 col-md-offset-2">
+                    <div id="sucursal">
+                        {{ form_row(form.personaTratamiento) }}
+                    </div>
+                </div> 
+                <div class="col-md-3">
+                    <div id="sucursal">
+                        {{ form_row(form.sucursal) }}
+                    </div>
+                </div> 
+
+                <div class="col-md-3">
+                    <div id="empleado">
+                        {{ form_row(form.empleado) }}
+                    </div>
+                </div> 
+                
+            </div>
+            {#<div class="row">
+                <div class="col-md-3 col-md-offset-2">
+                      <div id="fecha-sesion">
+                            {{ form_row(form.fechaSesion) }}
+                        </div> 
+                </div> 
+                <div class="col-md-2 col-md-offset-4">
+                    <div id="hora-inicio">
+                        {{ form_row(form.horaInicio) }}
+                    </div>
+                </div>    
+                <div class="col-md-2">
+                    <div id="hora-fin">
+                        {{ form_row(form.horaFin) }}
+                    </div>
+                </div>    
+            </div> #}
+       {#             
+             <div class="row">        
+              <div class="col-xs-12 col-sm-3 col-md-offset-3" style="margin-top:25px;">
+                <label class="control-label" for="dgplusbellebundle_empleado_sucursal">Foto antes</label>
+                  {{ form_widget(form.fileAntes) }}                
+              </div> 
+               <div class="col-xs-12 col-sm-2" style="margin-top:25px;">
+                <label class="control-label" for="dgplusbellebundle_empleado_sucursal">Foto despues</label>
+                  {{ form_widget(form.fileDespues) }}                
+              </div> 
+            </div>             
+           #}
+       
+            <div id="receta" class="receta col-md-12"  style="margin-bottom: 30px;">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3 class="text-left">Receta médica</h3>
+                        <hr>
+                        <br>
+                    </div>
+                    <div class="col-md-3 col-md-offset-1">
+                        {{ form_row(form.registraReceta) }}
+                    </div>
+                    <div class="col-md-3">
+                        <div id="lista_receta">
+                            {{ form_row(form.sesiontratamiento) }}
+                        </div>
+                    </div>  
+                    <div class="col-md-11 col-md-offset-1 ">
+{#                        {{ form_row(form.campos) }} #}
+                        <div id="camposReceta" class="camposReceta" style="margin-top: 30px">
+                            <div class="row">
+                                <div class="col-md-1"></div>
+                                <div id="cReceta" class="col-md-11 cReceta" ></div>
+                            </div>
+                        </div> 
+                    </div>    
+                </div>
+            </div>  
+                        
+       
+                <div class="row">  
+                    <div id="listadoa">
+                       <div class="listado col-md-12">          
+                           <div class="placas" data-prototype="{% filter escape %}  {% include 'DGPlusbelleBundle:Prototype:foto.html.twig' with { 'form': form.placas.vars.prototype} %}   {% endfilter  %}"> 
+                              {{ form_widget(form.placas) }}
+                           </div>
+                       </div>
+                    </div>
+
+                </div>   
+                           
+              <div class="row">
+                <div class="form-grouphide col-sm-7 col-md-offset-2 pull-right" style="margin-top: 50px">
+                <a href="{{ path('admin_paciente') }}" class="btn btn-default btn-sm" id="cancelar-nuevo">Cancelar</a>
+                {{ form_widget(form.submit) }}
+              </div>
+            </div>              
+
+ </div>
+      {{ form_widget(form._token) }}        
+</div> 
+      {{ form_end(form) }} 
+{% endblock %}
+
+{% block javascripts_step %}
+        <script src="{{ asset('Resources/js/SesionVentaTratamiento.js') }}"></script>
+        <script src="{{ asset('Resources/js/ConsultaPaciente.js') }}"></script>
+       <script>
+            $(document).ready(function(){
+                
+              validarSesionVentaTratamiento();
+              
+              $('#dgplusbellebundle_sesionventatratamiento_personaTratamiento').select2();
+              $('#dgplusbellebundle_sesionventatratamiento_sucursal').select2();
+              $('#dgplusbellebundle_sesionventatratamiento_empleado').select2();
+              $('#dgplusbellebundle_sesionventatratamiento_sesiontratamiento').select2();
+             
+             
+              
+              
+              
+              $( "#dgplusbellebundle_sesionventatratamiento_registraReceta_0" ).on( "click", function() {
+                    // Se muestra el combobox donde se selecciona la plantilla
+                    $("#lista_receta").show();
+                });
+              
+              
+              $( "#dgplusbellebundle_sesionventatratamiento_registraReceta_1" ).on( "click", function() {
+                // Se obtiene todos elementos que contengan la clase parametro
+                var elements = document.getElementsByClassName('parametro');
+                
+                // Se borran todos los elementohtmls que se encuentran en el div con id = cReceta
+                $('#cReceta div').html('');
+                
+                // Se oculta el combobox donde se selecciona la plantilla
+                $("#lista_receta").hide();
+                
+                // Se borran todos los elementos que contengan la clase = parametro
+                while(elements.length > 0){
+                    elements[0].parentNode.removeChild(elements[0]);
+                }
+                
+                $('#dgplusbellebundle_receta_campos option').each(function(index, option) {
+                    $(option).remove();
+                });
+            });
+            
+            
+            
+            
+            $( "#dgplusbellebundle_sesionventatratamiento_sesiontratamiento" ).on( "change", function() {
+                // Se obtiene el id de la plantilla
+                var id = $( this ).val();
+                
+                // Se obtiene todos elementos que contengan la clase parametro
+                var elements = document.getElementsByClassName('parametro2');
+                
+{#                $('#cReceta').remove();#}
+                // Se borran todos los elementos que se encuentran en el div con id = campos
+                $('#cReceta div').html('');
+                
+                // Se borran todos los elementos que contengan la clase = parametro
+                while(elements.length > 0){
+                    elements[0].parentNode.removeChild(elements[0]);
+                }
+                
+                $('#dgplusbellebundle_receta_campos option').each(function(index, option) {
+                    $(option).remove();
+                });
+                
+                // Se obtienen los campos necesarios para la plantilla seleccionada
+                $.post( "{{path('admin_busqueda_parametros')}}", { id: id }, function( data ) {
+                    var par = new Array();
+                    par = data.query;
+                    
+                    // Si la plantilla contiene campos
+                    if(par.length !== 0){
+                        mostrarCampos2(data.query);
+                    }
+                    else{
+                        console.log( 'Esta receta no tiene campos que mostrar' );
+                    }
+                }, "json");
+                
+            });
+            
+            
+            function mostrarCampos2(data) {
+            var div = document.getElementById('cReceta');
+            var form = $("form");
+           
+            //var form = document.createElement('form');
+            //form.setAttribute('action', '{# {{path('admin_set_campos')}} #}');
+            //form.setAttribute('method', 'POST');
+            /*-----------*/
+            
+            var input = new Array();
+            var label = new Array();
+            var campos = new Array();
+            var etiqueta = new Array();
+            
+            // Se recorre el array para mostrar los campos
+            $.each( data, function( key, value ) {
+                var t = document.createTextNode(value.nombre);
+                
+                // Se crea un div donde se muestran los parametros
+                campos[key] = document.createElement('div');
+                campos[key].setAttribute('class', 'parametro2 col-md-4');
+                
+                // Se crea el campo de texto del parametro de la plantilla
+                input[key] = document.createElement('input');
+                input[key].setAttribute('type', 'text');
+                input[key].setAttribute('placeholder', value.nombre);
+                input[key].setAttribute('class', 'form-control classReceta');
+                input[key].setAttribute('style', 'margin-bottom: 5px');
+                input[key].setAttribute('name', value.nombre+"2");
+                input[key].setAttribute('id', value.id);
+             //   input[key].setAttribute('onblur', 'setCamposPlantilla(' + value.id + ')');
+                
+                // Se crea el label del parametro de la plantilla
+                etiqueta[key] = document.createElement('p');
+                etiqueta[key].setAttribute('style', 'color: #646473; font-size: 13px; font-weight: 700;');
+                etiqueta[key].appendChild(t);
+                
+                label[key] = document.createElement('label');
+                
+                // Se introducen los elementos en el div con id = campos
+                label[key].appendChild(etiqueta[key]);
+                campos[key].appendChild(label[key]);
+                campos[key].appendChild(input[key]);
+                div.appendChild(campos[key]);
+            });
+            validarConsulta();
+        } // Fin de mostrarCampos
+              
+              
+           });//Fin document ready       
+       </script> 
+       
+        <script>
+
+// Get the ul that holds the collection of tags
+var collectionHolder = $('div.placas');
+var col=$('#hnr_sircimbundle_estudioradiologicotype_placas');
+// setup an "add a tag" link
+var $addTagLink = $('<div class="row"><div class="col-md-2"><a href="#" class="btn btn-primary ">Agregar foto</a></div></div>');
+var $removeTagLink = $('<a href="#" class="remove_placa_link btn btn-danger">Eliminar</a>');
+var $newLinkLi = $('<div class="col-md-12 addItem"></div>').append($addTagLink);
+var $delLinkLi = $('#hnr_sircimbundle_estudioradiologicotype_placas.required').append($removeTagLink);
+
+
+
+
+
+jQuery(document).ready(function() {
+
+    //$("#dgplusbellebundle_consulta_pacienteSelectBoxItOptions li").remove();
+
+  /*  $('#dgplusbellebundle_consulta_fechaConsulta').daterangepicker({
+                    singleDatePicker: true,
+                    showDropdowns: true,
+                    locale: {
+                        format: 'YYYY-MM-DD'
+                    },
+                });*/
+
+   //$('input[id$=dgplusbellebundle_plantilla_placas_]').selectBoxIt;
+
+    collectionHolder.find('li').each(function() {
+        addTagFormDeleteLink($(this));
+
+    });
+
+    
+
+    // add the "add a tag" anchor and li to the tags ul
+    collectionHolder.append($newLinkLi);
+
+    // count the current form inputs we have (e.g. 2), use that as the new
+    // index when inserting a new item (e.g. 2)
+    collectionHolder.data('index', collectionHolder.find(':input').length);
+    
+    //Identificar que form esta activo
+    var editar=$('div.placas').attr('id');
+   // if(editar!='editar_usuario'){
+        addTagForm(collectionHolder, $newLinkLi);   //Muestra un formulario en la carga de la página nuevo
+   // }
+    
+
+
+    $addTagLink.on('click', function(e) {
+        // prevent the link from creating a "#" on the URL
+        e.preventDefault();
+
+        // add a new tag form (see next code block)
+        addTagForm(collectionHolder, $newLinkLi);
+        // $('.btn_radio').attr('name', 'rol_predet');
+    });
+
+
+    
+});
+
+
+function addTagForm(collectionHolder, $newLinkLi) {
+    // Get the data-prototype explained earlier
+    var prototype = collectionHolder.data('prototype');
+
+    // get the new index
+    var index = collectionHolder.data('index');
+
+    // Replace '__name__' in the prototype's HTML to
+    // instead be a number based on how many items we have
+    var newForm = prototype.replace(/__name__/g, index);
+
+    // increase the index with one for the next item
+    collectionHolder.data('index', index + 1);
+
+    // Display the form in the page in an li, before the "Add a tag" link li
+    var $newFormLi = $('<div class="col-md-4"></div>').append(newForm);
+    $newLinkLi.before($newFormLi);
+    
+
+
+    // add a delete link to the new form
+    addTagFormDeleteLink($newFormLi);
+    //validarPaquete(); 
+    $('.btn_radio').click(function(event) {
+        /* Act on the event */
+        var id = $(this).attr('id');
+        // alert(id);
+        $('.btn_radio').prop('checked', false);
+        $('#'+id).prop('checked', true);
+        $('.btn_radio').removeClass('errorform');
+    });
+}
+
+function addTagFormDeleteLink($tagFormLi) {
+    var $removeFormA = $('<div class="row"><div class="col-md-1"><a class="link btn btn-danger" href="#">Eliminar</a></div></div>');
+    $tagFormLi.append($removeFormA);
+
+    $removeFormA.on('click', function(e) {
+        // prevent the link from creating a "#" on the URL
+        e.preventDefault();
+
+        // remove the li for the tag form
+        $('input[name="rol_predet"]:checked').each(function() {
+            //$(this).val() es el valor del checkbox correspondiente
+           // alert('chequeado'); 
+           $('#hnr_sircimbundle_usuariotype_placas_0_usroPredeterminado').prop('checked', true);
+        });
+
+        $tagFormLi.remove();
+        
+    });
+}
+
+
+$('#editar_usuario')
+            .on('mouseover','div', function(){
+                $(this).find('a.link').css('visibility','visible');
+            })
+            .on('mouseout','div', function(){ 
+                $(this).find('a.link').css('visibility','hidden'); 
+            });
+
+$('#editar_usuario')
+            .on('mouseover','li:first-child', function(){
+                $(this).find('a.link').css('visibility','hidden');
+            });
+
+
+    
+var editar=$('div.placas').attr('id');
+if(editar!='editar_usuario'){
+    // $('#hnr_sircimbundle_usuariotype_placas_0_usroPredeterminado').prop('checked', true);//Se carga el radiobutton seleccionado
+}
+
+ </script>
+         
+{% endblock %}

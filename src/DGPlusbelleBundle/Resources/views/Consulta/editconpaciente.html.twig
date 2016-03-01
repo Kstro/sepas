@@ -1,0 +1,507 @@
+{#{% extends 'DGPlusbelleBundle:Layout:general.html.twig' %}#}
+{#{% extends 'DGPlusbelleBundle:Layout:layout2.html.twig' %}#}
+
+{% block css %}
+    {#{{parent()}}#}
+    <style>
+        
+        //Posicion del boton agregar
+        .placas>div:last-child {
+            position:absolute;
+        }
+        .addItem{
+            position: absolute;
+            height: 50px;
+            float: right;
+            margin-bottom: 50px;
+            padding-bottom: 100px;
+            top: -65px;
+            left: -2px;
+        }
+        
+            .addItem div {
+                position: absolute;
+            }
+        
+        .col-md-4{
+            padding-top: 40px;
+        }
+        
+        div + label{
+            display: none;
+        }
+        .productoConsulta{width: 50% }
+    </style>
+    
+{% endblock %}
+
+{% block contenido -%}
+    
+    
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <p>Modificar consulta</p>
+    </div>
+    
+    <div class="panel-body">
+    {{ form_start(edit_form) }}
+        {{ form_errors(edit_form) }}
+            {#  {{ form(form) }}  #}
+            
+                
+                        
+                <div class="row">
+                    
+                    
+                    <div class="col-md-12">
+                        <h3 class="text">Información general de consulta</h3>
+                        <hr>
+                    </div>
+                </div>
+            {# Paciente #}
+            <div class="row">
+                
+                <div class="col-md-2">{{ form_row(edit_form.paciente) }}</div>
+                
+            </div>
+            {# Formulario de consulta#}
+            <div class="row">
+                <br>
+                {#<div class="col-md-2">
+                    {{ form_row(edit_form.fechaConsulta) }}
+                </div>#}
+                
+                <div class="col-md-2">
+                    {{ form_row(edit_form.tratamiento) }}
+                </div>
+                
+                <div class="col-md-2">
+                    {{ form_row(edit_form.horaInicio) }}
+                </div>
+                
+                <div class="col-md-2">
+                    {{ form_row(edit_form.horaFin) }}
+                </div>
+                
+                <div class="col-md-1">
+                    {{ form_row(edit_form.incapacidad) }}
+                </div>
+                 <div class="col-md-2">
+                    {{ form_row(edit_form.costoConsulta) }}
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    {{ form_row(edit_form.tipoConsulta) }}
+                </div>
+                <div class="col-md-5">
+                    {{ form_row(edit_form.observacion) }}
+                </div>
+            </div>  
+            
+            <div class="row">
+                    
+                    
+                    <div class="col-md-12">
+                        <h3 class="text-left">Producto</h3>
+                        <hr>
+                        <br>
+                    </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <br><br>
+                </div>
+            </div>
+            
+                <div class="row">  
+             
+                 <div class="listado col-md-12">
+                    <div class="placas" data-prototype="{% filter escape %}  {% include 'DGPlusbelleBundle:Prototype:producto.html.twig' with { 'form': edit_form.placas.vars.prototype} %}   {% endfilter  %}"> 
+
+                      {% for placa in edit_form.placas %}
+                                        
+                       <div class="col-md-4">
+                         <div class="panel bg-grd-light" data-fill-color="true">
+                            <div class="panel-body">
+
+                                  {{ form_row(placa) }} 
+ 
+                            </div>
+                         </div>
+                       </div>        
+                       {% endfor %}
+                    </div>
+                 </div>  
+              
+            </div>
+                    
+                     <div id="plantilla" class="plantilla">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3 class="text-left">Historial clinico</h3>
+                        <hr>
+                        <br>
+                    </div>
+                    <div class="col-md-3 col-md-offset-1">
+                        {{ form_row(edit_form.reportePlantilla) }}
+                    </div>
+                    <div class="col-md-3">
+                        <div id="lista_plantilla">
+                            {{ form_row(edit_form.plantilla) }}
+                        </div>
+                    </div>  
+                    <div class="col-md-11 col-md-offset-1 ">
+                    
+                    </div>    
+                </div>
+            </div>  
+            
+            <div id="camposPlantilla" class="camposPlantilla" style="margin-top: 30px">
+                <div class="row">
+                    <div class="col-md-1"></div>
+                    <div id="campos" class="col-md-11 campos">
+                        
+                    </div>
+                </div>
+            </div>         
+            
+            <br>
+            <div class="form-grouphide"> 
+                 <a href="{{path('admin_consulta')}}" class="btn btn-default btn-sm" id="cancelarNuevo">Cancelar</a>
+                 {{ form_widget(edit_form._token) }}
+                 
+                {{ form_widget(edit_form.submit) }}
+             </div>
+
+ </div>
+{{ form_widget(edit_form._token) }}
+</div>  
+{{ form_end(edit_form) }}   
+            
+{% endblock %}
+
+
+{% block javascripts_step %}
+    
+<script src="{{ asset('Resources/js/ConsultaPaciente.js') }}"></script>
+      
+<script>
+
+// Get the ul that holds the collection of tags
+var collectionHolder = $('div.placas');
+var col=$('#hnr_sircimbundle_estudioradiologicotype_placas');
+// setup an "add a tag" link
+var $addTagLink = $('<div class="row"><div class="col-md-2"><a href="#" class="add_placa_link btn btn-primary">Agregar otro producto</a></div></div>');
+var $removeTagLink = $('<a href="#" class="remove_placa_link btn btn-danger">Eliminar</a>');
+var $newLinkLi = $('<div class="col-md-12 addItem"></div>').append($addTagLink);
+var $delLinkLi = $('#hnr_sircimbundle_estudioradiologicotype_placas.required').append($removeTagLink);
+
+// Al seleccionar SI en el radioButton 
+        $(function () { 
+            $( "#dgplusbellebundle_consulta_reportePlantilla_0" ).on( "click", function() {
+                //alert('llego aqui');
+                // Se muestra el combobox donde se selecciona la plantilla
+                $("#lista_plantilla").show();
+            });
+        });
+            
+        // Al seleccionar NO en el radioButton 
+        $(function () { 
+            $( "#dgplusbellebundle_consulta_reportePlantilla_1" ).on( "click", function() {
+                //alert('llego aqui');
+                // Se obtiene todos elementos que contengan la clase parametro
+                var elements = document.getElementsByClassName('parametro');
+
+                // Se borran todos los elementohtmls que se encuentran en el div con id = campos
+                $('#campos div').html('');
+
+                // Se oculta el combobox donde se selecciona la plantilla
+                $("#lista_plantilla").hide();
+
+                // Se borran todos los elementos que contengan la clase = parametro
+                while(elements.length > 0){
+                    elements[0].parentNode.removeChild(elements[0]);
+                }
+
+                $('#dgplusbellebundle_consulta_campos option').each(function(index, option) {
+                    $(option).remove();
+                });
+            });
+        });
+
+
+
+jQuery(document).ready(function() {
+    
+    $('div[id*="dgplusbellebundle_consulta_placas_"]').siblings().remove(); // Ocultar id de producto  
+    $("#dgplusbellebundle_consulta_pacienteSelectBoxItOptions li").remove();
+    $('#dgplusbellebundle_consulta_fechaConsulta').daterangepicker({
+                    singleDatePicker: true,
+                    showDropdowns: true,
+                    locale: {
+                        format: 'YYYY-MM-DD'
+                    },
+                });
+
+    $('select[id$=dgplusbellebundle_consulta_placas_]').selectBoxIt();
+
+    collectionHolder.find('li').each(function() {
+        addTagFormDeleteLink($(this));
+    });
+
+    // add the "add a tag" anchor and li to the tags ul
+    collectionHolder.append($newLinkLi);
+
+    // count the current form inputs we have (e.g. 2), use that as the new
+    // index when inserting a new item (e.g. 2)
+    collectionHolder.data('index', collectionHolder.find(':input').length);
+    
+    //Identificar que form esta activo
+    var editar=$('div.placas').attr('id');
+    if(editar!='editar_usuario'){
+        //addTagForm(collectionHolder, $newLinkLi);   //Muestra un formulario en la carga de la página nuevo
+    }
+    
+    $addTagLink.on('click', function(e) {
+        // prevent the link from creating a "#" on the URL
+        e.preventDefault();
+
+        // add a new tag form (see next code block)
+        addTagForm(collectionHolder, $newLinkLi);
+        // $('.btn_radio').attr('name', 'rol_predet');
+    });
+
+    validarConsulta();
+    
+});
+
+
+function addTagForm(collectionHolder, $newLinkLi) {
+    // Get the data-prototype explained earlier
+    var prototype = collectionHolder.data('prototype');
+
+    // get the new index
+    var index = collectionHolder.data('index');
+
+    // Replace '__name__' in the prototype's HTML to
+    // instead be a number based on how many items we have
+    var newForm = prototype.replace(/__name__/g, index);
+
+    // increase the index with one for the next item
+    collectionHolder.data('index', index + 1);
+
+    // Display the form in the page in an li, before the "Add a tag" link li
+    var $newFormLi = $('<div class="col-md-4"></div>').append(newForm);
+    $newLinkLi.before($newFormLi);
+    
+
+
+    // add a delete link to the new form
+    addTagFormDeleteLink($newFormLi);
+    validarConsulta();
+    $('.btn_radio').click(function(event) {
+        /* Act on the event */
+        var id = $(this).attr('id');
+        // alert(id);
+        $('.btn_radio').prop('checked', false);
+        $('#'+id).prop('checked', true);
+        $('.btn_radio').removeClass('errorform');
+    });
+}
+
+function addTagFormDeleteLink($tagFormLi) {
+    var $removeFormA = $('<div class="col-md-1"><a class="link btn btn-danger" href="#">Eliminar</a></div>');
+    $tagFormLi.append($removeFormA);
+
+    $removeFormA.on('click', function(e) {
+        // prevent the link from creating a "#" on the URL
+        e.preventDefault();
+
+        // remove the li for the tag form
+        $('input[name="rol_predet"]:checked').each(function() {
+            //$(this).val() es el valor del checkbox correspondiente
+           // alert('chequeado'); 
+           $('#hnr_sircimbundle_usuariotype_placas_0_usroPredeterminado').prop('checked', true);
+        });
+
+        $tagFormLi.remove();
+        
+    });
+}
+
+
+$('#editar_usuario')
+            .on('mouseover','div', function(){
+                $(this).find('a.link').css('visibility','visible');
+            })
+            .on('mouseout','div', function(){ 
+                $(this).find('a.link').css('visibility','hidden'); 
+            });
+
+$('#editar_usuario')
+            .on('mouseover','li:first-child', function(){
+                $(this).find('a.link').css('visibility','hidden');
+            });
+
+
+    
+var editar=$('div.placas').attr('id');
+if(editar!='editar_usuario'){
+    // $('#hnr_sircimbundle_usuariotype_placas_0_usroPredeterminado').prop('checked', true);//Se carga el radiobutton seleccionado
+}
+
+ </script>
+    <script>  
+        
+        
+        $(document).ready(function(){          
+                   
+            {% if plantilla %}
+                // Se obtiene elemento div con id = campos    
+                var div = document.getElementById('campos');
+                
+                // Se generar arreglos para elementos a crear
+                var input = new Array();
+                var label = new Array();
+                var campos = new Array();
+                var etiqueta = new Array();
+                
+                // Se setea el combobox con la plantilla recuperada
+                $("#dgplusbellebundle_consulta_plantilla").val('{{ plantilla[0].detallePlantilla.plantilla.id }}');
+                var key = 0;
+                
+                // Se recorren todos los parametros de la plantilla recuperada
+                {% for valor in plantilla %}
+                    var t = document.createTextNode('{{ valor.detallePlantilla.nombre }}');
+
+                    // Se crea un div donde se muestran los parametros
+                    campos[key] = document.createElement('div');
+                    campos[key].setAttribute('class', 'parametro col-md-4');
+
+                    // Se crea el campo de texto del parametro de la plantilla
+                    input[key] = document.createElement('input');
+                    input[key].setAttribute('type', 'text');
+                    input[key].setAttribute('placeholder', '{{ valor.detallePlantilla.nombre }}');
+                    input[key].setAttribute('class', 'form-control classPlantilla');
+                    input[key].setAttribute('style', 'margin-bottom: 5px');
+                    input[key].setAttribute('name', '{{ valor.detallePlantilla.nombre }}');
+                    input[key].setAttribute('id', '{{ valor.detallePlantilla.id }}');
+                 
+                    // Se crea el label del parametro de la plantilla
+                    etiqueta[key] = document.createElement('p');
+                    etiqueta[key].setAttribute('style', 'color: #646473; font-size: 13px; font-weight: 700;');
+                    etiqueta[key].appendChild(t);
+
+                    label[key] = document.createElement('label');
+
+                    // Se introducen los elementos en el div con id = campos
+                    label[key].appendChild(etiqueta[key]);
+                    campos[key].appendChild(label[key]);
+                    campos[key].appendChild(input[key]);
+                    div.appendChild(campos[key]);
+                    
+                    // Se setea el parametro con el valor de la plantilla recuperada
+                     $("#{{ valor.detallePlantilla.id }}").val('{{ valor.valorDetalle }}');
+                    
+                    key++;
+                {% endfor %}  
+                validarConsulta();    
+                    
+            {% else %}   
+                // Se oculta el combobox donde se selecciona la plantilla
+                $("#lista_plantilla").hide();
+                $('input:radio[id=dgplusbellebundle_consulta_reportePlantilla_1]').prop('checked', true);
+            {% endif %}        
+        });//Fin document ready     
+        
+        $(function () { 
+            $( "#dgplusbellebundle_consulta_plantilla" ).on( "change", function() {
+                // Se obtiene el id de la plantilla
+                var id = $( this ).val();
+                
+                // Se obtiene todos elementos que contengan la clase parametro
+                var elements = document.getElementsByClassName('parametro');
+                
+                // Se borran todos los elementos que se encuentran en el div con id = campos
+                $('#campos div').html('');
+                
+                // Se borran todos los elementos que contengan la clase = parametro
+                while(elements.length > 0){
+                    elements[0].parentNode.removeChild(elements[0]);
+                }
+                
+                $('#dgplusbellebundle_consulta_campos option').each(function(index, option) {
+                    $(option).remove();
+                });
+                
+                // Se obtienen los campos necesarios para la plantilla seleccionada
+                $.post( "{{path('admin_busqueda_parametros')}}", { id: id }, function( data ) {
+                    var par = new Array();
+                    par = data.query;
+                    
+                    // Si la plantilla contiene campos
+                    if(par.length !== 0){
+                        mostrarCampos(data.query);
+                    }
+                    else{
+                        console.log( 'Esta plantilla no tiene campos que mostrar' );
+                    }
+                }, "json");
+                
+            });
+         }); 
+         
+        
+        // Funcion que muestra los campos de texto de la plantilla seleccionada
+        function mostrarCampos(data) {
+            var div = document.getElementById('campos');
+            var form = $("form");
+           
+            //var form = document.createElement('form');
+            //form.setAttribute('action', '{# {{path('admin_set_campos')}} #}');
+            //form.setAttribute('method', 'POST');
+            /*-----------*/
+            
+            var input = new Array();
+            var label = new Array();
+            var campos = new Array();
+            var etiqueta = new Array();
+            
+            // Se recorre el array para mostrar los campos
+            $.each( data, function( key, value ) {
+                var t = document.createTextNode(value.nombre);
+                
+                // Se crea un div donde se muestran los parametros
+                campos[key] = document.createElement('div');
+                campos[key].setAttribute('class', 'parametro col-md-4');
+                
+                // Se crea el campo de texto del parametro de la plantilla
+                input[key] = document.createElement('input');
+                input[key].setAttribute('type', 'text');
+                input[key].setAttribute('placeholder', value.nombre);
+                input[key].setAttribute('class', 'form-control classPlantilla');
+                input[key].setAttribute('style', 'margin-bottom: 5px');
+                input[key].setAttribute('name', value.nombre);
+                input[key].setAttribute('id', value.id);
+             //   input[key].setAttribute('onblur', 'setCamposPlantilla(' + value.id + ')');
+                
+                // Se crea el label del parametro de la plantilla
+                etiqueta[key] = document.createElement('p');
+                etiqueta[key].setAttribute('style', 'color: #646473; font-size: 13px; font-weight: 700;');
+                etiqueta[key].appendChild(t);
+                
+                label[key] = document.createElement('label');
+                
+                // Se introducen los elementos en el div con id = campos
+                label[key].appendChild(etiqueta[key]);
+                campos[key].appendChild(label[key]);
+                campos[key].appendChild(input[key]);
+                div.appendChild(campos[key]);
+            });
+            validarConsulta();
+        } // Fin de mostrarCampos
+        
+    </script>
+{% endblock %} 

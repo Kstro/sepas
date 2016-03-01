@@ -1,0 +1,42 @@
+
+{% block contenido -%}
+ 
+<div class="panel panel-default">
+  <div class="panel-heading"><p>Nueva Sucursal</p></div>
+  <div class="panel-body">
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+    
+    <div class="col-xs-12 col-sm-4" >
+     {{ form_row(form.nombre) }} 
+    </div>
+    <div class="col-xs-12 col-sm-5">
+     {{ form_row(form.direccion) }} 
+    </div>
+    <div class="col-xs-12 col-sm-2">
+     {{ form_row(form.telefono) }}
+    </div>
+     {#{{ form_row(form.estado) }} #}
+    <div class="col-xs-12 col-sm-1">
+     {{ form_row(form.slug ) }}   
+    </div>
+     <div class="col-xs-12 col-sm-12">
+   {#    {{ form_row(form.tratamiento ) }} #}
+    </div>
+     <div class="col-xs-12 col-sm-8">
+   {#  {{ form_row(form.paquete) }} #}
+     </div>
+   
+         
+             <div class="form-grouphide col-sm-9"> 
+                 <a href="{{ path('admin_sucursal') }}" class="btn btn-default btn-sm" id="cancelarNuevo">Cancelar</a>
+                {{ form_widget(form.submit) }}
+             </div>
+        
+   
+ 
+ </div>
+{{ form_widget(form._token) }}
+</div>  
+{{ form_end(form) }}                
+{% endblock %}

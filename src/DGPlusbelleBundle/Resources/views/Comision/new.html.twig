@@ -1,0 +1,39 @@
+
+
+{% block contenido -%}
+    
+    <div class="panel panel-default">
+  <!-- Default panel contents -->
+  <div class="panel-heading"><p>Nueva comisión</p></div>
+  <div class="panel-body">
+  {{ form_start(form) }}
+    {{ form_errors(form) }}
+        <div class="col-xs-12 col-sm-2">
+        {{ form_row(form.empleado) }}
+        </div>
+        <div class="col-xs-12 col-sm-5">
+        {{ form_row(form.descripcion) }}
+        </div>
+        <div class="col-xs-12 col-sm-1">
+        {{ form_row(form.porcentaje) }}
+         </div>
+         <div class="col-xs-12 col-sm-1">
+        {{ form_row(form.meta) }}
+        </div>
+       {# {{ form_row(form.estado) }}#}
+      
+   
+  
+             <div class="form-grouphide col-sm-9">
+                <a href="{{ path('admin_comision') }}" class="btn btn-default btn-sm" id="cancelarNuevo">Cancelar</a>
+                {{ form_widget(form.submit) }}
+              </div>
+            
+      
+    {{ form_end(form) }}
+  </div>
+
+
+</div>        
+    
+{% endblock %}

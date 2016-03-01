@@ -1,0 +1,84 @@
+
+
+{% block contenido -%}
+ <div class="panel panel-default">
+  <!-- Default panel contents -->
+  <div class="panel-heading"><p>Nuevo paciente</p></div>
+  <div class="panel-body">
+  {{ form_start(form) }}
+    {{ form_errors(form) }}
+    <div class="row">
+      <!--    <div class="col-xs-12 col-sm-6">   -->
+        {% include 'DGPlusbelleBundle:Persona:form.html.twig' with { 'form': form.persona }%}
+    <!--     </div> -->
+        <div class="col-md-3">
+            {{ form_row(form.dui) }}
+        </div>
+        <div class="col-md-3">
+            {{ form_row(form.estadoCivil) }}
+        </div>
+        <div class="col-md-3">
+        {{ form_row(form.sexo) }}
+         </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+        {{ form_row(form.ocupacion) }}
+         </div>
+
+        <div class="col-md-3">
+        {{ form_row(form.lugarTrabajo) }}
+        </div>
+        <div class="col-md-3">
+        {{ form_row(form.fechaNacimiento) }}
+        </div>
+        <div class="col-md-3">
+        {{ form_row(form.referidoPor) }}
+         </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+        {{ form_row(form.personaEmergencia) }}
+        </div>
+        <div class="col-md-3">
+        {{ form_row(form.telefonoEmergencia) }}
+        {# {{ form_row(form.estado) }}#}
+        </div>
+       {# <div class="col-md-2">
+        {{ form_row(form.enteradoPor) }}
+        
+        </div>#}
+    </div>
+  
+   
+             <div class="form-grouphide col-sm-9">
+                <a href="{{ path('admin_paciente') }}" class="btn btn-default btn-sm" id="cancelarNuevo">Cancelar</a>
+                {{ form_widget(form.submit) }}
+              </div>
+            
+   
+    {{ form_end(form) }}
+  </div>
+
+
+</div>
+    
+    
+    
+{% endblock %}
+
+{% block javascripts_step %}
+      
+    {#   <script>
+            $(document).ready(function(){
+                var idPaciente = 0;
+                 $('#dgplusbellebundle_paciente_fechaNacimiento').daterangepicker({
+                    singleDatePicker: true,
+                    showDropdowns: true,
+                    locale: {
+                        format: 'YYYY-MM-DD'
+                    },
+                }); 
+            });
+       </script> #}
+{% endblock %}       

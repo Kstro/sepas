@@ -1,0 +1,62 @@
+<?php
+
+namespace DGPlusbelleBundle\Form;
+
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+
+class PlantillaType extends AbstractType
+{
+    /**
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder
+            ->add('nombre','text',array('label' => 'Nombre','required' => false,
+                    'attr'=>array(
+                    'class'=>'form-control input-sm nombrePlantilla'
+                    )))
+            ->add('descripcion','text',array('label' => 'Descripción','required' => false,
+                    'attr'=>array(
+                    'class'=>'form-control input-sm descripcionPlantilla'
+                    )))
+            ->add('placas','collection',array('required' => false,
+                'type' => new DetallePlantillaType(),
+                'label'=>' ',
+                'by_reference' => false,
+                'allow_add' => true,
+                'allow_delete' => true,
+                ))  
+                
+            ->add('clinica', 'choice', array(
+                    'label'=> 'Clínica',
+                    'choices'  => array('0' => 'Sonodigest', '1' => 'La plus belle'),
+                    'multiple' => false,
+                    'expanded'=>'true'
+                   
+                 
+                ))
+        ;
+    }
+    
+    /**
+     * @param OptionsResolverInterface $resolver
+     */
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(array(
+            'data_class' => 'DGPlusbelleBundle\Entity\Plantilla'
+        ));
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return 'dgplusbellebundle_plantilla';
+    }
+}

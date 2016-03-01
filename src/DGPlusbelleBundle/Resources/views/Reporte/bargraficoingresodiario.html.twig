@@ -1,0 +1,156 @@
+{% block contenido -%}
+    <div class="row pull-right col-md-4" id="grafico">
+        <table class="table table-hover">
+            <tr>
+                <th>
+                    <b>
+                        Servicios
+                    </b>
+                </th>
+                <th style="text-align: right">
+                    <b>
+                        Ingresos ($)
+                    </b>
+                </th>
+                
+            </tr>
+            
+            {% for key, ingreso in ingresos  %}
+                <tr>
+                    {% if key is even %}
+                        <td>
+                            {{ingresos[key]}}
+                        </td>
+                        <td style="text-align: right">
+                            {{ingresos[key+1]|number_format(2, '.', ',')}}
+                            
+                        </td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+                <tr>
+                    <td>
+                        <b>Total</b>
+                    </td>
+                    <td style="text-align: right">
+                        <b>{{granTotal|number_format(2, '.', ',')}}</b>
+                    </td>
+                </tr>
+        </table>
+    </div>
+                    
+                    
+
+                    
+    <div id="listadostransaccion" style="display:none;">
+        <table id = "datatables1" class="table table-bordered table-hover display dt-responsive" style="margin-top: 30px">
+            <thead>
+                <tr>
+                    <th style="width:10%;">N°</th>
+                    <th><center>Paciente</center></th>
+                    <th><center>Fecha transacción</center></th>
+                    <th><center>Transacción</center></th>
+                    <th><center>Empleado</center></th>
+                    <th><center>Sucursal</center></th>
+                    <th><center>Valor ($)</center></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for key, entity in listadoP %}
+                    <tr>
+                        <td style="width:10%;">
+                            {{key+1}}
+                        </td>
+                        <td>{{ entity.nombres|upper|trim(' ') }} {{ entity.apellidos|upper|trim(' ') }}</td>
+                        <td class="text-center">{{ entity.fechatransaccion|date('d-m-Y') }}</td>
+                        <td class="text-center">{{ entity.tipocosto}}</td>
+                        <td>{{ entity.nempleado|upper|trim(' ') }} {{ entity.aempleado|upper|trim(' ') }}</td>
+                        <td>{{ entity.sucursal}}</td>
+                        <td style="text-align: right; margin-right: 20px;">{{ entity.costo|number_format(2, '.', ',') }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+                    
+   {% endblock %}
+
+  {% block javascripts_step %}
+      
+        
+          
+       <script>
+    $(document).ready(function(){
+
+
+        
+
+
+        $('#datatables1').DataTable({ 
+                    searching:true,
+                    "order":[0,"desc"],
+                    "columnDefs": [
+                           { "orderable": false, "targets": 0 },
+                           { "orderable": false, "targets": 2 },
+                           { "orderable": false, "targets": 3 }
+                                 
+                       
+                           
+                           
+                           //{ "orderData": [ 2, 3, 4 ], "targets": 2 }
+                    ],
+                    "language": {
+                    "info": "Mostrando página _PAGE_ de _PAGES_",
+                    "infoEmpty": "",
+                    "emptyTable": "No se encontraron registros",
+                    "paginate": {
+                        "next": "Siguiente",
+                        "previous": "Anterior"
+                    },
+                    "processing": "Procesando petición...",
+                    "search": "Buscar registros:",
+                    "lengthMenu": "Mostrar _MENU_ registros"
+                }, 
+                    
+        });
+                
+                
+        {% if ingresos %}
+                $('canvas').remove();
+                
+                var data = {
+                labels: [
+                        {% for key, ingreso in ingresos if key is even %}
+                            "{{ingresos[key]}}",
+                        {% endfor %}
+                ],
+                datasets: [
+                    {
+                        label: "My Second dataset",
+                        fillColor: "rgba(151,187,205,0.2)",
+                        strokeColor: "rgba(151,187,205,1)",
+                        pointColor: "rgba(151,187,205,1)",
+                        pointStrokeColor: "#fff",
+                        pointHighlightFill: "#fff",
+                        pointHighlightStroke: "rgba(151,187,205,1)",
+                        data: [
+                                {% for key, ingreso in ingresos if key is odd  %}
+                                    "{{ingresos[key]  }}",
+                                {% endfor %}
+                        ],
+                    }
+                ]
+            };
+            $('#contenedorGrafico').append('<canvas id="myBarChart" width="800%" height="300%"><canvas>');
+            var ctx = $("#myBarChart").get(0).getContext("2d");
+            var myLineChart = new Chart(ctx).Bar(data);
+            
+        {% else %}
+            bootbox.alert("No hay datos para ese intervalo", function() {});
+            $('canvas').remove();
+        {% endif %}
+                
+    });//Fin document ready
+        </script>
+
+    {% endblock %} 

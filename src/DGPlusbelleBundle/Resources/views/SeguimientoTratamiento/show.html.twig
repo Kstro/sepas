@@ -1,0 +1,35 @@
+{% extends 'DGPlusbelleBundle:Layout:layout.html.twig' %}
+
+{% block contenido -%}
+    <h1>Comparación antes y despues de los tratamientos</h1>
+
+    <table class="record_properties">
+        <tbody>
+            <tr>
+            {#    <th>N°</th> #}
+                <th>N°</th>
+                <td>{{ entity.id }}</td>
+            </tr>
+          {#  <tr>
+                <th>Numsesion</th>
+                <td>{{ entity.numSesion }}</td>
+            </tr>  #}
+             <tr>
+                <th>Foto antes</th>
+                <td><img class="media-object" src="{{ asset('Photos/Paciente/') }}{{entity.fotoAntes}}" alt="Foto perfil"> </td>
+            </tr>
+            <tr>
+                <th>Foto despues</th>
+                <td> <img class="media-object" src="{{ asset('Photos/Paciente/') }}{{entity.fotoDespues}}" alt="Foto perfil"> </td>
+            </tr>
+        </tbody>
+    </table>
+               
+ <ul class="record_actions">
+    <li>
+        <a href="{{ path('admin_seguimientotratamiento') }}">
+            Back to the list
+        </a>
+    </li>
+</ul>
+{% endblock %}

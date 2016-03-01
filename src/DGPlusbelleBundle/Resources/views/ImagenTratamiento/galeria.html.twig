@@ -1,0 +1,344 @@
+{% extends 'DGPlusbelleBundle:Layout:layout.html.twig' %}
+
+
+
+{% block contenido -%}
+    <h1>Imágenes</h1>
+
+    <!-- ============================================
+    MAIN CONTENT SECTION
+    =============================================== -->
+    
+    {#<div class="row">
+        <div class="col-md-6 text-center"><b><h3>Fotos antes</h3></b></div>
+        <div class="col-md-6 text-center"><b><h3>Fotos despues</h3></b></div>
+    </div>#}
+
+        <div class="content-body">
+            <div id="gallery" class="gallery-content gallery-grid" itemscope itemtype="http://schema.org/ImageGallery">
+                
+                    {% if entities %}
+                        
+                        <div class="row">
+                            {#<div class="col-md-6">#}
+                        {% for entity in entities %}
+                            <div class="gallery-col mix col-md-4" data-mysort="147">
+                              <div class="gallery-item" itemprop="associatedMedia" itemscope itemtype="{{ asset('Photos/Paciente/')}}{{entity.fotoAntes}}">
+                                <div class="thumbnail" data-lref="{{ asset('Photos/Paciente/')}}{{entity.fotoAntes}}" itemprop="contentUrl" data-size="1280x720">
+                                  <div class="embed-responsive embed-responsive-16by9">
+                                    <img class="embed-responsive-item" itemprop="thumbnail" src="{{ asset('Photos/Paciente/')}}{{entity.fotoAntes}}" alt="dummy image">
+                                    <div class="embed-bar">
+
+                                    </div>
+                                    <div class="embed-bar hidden-gallery-list embed-bar-bottom">
+
+                                      <div><i class="icon-calendar"></i>  {{ entity.fechaSesion|date('d-m-Y')}}</div>
+                                    </div>
+                                  </div><!-- /.embed -->
+                                </div><!-- /.thumbnail -->
+                                <div class="gallery-info">
+                                  <p class="hidden-gallery-grid text-muted pull-right"><small></small></p>
+                                  <h3 class="img-title" itemprop="caption description"></h3>
+                                  <p class="img-desc"></p>
+                                  <div class="hidden-gallery-grid">
+                                    <a href="#" class="btn btn-default" data-toggle="tooltip" data-container="body" title="copy image link"><i class="icon-link"></i></a>
+                                    <a href="#" class="btn btn-default" data-toggle="tooltip" data-container="body" title="edit"><i class="icon-pencil"></i></a>
+                                    <a href="#" class="btn btn-default" data-toggle="tooltip" data-container="body" title="delete"><i class="icon-close"></i></a>
+                                  </div>
+                                </div><!-- /.gallery-info -->
+                              </div><!-- /.gallery-item -->
+                            </div><!-- /.cols -->
+                        {% endfor %}
+                            {#</div>#}
+                       {# 
+                            <div class="col-md-6">
+                            
+                        {% for entity in entities %}
+                            <div class="gallery-col mix col-md-6" data-mysort="147">
+                                <div class="gallery-item" itemprop="associatedMedia" itemscope itemtype="{{ asset('Photos/Paciente/')}}{{entity.fotoDespues}}">
+                                <div class="thumbnail" data-lref="{{ asset('Photos/Paciente/')}}{{entity.fotoDespues}}" itemprop="contentUrl" data-size="1280x720">
+                                    <div class="embed-responsive embed-responsive-16by9">
+                                        <img class="embed-responsive-item" itemprop="thumbnail" src="{{ asset('Photos/Paciente/')}}{{entity.fotoDespues}}" alt="dummy image">
+                                        <div class="embed-bar">
+
+                                        </div>
+                                        <div class="embed-bar hidden-gallery-list embed-bar-bottom">
+
+                                            <div><i class="icon-calendar"></i>  {{ entity.fechaSesion|date('d-m-Y')}}</div>
+                                        </div>
+                                    </div><!-- /.embed -->
+                                </div><!-- /.thumbnail -->
+                                <div class="gallery-info">
+                                    <p class="hidden-gallery-grid text-muted pull-right"><small></small></p>
+                                    <h3 class="img-title" itemprop="caption description"></h3>
+                                    <p class="img-desc"></p>
+                                    <div class="hidden-gallery-grid">
+                                        <a href="#" class="btn btn-default" data-toggle="tooltip" data-container="body" title="copy image link"><i class="icon-link"></i></a>
+                                        <a href="#" class="btn btn-default" data-toggle="tooltip" data-container="body" title="edit"><i class="icon-pencil"></i></a>
+                                        <a href="#" class="btn btn-default" data-toggle="tooltip" data-container="body" title="delete"><i class="icon-close"></i></a>
+                                    </div>
+                                </div><!-- /.gallery-info -->
+                              </div><!-- /.gallery-item -->
+                            </div><!-- /.cols -->
+                            
+                        {% endfor %}#}
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="row">
+                            <div class="col-lg-12 text-center"><b>Este registro no tiene imágenes</b></div>
+                        </div>
+                        
+                    {% endif %}
+                </div>
+            </div><!-- /.gallery-content -->
+
+        </div><!-- /.content-body -->
+
+
+        <!-- Photoswipe fs template -->
+        <!-- Root element of PhotoSwipe. Must have class pswp. -->
+        <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+          <!-- Background of PhotoSwipe.
+          It's a separate element as animating opacity is faster than rgba(). -->
+          <div class="pswp__bg"></div>
+
+          <!-- Slides wrapper with overflow:hidden. -->
+          <div class="pswp__scroll-wrap">
+
+            <!-- Container that holds slides.
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+            <div class="pswp__container">
+              <div class="pswp__item"></div>
+              <div class="pswp__item"></div>
+              <div class="pswp__item"></div>
+            </div>
+
+            <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+            <div class="pswp__ui pswp__ui--hidden">
+              <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                  <div class="pswp__preloader__icn">
+                    <div class="pswp__preloader__cut">
+                      <div class="pswp__preloader__donut"></div>
+                    </div>
+                  </div>
+                </div><!-- /.pswp__preloader -->
+              </div><!-- /.pswp__top-bar -->
+
+              <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+              </div><!-- /.pswp__share -->
+
+              <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+              </button>
+
+              <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+              </button>
+
+              <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+              </div>
+
+            </div><!-- /.pswp__ui -->
+          </div><!-- /.pswp__scroll-wrap -->
+        </div><!-- /.pswp -->
+
+
+        <!-- Template Setups -->
+        <div class="modal fade" id="templateSetup">
+          <div class="modal-dialog">
+            <!-- modal-content -->
+            <div class="modal-content"></div>
+          </div><!-- /.modal-dialog -->
+        </div><!-- /.templateSetup -->
+
+      </div><!-- /.content -->
+    </section><!-- /MAIN -->
+
+    <!-- ============================================
+    MAIN CONTENT SECTION
+    =============================================== -->
+    <section class="content-wrapper" role="main">
+      <div class="content">
+        
+
+
+        {#<div class="content-body">
+          <div class="gallery-control">
+            {#<div class="btn-toolbar">
+              <div class="btn-group mr-2x">
+                
+              </div><!-- /.btn-group -->
+              <div class="btn-group pull-right">
+                
+              </div><!-- /.btn-group -->
+              
+            </div><!-- /.btn-toolbar -->#}
+          {#</div><!-- /.gallery-control -->
+
+          
+
+          <!-- place lazy load more or pagination here -->
+          
+
+        </div><!-- /.content-body -->
+#}
+
+        <!-- Photoswipe fs template -->
+        <!-- Root element of PhotoSwipe. Must have class pswp. -->
+        <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+          <!-- Background of PhotoSwipe.
+          It's a separate element as animating opacity is faster than rgba(). -->
+          <div class="pswp__bg"></div>
+
+          <!-- Slides wrapper with overflow:hidden. -->
+          <div class="pswp__scroll-wrap">
+
+            <!-- Container that holds slides.
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+            <div class="pswp__container">
+              <div class="pswp__item"></div>
+              <div class="pswp__item"></div>
+              <div class="pswp__item"></div>
+            </div>
+
+            <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+            <div class="pswp__ui pswp__ui--hidden">
+              <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                  <div class="pswp__preloader__icn">
+                    <div class="pswp__preloader__cut">
+                      <div class="pswp__preloader__donut"></div>
+                    </div>
+                  </div>
+                </div><!-- /.pswp__preloader -->
+              </div><!-- /.pswp__top-bar -->
+
+              <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+              </div><!-- /.pswp__share -->
+
+              <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+              </button>
+
+              <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+              </button>
+
+              <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+              </div>
+
+            </div><!-- /.pswp__ui -->
+          </div><!-- /.pswp__scroll-wrap -->
+        </div><!-- /.pswp -->
+
+
+        <!-- Template Setups -->
+        <div class="modal fade" id="templateSetup">
+          <div class="modal-dialog">
+            <!-- modal-content -->
+            <div class="modal-content"></div>
+          </div><!-- /.modal-dialog -->
+        </div><!-- /.templateSetup -->
+
+      </div><!-- /.content -->
+    </section><!-- /MAIN -->
+    <!-- Photoswipe fs template -->
+        <!-- Root element of PhotoSwipe. Must have class pswp. -->
+        <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+          <!-- Background of PhotoSwipe.
+          It's a separate element as animating opacity is faster than rgba(). -->
+          <div class="pswp__bg"></div>
+
+          <!-- Slides wrapper with overflow:hidden. -->
+          <div class="pswp__scroll-wrap">
+
+            <!-- Container that holds slides.
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+            <div class="pswp__container">
+              <div class="pswp__item"></div>
+              <div class="pswp__item"></div>
+              <div class="pswp__item"></div>
+            </div>
+
+            <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+            <div class="pswp__ui pswp__ui--hidden">
+              <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                  <div class="pswp__preloader__icn">
+                    <div class="pswp__preloader__cut">
+                      <div class="pswp__preloader__donut"></div>
+                    </div>
+                  </div>
+                </div><!-- /.pswp__preloader -->
+              </div><!-- /.pswp__top-bar -->
+
+              <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+              </div><!-- /.pswp__share -->
+
+              <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+              </button>
+
+              <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+              </button>
+
+              <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+              </div>
+
+            </div><!-- /.pswp__ui -->
+          </div><!-- /.pswp__scroll-wrap -->
+        </div><!-- /.pswp -->
+    
+    
+    
+    
+    
+{% endblock %}
+
+{% block javascripts_step %}
+    {{parent()}}
+    
+  <script src="{{ asset('Resources/wrapkit/scripts/jquery.mixitup.js') }}"></script>
+  <script src="{{ asset('Resources/wrapkit/scripts/imagesloaded.pkgd.js') }}"></script>
+  <script src="{{ asset('Resources/wrapkit/scripts/photoswipe.pkgd.js') }}"></script>
+  <script src="{{ asset('Resources/wrapkit/scripts/demo/page-gallery-demo.js') }}"></script>
+   
+  
+  
+{% endblock %}

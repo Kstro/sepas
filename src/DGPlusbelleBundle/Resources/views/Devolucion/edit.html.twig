@@ -1,0 +1,91 @@
+
+
+{% block contenido -%}
+    
+           
+       
+  <div class="panel panel-default">
+    <div class="panel-heading"><p>Modificar Devolución</p></div>
+
+    {#{{ form(edit_form) }}#}
+
+    <div class="panel-body">
+    {{ form_start(edit_form) }}
+    {{ form_errors(edit_form) }}
+    
+ 
+    <div class="row">
+            <div class="col-md-3">
+            {{ form_row(edit_form.empleado) }}
+            </div>
+            <div class="col-md-3">
+            {{ form_row(edit_form.paciente) }}
+            </div>
+            <div class="col-md-2">
+            {{ form_row(edit_form.monto) }}
+             </div>
+            <div class="col-md-4">
+            {{ form_row(edit_form.motivo) }}
+            </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+        {{ form_row(edit_form.flagDevolucion) }}
+        </div>
+        <div id="paquete" style="display:none;">
+            <div class="col-md-3">
+            {{ form_row(edit_form.ventapaquete) }}
+            </div>
+        </div>
+        <div id="tratamiento" style="display:none;">
+            <div class="col-md-3">
+            {{ form_row(edit_form.personatratamiento) }}
+            </div>
+        </div>
+    </div>
+
+        <div class="form-grouphide col-sm-9"> 
+            <a href="{{ path('admin_devolucion') }}" class="btn btn-default btn-sm" id="cancelarModificar">Cancelar</a>
+                {{ form_widget(edit_form._token) }}
+                {{ form_widget(edit_form.submit) }}
+        </div>
+
+     </div>
+    
+{% endblock %}
+
+
+{% block jquery %}
+<script>
+    $(document).ready(function(){
+    //Accion cancelar del boton modificar
+        $("#cancelarModificar").click(function(){
+            $("#edit-datatables1").click();
+            return false;
+        });
+        
+        $(document).on("click","#dgplusbellebundle_devolucion_flagDevolucion_0", function(){
+            $("#paquete").show();
+            $("#tratamiento").hide();
+        });
+
+        $(document).on("click","#dgplusbellebundle_devolucion_flagDevolucion_1", function(){
+            $("#tratamiento").show();
+            $("#paquete").hide(); 
+        });
+
+        if($('#dgplusbellebundle_devolucion_flagDevolucion_0').is(':checked')){
+            $('#dgplusbellebundle_devolucion_flagDevolucion_0').click();
+            $('#dgplusbellebundle_devolucion_flagDevolucion_0').parent().click();
+        }
+        else{
+            $('#dgplusbellebundle_devolucion_flagDevolucion_1').click();
+            $('#dgplusbellebundle_devolucion_flagDevolucion_1').parent().click();
+        }
+        
+        
+    });
+   
+</script>
+{% endblock %}
+
