@@ -1,0 +1,85 @@
+
+
+{% block contenido -%}
+    
+    
+    <div class="panel panel-default">
+  <!-- Default panel contents -->
+  <div class="panel-heading"><p>Editar incapacidad</p></div>
+  <div class="panel-body">
+  {{ form_start(edit_form) }}
+    {{ form_errors(edit_form) }}
+    <div class="row">
+        <div class="col-md-3">
+            {{ form_row(edit_form.paciente) }}
+        </div>
+        
+        <div class="col-md-3">
+            {{ form_row(edit_form.fechaInicial) }}
+        </div>
+        
+        <div class="col-md-3">
+            {{ form_row(edit_form.fechaFinal) }}
+        </div>
+        
+        <div class="col-md-3">
+            {{ form_row(edit_form.notas ) }}
+        </div>
+    </div>
+             <div class="form-grouphide col-sm-9">
+                <a href="{{ path('admin_rol') }}" class="btn btn-default btn-sm" id="cancelarNuevo">Cancelar</a>
+                {{ form_widget(edit_form.submit) }}
+              </div>
+            
+    
+    {{ form_end(edit_form) }}
+  </div>
+
+
+</div>        
+
+
+{% endblock %}
+
+{% block jquery %}
+ <script>
+    $(document).ready(function(){
+       //Accion cancelar del boton modificar
+        $("#cancelarModificar").click(function(){
+            $("#edit-datatables1").click();
+            return false;
+        });
+        
+        
+        
+         // validando campos  
+              $('.duiPaciente').mask('00000000-0');  
+              $('.telefonoPersona').mask('0000-0000'); 
+              $('.telefono2Persona').mask('0000-0000'); 
+              $('.telefonoemerPaciente').mask('0000-0000'); 
+        
+        
+{#         validarPaciente();  #}
+         $('.fechaInicial').Zebra_DatePicker({
+            months:['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+            days: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+            format: 'd-m-Y',
+            show_clear_date:false,
+            show_select_today: "Hoy",
+            direction:1,
+            pair: $('.fechaFinal')
+        });
+
+        $('.fechaFinal').Zebra_DatePicker({
+            months:['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+            days: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+            format: 'd-m-Y',
+            show_clear_date:false,
+            show_select_today: "Hoy",
+            direction:1
+
+        });
+    });
+</script>
+{% endblock %}
+

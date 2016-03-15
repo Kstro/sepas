@@ -4,6 +4,13 @@
  <div class="panel panel-default">
   <!-- Default panel contents -->
   <div class="panel-heading"><p>Nuevo paciente</p></div>
+  
+    <div class="row">        
+        <div class="col-md-12">
+            <h3>Información del paciente</h3>
+            <hr>
+        </div>
+    </div>
   <div class="panel-body">
   {{ form_start(form) }}
     {{ form_errors(form) }}
@@ -49,7 +56,50 @@
         
         </div>#}
     </div>
+    
+    
+    <div class="row">        
+        <div class="col-md-12">
+            <h3>Antecedentes</h3>
+            <hr>
+        </div>
+    </div>
+    
+    <div class="row">        
+        <div class="col-md-12">
+            <div class="col-md-4">
+                {{ form_row(form.tipoSangre) }}
+            </div>
+            <div class="col-md-4">
+                {{ form_row(form.tabaquismo) }}
+            </div>
+            <div class="col-md-4">
+                {{ form_row(form.alcoholismo) }}
+            </div>
+        </div>
+    </div>
+            
+            
+            
+    <div class="row">        
+        <div class="col-md-12">
+            <div class="col-md-4">
+                {{ form_row(form.hereditarios) }}
+            </div>
+            <div class="col-md-4">
+                {{ form_row(form.patologicos) }}
+            </div>
+            <div class="col-md-4">
+                {{ form_row(form.noPatologicos) }}
+            </div>
+        </div>
+    </div>
+    
+    
+    
+    
   
+    
    
              <div class="form-grouphide col-sm-9">
                 <a href="{{ path('admin_paciente') }}" class="btn btn-default btn-sm" id="cancelarNuevo">Cancelar</a>

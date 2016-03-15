@@ -38,8 +38,8 @@
     {#<div class="col-md-1 text-right">
         Sucursales
     </div>#}
-    {#<input id="sucursal" value="{{sucursal}}" type="hidden">
-    <input id="fechaInicio" value="" type="text">
+    <input id="sucursal" value="{{sucursal}}" type="hidden">
+    {#<input id="fechaInicio" value="" type="text">
     <input id="fechaFin" value="" type="text">#}
     <div class="col-md-5">
 
@@ -55,7 +55,6 @@
                 <img class="userFilter" data-toggle="tooltip" data-original-title="Todos" rel="tooltip" src='{{ asset('Photos/Empleado/')}}na.jpg' alt='Foto perfil' style='border-radius:80px;width: 35px; height: 35px;'>
             </a>
         {% for empleado in empleados %}
-            
                 <a  id="{{empleado.id}}" style='background:transparent; border:0px; border-radius:80px; text-decoration: none;'>
                     {% if empleado.foto!=""%}
                         <img class="userFilter" data-toggle="tooltip" data-original-title="{{empleado.persona.nombres|upper}} {{empleado.persona.apellidos|upper}}" rel="tooltip" src='{{ asset('Photos/Empleado/')}}{{empleado.foto}}' alt='Foto perfil' style='border-radius:80px;width: 35px; height: 35px;'>
@@ -65,7 +64,6 @@
                 </a>
         {% endfor %}
         </div>
-        
     </div>
     
     <div class="col-md-4 dropdown pull-right open">

@@ -369,6 +369,16 @@ $(document).ready(function() {
                             });
                             allDay();
                             break;
+                        case 5:
+                            var mensaje = "";
+                            mensaje += "<div class='row'><div class='col-md-12'><b><p class='text-left'>Error...</p></b></div></div>";
+                            mensaje += "<div class='row'><hr></div>";
+                            mensaje += "<div class='row'><div class='col-md-12'>Esta cita no puede ser reprogramada, el empleado tiene reserva de tiempo</div></div>"
+                            bootbox.alert(mensaje, function() {
+                                
+                            });
+                            allDay();
+                            break;
                     }
                           
                 }); 
@@ -418,9 +428,9 @@ $(document).ready(function() {
                             var mensaje = "";
   {#                        if(data.regs!=0){#}
                             //alert(data.regs[0].numero);
-                            
+                            console.log(data.regs[0]);
                             var hinicio=(data.regs[0].horaCita);
-                            var hfin=(data.regs[0].horaFinCita);
+                            var hfin=(data.regs[0].horaFin);
                             var telef=(data.regs[0].telefono);
                             
                             mensaje += "<div class='container-fluid'>";
@@ -466,7 +476,7 @@ $(document).ready(function() {
                               
                             } else{
                                 
-                              mensaje += "<div class='col-md-6 text-right'><b>Hora final: </b></div><div class='col-md-6'>"+data.regs[0].horaFinCita+"</div>";  
+                              mensaje += "<div class='col-md-6 text-right'><b>Hora final: </b></div><div class='col-md-6'>"+data.regs[0].horaFin+"</div>";  
                             
                             } 
                             mensaje += "<div class='clearfix'></div>";

@@ -32,7 +32,7 @@ class PlantillaController extends Controller
         
         $entity = new Plantilla();
         $form = $this->createCreateForm($entity);        
-        $entities = $em->getRepository('DGPlusbelleBundle:Plantilla')->findAll();
+        $entities = $em->getRepository('DGPlusbelleBundle:Plantilla')->findBy(array('estado'=>1));
         $parametros = $em->getRepository('DGPlusbelleBundle:DetallePlantilla')->findAll();
        // var_dump($parametros);
         return array(

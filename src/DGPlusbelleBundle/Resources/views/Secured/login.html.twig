@@ -6,7 +6,7 @@
    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    {% endblock %}
-   <title>{% block title %} Plus Belle {% endblock %}</title>
+   <title>{% block title %} SEPES S.A. de C.V {% endblock %}</title>
    {% block css -%}
        <link rel="stylesheet" href="{{ asset('Resources/wrapkit/styles/bootstrap.css') }}">
         <link rel="stylesheet" href="{{ asset('Resources/wrapkit/styles/dependencies.css') }}">
@@ -59,7 +59,7 @@
         
           
         <form action="{% block form_action %}{{ path("plusbelle_security_check") }}{% endblock %}" method="post" id="frmLogin">    
-          <p class="lead">La plus belle</p>
+          <p class="lead">SEPES S.A. de C.V.</p>
           <div class="form-group">
                 {% block alert -%}
                     {% if error %}

@@ -67,6 +67,19 @@
             .campos{
                 width: 100%;
             }
+            
+            
+            #listadoa{
+{#                display:none;#}
+            }
+            
+            .observacionConsulta {
+                resize:vertical;
+            }
+            
+            .indicacionesConsulta {
+                resize:vertical;
+            }
     </style>
     
 {% endblock %}
@@ -85,66 +98,116 @@
             {#  {{ form(form) }}  #}
             
                 
-                        
-                <div class="row">
+                      
+                {#<div class="row">
                     
                     
                     <div class="col-md-12">
                         <h3>Información general de consulta</h3>
                         <hr>
                     </div>
-                </div>
+                </div>#}
             {# Paciente #}
-            <div class="row">
-                
-                <div class="col-md-2">{{ form_row(form.paciente) }}</div>
-                
-            </div>
-            {# Formulario de consulta#}
-            <div class="row">
-                <br>
-                {#<div class="col-md-2">
-                    {{ form_row(form.fechaConsulta) }}
-                </div>#}
-                
-                <div class="col-md-2">
-                    {{ form_row(form.tratamiento) }}
+            <div class="tab-clontent">
+            <div id="infoGeneral" >
+                <div class="row">
+                    <div class="col-md-3">{{ form_row(form.paciente) }}</div>
+                    <div class="col-md-2">
+                        {{ form_row(form.fechaConsulta) }}
+                    </div>
+                    <div class="col-md-2">
+                        {{ form_row(form.horaInicio) }}
+                    </div>
                 </div>
-                
-                <div class="col-md-2">
-                    {{ form_row(form.horaInicio) }}
-                </div>
-                
-                <div class="col-md-2">
-                    {{ form_row(form.horaFin) }}
-                </div>
-                
-              {#  <div class="col-md-1">
-                    {{ form_row(form.incapacidad) }}
-                </div>#}
-                <div class="col-md-2">
-                    {{ form_row(form.costoConsulta) }}
-                </div>
+                {# Formulario de consulta#}
+                <div class="row">
+                    <br>
 
-            </div>
+                    <div class="col-md-2">
+                        {{ form_row(form.tratamiento) }}
+                    </div>
+
+                    {#<div class="col-md-2">
+                        {{ form_row(form.horaFin) }}
+                    </div>#}
+
+                    {#  <div class="col-md-1">
+                        {{ form_row(form.incapacidad) }}
+                    </div>#}
+                    <div class="col-md-2">
+                        {{ form_row(form.tipoConsulta) }}
+                    </div>
+
+                    <div class="col-md-4">
+                        {{ form_row(form.observacion) }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form_row(form.sintomas) }}
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-md-2">
+                        {{ form_row(form.costoConsulta) }}
+                    </div>
+
+                    {#<div class="col-md-3">
+                        {{ form_row(form.sucursal) }}
+                    </div>#}
+
+                </div>  
+            </div>        
+            
+            {#<div class="row">    
+                <div class="col-md-12">
+                        <h3>Signos vitales</h3>
+                        <hr>
+                </div>
+            </div>#}
+            <div id="sigVitales" >
+                <div class="row">  
+                    <div class="col-md-1">
+                        {{ form_row(form.peso) }}
+                    </div>
+                    <div class="col-md-1">
+                        {{ form_row(form.talla) }}
+                    </div>
+                    <div class="col-md-2">
+                        {{ form_row(form.frecRespiratoria) }}
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label  class="control-label" for="dgplusbellebundle_consulta_frecRespiratoria">Presión arterial (mmHg)</label><br>
+                            <div style="width:35%; position: relative; float: left">
+                                {{ form_widget(form.presionArterialSistolica)}}
+                            </div>
+                            <label style="margin-left: 5px; margin-right: 5px; width:5px; font-size: 20px;  position: relative; float: left">/ </label>
+                            <div style="width:35%; position: relative; float: left">
+                                {{ form_widget(form.presionArterialDiastolica)}}
+                            </div>
+                        </div> 
+
+                    </div>
+
+                    <div class="col-md-2">
+                        {{ form_row(form.temperatura) }}
+                    </div>
+                    <div class="col-md-2">
+                        {{ form_row(form.frecCardiaca) }}
+                    </div>
+
+                </div>
+    </div>
+                    </div>
             <div class="row">
-                <div class="col-md-3">
-                    {{ form_row(form.tipoConsulta) }}
+               <div class="col-md-6">
+                  <h3 class="text-left">Vacunas</h3>
+                  <hr>
+                  <br>
                 </div>
-                
-                <div class="col-md-3">
-                    {{ form_row(form.sucursal) }}
-                </div>
-                
-                <div class="col-md-5">
-                    {{ form_row(form.observacion) }}
-                </div>
-                
-            </div>  
-               
-            <div class="row">
-               <div class="col-md-12">
-                  <h3 class="text-left">Producto</h3>
+                <div class="col-md-6">
+                  <h3 class="text-left">Imágenes</h3>
                   <hr>
                   <br>
                 </div>
@@ -158,16 +221,16 @@
            <div class="row">  
                  <div id="listadoa">
                             <div class="listado col-md-6">          
-                               <div class="placas" data-prototype="{% filter escape %}  {% include 'DGPlusbelleBundle:Prototype:producto.html.twig' with { 'form': form.placas.vars.prototype} %}   {% endfilter  %}"> 
-                                    {{ form_widget(form.placas) }}
-                               </div>
+                                <div class="placas" data-prototype="{% filter escape %}  {% include 'DGPlusbelleBundle:Prototype:producto.html.twig' with { 'form': form.placas.vars.prototype} %}   {% endfilter  %}"> 
+                                     {{ form_widget(form.placas) }}
+                                </div>
                             </div>
                  </div>
                  <div id="listadoa2">
                             <div class="listado col-md-6">          
-                               <div class="placas2" data-prototype="{% filter escape %}  {% include 'DGPlusbelleBundle:Prototype:foto2.html.twig' with { 'form': form.placas2.vars.prototype} %}   {% endfilter  %}"> 
-                                    {{ form_widget(form.placas2) }}
-                               </div>
+                                <div class="placas2" data-prototype="{% filter escape %}  {% include 'DGPlusbelleBundle:Prototype:foto2.html.twig' with { 'form': form.placas2.vars.prototype} %}   {% endfilter  %}"> 
+                                     {{ form_widget(form.placas2) }}
+                                </div>
                             </div>
                  </div>
             </div>    
@@ -176,16 +239,13 @@
            
             <br>
            
-            <div id="plantilla" class="plantilla col-md-6">
+            <div id="plantilla" class="plantilla col-md-6" style="display:none;">
                 <div class="row">
                     <div class="col-md-11 bordered-bottom ">
                         <div class="col-md-10">
                             <h3 class="text-left">Historial clínico</h3>
                             <a id="historialPrevPDF" href="">Generar PDF</a> <i class="fa fa-file-pdf-o"></i>
-                        </div>
-                        
-                                
-                        
+                        </div>        
                     </div>
                     <div class="clearfix"></div>
                     <div class="col-md-4" style="margin-top: 20px;">
@@ -217,7 +277,6 @@
                             <h3 class="text-left">Receta médica</h3>
                             <a id="recetaPrevPDF" href="">Generar PDF</a> <i class="fa fa-file-pdf-o"></i>
                         </div>
-
                     </div>
                     <div class="clearfix"></div>
                     <div class="col-md-4" style="margin-top: 20px;">
@@ -640,8 +699,8 @@
     var collectionHolder2 = $('div.placas2');
     var col=$('#hnr_sircimbundle_estudioradiologicotype_placas');
     // setup an "add a tag" link
-    var $addTagLink = $('<div class="row"><div class="col-md-12"><a href="#" class="add_placa_link btn btn-primary">Agregar producto</a></div></div>');
-    var $addTagLink2 = $('<div class="row"><div class="col-md-12"><a href="#" class="add_placa_link2 btn btn-primary">Agregar foto</a></div></div>');
+    var $addTagLink = $('<div class="row"><div class="col-md-12"><a href="#" class="add_placa_link btn btn-primary">Agregar vacuna</a></div></div>');
+    var $addTagLink2 = $('<div class="row"><div class="col-md-12"><a href="#" class="add_placa_link2 btn btn-primary">Agregar imagen</a></div></div>');
     var $removeTagLink = $('<a href="#" class="remove_placa_link btn btn-danger">Eliminar</a>');
     var $removeTagLink2 = $('<a href="#" class="remove_placa_link2 btn btn-danger">Eliminar</a>');
     var $newLinkLi = $('<div class="col-md-12 addItem"></div>').append($addTagLink);
@@ -664,13 +723,15 @@
         $("#dgplusbellebundle_consulta_registraReceta_1").prop("checked", true);
         $("#lista_plantilla").hide();
         $("#lista_receta").hide();
-        $('#dgplusbellebundle_consulta_fechaConsulta').daterangepicker({
-                        singleDatePicker: true,
-                        showDropdowns: true,
-                        locale: {
-                            format: 'YYYY-MM-DD'
-                        },
-                    });
+        
+
+        $('#dgplusbellebundle_consulta_fechaConsulta').Zebra_DatePicker({
+            months:['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+            days: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+            format: 'd-m-Y',
+            show_clear_date:false,
+            show_select_today: "Hoy",
+        });
 
         $('select[id$=dgplusbellebundle_consulta_placas_]').selectBoxIt();
         var valores = new Array();

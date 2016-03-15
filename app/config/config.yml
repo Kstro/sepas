@@ -114,7 +114,7 @@ knp_paginator:
         pagination: KnpPaginatorBundle:Pagination:sliding.html.twig     # sliding pagination controls template
         sortable: KnpPaginatorBundle:Pagination:sortable_link.html.twig # sort link template
 easy_admin:
-    site_name: 'PLUS BELLE'
+    site_name: 'SEPES S.A. de C.V.'
     design:
         brand_color: '#1ABC9C'
     entities:

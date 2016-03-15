@@ -76,12 +76,12 @@
         </li>
     {% endif %}
     {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_MEDICO') %}
-        <li class="nav-item" role="presentation">
+        {#<li class="nav-item" role="presentation">
           <a href="{{ path('admin_paquete') }}">
             <span class="nav-icon"><i class="fa fa-briefcase"></i></span>
             <span class="nav-text">Gestionar paquete</span>
           </a>
-        </li>
+        </li>#}
         
        {# <li class="nav-item" role="presentation">
           <a href="#" data-toggle="nav-child">
@@ -97,7 +97,7 @@
         <li class="nav-item" role="presentation">
           <a href="{{ path('admin_producto') }}">
             <span class="nav-icon"><i class="fa fa-database"></i></span>
-            <span class="nav-text">Gestionar productos</span>
+            <span class="nav-text">Gestionar vacunas</span>
           </a>
         </li>
         
@@ -136,11 +136,11 @@
         
     {% endif %}
     {% if is_granted('ROLE_ADMIN') %}
-         <li class="nav-item" role="presentation">
-          <a href="{{ path('admin_sucursal') }}">
-            <span class="nav-icon"><i class="fa fa-university"></i></span>
-            <span class="nav-text">Gestionar sucursal</span>
-          </a>
+        <li class="nav-item" role="presentation">
+            <a href="{{ path('admin_sucursal') }}">
+                <span class="nav-icon"><i class="fa fa-university"></i></span>
+                <span class="nav-text">Gestionar sucursal</span>
+            </a>
         </li>
         
        {# <li class="nav-item" role="presentation">
@@ -154,22 +154,28 @@
         </li>#}
     {% endif %}
     {% if is_granted('ROLE_ADMIN') %}  
-         <li class="nav-item" role="presentation">
+         {#<li class="nav-item" role="presentation">
           <a href="{{ path('admin_descuento') }}">
             <span class="nav-icon"><i class="fa fa-magic"></i></span>
             <span class="nav-text">Gestionar descuento</span>
           </a>
-         </li>
+         </li>#}
         
-       {# <li class="nav-item" role="presentation">
-          <a href="#" data-toggle="nav-child">
+        <li class="nav-item" role="presentation">
+            <a href="{{ path('admin_descuento') }}">
+                <span class="nav-icon"><i class="fa fa-magic"></i></span>
+                <span class="nav-text">Gestionar descuento</span>
+            </a>
+        </li>
+    {#<li class="nav-item" role="presentation">
+        <a href="#" data-toggle="nav-child">
             <span class="nav-icon"><i class="fa fa-magic"></i></span>
             <span class="nav-text">Descuento</span>
-          </a>
-          <ul class="nav nav-child level-1 nav-stacked nav-pills" role="menu">
+        </a>#}
+        {#<ul class="nav nav-child level-1 nav-stacked nav-pills" role="menu">
             <li role="presentation"><a role="menuitem" tabindex="-1" href="{{ path('admin_descuento') }}"><span class="nav-text">Gestionar descuento</span></a></li>
-          </ul>
-        </li>#}
+        </ul>#}
+{#    </li>#}
     {% endif %}
     {#{% if is_granted('ROLE_ADMIN') %}    
         <li class="nav-item" role="presentation">

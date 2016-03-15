@@ -113,6 +113,13 @@ class Paciente
     private $expediente;
     
     
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Incapacidad", mappedBy="paciente", cascade={"persist", "remove"})
+     */
+    private $incapacidad;
+    
+    
     /**
      * @var string
      *
@@ -127,6 +134,58 @@ class Paciente
      * @ORM\Column(name="fecha_registro", type="datetime", length=200, nullable=true)
      */
     private $fechaRegistro;
+    
+    
+    
+    
+    
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="tipo_sangre", type="string", length=3, nullable=false)
+     */
+    private $tipoSangre;
+    
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="tabaquismo", type="string", length=10, nullable=false)
+     */
+    private $tabaquismo;
+    
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="alcoholismo", type="string", length=10, nullable=false)
+     */
+    private $alcoholismo;
+    
+    
+    
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="hereditarios", type="string", length=500, nullable=false)
+     */
+    private $hereditarios;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="patologicos", type="string", length=3, nullable=false)
+     */
+    private $patologicos;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="no_patologicos", type="string", length=3, nullable=false)
+     */
+    private $noPatologicos;
     
     
     
@@ -413,7 +472,7 @@ class Paciente
      */
     public function setConsulta(\DGPlusbelleBundle\Entity\Consulta $consulta = null)
     {
-        $this->consulta = consulta;
+        $this->consulta = $consulta;
 
         return $this;
     }
@@ -428,13 +487,46 @@ class Paciente
         return $this->consulta;
     }
     
+    
+    
+    
+    
+    /**
+     * Set consulta
+     *
+     * @param \DGPlusbelleBundle\Entity\Incapacidad $incapacidad
+     *
+     * @return Incapacidad
+     */
+    public function setIncapacidad(\DGPlusbelleBundle\Entity\Incapacidad $incapacidad = null)
+    {
+        $this->$incapacidad = $incapacidad;
+
+        return $this;
+    }
+
+    /**
+     * Get consulta
+     *
+     * @return \DGPlusbelleBundle\Entity\Consulta
+     */
+    public function getIncapacidad()
+    {
+        return $this->incapacidad;
+    }
+    
+    
+    
+    
+    
+    
     /**
      * Get persona
      *
      * @return \DGPlusbelleBundle\Entity\Persona
      */
     public function __toString() {
-    return $this->persona->getNombres().' '.$this->persona->getApellidos();
+        return $this->persona->getNombres().' '.$this->persona->getApellidos();
     }
     
     /**
@@ -511,5 +603,177 @@ class Paciente
     {
         return $this->fechaRegistro;
     }
+    
+    
+    
+    
+    
+    /**
+     * Set tipoSangre
+     *
+     * @param string $tipoSangre
+     *
+     * @return Paciente
+     */
+    public function setTipoSangre($tipoSangre)
+    {
+        $this->tipoSangre= $tipoSangre;
+
+        return $this;
+    }
+
+    /**
+     * Get tipoSangre
+     *
+     * @return string
+     */
+    public function getTipoSangre()
+    {
+        return $this->tipoSangre;
+    }
+    
+    
+    
+    /**
+     * Set tabaquismo
+     *
+     * @param string $tabaquismo
+     *
+     * @return Paciente
+     */
+    public function setTabaquismo($tabaquismo)
+    {
+        $this->tabaquismo = $tabaquismo;
+
+        return $this;
+    }
+
+    /**
+     * Get dui
+     *
+     * @return string
+     */
+    public function getTabaquismo()
+    {
+        return $this->tabaquismo;
+    }
+    
+    
+    
+    
+    
+    
+    /**
+     * Set alcoholismo
+     *
+     * @param string $alcoholismo
+     *
+     * @return Paciente
+     */
+    public function setAlcoholismo($alcoholismo)
+    {
+        $this->alcoholismo = $alcoholismo;
+
+        return $this;
+    }
+
+    /**
+     * Get alcoholismo
+     *
+     * @return string
+     */
+    public function getAlcoholismo()
+    {
+        return $this->alcoholismo;
+    }
+    
+    
+    
+    
+    
+    
+    /**
+     * Set hereditarios
+     *
+     * @param string $hereditarios
+     *
+     * @return Paciente
+     */
+    public function setHereditarios($hereditarios)
+    {
+        $this->hereditarios= $hereditarios;
+
+        return $this;
+    }
+
+    /**
+     * Get hereditarios
+     *
+     * @return string
+     */
+    public function getHereditarios()
+    {
+        return $this->hereditarios;
+    }
+    
+    
+    
+    
+    /**
+     * Set patologicos
+     *
+     * @param string $patologicos
+     *
+     * @return Paciente
+     */
+    public function setPatologicos($patologicos)
+    {
+        $this->patologicos= $patologicos;
+
+        return $this;
+    }
+
+    /**
+     * Get patologicos
+     *
+     * @return string
+     */
+    public function getPatologicos()
+    {
+        return $this->patologicos;
+    }
+    
+    
+    
+    
+    
+    
+    /**
+     * Set nopatologicos
+     *
+     * @param string $noPatologicos
+     *
+     * @return Paciente
+     */
+    public function setNoPatologicos($noPatologicos)
+    {
+        $this->noPatologicos= $noPatologicos;
+
+        return $this;
+    }
+
+    /**
+     * Get nopatologicos
+     *
+     * @return string
+     */
+    public function getNoPatologicos()
+    {
+        return $this->noPatologicos;
+    }
+    
+    
+    
+    
     
 }

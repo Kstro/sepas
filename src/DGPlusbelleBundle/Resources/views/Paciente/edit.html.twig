@@ -54,6 +54,48 @@
             
             </div>#}
         </div>
+        
+        
+        
+        <div class="row">        
+        <div class="col-md-12">
+            <h3>Antecedentes</h3>
+            <hr>
+        </div>
+    </div>
+    
+    <div class="row">        
+        <div class="col-md-12">
+            <div class="col-md-4">
+                {{ form_row(edit_form.tipoSangre) }}
+            </div>
+            <div class="col-md-4">
+                {{ form_row(edit_form.tabaquismo) }}
+            </div>
+            <div class="col-md-4">
+                {{ form_row(edit_form.alcoholismo) }}
+            </div>
+        </div>
+    </div>
+            
+            
+            
+    <div class="row">        
+        <div class="col-md-12">
+            <div class="col-md-4">
+                {{ form_row(edit_form.hereditarios) }}
+            </div>
+            <div class="col-md-4">
+                {{ form_row(edit_form.patologicos) }}
+            </div>
+            <div class="col-md-4">
+                {{ form_row(edit_form.noPatologicos) }}
+            </div>
+        </div>
+    </div>
+            
+            
+            
         <div class="form-grouphide col-sm-9"> 
             <a href="{{ path('admin_paciente') }}" class="btn btn-default btn-sm" id="cancelarModificar">Cancelar</a>
                 {{ form_widget(edit_form._token) }}

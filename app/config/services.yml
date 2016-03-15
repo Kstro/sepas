@@ -22,3 +22,8 @@ services:
     bitacora:
         class:  "%mi_bitacora.class%"
         arguments:  ["@doctrine.orm.entity_manager"]
+        
+    service.listener:
+        class: DGPlusbelleBundle\Listener\CalendarEventListener
+        arguments:  [ "@envio_correo" ]
+        

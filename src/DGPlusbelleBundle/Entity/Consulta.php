@@ -143,6 +143,76 @@ class Consulta
      */
     private $ventapaq;
 
+    
+    
+    
+    
+    
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="peso", type="float", nullable=false)
+     */
+    private $peso; 
+    
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="talla", type="float", nullable=false)
+     */
+    private $talla; 
+    
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="frec_respiratoria", type="integer", nullable=false)
+     */
+    private $frecRespiratoria; 
+    
+    
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="presion_arterial_sistolica", type="integer", nullable=false)
+     */
+    private $presionArterialSistolica; 
+    
+    
+    
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="presion_arterial_diastolica", type="integer", nullable=false)
+     */
+    private $presionArterialDiastolica; 
+    
+    
+    
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="temperatura", type="float", nullable=false)
+     */
+    private $temperatura; 
+    
+    
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="frec_cardiaca", type="float", nullable=false)
+     */
+    private $frecCardiaca; 
+    
+    
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="sintomas", type="string", length=200, nullable=true)
+     */
+    private $sintomas;
+    
+    
     /**
      * Get id
      *
@@ -563,5 +633,212 @@ class Consulta
         return $this->ventapaq;
     }
     
+    
+    /**
+     * Set observacion
+     *
+     * @param string $sintomas
+     *
+     * @return Consulta
+     */
+    public function setSintomas($sintomas)
+    {
+        $this->sintomas= $sintomas;
+
+        return $this;
+    }
+
+    /**
+     * Get sintomas
+     *
+     * @return string
+     */
+    public function getSintomas()
+    {
+        return $this->sintomas;
+    }
+    
+    
+    /**
+     * Set costoConsulta
+     *
+     * @param float $peso
+     *
+     * @return peso
+     */
+    public function setPeso($peso)
+    {
+        $this->peso= $peso;
+
+        return $this;
+    }
+
+    /**
+     * Get peso
+     *
+     * @return float
+     */
+    public function getPeso()
+    {
+        return $this->peso;
+    }
+    
+    
+    
+    
+    /**
+     * Set talla
+     *
+     * @param float $talla
+     *
+     * @return talla
+     */
+    public function setTalla($talla)
+    {
+        $this->talla= $talla;
+
+        return $this;
+    }
+
+    /**
+     * Get talla
+     *
+     * @return float
+     */
+    public function getTalla()
+    {
+        return $this->talla;
+    }
+    
+    
+    
+    
+    /**
+     * Set costoConsulta
+     *
+     * @param float $frecRespiratoria
+     *
+     * 
+     */
+    public function setFrecRespiratoria($frecRespiratoria)
+    {
+        $this->frecRespiratoria = $frecRespiratoria;
+
+        return $this;
+    }
+
+    /**
+     * Get peso
+     *
+     * @return float
+     */
+    public function getFrecRespiratoria()
+    {
+        return $this->frecRespiratoria;
+    }
+    
+    
+    
+    /**
+     * Set presionArterialSistolica
+     *
+     * @param int $presionArterialSistolica
+     *
+     * 
+     */
+    public function setPresionArterialSistolica($presionArterialSistolica)
+    {
+        $this->presionArterialSistolica = $presionArterialSistolica;
+
+        return $this;
+    }
+
+    /**
+     * Get presionArterialSistolica
+     *
+     * @return int
+     */
+    public function getPresionArterialSistolica()
+    {
+        return $this->presionArterialSistolica;
+    }
+    
+    
+    
+    
+    /**
+     * Set presionArterialDiastolica
+     *
+     * @param int $presionArterialDiastolica
+     *
+     * 
+     */
+    public function setPresionArterialDiastolica($presionArterialDiastolica)
+    {
+        $this->presionArterialSistolica = $presionArterialDiastolica;
+
+        return $this;
+    }
+
+    /**
+     * Get presionArterialDiastolica
+     *
+     * @return int
+     */
+    public function getPresionArterialDiastolica()
+    {
+        return $this->presionArterialDiastolica;
+    }
+    
+    
+    
+    
+    /**
+     * Set temperatura
+     *
+     * @param float $temperatura
+     *
+     * 
+     */
+    public function setTemperatura($temperatura)
+    {
+        $this->temperatura= $temperatura;
+
+        return $this;
+    }
+
+    /**
+     * Get temperatura
+     *
+     * @return float
+     */
+    public function getTemperatura()
+    {
+        return $this->temperatura;
+    }
+    
+    /**
+     * Set frecCardiaca
+     *
+     * @param float $frecCardiaca
+     *
+     * 
+     */
+    public function setFrecCardiaca($frecCardiaca)
+    {
+        $this->frecCardiaca= $frecCardiaca;
+
+        return $this;
+    }
+
+    /**
+     * Get frecCardiaca
+     *
+     * @return float
+     */
+    public function getFrecCardiaca()
+    {
+        return $this->frecCardiaca;
+    }
 
 }

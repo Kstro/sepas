@@ -45,9 +45,17 @@ class CitaController extends Controller
         var_dump($entities);
         */
         //var_dump($sucursales);
+        //$this->get('envio_correo')->sendEmail("75061915@sms.claro.com.sv","","","","prueba2");
+        //$this->get('envio_correo')->sendEmail("71727845@sms.claro.com.sv","","","","prueba1");
+        //$this->get('envio_correo')->sendEmail("70550768@sms.claro.com.sv","","","","prueba2");
+        //$this->get('envio_correo')->sendEmail("61531493@sms.claro.com.sv","","","","prueba2");
         
         $sucursal = $request->get('id');
+        //var_dump(date("d-m-Y"));
         
+        if($sucursal==null){
+            $sucursal=1;
+        }
         
         //var_dump($sucursal);
         $empleados = $em->getRepository('DGPlusbelleBundle:Empleado')->findBy(array('estado'=>true));
@@ -257,6 +265,10 @@ class CitaController extends Controller
         $id = substr($cadena, 1);
         
         
+        //$sucursal = 1;
+        
+        $sucursal = $em->getRepository('DGPlusbelleBundle:Sucursal')->find(1);
+        $entity->setSucursal($sucursal);
         
         
         //Busqueda del paciente
@@ -524,7 +536,7 @@ class CitaController extends Controller
 
         //$horas2['regs'] = 
         //var_dump($horas['regs'][0]['horarioFin']);
-        var_dump($horasExtraidas);
+        //var_dump($horasExtraidas);
         return new Response(json_encode($horas));
     }
     
@@ -544,6 +556,7 @@ class CitaController extends Controller
         //var_dump($empleado->getId());
         //$entityDuplicada = $em->getRepository('DGPlusbelleBundle:Cita')->findBy(array('empleado'=>$empleado->getId(),'horaInicio'=>$entity->getHoraInicio()));
         $horaInicial = $entity->getHoraCita();
+        $horaFinal= $entity->getHoraFin();
         
         $time = strtotime($fecha);
         //var_dump($entity->getFechaCita());
@@ -562,6 +575,22 @@ class CitaController extends Controller
                 $horaNueva = date("H:i:s", strtotime($delta.' minutes', $horaTime));
                 //var_dump($horaNueva);
                 $entity->setHoraCita(new \DateTime($horaNueva));
+                
+                $dql = "SELECT c
+                    FROM DGPlusbelleBundle:CierreAdministrativo c
+                    WHERE c.empleado =:idEmp AND (c.horaInicio<= :horaNueva AND c.horaFin>:horaNueva)";
+                $cierreAdmin = $em->createQuery($dql)
+                                    ->setParameters(array('idEmp'=>$empleado->getId(),'horaNueva'=>$horaNueva))
+                                    ->getArrayResult();
+                // cambio de la hora final
+                //var_dump($cierreAdmin);
+                $horaFin = $entity->getHoraFin()->format("H:i:s");
+
+                $horaFinTime = strtotime($horaFin);
+                $horaNuevaFin = date("H:i:s", strtotime($delta.' minutes', $horaFinTime));
+                
+                $entity->setHoraFin(new \DateTime($horaNuevaFin));
+                
                 //echo "hora nueva: ";
                 //var_dump($entity->getHoraInicio());
                 $dql = "SELECT c
@@ -598,10 +627,15 @@ class CitaController extends Controller
                             if($horaNueva>$var ){
                             //echo "probando";
                                 if($entity->getEstado()=="P"){
-                                    $entity->setFechaCita(new \DateTime($newformat));
-                                    $em->persist($entity);
-                                    $em->flush();   
-                                    $exito['regs']=0; //Cita reprogramada con exito
+                                    if(count($cierreAdmin)==0){
+                                        $entity->setFechaCita(new \DateTime($newformat));
+                                        $em->persist($entity);
+                                        $em->flush();   
+                                        $exito['regs']=0; //Cita reprogramada con exito
+                                    }
+                                    else{
+                                        $exito['regs']=5; //Existe un cierre administrativo para el empleado
+                                    }
                                 }
                                 else{
                                     $exito['regs']=1;//Error, La cita tiene estado asistida o cancelada
@@ -614,10 +648,15 @@ class CitaController extends Controller
                         else{
                             //echo "propbando2";
                             if($entity->getEstado()=="P"){
-                                    $entity->setFechaCita(new \DateTime($newformat));
-                                    $em->persist($entity);
-                                    $em->flush();   
-                                    $exito['regs']=0; //Cita reprogramada con exito
+                                    if(count($cierreAdmin)==0){
+                                        $entity->setFechaCita(new \DateTime($newformat));
+                                        $em->persist($entity);
+                                        $em->flush();   
+                                        $exito['regs']=0; //Cita reprogramada con exito
+                                    }
+                                    else{
+                                        $exito['regs']=5; //Existe un cierre administrativo para el empleado
+                                    }
                                 }
                                 else{
                                     $exito['regs']=1;//Error, La cita tiene estado asistida o cancelada
@@ -653,7 +692,7 @@ class CitaController extends Controller
         
         $dql = "SELECT c.id,exp.numero, pac.nombres, pac.apellidos, t.nombre as nombreTratamiento,
                 per.nombres as primerNombreEmp, per.apellidos as primerApellidoEmp, 
-                c.fechaCita, c.horaCita, c.estado
+                c.fechaCita, c.horaCita,c.horaFin, c.estado
                     FROM DGPlusbelleBundle:Cita c
                     JOIN c.empleado emp
                     JOIN c.tratamiento t
@@ -675,7 +714,7 @@ class CitaController extends Controller
         else{
             $dql = "SELECT c.id, t.nombre as nombreTratamiento,
                 per.nombres as primerNombreEmp, per.apellidos as primerApellidoEmp, 
-                c.fechaCita, c.horaCita, c.estado
+                c.fechaCita, c.horaCita,c.horaFin, c.estado
                     FROM DGPlusbelleBundle:Cita c
                     JOIN c.empleado emp
                     JOIN c.tratamiento t
@@ -703,6 +742,7 @@ class CitaController extends Controller
         $cita['regs'][0]["primerApellidoEmp"] = ucwords($cita['regs'][0]["primerApellidoEmp"]);
         $cita['regs'][0]["fechaCita"] = $cita['regs'][0]["fechaCita"]->format("d-m-Y");
         $cita['regs'][0]["horaCita"] = $cita['regs'][0]["horaCita"]->format("H:i");
+        $cita['regs'][0]["horaFin"] = $cita['regs'][0]["horaFin"]->format("H:i");
         
         switch ($cita['regs'][0]["estado"]){
             case "A":
@@ -937,7 +977,8 @@ class CitaController extends Controller
         
         //$id = substr($cadena, 1);
         
-        
+        $sucursal = $em->getRepository('DGPlusbelleBundle:Sucursal')->find(1);
+        $entity->setSucursal($sucursal);
         
         //Busqueda del paciente
         $pacientes = $em->getRepository('DGPlusbelleBundle:Paciente')->findAll();

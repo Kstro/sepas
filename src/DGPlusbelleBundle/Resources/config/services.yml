@@ -6,6 +6,7 @@ services:
         class: DGPlusbelleBundle\Listener\CalendarEventListener
         arguments: 
             entityManagerMy: "@doctrine.orm.default_entity_manager"
+            envio_correo: "@envio_correo"
             mail: '@mailer'
             templating: '@templating'
             security: "@security.context"

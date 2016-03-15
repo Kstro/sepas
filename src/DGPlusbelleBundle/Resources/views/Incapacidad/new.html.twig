@@ -1,0 +1,45 @@
+{% extends 'DGPlusbelleBundle:Layout:layout.html.twig' %} 
+
+{% block contenido -%}
+    
+    
+    <div class="panel panel-default">
+  <!-- Default panel contents -->
+  <div class="panel-heading"><p>Nueva incapacidad</p></div>
+  <div class="panel-body">
+  {{ form_start(form) }}
+    {{ form_errors(form) }}
+    <div class="row">
+        <div class="col-md-3">
+            {{ form_row(form.paciente) }}
+        </div>
+        
+        <div class="col-md-3">
+            {{ form_row(form.fechaInicial) }}
+        </div>
+        
+        <div class="col-md-3">
+            {{ form_row(form.fechaFinal) }}
+        </div>
+        
+        <div class="col-md-3">
+            {{ form_row(form.notas ) }}
+        </div>
+    </div>
+             <div class="form-grouphide col-sm-9">
+                <a href="{{ path('admin_rol') }}" class="btn btn-default btn-sm" id="cancelarNuevo">Cancelar</a>
+                {{ form_widget(form.submit) }}
+              </div>
+            
+    
+    {{ form_end(form) }}
+  </div>
+
+
+</div>        
+
+
+{% endblock %}
+
+
+

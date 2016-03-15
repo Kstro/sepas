@@ -18,20 +18,35 @@ class ConsultaConPacienteType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            /*->add('fechaConsulta', null,
-                  array('label'  => 'Fecha consulta','required'=>false,
+            
+                  
+
+                        
+                       
+            ->add('fechaConsulta', null,
+                  array('label'  => 'Fecha cita','required'=>false,
                         'widget' => 'single_text',
-                        'attr'   => array('class' => 'form-control input-sm fechaConsulta'),
-                       ))*/
+                        'attr'   => array('class' => 'form-control input-sm fechaConsulta2'),
+                        'format' => 'dd-MM-yyyy',
+                       ))
             ->add('horaInicio','time',array('label' => 'Hora Inicio',
                     'attr'=>array(
                     'class'=>'horaInicioConsulta '
                     )))
-            ->add('horaFin','time',array('label' => 'Hora Fin',
+//            ->add('horaFin','time',array('label' => 'Hora Fin',
+//                    'attr'=>array(
+//                    'class'=>'horaFinConsulta '
+//                    )))
+                
+                //Este es el campo de motivo de consulta
+            ->add('observacion','textarea',array('label' => 'Motivo','required'=>false,
                     'attr'=>array(
-                    'class'=>'horaFinConsulta '
+                    'class'=>'form-control input-sm observacionConsulta'
                     )))
-            ->add('observacion','textarea',array('label' => 'Observación','required'=>false,
+                
+                
+                
+            ->add('sintomas','textarea',array('label' => 'Sintomas','required'=>false,
                     'attr'=>array(
                     'class'=>'form-control input-sm observacionConsulta'
                     )))
@@ -155,18 +170,66 @@ class ConsultaConPacienteType extends AbstractType
                 'allow_delete' => true,
                 ))    
                     
-            ->add('sucursal','entity',array('label' => 'Seleccione sucursal...','required'=>false,
-                'class'=>'DGPlusbelleBundle:Sucursal',
-                'empty_value' => 'Seleccione una sucursal...',
-                'query_builder' => function(EntityRepository $repository) {
-                  return $repository->obtenerSucActivo();
-                },
-                'property'=>'nombre',
-                'multiple'=>false,
-                'expanded'=>false,
+//            ->add('sucursal','entity',array('label' => 'Seleccione sucursal...','required'=>false,
+//                'class'=>'DGPlusbelleBundle:Sucursal',
+//                'empty_value' => 'Seleccione una sucursal...',
+//                'query_builder' => function(EntityRepository $repository) {
+//                  return $repository->obtenerSucActivo();
+//                },
+//                'property'=>'nombre',
+//                'multiple'=>false,
+//                'expanded'=>false,
+//                    'attr'=>array(
+//                    'class'=>'sucursalPaquete'
+//                    )))
+            ->add('peso', 'text', array('required'=>false,
+                    'label'=>'Peso (Kg)',
                     'attr'=>array(
-                    'class'=>'sucursalPaquete'
-                    ))) 
+                    'class'=>'form-control peso'
+                    )
+                ))
+                        
+            ->add('talla', 'text', array('required'=>false,
+                    'label'=>'Talla (cm)' ,
+                    'attr'=>array(
+                    'class'=>'form-control talla'
+                    )
+                ))      
+                        
+            ->add('frecRespiratoria', 'text', array('required'=>false,
+                    'label'=>'Frecuencia respiratoria (x minuto)',
+                    'attr'=>array(
+                    'class'=>'form-control frecRespiratoria input-sm',
+                    'style'=>'width: 150px;'
+                    )
+                ))
+                        
+            ->add('presionArterialSistolica', 'text', array('required'=>false,
+                    'label'=>'PA (mmHg)',
+                    'attr'=>array(
+                    'class'=>'form-control presionArterialSistolica'
+                    )
+                ))  
+            ->add('presionArterialDiastolica', 'text', array('required'=>false,
+                    'label'=>' ',
+                    'attr'=>array(
+                    'class'=>'form-control presionArterialDiastolica'
+                    )
+                ))
+                        
+            ->add('temperatura', 'text', array('required'=>false,
+                    'label'=>'Temperatura (°C)',
+                    'attr'=>array(
+                    'class'=>'form-control temperatura'
+                    )
+                ))
+               
+            ->add('frecCardiaca', 'text', array('required'=>false,
+                    'label'=>'Frecuencia cardiaca (x minuto)',
+                    'attr'=>array(
+                    'class'=>'form-control frecCardiaca'
+                    )
+                ))
         ;
     }
     

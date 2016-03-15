@@ -523,6 +523,50 @@ class ReporteController extends Controller
     
     
     
+    
+    
+    
+    /**
+     * Generar reporte pdf de Detalle Plantilla consulta
+     *
+     * @Route("/{id}/ReporteConsultaPDF", name="admin_consulta_pdf", options ={"expose" = true})
+     * @Method("GET")
+     * @Template()
+     */
+    public function consultaPdfAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        
+        $dql = "SELECT  con, pac, exp, per1, per2, emp "
+                    . "FROM DGPlusbelleBundle:Consulta con "
+                    . "JOIN con.paciente pac "
+                    . "JOIN pac.expediente exp "
+                    . "JOIN pac.persona per1 "
+                    . "JOIN con.empleado emp "
+                    . "JOIN emp.persona per2 "
+                    . "WHERE con.id =  :idconsulta";
+            
+        $consulta = $em->createQuery($dql)
+                    ->setParameter('idconsulta', $id)
+                    ->getResult();
+        
+        //$titulo = 'Reporte de Videoendoscopia';
+//        var_dump($consulta);
+        
+        $medico = array(
+                    "nombre" => "Dr. Jorge Panameño",
+                    "cargo" => "DOCTOR EN MEDICINA",
+                    "codigo" => "JVPM 4309",
+                );
+        
+        $logo = 'Resources/img/dgplusbelle/images/';
+       
+        $this->get('fpdf_printer')->generarConsultaPDF($logo, $consulta, $medico);
+    }
+    
+    
+    
+    
     /**
      * Generar reporte pdf de Detalle Plantilla consulta
      *
@@ -557,37 +601,38 @@ class ReporteController extends Controller
 //                    "codigo" => "JVPM 7370",
 //                );
             $medico = array(
-                    "nombre" => "Dr. Juan Carlos Pacheco",
-                    "cargo" => "Cirujano Endoscopista",
-                    "codigo" => "JVPM 7370",
+                    "nombre" => "Dr. Jorge Panameño",
+                    "cargo" => "Médico tropical",
+                    "codigo" => "JVPM ",
                 );
-            $otros = array(
-                    "0" => "CIRUGÍA GENERAL",
-                    "1" => "FLEBOLOGÍA",
-                    "2" => "CIRUGÍA LAPAROSCÓPICA",
-                    "3" => "ENDOSCOPÍA DIGESTIVA",
-                    "4" => "ECODOPPLER COLOR"
-                );
+//            $otros = array(
+//                    "0" => "CIRUGÍA GENERAL",
+//                    "1" => "FLEBOLOGÍA",
+//                    "2" => "CIRUGÍA LAPAROSCÓPICA",
+//                    "3" => "ENDOSCOPÍA DIGESTIVA",
+//                    "4" => "ECODOPPLER COLOR"
+//                );
+            $otros = array();
         }
-        else{
+//        else{
 //            $medico = array(
 //                    "nombre" => "Dra. Mildred Lara de Pacheco",
 //                    "cargo" => "Cirujano Endoscopista",
 //                    "codigo" => "JVPM 9306",
 //                );
-            $medico = array(
-                    "nombre" => "Dra. Mildred Lara de Pacheco",
-                    "cargo" => "",
-                    "codigo" => "JVPM 9306",
-                );
-            $otros = array(
-                    "0" => "MEDICINA ESTÉTICA",
-                    "1" => "MEDICINA ANTI-ENVEGECIMIENTO",
-                    "2" => "MEDICINA BIOLÓGICA",
-                    "3" => "MEDICINA FAMILIAR",
-                    "4" => "TERAPIA NEUTRAL"
-                );
-        }
+//            $medico = array(
+//                    "nombre" => "Dra. Mildred Lara de Pacheco",
+//                    "cargo" => "",
+//                    "codigo" => "JVPM 9306",
+//                );
+//            $otros = array(
+//                    "0" => "MEDICINA ESTÉTICA",
+//                    "1" => "MEDICINA ANTI-ENVEGECIMIENTO",
+//                    "2" => "MEDICINA BIOLÓGICA",
+//                    "3" => "MEDICINA FAMILIAR",
+//                    "4" => "TERAPIA NEUTRAL"
+//                );
+//        }
         //$titulo = 'Reporte de Videoendoscopia';
         
         
@@ -1925,17 +1970,18 @@ class ReporteController extends Controller
 //                    "codigo" => "JVPM 7370",
 //                );
             $medico = array(
-                    "nombre" => "Dr. Juan Carlos Pacheco",
-                    "cargo" => "Cirujano Endoscopista",
-                    "codigo" => "JVPM 7370",
+                    "nombre" => "Dr. Jorge Panameño",
+                    "cargo" => "Medico tropical",
+                    "codigo" => "JVPM ",
                 );
-            $otros = array(
-                    "0" => "CIRUGÍA GENERAL",
-                    "1" => "FLEBOLOGÍA",
-                    "2" => "CIRUGÍA LAPAROSCÓPICA",
-                    "3" => "ENDOSCOPÍA DIGESTIVA",
-                    "4" => "ECODOPPLER COLOR"
-                );
+            $otros = array();
+//             $otros = array(
+//                    "0" => "CIRUGÍA GENERAL",
+//                    "1" => "FLEBOLOGÍA",
+//                    "2" => "CIRUGÍA LAPAROSCÓPICA",
+//                    "3" => "ENDOSCOPÍA DIGESTIVA",
+//                    "4" => "ECODOPPLER COLOR"
+//                );
         }
         else{
 //            $medico = array(

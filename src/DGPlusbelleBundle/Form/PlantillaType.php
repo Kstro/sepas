@@ -19,7 +19,7 @@ class PlantillaType extends AbstractType
                     'attr'=>array(
                     'class'=>'form-control input-sm nombrePlantilla'
                     )))
-            ->add('descripcion','text',array('label' => 'Descripción','required' => false,
+            ->add('descripcion','textarea',array('label' => 'Descripción','required' => false,
                     'attr'=>array(
                     'class'=>'form-control input-sm descripcionPlantilla'
                     )))
@@ -33,7 +33,7 @@ class PlantillaType extends AbstractType
                 
             ->add('clinica', 'choice', array(
                     'label'=> 'Clínica',
-                    'choices'  => array('0' => 'Sonodigest', '1' => 'La plus belle'),
+                    'choices'  => array('0' => 'SEPES'),
                     'multiple' => false,
                     'expanded'=>'true'
                    

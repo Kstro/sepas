@@ -45,6 +45,15 @@ class ImagenConsulta{
      */
     private $consulta;
     
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="observaciones", type="text", length=255, nullable=true)
+     */
+    private $observaciones;
+    
+    
     /**
      * Sets fileAntes.
      *
@@ -100,6 +109,41 @@ class ImagenConsulta{
     {
         return $this->foto;
     }
+    
+    
+    
+    
+    
+    /**
+     * Set observaciones
+     *
+     * @param string $observaciones
+     *
+     * @return SeguimientoPaquete
+     */
+    public function setObservaciones($observaciones)
+    {
+        $this->observaciones= $observaciones;
+
+        return $this;
+    }
+
+    /**
+     * Get observaciones
+     *
+     * @return string
+     */
+    public function getObservaciones()
+    {
+        return $this->observaciones;
+    }
+    
+    
+    
+    
+    
+    
+    
     
     
     

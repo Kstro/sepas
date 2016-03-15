@@ -17,7 +17,7 @@ class ConsultaProductoType extends AbstractType
         $builder
            
            // ->add('consulta')
-            ->add('producto',null,array('label' => 'Producto','required' => false, 'empty_value'=>'Seleccione producto...',
+            ->add('producto',null,array('label' => 'Vacuna','required' => false, 'empty_value'=>'Seleccione una vacuna...',
                     'attr'=>array(
                     'class'=>'form-control input-sm productoConsulta'
                     )))

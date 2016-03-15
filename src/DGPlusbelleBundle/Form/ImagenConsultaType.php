@@ -17,7 +17,11 @@ class ImagenConsultaType extends AbstractType
         $builder
             //->add('foto')
             //->add('consulta')
-            ->add('file',null, array('label'=>'Foto','required'=>false,
+            ->add('file',null, array('label'=>'Documento escaneado','required'=>false,
+                    'attr'=>array('class'=>'foto'  
+                        
+                    )))  
+            ->add('observaciones',null, array('label'=>'Observaciones','required'=>false,
                     'attr'=>array('class'=>'foto'  
                         
                     )))  

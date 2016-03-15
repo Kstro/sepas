@@ -148,8 +148,14 @@ class ConsultaController extends Controller
         $expediente->setEstado(true);
         //$historial->setConsulta($entity);
         
-        $entity->setFechaConsulta(new \DateTime('now'));
+        $sucursal = $em->getRepository('DGPlusbelleBundle:Sucursal')->find($id);
         
+        $entity->setSucursal($sucursal);
+        
+        $entity->setFechaConsulta(new \DateTime('now'));
+        $horaConsultaFin = new \DateTime('H i');
+        //$entity->setFechaConsulta($fechaConsulta);
+        $entity->setHoraFin($horaConsultaFin);
         //Tipo de consulta actica, emergencia
         /*$dql = "SELECT tc FROM DGPlusbelleBundle:TipoConsulta tc WHERE tc.estado = :estado AND tc.id=:id";
         $tipoConsulta = $em->createQuery($dql)
@@ -372,7 +378,7 @@ class ConsultaController extends Controller
                 } else {
                     $dataReporte2->setValorDetalle($parameters[$p['nombre']."2"]);
                 }
-               //var_dump($p['nombre']); 
+                    //var_dump($p['nombre']); 
                 
                 
                 $em->persist($dataReporte2);
@@ -511,7 +517,10 @@ class ConsultaController extends Controller
         //$identidad= $request->get('identidad');
         //Busqueda del paciente
         $paciente = $em->getRepository('DGPlusbelleBundle:Paciente')->find($idEntidad);
-        
+        $fechaConsulta = date('d-m-Y');
+        $horaConsulta = new \DateTime('H i');
+        $entity->setFechaConsulta(new \DateTime($fechaConsulta));
+        $entity->setHoraInicio($horaConsulta);
         //Seteo del paciente en la entidad
         $entity->setPaciente($paciente);
         //var_dump($paciente);

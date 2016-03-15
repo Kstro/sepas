@@ -19,15 +19,15 @@ class EmailService
 	$this->templating = $templating;
       
         $this->mail   = $mail;
-        $this->subject = 'Pluss Belle';
-        $this->from   = 'system@digitalitygarage.com'; 
+        $this->subject = 'SEPES S.A. de C.V';
+        $this->from   = 'anthony@digitalitygarage.com'; 
     }  
     
     public function setEmail($to,$bcc=null){
         
         $this->view   = 'DGPlusbelleBundle:Emails:test.html.twig';
         $this->to     = $to;
-        $contenido    = 'Este correo es enviado desde el sistema de plussbelle';
+        $contenido    = 'Este correo es enviado desde el sistema de pacientes SEPES';
         $this->body = $this->templating->render($this->view, array('body'=>$contenido));
         $this->sendEmail($this->to,null,$bcc,null,$this->body);
         
@@ -44,13 +44,15 @@ class EmailService
         if($replay != null ){
         $email->setReplyTo($replay);
         }else{
-        $email->setReplyTo('system@digitalitygarage.com');            
+        $email->setReplyTo('anthony@digitalitygarage.com');            
         }
         if($bcc != null ){
         $email->setBcc($bcc);
-        }
-        $email->setSubject($this->subject);  
-        $email->setBody($body); 
+        }   
+        $email->setBody("prueba de correo"); 
+        //$email->setSubject($this->subject);  
+        $email->setSubject($body);  
+        //$email->setBody("prueba de correo"); 
         $this->mail->send($email);
     }
 

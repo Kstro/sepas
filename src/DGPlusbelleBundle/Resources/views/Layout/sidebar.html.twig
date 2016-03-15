@@ -35,14 +35,14 @@
 
     <li class="divider"></li>
     <li class="nav-header" role="presentation">ACCESO RAPIDO</li>
-    {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_USER')%}
+    {#{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_USER')%}
         <li class="nav-item" role="presentation">
             <a href="{{path('admin_ventapaquete_new')}}">
                 <span class="nav-icon"><i class="fa fa-briefcase"></i></span>
                 <span class="nav-text">Venta de paquetes</span>
             </a>
         </li>
-    {% endif %}
+    {% endif %}#}
     {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_USER')%}
         <li class="nav-item" role="presentation">
             <a href="{{path('admin_cita_new2')}}">
@@ -69,20 +69,20 @@
     {% endif %}#}
     {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_USER')%}
         <li class="nav-item" role="presentation">
-            <a href="{{path('admin_cita',{id:8})}}">
+            <a href="{{path('admin_cita',{id:1})}}">
                 <span class="nav-icon"><i class="fa fa-calendar-check-o"></i></span>
-                <span class="nav-text">Citas Escalon</span>
+                <span class="nav-text">Calendario citas</span>
             </a>
         </li>
     {% endif %}
-    {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_USER')%}
+    {#{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_USER')%}
         <li class="nav-item" role="presentation">
             <a href="{{path('admin_cita',{id:3})}}">
                 <span class="nav-icon"><i class="fa fa-calendar-check-o"></i></span>
                 <span class="nav-text">Citas Santa Elena</span>
             </a>
         </li>
-    {% endif %}
+    {% endif %}#}
     {% if is_granted('ROLE_ADMIN') %}
         {#<li class="nav-item" role="presentation">
         
@@ -229,7 +229,7 @@
         </li>#}
     {% endif %}
     
-   {# {% if is_granted('ROLE_ADMIN') %}    
+    {# {% if is_granted('ROLE_ADMIN') %}    
         <li class="nav-item" role="presentation">
           <a href="#" data-toggle="nav-child">
             <span class="nav-icon"><i class="fa fa-users"></i></span>
@@ -260,11 +260,11 @@
             <span class="nav-text">Reportes</span>
           </a>
           <ul class="nav nav-child level-1 nav-stacked nav-pills" role="menu">
-            <li role="presentation"><a role="menuitem" tabindex="-1" href="{{ path('admin_reporte_paquete') }}"><span class="nav-text">Ingresos por paquete</span></a></li>
+{#            <li role="presentation"><a role="menuitem" tabindex="-1" href="{{ path('admin_reporte_paquete') }}"><span class="nav-text">Ingresos por paquete</span></a></li>#}
             <li role="presentation"><a role="menuitem" tabindex="-1" href="{{ path('admin_reporte_emergencia') }}"><span class="nav-text">Ingresos por consulta</span></a></li>
-            <li role="presentation"><a role="menuitem" tabindex="-1" href="{{ path('admin_reporte_consolidado_paquete') }}"><span class="nav-text">Consolidado de paquetes</span></a></li>
+            {#<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ path('admin_reporte_consolidado_paquete') }}"><span class="nav-text">Consolidado de paquetes</span></a></li>
             <li role="presentation"><a role="menuitem" tabindex="-1" href="{{ path('admin_reporte_tratamiento_frecuente') }}"><span class="nav-text">Tratamiento más vendido</span></a></li>
-            <li role="presentation"><a role="menuitem" tabindex="-1" href="{{ path('admin_reporte_diario') }}"><span class="nav-text">Ingresos diarios</span></a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="{{ path('admin_reporte_diario') }}"><span class="nav-text">Ingresos diarios</span></a></li>#}
             <li role="presentation"><a role="menuitem" tabindex="-1" href="{{ path('admin_reporte_referidos') }}"><span class="nav-text">Pacientes referidos por</span></a></li>
             <li role="presentation"><a role="menuitem" tabindex="-1" href="{{ path('admin_empleado_progreso_venta') }}"><span class="nav-text">Progreso de empleado</span></a></li>
           </ul>

@@ -409,8 +409,8 @@ class FPDFService {
         $pdi  = new \FPDF_FPDI();
         
         
-        $logo = $urlLogo.'laplusbelle.jpg';
-        $logo2 = $urlLogo.'sonodigest.jpg';
+        $logo = $urlLogo.'logo01.jpg';
+        $logo2 = $urlLogo.'logo01.jpg';
         html_entity_decode("&aacute;");
         $pdf->FPDF('P','mm','Letter');
 	$pdf->SetTopMargin(0);
@@ -435,15 +435,15 @@ class FPDFService {
         $pdf->SetFont('Arial','',11);
         $pdf->SetY(20);
         $pdf->SetX(20);
-        $pdf->Cell(88, 27, $medico['nombre']);
+        $pdf->Cell(88, 27, utf8_decode($medico['nombre']));
         
         $pdf->Ln(5);
         $pdf->SetX(20);
-        $pdf->Cell(85, 27, $medico['cargo']);
+        $pdf->Cell(85, 27, utf8_decode($medico['cargo']));
         
         $pdf->Ln(5);
         $pdf->SetX(20);
-        $pdf->Cell(85, 27, $medico['codigo']);
+        $pdf->Cell(85, 27, utf8_decode($medico['codigo']));
         
         //var_dump($otros);
         $i=20;
@@ -524,9 +524,9 @@ class FPDFService {
         $pdf->SetY(241);
         $pdf->SetX(20);
         $pdf->SetFont('Arial','',12);
-        $pdf->Cell(85, 20, 'Tel.: 2519-2857 , 7861-0599');
+        $pdf->Cell(85, 20, 'Tel.: (503) 2264-3451 , (503) 2264-9961, Fax: (503) 2264-3451');
         $pdf->Ln(2);
-        $pdf->Cell(55, 27, utf8_decode('Colonia Escalon, Calle Cuscatlan, No. 448, San Salvador.'));
+        $pdf->Cell(55, 27, utf8_decode('Pasaje Verde #540 entre 7a. y 9a. calle poniente sobre 95 Av Norte'));
         $pdf->Ln(5);
         $pdf->SetX(20);
         
@@ -734,13 +734,13 @@ class FPDFService {
         $pdf  = new \FPDF_FPDF();
         $pdi  = new \FPDF_FPDI();
         
-        
-        $logo = $urlLogo.'laplusbelle.jpg';
-        $logo2 = $urlLogo.'sonodigest.jpg';
+        //var_dump($urlLogo);
+        $logo = $urlLogo.'logo-01.png';
+        $logo2 = $urlLogo.'logo-01.png';
         html_entity_decode("&aacute;");
         $pdf->FPDF('P','mm','Letter');
-	$pdf->SetTopMargin(0);
-	$pdf->SetLeftMargin(20);
+        $pdf->SetTopMargin(0);
+        $pdf->SetLeftMargin(20);
         $pdf->SetAutoPageBreak(true, 6);
         $pdf->AddPage();
         $pdf->SetFillColor(255);
@@ -761,15 +761,15 @@ class FPDFService {
         $pdf->SetFont('Arial','',11);
         $pdf->SetY(20);
         $pdf->SetX(20);
-        $pdf->Cell(88, 27, $medico['nombre']);
+        $pdf->Cell(88, 27, utf8_decode($medico['nombre']));
         
         $pdf->Ln(5);
         $pdf->SetX(20);
-        $pdf->Cell(85, 27, $medico['cargo']);
+        $pdf->Cell(85, 27, utf8_decode($medico['cargo']));
         
         $pdf->Ln(5);
         $pdf->SetX(20);
-        $pdf->Cell(85, 27, $medico['codigo']);
+        $pdf->Cell(85, 27, utf8_decode($medico['codigo']));
         
         //var_dump($otros);
         $i=20;
@@ -806,7 +806,7 @@ class FPDFService {
 	        $this->mostrarCelda($pdf, 13, 'Edad: ', $edad /*.' '. htmlentities('Años', ENT_QUOTES,'UTF-8')*/);             
         }
         else{
-		$fecha = 'La fecha no registrada';
+		$fecha = 'Fecha de nacimiento no registrada ';
 		$this->mostrarCelda($pdf, 13, 'Edad: ', $fecha);
         }
         
@@ -881,9 +881,9 @@ class FPDFService {
         $pdf->SetY(241);
         $pdf->SetX(20);
         $pdf->SetFont('Arial','',12);
-        $pdf->Cell(85, 20, 'Tel.: 2519-2857 , 7861-0599');
+        $pdf->Cell(85, 20, 'Tel.: (503) 2264-3451 , (503) 2264-9961, Fax: (503) 2264-3451');
         $pdf->Ln(2);
-        $pdf->Cell(55, 27, utf8_decode('Colonia Escalon, Calle Cuscatlan, No. 448, San Salvador.'));
+        $pdf->Cell(55, 27, utf8_decode('Pasaje Verde #540 entre 7a. y 9a. calle poniente sobre 95 Av Norte'));
         $pdf->Ln(5);
         $pdf->SetX(20);
         
@@ -1066,6 +1066,182 @@ class FPDFService {
         $this->pdf->Output();
         return $this->pdf;
     }
+    
+    
+    
+    
+    public function generarConsultaPDF($urlLogo, $consulta, $medico){
+        $pdf  = new \FPDF_FPDF();
+        $pdi  = new \FPDF_FPDI();
+        
+        $jump=0;
+        $logo = $urlLogo.'logo01.jpg';
+        
+        $this->pdf->FPDF('P','mm','Letter');
+        $this->pdf->SetTopMargin(0);
+        $this->pdf->SetLeftMargin(20);
+        $this->pdf->SetAutoPageBreak(true, 6);
+        $this->pdf->AddPage();
+        $this->pdf->SetFillColor(255);
+        
+        $this->pdf->SetFont('Arial','B',16);
+        
+        $this->pdf->SetX(5);
+        $this->pdf->SetX(20);
+        $this->pdf->Cell(120,42,"Detalle de consulta");
+        //$this->pdf->Cell(120,32,$consulta[0]->getDetallePlantilla()->getPlantilla()->getNombre());
+        
+        $this->pdf->Image($logo, 150, 5, 50, 20);
+        $this->pdf->Line(20, 25.5, 200, 25.5);
+        $this->pdf->Line(20, 26, 200, 26);
+        
+        $this->pdf->SetFont('Arial','B',13);
+        $this->pdf->Ln(26);
+        $jump=$jump+26;
+        
+        $this->pdf->Cell(32,27,'Informacion general del paciente');
+        $this->pdf->Line(20, 43, 200, 43);
+        
+        $this->pdf->Ln(15);
+        $jump=$jump+15;
+        $this->mostrarCelda($this->pdf, 32, 'Fecha: ', $consulta[0]->getFechaConsulta()->format("d/m/Y"));
+        $this->pdf->Ln(7);
+        $jump=$jump+7;
+        $this->mostrarCelda($this->pdf, 32, 'Nombre: ', utf8_decode($consulta[0]->getPaciente()->getPersona()->getNombres().' '.$consulta[0]->getPaciente()->getPersona()->getApellidos()));
+        
+        if($consulta[0]->getPaciente()->getFechaNacimiento()!=null){
+           $fecha = $consulta[0]->getPaciente()->getFechaNacimiento()->format("Y-m-d");    
+           list($Y,$m,$d) = explode("-",$fecha);
+        
+        $edad = date("md") < $m.$d ? date("Y")-$Y-1 : date("Y")-$Y;    
+        }
+        else{
+            $edad="N/A";
+        }
+        
+        
+        
+        
+        $this->mostrarCelda($this->pdf, 13, 'Edad: ', $edad /*.' '. htmlentities('Años', ENT_QUOTES,'UTF-8')*/);
+        
+        $this->pdf->Ln(7);
+        $jump=$jump+7;
+        $this->mostrarCelda($this->pdf, 32, 'Expediente No.: ', $consulta[0]->getPaciente()->getExpediente()[0]->getNumero());
+        
+        $sexoPaciente = $consulta[0]->getPaciente()->getSexo();
+
+        $sexo = '';
+        if($sexoPaciente == 'M'){
+            $sexo = 'Masculino';
+        }
+        if($sexoPaciente == 'F'){
+            $sexo = 'Femenino';
+        }
+        
+        $this->mostrarCelda($this->pdf, 13, 'Sexo: ', $sexo);
+        
+        $this->pdf->Ln(10);
+        $jump=$jump+10;
+        $this->pdf->SetFont('Arial','B',13);
+        $this->pdf->Cell(32,27,'Interrogatorio de consulta');
+        $this->pdf->Line(20, 81, 200, 81);
+        $this->pdf->Ln(18);
+        $jump=$jump+18;
+        $this->pdf->SetDrawColor(255,255,255);
+        $this->pdf->SetWidths(array(55,126));
+        
+        $this->pdf->SetFont('Arial','',10);
+        $this->pdf->Row(array("Motivo consulta: ",utf8_decode($consulta[0]->getObservacion()))) ;
+        $jump=$jump+5;
+        $this->pdf->Ln(1);
+        $this->pdf->Row(array("Sintomas: ",utf8_decode($consulta[0]->getSintomas()))) ;
+        
+        $this->pdf->Ln(5);
+        
+        $this->pdf->SetDrawColor(255,255,255);
+        
+        $this->pdf->SetFont('Arial','B',13);
+        //$this->pdf->Cell(32,27,utf8_decode('Exploración física'));
+        $this->pdf->SetWidths(array(180));
+        $this->pdf->Row(array("Exploración física"));
+        $this->pdf->SetFont('Arial','',10);
+        $this->pdf->SetWidths(array(185));
+        
+//        $this->pdf->Ln(-4);
+        $this->pdf->Row(array("___________________________________________________________________________________________"));
+        //$this->pdf->Line(20, $jump, 200, $jump);
+        $this->pdf->Ln(2);
+        
+        $this->pdf->SetWidths(array(40,50,40,50));
+        
+        $this->pdf->SetFont('Arial','',10);
+        
+        
+        
+        $this->pdf->Row(array("Peso: ",$consulta[0]->getPeso()." Kg.","Talla: ",$consulta[0]->getTalla()." cm."));
+        $this->pdf->Row(array("Presión arterial: ",$consulta[0]->getPresionArterialSistolica()."/".$consulta[0]->getPresionArterialDiastolica()." mmHg","Frecuencia cardíaca: ",$consulta[0]->getFrecCardiaca()." x minuto"));
+        $this->pdf->Row(array("Frecuencia respiratoria: ",$consulta[0]->getFrecRespiratoria()." x minuto","Temperatura: ",$consulta[0]->getTemperatura()." °C"));
+        
+        $this->pdf->SetFont('Arial','B',13);
+        $this->pdf->SetWidths(array(180));
+        $this->pdf->Row(array("Vacunas aplicadas"));
+        $this->pdf->SetFont('Arial','',10);
+        $this->pdf->SetWidths(array(185));
+               
+        $this->pdf->Row(array("___________________________________________________________________________________________"));
+        //$this->pdf->Line(20, $jump, 200, $jump);
+        $this->pdf->Ln(2);
+        
+        $this->pdf->SetWidths(array(40,50,40,50));  
+        $this->pdf->SetFont('Arial','',10);
+        //var_dump(count($consulta[0]->getPlacas()));
+        //if(count($consulta[0]->getPlacas())!=0){
+            foreach ($consulta[0]->getPlacas() as $value) {
+                if($value->getProducto()!=null && count($value->getProducto()->getNombre())) {
+                    $this->pdf->Row(array($value->getProducto()->getNombre(),""));
+                }
+                
+            }
+        //}
+//        else{
+//            $this->pdf->SetWidths(array(185));
+//            $this->pdf->SetFont('Arial','',10);
+//            $this->pdf->Row(array("No se aplicaron vacunas"));
+//        }
+            
+        
+        //$tam = count($consulta);
+        
+        //$espacio = 
+        //$pdf->Ln(55);
+        $this->pdf->SetY(241);
+        $this->pdf->SetX(20);
+        $this->pdf->SetFont('Arial','',9);
+        $this->pdf->Cell(85, 27, 'Colonia Escalon, Calle Cuscatlan, No. 448, San Salvador.');
+        $this->pdf->Ln(5);
+        $this->pdf->SetX(20);
+        $this->pdf->Cell(85, 27, 'Entre la 83 Av. y 85 Av. Sur. Tel.: 25192857');
+        
+        $this->pdf->SetFont('Arial','',11);
+        $this->pdf->SetY(235);
+        $this->pdf->SetX(156);
+        $this->pdf->Cell(85, 27, utf8_decode($medico['nombre']));
+        
+        $this->pdf->Ln(5);
+        $this->pdf->SetY(240);
+        $this->pdf->SetX(156);
+        $this->pdf->Cell(85, 27, utf8_decode($medico['cargo']));
+        
+        $this->pdf->Ln(5);
+        $this->pdf->SetY(244);
+        $this->pdf->SetX(156);
+        $this->pdf->Cell(85, 27, utf8_decode($medico['codigo']));
+        
+        $this->pdf->Output();
+        
+       // return $pdf;
+    }
+    
     
     
     

@@ -10,14 +10,16 @@ use Doctrine\ORM\EntityManager;
 class CalendarEventListener
 {
     private $em;
+    private $c;
 
-    public function __construct(EntityManager $entityManager)
+    public function __construct(EntityManager $entityManager, $controller)
     {
         $this->em = $entityManager;
+        $this->c = $controller;
     }
 
     public function loadEvents(CalendarEvent $calendarEvent)
-    {   
+    {    
         
         $request = $calendarEvent->getRequest();
         $filter = $request->get('filter');
@@ -105,7 +107,7 @@ class CalendarEventListener
         }
         
         
-        /*$cierres = $this->em->getRepository('DGPlusbelleBundle:CierreAdministrativo')->findAll();
+        $cierres = $this->em->getRepository('DGPlusbelleBundle:CierreAdministrativo')->findAll();
         
         
         foreach($cierres as $key => $cierreEvent) {
@@ -121,14 +123,15 @@ class CalendarEventListener
             $empleado = $cierreEvent->getEmpleado()->getPersona()->getNombres().' '.$cierreEvent->getEmpleado()->getPersona()->getApellidos();;
             $motivo=$cierreEvent->getMotivo();
             
-            $title = "Cierre administrativo | ".$empleado.' | '.$motivo;
+            $title = strtoupper("Cierre administrativo | ".$empleado.' | '.$motivo);
             $title = '<div class="fa fa-lock fa-2" style="width: 17px; height: 100%; float: left; background: #69BD45;  position: absolute; margin-left: -3px; padding-left:2px "></div> <div style="width: 91%; height: 100%; float: right; position: relative; "> | '.$title.'</div>'/*' | '.$companyEvent->getEstado().*/;
-          /*  $eventEntity->setTitle($title);
+            $eventEntity->setTitle($title);
             
             $calendarEvent->addEvent($eventEntity);
         }
-        */
         
+        $fechaHoy = date("Y-m-d");
+        //var_dump($this->c->getTransport());
         
         foreach($citas as $key => $companyEvent) {
             // create an event with a start/end time, or an all day event
@@ -136,12 +139,32 @@ class CalendarEventListener
             $fi = $companyEvent->getFechaCita()->format('Y-m-d');
             $ih = $companyEvent->getHoraCita()->format('H:i');
             
+            if($fi==$fechaHoy){
+                //var_dump($request->get($title));
+                //die();
+                
+                //Claro
+                //$this->c->sendEmail("77456982@sms.claro.com.sv","","","","Recordatorio de cita el dia: ".$fi." a las ".$ih);
+                
+                //Tigo 
+                //$this->c->sendEmail("75061915@sms.claro.com.sv","","","","Recordatorio de cita el dia: ".$fi." a las ".$ih);
+                
+                //Movistar, este no funciona
+                //$this->c->sendEmail("71727845@sms.claro.com.sv","","","","Recordatorio de cita el dia: ".$fi." a las ".$ih);
+                
+                //Digicel
+                //$this->c->sendEmail("xxxxxxxx@digimensajes.com","","","","Recordatorio de cita el dia: ".$fi." a las ".$ih);
+                
+                
+                
+            }
+            
             //$fh = $companyEvent->getHoraFin()->format('H:i');
             $h = date("H:i", strtotime('+30 minutes', strtotime($ih)));
             
             //var_dump($h);
             
-            
+            //$this->get('envio_correo')->sendEmail("77456982@sms.claro.com.sv","","","","Recordatorio de cita el dia: ");
             $st    = new \DateTime($fi.' '.$ih);
             $nh    = new \DateTime($fi.' '.$h);
             //$//end   = new \DateTime($fi.' '.$fh);
