@@ -27,7 +27,7 @@ class IncapacidadType extends AbstractType
                         'attr'   => array('class' => 'form-control input-sm fechaFinal'),
                         'format' => 'dd-MM-yyyy',
                        ))
-            ->add('notas')
+            ->add('notas','textarea',array('label'=>'Notas/Observaciones'))
             ->add('paciente','entity', array( 'label' => 'Paciente','required'=>false,
                      'empty_value'   => 'Seleccione un paciente...',
                      'class'         => 'DGPlusbelleBundle:Paciente',

@@ -22,12 +22,15 @@
             {{ form_row(edit_form.fechaFinal) }}
         </div>
         
-        <div class="col-md-3">
+        
+    </div>
+    <div class="row"> 
+        <div class="col-md-6">
             {{ form_row(edit_form.notas ) }}
         </div>
     </div>
              <div class="form-grouphide col-sm-9">
-                <a href="{{ path('admin_rol') }}" class="btn btn-default btn-sm" id="cancelarNuevo">Cancelar</a>
+                <a href="{{ path('admin_rol') }}" class="btn btn-default btn-sm" id="cancelarModificar">Cancelar</a>
                 {{ form_widget(edit_form.submit) }}
               </div>
             
@@ -49,15 +52,6 @@
             $("#edit-datatables1").click();
             return false;
         });
-        
-        
-        
-         // validando campos  
-              $('.duiPaciente').mask('00000000-0');  
-              $('.telefonoPersona').mask('0000-0000'); 
-              $('.telefono2Persona').mask('0000-0000'); 
-              $('.telefonoemerPaciente').mask('0000-0000'); 
-        
         
 {#         validarPaciente();  #}
          $('.fechaInicial').Zebra_DatePicker({

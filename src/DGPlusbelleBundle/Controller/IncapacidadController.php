@@ -83,7 +83,9 @@ class IncapacidadController extends Controller
             'method' => 'POST',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Create'));
+        $form->add('submit', 'submit', array('label' => 'Guardar','attr'=>
+                                                        array('class'=>'btn btn-success btn-sm')
+         ));
 
         return $form;
     }
@@ -98,8 +100,23 @@ class IncapacidadController extends Controller
     public function newAction()
     {
         $entity = new Incapacidad();
-        $form   = $this->createCreateForm($entity);
+        
+        $em = $this->getDoctrine()->getManager();
+        $request = $this->getRequest();
+        $cadena= $request->get('id');
+        $idEntidad = substr($cadena, 1);
 
+        if($idEntidad!=0){
+            $paciente = $em->getRepository('DGPlusbelleBundle:Paciente')->find($idEntidad);
+            $entity->setPaciente($paciente);
+        }
+        else{
+            $paciente = $em->getRepository('DGPlusbelleBundle:Paciente')->findAll();
+        }
+        
+        
+        
+        $form   = $this->createCreateForm($entity);
         return array(
             'entity' => $entity,
             'form'   => $form->createView(),
@@ -172,7 +189,9 @@ class IncapacidadController extends Controller
             'method' => 'PUT',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Update','attr'=>array('class'=>'btn btn-primary')));
+        $form->add('submit', 'submit', array('label' => 'Modificar','attr'=>
+                                                        array('class'=>'btn btn-success btn-sm')
+         ));
 
         return $form;
     }
@@ -200,7 +219,8 @@ class IncapacidadController extends Controller
         if ($editForm->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('admin_incapacidad_edit', array('id' => $id)));
+//            return $this->redirect($this->generateUrl('admin_incapacidad_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('admin_incapacidad_index' ));
         }
 
         return array(
@@ -286,47 +306,38 @@ class IncapacidadController extends Controller
         if($busqueda['value']!=''){
             
                     
-                    $dql = "SELECT exp.numero as expediente, pac.id as id,per.nombres,per.apellidos, '<a ><i style=\"cursor:pointer;\"  class=\"infoPaciente fa fa-info-circle\"></i></a>' as link FROM DGPlusbelleBundle:Incapacidad inc "
-                        . "JOIN inc.paciente per "
+                    $dql = "SELECT exp.numero as expediente, inc.id as id,CONCAT(CONCAT(per.nombres,' '), per.apellidos) as nombres, DATE_FORMAT(inc.fechaInicial,'%d-%m-%Y') as fechaInicial, DATE_FORMAT(inc.fechaFinal,'%d-%m-%Y') as fechaFinal,inc.notas, concat(concat('<a id=\"',inc.id),'\"><i style=\"cursor:pointer;color:#000\" data-toggle=\"tooltip\" data-original-title=\"Atrás\" class=\"infoIncapacidad fa fa-list-alt\"></i></a>')  as link FROM DGPlusbelleBundle:Incapacidad inc "
+                        . "JOIN inc.paciente pac "
+                        . "JOIN pac.persona per "
                         . "JOIN pac.expediente exp "
                         . "WHERE CONCAT(upper(per.nombres),upper(per.apellidos)) LIKE upper(:busqueda) "
                         . "ORDER BY per.nombres ASC ";
+                    
                     $paciente['data'] = $em->createQuery($dql)
                             ->setParameters(array('busqueda'=>"%".$busqueda['value']."%"))
                             ->getResult();
                     
                     $paciente['recordsFiltered']= count($paciente['data']);
                     
-                    $dql = "SELECT exp.numero as expediente, pac.id as id,per.nombres,per.apellidos, '<a ><i style=\"cursor:pointer;\"  class=\"infoPaciente fa fa-info-circle\"></i></a>' as link FROM DGPlusbelleBundle:Paciente pac "
+                    $dql = "SELECT exp.numero as expediente, inc.id as id,CONCAT(CONCAT(per.nombres,' '), per.apellidos) as nombres, DATE_FORMAT(inc.fechaInicial,'%d-%m-%Y') as fechaInicial, DATE_FORMAT(inc.fechaFinal,'%d-%m-%Y') as fechaFinal,inc.notas, concat(concat('<a id=\"',inc.id),'\"><i style=\"cursor:pointer;color:#000\" data-toggle=\"tooltip\" data-original-title=\"Atrás\" class=\"infoIncapacidad fa fa-list-alt\"></i></a>')  as link FROM DGPlusbelleBundle:Incapacidad inc "
+                        . "JOIN inc.paciente pac "
                         . "JOIN pac.persona per "
                         . "JOIN pac.expediente exp "
                         . "WHERE CONCAT(upper(per.nombres),upper(per.apellidos)) LIKE upper(:busqueda) "
                         . "ORDER BY per.nombres ASC ";
+                    
                     $paciente['data'] = $em->createQuery($dql)
                             ->setParameters(array('busqueda'=>"%".$busqueda['value']."%"))
                             ->setFirstResult($start)
                             ->setMaxResults($longitud)
                             ->getResult();
-              //  }
-            //}
-                    //var_dump($paciente);
-
-    //                if($paciente['data']==null)
-    //                    $paciente['data']=$pacientePrimeraBusqueda;
-    //                else
-                    //array_push($paciente['data'], $paciente['data']);
-//                }
-//            }
-            
-            
-            //var_dump($paciente['data']);
         }
         else{
 //            $dql = "SELECT exp.numero as expediente, pac.id as id,CONCAT(per.nombres, per.apellidos) as nombres, '<a ><i style=\"cursor:pointer;\"  class=\"infoPaciente fa fa-info-circle\"></i></a>' as link FROM DGPlusbelleBundle:Incapacidad inc "
-            $dql = "SELECT exp.numero as expediente, inc.id as id,CONCAT(CONCAT(per.nombres,' '), per.apellidos) as nombres, DATE_FORMAT(inc.fechaInicial,'%d-%m-%Y') as fechaInicial, DATE_FORMAT(inc.fechaFinal,'%d-%m-%Y') as fechaFinal,inc.notas FROM DGPlusbelleBundle:Incapacidad inc "
+            $dql = "SELECT exp.numero as expediente, inc.id as id,CONCAT(CONCAT(per.nombres,' '), per.apellidos) as nombres, DATE_FORMAT(inc.fechaInicial,'%d-%m-%Y') as fechaInicial, DATE_FORMAT(inc.fechaFinal,'%d-%m-%Y') as fechaFinal,inc.notas, concat(concat('<a id=\"',inc.id),'\"><i style=\"cursor:pointer;color:#000\" data-toggle=\"tooltip\" data-original-title=\"Atrás\" class=\"infoIncapacidad fa fa-list-alt\"></i></a>')  as link FROM DGPlusbelleBundle:Incapacidad inc "
                 . "JOIN inc.paciente pac "
                 . "JOIN pac.persona per "
-                . "JOIN pac.expediente exp ORDER BY per.nombres ASC ";
+                . "JOIN pac.expediente exp ORDER BY inc.id DESC ";
             $paciente['data'] = $em->createQuery($dql)
                     ->setFirstResult($start)
                     ->setMaxResults($longitud)

@@ -108,6 +108,14 @@
             </a>
         </li>
     {% endif %}
+    {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_USER')%}
+        <li class="nav-item" role="presentation">
+            <a href="{{path('admin_incapacidad')}}">
+                <span class="nav-icon"><i class="fa fa-bed"></i></span>
+                <span class="nav-text">Incapacidades</span>
+            </a>
+        </li>
+    {% endif %}
      {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_USER')%}
         <li class="nav-item" role="presentation">
             <a href="{{path('admin_cierreadministrativo')}}">

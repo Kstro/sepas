@@ -1246,6 +1246,168 @@ class FPDFService {
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    public function generarIncapacidadPDF($urlLogo, $consulta, $medico){
+        $pdf  = new \FPDF_FPDF();
+        $pdi  = new \FPDF_FPDI();
+        
+        $jump=0;
+        $logo = $urlLogo.'logo01.jpg';
+        
+        $this->pdf->FPDF('P','mm','Letter');
+        $this->pdf->SetTopMargin(0);
+        $this->pdf->SetLeftMargin(20);
+        $this->pdf->SetAutoPageBreak(true, 6);
+        $this->pdf->AddPage();
+        $this->pdf->SetFillColor(255);
+        
+        $this->pdf->SetFont('Arial','B',16);
+        
+        $this->pdf->SetX(5);
+        $this->pdf->SetX(20);
+        $this->pdf->Cell(120,42,"Incapacidad");
+        //$this->pdf->Cell(120,32,$consulta[0]->getDetallePlantilla()->getPlantilla()->getNombre());
+        
+        $this->pdf->Image($logo, 150, 5, 50, 20);
+        $this->pdf->Line(20, 25.5, 200, 25.5);
+        $this->pdf->Line(20, 26, 200, 26);
+        
+        $this->pdf->SetFont('Arial','B',13);
+        $this->pdf->Ln(26);
+        $jump=$jump+26;
+        
+        $this->pdf->Cell(32,27,utf8_decode('Información general del paciente'));
+        $this->pdf->Line(20, 43, 200, 43);
+        
+        $this->pdf->Ln(15);
+        $jump=$jump+15;
+        $this->mostrarCelda($this->pdf, 32, 'Fecha incial: ', $consulta[0]->getFechaInicial()->format("d/m/Y"));
+        $this->mostrarCelda($this->pdf, 32, 'Fecha final: ', $consulta[0]->getFechaFinal()->format("d/m/Y"));
+        $this->pdf->Ln(7);
+        $jump=$jump+7;
+        $this->mostrarCelda($this->pdf, 32, 'Nombre: ', utf8_decode($consulta[0]->getPaciente()->getPersona()->getNombres().' '.$consulta[0]->getPaciente()->getPersona()->getApellidos()));
+        
+        if($consulta[0]->getPaciente()->getFechaNacimiento()!=null){
+           $fecha = $consulta[0]->getPaciente()->getFechaNacimiento()->format("Y-m-d");    
+           list($Y,$m,$d) = explode("-",$fecha);
+        
+        $edad = date("md") < $m.$d ? date("Y")-$Y-1 : date("Y")-$Y;    
+        }
+        else{
+            $edad="N/A";
+        }
+        
+        
+        
+        
+        $this->mostrarCelda($this->pdf, 13, 'Edad: ', $edad /*.' '. htmlentities('Años', ENT_QUOTES,'UTF-8')*/);
+        
+        $this->pdf->Ln(7);
+        $jump=$jump+7;
+        $this->mostrarCelda($this->pdf, 32, 'Expediente No.: ', $consulta[0]->getPaciente()->getExpediente()[0]->getNumero());
+        
+        $sexoPaciente = $consulta[0]->getPaciente()->getSexo();
+
+        $sexo = '';
+        if($sexoPaciente == 'M'){
+            $sexo = 'Masculino';
+        }
+        if($sexoPaciente == 'F'){
+            $sexo = 'Femenino';
+        }
+        
+        $this->mostrarCelda($this->pdf, 13, 'Sexo: ', $sexo);
+        
+        $this->pdf->Ln(10);
+        $jump=$jump+10;
+        $this->pdf->SetFont('Arial','B',13);
+        $this->pdf->Cell(32,27,'Detalle de incapacidad');
+        $this->pdf->Line(20, 81, 200, 81);
+        $this->pdf->Ln(18);
+        $jump=$jump+18;
+        $this->pdf->SetDrawColor(255,255,255);
+        $this->pdf->SetWidths(array(55,126));
+        
+        $this->pdf->SetFont('Arial','',10);
+//        $this->pdf->Row(array("Motivo consulta: ",utf8_decode($consulta[0]->getObservacion()))) ;
+        $jump=$jump+5;
+        $this->pdf->Ln(1);
+//        $this->pdf->Row(array("Sintomas: ",utf8_decode($consulta[0]->getSintomas()))) ;
+        
+        $this->pdf->Ln(5);
+        
+        $this->pdf->SetDrawColor(255,255,255);
+        
+        $this->pdf->SetFont('Arial','B',13);
+        
+        
+        //$this->pdf->Line(20, $jump, 200, $jump);
+        $this->pdf->Ln(2);
+        
+        $this->pdf->SetWidths(array(40,50,40,50));
+        
+        $this->pdf->SetFont('Arial','',10);
+        
+        
+        
+        $this->pdf->SetWidths(array(40,50,40,50));  
+        $this->pdf->SetFont('Arial','',10);
+        //var_dump(count($consulta[0]->getPlacas()));
+        //if(count($consulta[0]->getPlacas())!=0){
+
+        //}
+//        else{
+//            $this->pdf->SetWidths(array(185));
+//            $this->pdf->SetFont('Arial','',10);
+//            $this->pdf->Row(array("No se aplicaron vacunas"));
+//        }
+            
+        
+        //$tam = count($consulta);
+        
+        //$espacio = 
+        //$pdf->Ln(55);
+        $this->pdf->SetY(241);
+        $this->pdf->SetX(20);
+        $this->pdf->SetFont('Arial','',9);
+        $this->pdf->Cell(85, 27, 'Colonia Escalon, Calle Cuscatlan, No. 448, San Salvador.');
+        $this->pdf->Ln(5);
+        $this->pdf->SetX(20);
+        $this->pdf->Cell(85, 27, 'Entre la 83 Av. y 85 Av. Sur. Tel.: 25192857');
+        
+        $this->pdf->SetFont('Arial','',11);
+        $this->pdf->SetY(235);
+        $this->pdf->SetX(156);
+        $this->pdf->Cell(85, 27, utf8_decode($medico['nombre']));
+        
+        $this->pdf->Ln(5);
+        $this->pdf->SetY(240);
+        $this->pdf->SetX(156);
+        $this->pdf->Cell(85, 27, utf8_decode($medico['cargo']));
+        
+        $this->pdf->Ln(5);
+        $this->pdf->SetY(244);
+        $this->pdf->SetX(156);
+        $this->pdf->Cell(85, 27, utf8_decode($medico['codigo']));
+        
+        $this->pdf->Output();
+        
+       // return $pdf;
+    }
+    
+    
+    
+    
+    
 }
 
 

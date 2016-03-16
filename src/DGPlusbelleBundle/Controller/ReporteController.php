@@ -2044,5 +2044,38 @@ class ReporteController extends Controller
     
     
     
+    
+    /**
+     * Generar reporte pdf de Detalle Plantilla consulta
+     *
+     * @Route("/{id}/ReporteIncapacidadPDF", name="admin_incapacidad_pdf", options ={"expose" = true})
+     * @Method("GET")
+     * @Template()
+     */
+    public function incapacidadPdfAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        
+        $dql = "SELECT inc "
+                . "FROM DGPlusbelleBundle:Incapacidad inc "
+                . "WHERE inc.id =:id";
+        $consulta = $em->createQuery($dql)
+                    ->setParameter('id', $id)
+                    ->getResult();
+        
+        $medico = array(
+                    "nombre" => "Dr. Jorge Panameño",
+                    "cargo" => "DOCTOR EN MEDICINA",
+                    "codigo" => "JVPM 4309",
+                );
+        
+        //var_dump($consulta);
+        $logo = 'Resources/img/dgplusbelle/images/';
+       
+        $this->get('fpdf_printer')->generarIncapacidadPDF($logo, $consulta, $medico);
+    }
+    
+    
+    
 }
 

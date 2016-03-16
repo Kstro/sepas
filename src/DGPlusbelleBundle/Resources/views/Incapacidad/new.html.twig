@@ -1,5 +1,16 @@
 {% extends 'DGPlusbelleBundle:Layout:layout.html.twig' %} 
 
+
+{% block css %}
+    {{parent()}}
+    <style>
+        #dgplusbellebundle_incapacidad_notas{
+            resize: vertical;
+        }
+    </style>
+    
+{% endblock css%}
+ 
 {% block contenido -%}
     
     
@@ -22,14 +33,16 @@
             {{ form_row(form.fechaFinal) }}
         </div>
         
-        <div class="col-md-3">
+    </div>
+    <div class="row">
+        <div class="col-md-6">
             {{ form_row(form.notas ) }}
         </div>
     </div>
-             <div class="form-grouphide col-sm-9">
-                <a href="{{ path('admin_rol') }}" class="btn btn-default btn-sm" id="cancelarNuevo">Cancelar</a>
-                {{ form_widget(form.submit) }}
-              </div>
+    <div class="form-grouphide col-sm-9">
+        <a href="{{ path('admin_incapacidad') }}" class="btn btn-default btn-sm" id="cancelarNuevo">Cancelar</a>
+        {{ form_widget(form.submit) }}
+     </div>
             
     
     {{ form_end(form) }}
@@ -41,5 +54,113 @@
 
 {% endblock %}
 
+{% block javascripts_step %}
+       <script src="{{ asset('Resources/js/Paciente.js') }}"></script>
+       
+    
+    
+
+        <script>
+           
+            $(document).ready(function(){
+                var idPaciente = 0;
+                
+                
+                
+              // validando campos  
+              $('#dgplusbellebundle_paciente_dui').mask('00000000-0');  
+              $('#dgplusbellebundle_paciente_persona_telefono').mask('0000-0000'); 
+              $('#dgplusbellebundle_paciente_persona_telefono2').mask('0000-0000'); 
+              $('#dgplusbellebundle_paciente_telefonoEmergencia').mask('0000-0000'); 
+              
+                //Seleccionar un registro
+                
+                //Accion cancelar del boton nuevo
+                {#$("#cancelarNuevo").click(function(){
+                    $("#add-datatables1").click();
+                    limpiarCampos();
+                    return false;
+                });#}
+                
+                //Accion cancelar del boton modificar
+                $("#cancelarModificar").click(function(){
+                    $("#edit-datatables1").click();
+                    return false;
+                });
+                
+                //Accion nueva cita
+                $(".opciones").click(function(){
+                    //$("#edit-datatables1").click();
+                    var href = $(this).children("a").attr("href")+"?id="+idPaciente;
+                    
+                    if( !$(this).hasClass("disabled") ){
+                        //$("#opcionesFormContainer").load(href);
+                        window.location=href;
+                        //$("#addFormContainer").addClass("hide");
+                        //$("#editFormContainer").addClass("hide");
+                        //$("#opcionesFormContainer").removeClass("hide");
+                    }
+                    return false;
+                });
+                
+                
+                $('.fechaInicial').Zebra_DatePicker({
+                    months:['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                    days: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+                    format: 'd-m-Y',
+                    show_clear_date:false,
+                    show_select_today: "Hoy",
+                    direction:1,
+                    pair: $('.fechaFinal')
+                });
+                
+                $('.fechaFinal').Zebra_DatePicker({
+                    months:['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                    days: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+                    format: 'd-m-Y',
+                    show_clear_date:false,
+                    show_select_today: "Hoy",
+                    direction:1
+
+                });
+                $('#filterDatatables1').on('keyup', function(event) {
+                    var filtro = $(this).val(); 
+                    //alert(filtro);
+                    $('#datatables1_filter>label>input').val($(this).val());
+                    $('#datatables1_filter>label>input').keyup();
+
+                });
+                
+        //Oculta el filtro de la tabla
+        $('#datatables1_filter').hide();
+        $('#filterDatatables1').val('');
+        
+        
+           validarPaciente();  
+        
+    });//Fin document ready
+        
+    //Definición de funciones
+    function limpiarCampos(){
+        //Limpiar los campos de tipo text
+        $("#add-datatables1 input[type=text]").each(function(index, val) {
+            $(this).val("");
+        });
+        //Seleccionar el primer elemento de los dropdown
+        $('add-datatables1 select option').each( function(index, val) {
+            if(index == 0){
+                $(this).attr("selected","selected");
+            }
+            else{
+                $(this).removeAttr("selected");
+            }
+            
+         
+	});             
+    };
+    
+        </script>
+
+    {% endblock %} 
 
 

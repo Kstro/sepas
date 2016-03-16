@@ -68,9 +68,9 @@
               </div><!-- /btn-toolbar -->
             </div><!-- /.panel-body -->
 
-            <div class="panel-body hide" id="addFormContainer">
+            {#<div class="panel-body hide" id="addFormContainer">
               {% include 'DGPlusbelleBundle:Incapacidad:new.html.twig' %}
-            </div><!-- /.panel-body -->
+            </div><!-- /.panel-body -->#}
             
             <div class="panel-body hide" id="editFormContainer">
             
@@ -100,6 +100,7 @@
                 <th>Fecha final</th>
                 <th>Notas</th>
                 <th>Detalle</th>
+{#                <th>Detalle</th>#}
                 {#<th>Referido por</th>#}
                 
                 {#<th>Acciones</th>#}
@@ -181,174 +182,23 @@
                 $(document).on('click','#datatables1>tbody>tr,.infoPaciente', function(event) {
                     idPaciente=$(this).children().html();
                     
-                    //alert($(this).prop("tagName"));
-                    if($(this).prop("tagName")=="I"){
-                        idPaciente=$(this).parent().parent().parent().children().html();
-                        //alert(idPaciente);
-                        $.getJSON(Routing.generate('get_infopaciente', { id: "P"+ idPaciente}), 
-                        function(data) {
-                            var mensaje = "";
-                            mensaje += "<div class='container-fluid'>";
-                            //mensaje += "<div class='col-md-12'><hr></div></div>";
-
-                            mensaje += "<div class='col-md-6 text-right'><b>Nombre del paciente: </b></div><div class='col-md-6'>"+data.regs[0].nombres+" "+data.regs[0].apellidos+"</div>";
-                            mensaje += "<div class='clearfix'></div>";
-                            if(data.regs[0].dui!=null){
-                                mensaje += "<div class='col-md-6 text-right'><b>DUI: </b></div><div class='col-md-6'>"+data.regs[0].dui+"</div>";
-                            }
-                            else{
-                                mensaje += "<div class='col-md-6 text-right'><b>DUI: </b></div><div class='col-md-6'>"+""+"</div>";
-                            }
-                            
-                            
-                            mensaje += "<div class='clearfix'></div>";
-                            if(data.regs[0].telefono!=null){
-                                mensaje += "<div class='col-md-6 text-right'><b>Teléfono de contacto: </b></div><div class='col-md-6'>"+data.regs[0].telefono+"</div>";
-                            }
-                            else{
-                                mensaje += "<div class='col-md-6 text-right'><b>Teléfono de contacto: </b></div><div class='col-md-6'>"+""+"</div>";
-                            }
-                            mensaje += "<div class='clearfix'></div>";
-                            
-                            if(data.regs[0].email!=null){
-                                mensaje += "<div class='col-md-6 text-right'><b>Correo: </b></div><div class='col-md-6'>"+data.regs[0].email+"</div>";
-                            }
-                            else{
-                                mensaje += "<div class='col-md-6 text-right'><b>Correo: </b></div><div class='col-md-6'>"+""+"</div>";
-                            }
-                                                       
-                            mensaje += "<div class='clearfix'></div>";
-                            
-                            
-                            if(data.regs[0].estadoCivil!=null){
-                                mensaje += "<div class='col-md-6 text-right'><b>Estado civil: </b></div><div class='col-md-6'>"+data.regs[0].estadoCivil+"</div>";
-                            }
-                            else{
-                                mensaje += "<div class='col-md-6 text-right'><b>Estado civil: </b></div><div class='col-md-6'>"+""+"</div>";
-                            }
-                                                        
-                            mensaje += "<div class='clearfix'></div>";
-                            
-                            
-                            if(data.regs[0].sexo!=null){
-                                mensaje += "<div class='col-md-6 text-right'><b>Sexo: </b></div><div class='col-md-6'>"+data.regs[0].sexo+"</div>";
-                            }
-                            else{
-                                mensaje += "<div class='col-md-6 text-right'><b>Sexo: </b></div><div class='col-md-6'>"+""+"</div>";
-                            }
-
-                            
-                            mensaje += "<div class='clearfix'></div>";
-                            
-                            if(data.regs[0].ocupacion!=null){
-                                mensaje += "<div class='col-md-6 text-right'><b>Ocupación: </b></div><div class='col-md-6'>"+data.regs[0].ocupacion+"</div>";
-                            }
-                            else{
-                                mensaje += "<div class='col-md-6 text-right'><b>Ocupación: </b></div><div class='col-md-6'>"+""+"</div>";
-                            }
-                            
-                            mensaje += "<div class='clearfix'></div>";
-                            
-                            if(data.regs[0].lugarTrabajo!=null){
-                                mensaje += "<div class='col-md-6 text-right'><b>Lugar de trabajo: </b></div><div class='col-md-6'>"+data.regs[0].lugarTrabajo+"</div>";
-                            }
-                            else{
-                                mensaje += "<div class='col-md-6 text-right'><b>Lugar de trabajo: </b></div><div class='col-md-6'>"+""+"</div>";
-                            }
-                            
-                            mensaje += "<div class='clearfix'></div>";
-                            
-                            if(data.regs[0].fechaNacimiento!=null){
-                                mensaje += "<div class='col-md-6 text-right'><b>Fecha de nacimiento: </b></div><div class='col-md-6'>"+data.regs[0].fechaNacimiento+"</div>";
-                            }
-                            else{
-                                mensaje += "<div class='col-md-6 text-right'><b>Fecha de nacimiento: </b></div><div class='col-md-6'>"+""+"</div>";
-                            }
-                            
-                            mensaje += "<div class='clearfix'></div>";
-                            
-                            if(data.regs[0].referidoPor!=null){
-                                mensaje += "<div class='col-md-6 text-right'><b>Referido por: </b></div><div class='col-md-6'>"+data.regs[0].referidoPor+"</div>";
-                            }
-                            else{
-                                mensaje += "<div class='col-md-6 text-right'><b>Referido por: </b></div><div class='col-md-6'>"+""+"</div>";
-                            }
-                            
-                            mensaje += "<div class='clearfix'></div>";
-                            
-                            if(data.regs[0].personaEmergencia!=null){
-                                mensaje += "<div class='col-md-6 text-right'><b>En caso de emergencia llamar a: </b></div><div class='col-md-6'>"+data.regs[0].personaEmergencia+"</div>";
-                            }
-                            else{
-                                mensaje += "<div class='col-md-6 text-right'><b>En caso de emergencia llamar a: </b></div><div class='col-md-6'>"+""+"</div>";
-                            }
-                            
-                            mensaje += "<div class='clearfix'></div>";
-                            
-                            if(data.regs[0].telefonoEmergencia!=null){
-                                mensaje += "<div class='col-md-6 text-right'><b>Teléfono: </b></div><div class='col-md-6'>"+data.regs[0].telefonoEmergencia+"</div>";
-                            }
-                            else{
-                                mensaje += "<div class='col-md-6 text-right'><b>Teléfono: </b></div><div class='col-md-6'>"+""+"</div>";
-                            }
-                            
-                            mensaje += "<div class='clearfix'></div>";
-                            mensaje += "</div>";
-                            bootbox.dialog({
-                                  message: mensaje,
-                                  title: "Información del paciente",
-                                  buttons: {
-                                    main: {
-                                      label: "Aceptar",
-                                      className: "btn-primary",
-                                      callback: function() {
-
-                                      }
-                                    }
-                                  }
-                            });
-                        });
-                    }
-                    else{
                     
-                        //Se limpia los otros que esten activos
-                        $('#datatables1>tbody>tr').each(function(index, val) {
-                            $(this).removeClass("active");
-                        });
-                        //Se activa el registro en el que se hizo click
-                        $(this).addClass("active");
-                        //Se habilitan los botones de editar y borrar
-                        $("#edit-datatables1").removeClass("disabled");
-                        $("#delete-datatables1").removeClass("disabled");
-                        $("#nueva-cita").removeClass("disabled");
-                        $("#nueva-consulta").removeClass("disabled");
-                        $("#nueva-devolucion").removeClass("disabled");
-                        $("#vender-paquete").removeClass("disabled");
-                        $("#vender-tratamiento").removeClass("disabled");
-                        $("#ver-expediente").removeClass("disabled");
-                        $("#nuevo-abono").removeClass("disabled");
-                        $("#detalle-datatables1").removeClass("disabled");
-
-                        //var link=$('#datatables1>tbody>tr>td>a').attr("href");
-                        //var link=$(this).children("td:first").children().attr("href");
-                        //Obtener el id del registro
-
-
-                        //alert(link);
-                        //Carga del form modificar
-                        $("#editFormContainer").load(idPaciente+"/edit");
-
-
-                        //var href=link.attr("href");
-                        //alert(object);
-                    }
                 });
                 
                 
                 
+                $(document).on('click','.infoIncapacidad', function(){
+                    console.log("prueba");
+                    var id=$(this).parent().attr('id');
+                    var url = Routing.generate('admin_incapacidad_pdf', {'id': id});
+                    window.open(url,'_blank');
+                });
+                
                 
                 
                 $("#add-datatables1").click(function(){
+                    var url="{{path('admin_incapacidad_new')}}";
+                    window.location=url;
                     if($("#addFormContainer").hasClass("hide")){
                         $("#addFormContainer").removeClass("hide");
                         $("#editFormContainer").addClass("hide");
@@ -379,6 +229,7 @@
                         limpiarCampos();
                         //$("#editFormContainer").removeClass("hide");
                     }
+                    
 
                 });
                 
@@ -480,6 +331,7 @@
                         { "data": "fechaInicial" },
                         { "data": "fechaFinal" },
                         { "data": "notas" },
+                        { "data": "link" },
 {#                        { "data": "link" }#}
                     ],
                     "columnDefs": [
