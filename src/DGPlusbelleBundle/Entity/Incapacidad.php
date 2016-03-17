@@ -37,6 +37,13 @@ class Incapacidad
     private $fechaFinal;
     
     /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_registro", type="date", nullable=false)
+     */
+    private $fechaRegistro;
+    
+    /**
      * @var string
      *
      * @ORM\Column(name="notas", type="string", length=255, nullable=true)
@@ -150,6 +157,32 @@ class Incapacidad
         return $this->fechaFinal;
     }
     
+    
+    
+    
+    /**
+     * Set fechaFinal
+     *
+     * @param \DateTime $fechaFinal
+     *
+     * @return Cita
+     */
+    public function setFechaRegistro($fechaRegistro)
+    {
+        $this->fechaRegistro= $fechaRegistro;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaFinal
+     *
+     * @return \DateTime
+     */
+    public function getFechaRegistro()
+    {
+        return $this->fechaRegistro;
+    }
     
     
     

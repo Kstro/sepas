@@ -1274,7 +1274,7 @@ class FPDFService {
         
         $this->pdf->SetX(5);
         $this->pdf->SetX(20);
-        $this->pdf->Cell(120,42,"Incapacidad");
+        $this->pdf->Cell(120,42,utf8_decode("Incapacidad médica"));
         //$this->pdf->Cell(120,32,$consulta[0]->getDetallePlantilla()->getPlantilla()->getNombre());
         
         $this->pdf->Image($logo, 150, 5, 50, 20);
@@ -1335,7 +1335,7 @@ class FPDFService {
         $this->pdf->Ln(18);
         $jump=$jump+18;
         $this->pdf->SetDrawColor(255,255,255);
-        $this->pdf->SetWidths(array(55,126));
+        $this->pdf->SetWidths(array(185));
         
         $this->pdf->SetFont('Arial','',10);
 //        $this->pdf->Row(array("Motivo consulta: ",utf8_decode($consulta[0]->getObservacion()))) ;
@@ -1353,7 +1353,7 @@ class FPDFService {
         //$this->pdf->Line(20, $jump, 200, $jump);
         $this->pdf->Ln(2);
         
-        $this->pdf->SetWidths(array(40,50,40,50));
+        
         
         $this->pdf->SetFont('Arial','',10);
         
@@ -1361,6 +1361,7 @@ class FPDFService {
         
         $this->pdf->SetWidths(array(40,50,40,50));  
         $this->pdf->SetFont('Arial','',10);
+        $this->pdf->Row(array(utf8_decode($consulta[0]->getNotas()))) ;
         //var_dump(count($consulta[0]->getPlacas()));
         //if(count($consulta[0]->getPlacas())!=0){
 

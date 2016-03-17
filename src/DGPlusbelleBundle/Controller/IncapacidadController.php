@@ -54,9 +54,14 @@ class IncapacidadController extends Controller
         $entity = new Incapacidad();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
-
+ 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            
+            
+            $user = $this->get('security.token_storage')->getToken()->getUser();
+            
+            
             $em->persist($entity);
             $em->flush();
 
