@@ -230,6 +230,15 @@ class ConsultaConPacienteType extends AbstractType
                     'class'=>'form-control frecCardiaca'
                     )
                 ))
+                    
+                    
+            ->add('codigo','choice',
+                    array(
+                        'label'=>'Código',
+                        'choices'  => array('A' => 'A', 'AB' => 'AB', 'B' => 'B', 'C' => 'C', 'V1' => 'V1', 'V2' => 'V2', 'V3' => 'V3'),
+                        'multiple' => false,
+                        'expanded'=>false,
+                        ))
         ;
     }
     

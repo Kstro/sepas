@@ -1066,7 +1066,7 @@ class ReporteController extends Controller
         $anioFinUser = $request->get('anioFinUser');
         
         $originalDate = $anioFinUser;
-        $anioFinUser = date("Y-m-d", strtotime($originalDate));
+        $anioFinUser = date("Y-m-d", strtotime($originalDate.'+1 day'));//Se agrega 1 dia para incluir el limite superior en el between
         
         
         //$sucursal = $request->get('sucursal');
@@ -1076,13 +1076,13 @@ class ReporteController extends Controller
         
         $listadoP = array();
         
-        $dqlpac="SELECT p.id, per.nombres, per.apellidos, emp.nombres nemp, emp.apellidos napel, c.costoConsulta, c.fechaConsulta, s.nombre FROM DGPlusbelleBundle:Consulta c "
+        $dqlpac="SELECT p.id, per.nombres, per.apellidos, emp.nombres nemp, emp.apellidos napel, c.costoConsulta, c.fechaConsulta, s.nombre, c.observacion FROM DGPlusbelleBundle:Consulta c "
                 . "JOIN c.paciente p "
                 . "JOIN p.persona per "
                 . "JOIN c.empleado e "
                 . "JOIN e.persona emp "
                 . "JOIN c.sucursal s "
-                . "WHERE c.fechaConsulta BETWEEN :fechainicio AND :fechafin ORDER BY per.nombres ASC";
+                . "WHERE c.fechaConsulta BETWEEN :fechainicio AND :fechafin ORDER BY c.fechaConsulta ASC";
        
         $listadopaciente = $em->createQuery($dqlpac)
                        ->setParameters(array('fechainicio'=>$anioInicioUser,'fechafin'=>$anioFinUser))
@@ -1096,10 +1096,10 @@ class ReporteController extends Controller
 //                    "id"=>$row['id'],
                     "nombres"=>$row['nombres'],
                     "apellidos"=>$row['apellidos'],
-                    "tipocosto"=>"Consulta",
+                    "tipocosto"=>"Consulta: ".$row['observacion'],
                     "nempleado"=>$row['nemp'],
                     "aempleado"=>$row['napel'],
-                    "sucursal"=>$row['nombre'],
+                    //"sucursal"=>$row['nombre'],
                     "costo"=>$row['costoConsulta'],
                     "fechatransaccion"=>$row['fechaConsulta']
                 );
@@ -1188,11 +1188,12 @@ class ReporteController extends Controller
         
         
         
-        $dqlpac="SELECT pac.id, pac.nombres, pac.apellidos, ' ', ' ','0', pt.fechaRegistro, 'Sucursal1' FROM DGPlusbelleBundle:incapacidad pt "
+        $dqlpac="SELECT pac.id, pac.nombres, pac.apellidos, per2.nombres as nemp, per2.apellidos as napel,'0' as costo, date_format(pt.fechaRegistro,'%d-%m-%Y') as fechaVenta, 'SEPES' as nombre FROM DGPlusbelleBundle:Incapacidad pt "
                 . "JOIN pt.paciente per "
                 . "JOIN per.persona pac "
-//                . "JOIN pt.empleado emp "
-                . "WHERE pt.fechaRegistro BETWEEN :fechainicio AND :fechafin ORDER BY pac.nombres ASC, pac.apellidos";
+                . "JOIN pt.empleado emp "
+                . "JOIN emp.persona per2 "
+                . "WHERE pt.fechaRegistro BETWEEN :fechainicio AND :fechafin ORDER BY fechaVenta ASC";
         $listadotratamientos = $em->createQuery($dqlpac)
                        ->setParameters(array('fechainicio'=>$anioInicioUser,'fechafin'=>$anioFinUser))
                        //->setParameter('mes','_____0'.'1'.'___')
@@ -1206,7 +1207,7 @@ class ReporteController extends Controller
                     "tipocosto"=>"Incapacidad",
                     "nempleado"=>$row['nemp'],
                     "aempleado"=>$row['napel'],
-                    "sucursal"=>$row['nombre'],
+                    //"sucursal"=>$row['nombre'],
                     "costo"=>$row['costo'],
                     "fechatransaccion"=>$row['fechaVenta']
                 );

@@ -39,7 +39,7 @@ class Incapacidad
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="fecha_registro", type="date", nullable=false)
+     * @ORM\Column(name="fecha_registro", type="datetime", nullable=false)
      */
     private $fechaRegistro;
     
@@ -61,6 +61,18 @@ class Incapacidad
      * })
      */
     private $paciente;
+    
+    
+    
+    /**
+     * @var \Empleado
+     *
+     * @ORM\ManyToOne(targetEntity="Empleado")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="empleado", referencedColumnName="id")
+     * })
+     */
+    private $empleado;
     
     
    
@@ -236,6 +248,34 @@ class Incapacidad
     public function getPaciente()
     {
         return $this->paciente;
+    }
+    
+    
+    
+    
+    
+    /**
+     * Set empleado
+     *
+     * @param \DGPlusbelleBundle\Entity\Empleado $empleado
+     *
+     * @return Consulta
+     */
+    public function setEmpleado(\DGPlusbelleBundle\Entity\Empleado $empleado = null)
+    {
+        $this->empleado = $empleado;
+
+        return $this;
+    }
+
+    /**
+     * Get empleado
+     *
+     * @return \DGPlusbelleBundle\Entity\Empleado
+     */
+    public function getEmpleado()
+    {
+        return $this->empleado;
     }
     
 }

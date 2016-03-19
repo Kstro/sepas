@@ -57,15 +57,14 @@ class IncapacidadController extends Controller
  
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            
-            
             $user = $this->get('security.token_storage')->getToken()->getUser();
-            
-            
+            $entity->setEmpleado($user->getPersona()->getEmpleado()[0]);
+            $entity->setFechaRegistro(new \DateTime('now'));
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('admin_incapacidad_show', array('id' => $entity->getId())));
+//            return $this->redirect($this->generateUrl('admin_incapacidad_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('admin_incapacidad_index'));
         }
 
         return array(

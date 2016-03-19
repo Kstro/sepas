@@ -213,6 +213,15 @@ class Consulta
     private $sintomas;
     
     
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="codigo", type="string", length=200, nullable=true)
+     */
+    private $codigo;
+    
+    
     /**
      * Get id
      *
@@ -657,6 +666,36 @@ class Consulta
     {
         return $this->sintomas;
     }
+    
+    
+    
+    
+    
+    
+    /**
+     * Set observacion
+     *
+     * @param string $codigo
+     *
+     * @return Consulta
+     */
+    public function setCodigo($codigo)
+    {
+        $this->codigo = $codigo;
+
+        return $this;
+    }
+
+    /**
+     * Get sintomas
+     *
+     * @return string
+     */
+    public function getCodigo()
+    {
+        return $this->codigo;
+    }
+    
     
     
     /**

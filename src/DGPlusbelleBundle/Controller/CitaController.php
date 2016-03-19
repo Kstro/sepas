@@ -561,6 +561,7 @@ class CitaController extends Controller
         $time = strtotime($fecha);
         //var_dump($entity->getFechaCita());
         $newformat = date('Y-m-d',$time);
+        
         //var_dump($newformat);
         //var_dump( count( $entityDuplicada));
         $exito['regs']=0;
@@ -578,9 +579,9 @@ class CitaController extends Controller
                 
                 $dql = "SELECT c
                     FROM DGPlusbelleBundle:CierreAdministrativo c
-                    WHERE c.empleado =:idEmp AND (c.horaInicio<= :horaNueva AND c.horaFin>:horaNueva)";
+                    WHERE c.empleado =:idEmp AND (c.horaInicio<= :horaNueva AND c.horaFin>:horaNueva) AND c.fecha=:fecha";
                 $cierreAdmin = $em->createQuery($dql)
-                                    ->setParameters(array('idEmp'=>$empleado->getId(),'horaNueva'=>$horaNueva))
+                                    ->setParameters(array('idEmp'=>$empleado->getId(),'horaNueva'=>$horaNueva,'fecha'=>$newformat))
                                     ->getArrayResult();
                 // cambio de la hora final
                 //var_dump($cierreAdmin);

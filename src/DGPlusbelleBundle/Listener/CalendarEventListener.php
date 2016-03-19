@@ -31,7 +31,9 @@ class CalendarEventListener
 //        $fechaFin = $request->get('fechaFin');
         
         $request   = $calendarEvent->getRequest();
-        $filter        = $request->get('filter');
+        $filter = $request->get('filter');
+        
+        $nombre = $request->get('paciente');
         
         $user = $request->get('user');
         
@@ -42,9 +44,11 @@ class CalendarEventListener
         
         //var_dump($startDate);
         //var_dump($endDate);
+        //var_dump($nombre);
+        
         
         if($sucursal==''){
-            $sucursal =3;
+            $sucursal =1;
         }
         //var_dump($sucursal);
         //die();
@@ -72,25 +76,63 @@ class CalendarEventListener
 //        var_dump($sucursal);
 //        die();
         
+        if($nombre!=''){
+            $dql = "SELECT pac.id , per.nombres,per.apellidos FROM DGPlusbelleBundle:Paciente pac "
+                    . "JOIN pac.persona per "
+                    . "WHERE CONCAT(upper(per.nombres),upper(per.apellidos)) LIKE upper(:nombre) ";
+                
+            $paciente = $this->em->createQuery($dql)
+                        ->setParameters(array('nombre'=>'%'.$nombre.'%'))
+                        ->getResult();
+        }
+        else{
+            $paciente=1;
+        }
+        //var_dump($sucursal);
+        //var_dump($paciente);
+        //die();
         if($sucursal!=''){
             if($user==0){
-                $dql = "SELECT c FROM DGPlusbelleBundle:Cita c "
+                if($nombre==''){
+                     $dql = "SELECT c FROM DGPlusbelleBundle:Cita c "
                         . "WHERE c.sucursal=:sucursal AND c.fechaCita BETWEEN :fechaInicio AND :fechaFin";
                 
-                $citas = $this->em->createQuery($dql)
+                    $citas = $this->em->createQuery($dql)
                         ->setParameters(array('sucursal'=>$sucursal,'fechaInicio'=>$startDate,'fechaFin'=>$endDate))
                          ->getResult();
+                }
+                else{
+                    $dql = "SELECT c FROM DGPlusbelleBundle:Cita c "
+                        . "WHERE c.sucursal=:sucursal AND c.fechaCita BETWEEN :fechaInicio AND :fechaFin AND c.paciente=:id";
+                    if(count($paciente)!=0){
+                        $citas = $this->em->createQuery($dql)
+                            ->setParameters(array('sucursal'=>$sucursal,'fechaInicio'=>$startDate,'fechaFin'=>$endDate,'id'=>$paciente[0]['id']))
+                            ->getResult();
+                    }
+                }
+                
                 
 //                $citas = $this->em->getRepository('DGPlusbelleBundle:Cita')->findBy(array('sucursal'=>$sucursal));
             }
             else{
                 //$citas = $this->em->getRepository('DGPlusbelleBundle:Cita')->findBy(array('sucursal'=>$sucursal));
+                if($nombre==''){
                 $dql = "SELECT c FROM DGPlusbelleBundle:Cita c "
                         . "WHERE c.sucursal=:sucursal AND c.empleado=:user AND c.fechaCita BETWEEN :fechaInicio AND :fechaFin";
                 
                 $citas = $this->em->createQuery($dql)
                         ->setParameters(array('sucursal'=>$sucursal,'user'=>$user,'fechaInicio'=>$startDate,'fechaFin'=>$endDate))
                          ->getResult();
+                }
+                else{
+                    $dql = "SELECT c FROM DGPlusbelleBundle:Cita c "
+                        . "WHERE c.sucursal=:sucursal AND c.fechaCita BETWEEN :fechaInicio AND :fechaFin AND c.paciente=:id";
+                if(count($paciente)!=0){
+                    $citas = $this->em->createQuery($dql)
+                        ->setParameters(array('sucursal'=>$sucursal,'fechaInicio'=>$startDate,'fechaFin'=>$endDate,'id'=>$paciente[0]['id']))
+                         ->getResult();
+                }
+                }
                 //$citas = $this->em->getRepository('DGPlusbelleBundle:Cita')->findBy(array('sucursal'=>$sucursal,'empleado'=>$user));
             }
             
@@ -98,11 +140,21 @@ class CalendarEventListener
         else{
             //$citas = $this->em->getRepository('DGPlusbelleBundle:Cita')->findBy(array('fechaCita'=>$date));
             if($user==0){
-                $citas = $this->em->getRepository('DGPlusbelleBundle:Cita')->findAll();
+                if($nombre==''){
+                    $citas = $this->em->getRepository('DGPlusbelleBundle:Cita')->findAll();
+                }else{
+                    $citas = $this->em->getRepository('DGPlusbelleBundle:Cita')->findBy(array('paciente'=>$paciente[0]['id']));
+                }
+                    
             }
             else{
+                if($nombre==''){
+                    $citas = $this->em->getRepository('DGPlusbelleBundle:Cita')->findBy(array('empleado'=>$user));
+                }else{
+                    $citas = $this->em->getRepository('DGPlusbelleBundle:Cita')->findBy(array('empleado'=>$user,'paciente'=>$paciente[0]['id']));
+                }
                 //$citas = $this->em->getRepository('DGPlusbelleBundle:Cita')->findBy(array('sucursal'=>$sucursal));
-                $citas = $this->em->getRepository('DGPlusbelleBundle:Cita')->findBy(array('empleado'=>$user));
+                
             }
         }
         
@@ -132,7 +184,7 @@ class CalendarEventListener
         
         $fechaHoy = date("Y-m-d");
         //var_dump($this->c->getTransport());
-        
+        if(count($paciente)!=0){
         foreach($citas as $key => $companyEvent) {
             // create an event with a start/end time, or an all day event
             //var_dump($key);
@@ -347,7 +399,9 @@ class CalendarEventListener
             //finally, add the event to the CalendarEvent for displaying on the calendar
             
             $calendarEvent->addEvent($eventEntity);
-        }
+        }// fin de foreach para citas
+    }
+        
     }
     
     
