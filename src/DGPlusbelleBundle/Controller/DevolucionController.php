@@ -31,7 +31,7 @@ class DevolucionController extends Controller
         $entity = new Devolucion();
         //$form = $this->createCreateForm($entity);
         $em = $this->getDoctrine()->getManager();
-
+    
         $entities = $em->getRepository('DGPlusbelleBundle:Devolucion')->findAll();
 
         return array(
@@ -55,7 +55,10 @@ class DevolucionController extends Controller
         $idtratamientos = $request->get('tratamiento');
         $paciente = $request->get('paciente');
         
-        
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+        var_dump($user);
+        die();
+        $entity->setEmpleado($empleado);
         $entity->setfechaDevolucion(new \DateTime('now'));
         $form = $this->createCreateForm($entity,$paciente,$idpaquetes,$idtratamientos);
         $form->handleRequest($request);

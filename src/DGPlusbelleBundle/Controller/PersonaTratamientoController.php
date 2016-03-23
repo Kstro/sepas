@@ -111,11 +111,14 @@ class PersonaTratamientoController extends Controller
         $id = substr($id, 1);
         
         $paciente = $em->getRepository('DGPlusbelleBundle:Paciente')->find($id);
+        $sucursal = $em->getRepository('DGPlusbelleBundle:Sucursal')->find(1);
+        
         //Seteo del paciente en la entidad
         
         $persona=$paciente->getPersona();
         //var_dump($persona);
         $entity->setPaciente($persona);
+        $entity->setSucursal($sucursal);
         //var_dump($entity);
         
         $form   = $this->createCreateForm($entity);

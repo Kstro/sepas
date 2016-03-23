@@ -1117,38 +1117,107 @@ class ReporteController extends Controller
 //        die();
         
         
-//        $dqlpac="SELECT p.id, per1.nombres, per1.apellidos, per2.nombres nemp, per2.apellidos napel, a.monto, a.fechaAbono, s.nombre FROM DGPlusbelleBundle:Abono a "
-//                . "JOIN a.paciente p "
-//                . "JOIN p.persona per1 "
-//                . "JOIN a.empleado e "
-//                . "JOIN e.persona per2 "
-//                . "JOIN a.sucursal s "
-//                . "WHERE a.fechaAbono BETWEEN :fechainicio AND :fechafin ORDER BY per1.nombres ASC";
-//        $listadoabono = $em->createQuery($dqlpac)
-//                       ->setParameters(array('fechainicio'=>$anioInicioUser,'fechafin'=>$anioFinUser))
-//                       //->setParameter('mes','_____0'.'1'.'___')
-//                       ->getResult();
-//        
-//        foreach ($listadoabono as $row) {
-//            $ar = array(
-////                    "id"=>$row['id'],
-//                    "nombres"=>$row['nombres'],
-//                    "apellidos"=>$row['apellidos'],
-//                    "tipocosto"=>"Abono",
-//                    "nempleado"=>$row['nemp'],
-//                    "aempleado"=>$row['napel'],
-//                    "sucursal"=>$row['nombre'],
-//                    "costo"=>$row['monto'],
-//                    "fechatransaccion"=>$row['fechaAbono']
-//                );
-//            
-//            array_push($listadoP, $ar);
-////            array_push($listadoP, $listadoabono);
-////            array_push($listadoP, $row['nombres']);
-////            array_push($listadoP, $row['apellidos']);
-////            array_push($listadoP, 'Abono');
-////            array_push($listadoP, $row['monto']);
-//        }
+        $dqlpac="SELECT p.id, per1.nombres, per1.apellidos, per2.nombres nemp, per2.apellidos napel, a.monto, a.fechaAbono, s.nombre FROM DGPlusbelleBundle:Abono a "
+                . "JOIN a.paciente p "
+                . "JOIN p.persona per1 "
+                . "JOIN a.empleado e "
+                . "JOIN e.persona per2 "
+                . "JOIN a.sucursal s "
+                . "WHERE a.fechaAbono BETWEEN :fechainicio AND :fechafin ORDER BY per1.nombres ASC";
+        $listadoabono = $em->createQuery($dqlpac)
+                       ->setParameters(array('fechainicio'=>$anioInicioUser,'fechafin'=>$anioFinUser))
+                       //->setParameter('mes','_____0'.'1'.'___')
+                       ->getResult();
+        
+        foreach ($listadoabono as $row) {
+            $ar = array(
+//                    "id"=>$row['id'],
+                    "nombres"=>$row['nombres'],
+                    "apellidos"=>$row['apellidos'],
+                    "tipocosto"=>"Abono",
+                    "nempleado"=>$row['nemp'],
+                    "aempleado"=>$row['napel'],
+                    "sucursal"=>$row['nombre'],
+                    "costo"=>$row['monto'],
+                    "fechatransaccion"=>$row['fechaAbono']
+                );
+            
+            array_push($listadoP, $ar);
+//            array_push($listadoP, $listadoabono);
+//            array_push($listadoP, $row['nombres']);
+//            array_push($listadoP, $row['apellidos']);
+//            array_push($listadoP, 'Abono');
+//            array_push($listadoP, $row['monto']);
+        }
+        
+        
+        
+        $dqlpac="SELECT p.id, p.nombres, p.apellidos, e.nombres nemp, e.apellidos napel, a.costoConsulta as monto, a.fechaVenta, s.nombre FROM DGPlusbelleBundle:PersonaTratamiento a "
+                . "JOIN a.paciente p "
+                
+                . "JOIN a.empleado e "
+                
+                . "JOIN a.sucursal s "
+                . "WHERE a.fechaVenta BETWEEN :fechainicio AND :fechafin ORDER BY p.nombres ASC";
+        $listadoabono = $em->createQuery($dqlpac)
+                       ->setParameters(array('fechainicio'=>$anioInicioUser,'fechafin'=>$anioFinUser))
+                       //->setParameter('mes','_____0'.'1'.'___')
+                       ->getResult();
+        
+        foreach ($listadoabono as $row) {
+            $ar = array(
+//                    "id"=>$row['id'],
+                    "nombres"=>$row['nombres'],
+                    "apellidos"=>$row['apellidos'],
+                    "tipocosto"=>"Venta tratamiento",
+                    "nempleado"=>$row['nemp'],
+                    "aempleado"=>$row['napel'],
+                    "sucursal"=>$row['nombre'],
+                    "costo"=>$row['monto'],
+                    "fechatransaccion"=>$row['fechaVenta']
+                );
+            
+            array_push($listadoP, $ar);
+//            array_push($listadoP, $listadoabono);
+//            array_push($listadoP, $row['nombres']);
+//            array_push($listadoP, $row['apellidos']);
+//            array_push($listadoP, 'Abono');
+//            array_push($listadoP, $row['monto']);
+        }
+        
+        
+        $dqlpac="SELECT p.id, per1.nombres, per1.apellidos, per2.nombres nemp, per2.apellidos napel, a.monto, a.fechaDevolucion, 'SEPES' FROM DGPlusbelleBundle:Devolucion a "
+                . "JOIN a.paciente p "
+                . "JOIN p.persona per1 "
+                . "JOIN a.empleado e "
+                . "JOIN e.persona per2 "
+                
+                . "WHERE a.fechaDevolucion BETWEEN :fechainicio AND :fechafin ORDER BY per1.nombres ASC";
+        $listadoabono = $em->createQuery($dqlpac)
+                       ->setParameters(array('fechainicio'=>$anioInicioUser,'fechafin'=>$anioFinUser))
+                       //->setParameter('mes','_____0'.'1'.'___')
+                       ->getResult();
+        
+        foreach ($listadoabono as $row) {
+            $ar = array(
+//                    "id"=>$row['id'],
+                    "nombres"=>$row['nombres'],
+                    "apellidos"=>$row['apellidos'],
+                    "tipocosto"=>"Abono",
+                    "nempleado"=>$row['nemp'],
+                    "aempleado"=>$row['napel'],
+                    "sucursal"=>$row['nombre'],
+                    "costo"=>$row['monto'],
+                    "fechatransaccion"=>$row['fechaAbono']
+                );
+            
+            array_push($listadoP, $ar);
+//            array_push($listadoP, $listadoabono);
+//            array_push($listadoP, $row['nombres']);
+//            array_push($listadoP, $row['apellidos']);
+//            array_push($listadoP, 'Abono');
+//            array_push($listadoP, $row['monto']);
+        }
         
         
         

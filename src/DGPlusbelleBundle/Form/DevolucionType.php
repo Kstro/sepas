@@ -35,7 +35,7 @@ class DevolucionType extends AbstractType
             ->add('ventapaquete',null, array('label'=>'Paquetes','required'=>false))
             ->add('personatratamiento',null, array('label'=>'Tratamientos','required'=>false))
             ->add('flagDevolucion', 'choice', array('label'=>'Aplicar devolución a',
-                    'choices'  => array('0' => 'Paquete', '1' => 'Tratamiento'),
+                    'choices'  => array('0'=>'Paquetes', '1' => 'Tratamiento'),
                     'multiple' => false,
                     'expanded'=>'true',
                     'required' => true,
