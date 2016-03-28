@@ -1186,7 +1186,7 @@ class ReporteController extends Controller
         }
         
         
-        $dqlpac="SELECT p.id, per1.nombres, per1.apellidos, per2.nombres nemp, per2.apellidos napel, a.monto, a.fechaDevolucion, 'SEPES' FROM DGPlusbelleBundle:Devolucion a "
+        $dqlpac="SELECT p.id, per1.nombres, per1.apellidos, per2.nombres nemp, per2.apellidos napel, a.monto , a.fechaDevolucion, 'SEPES' as nombre FROM DGPlusbelleBundle:Devolucion a "
                 . "JOIN a.paciente p "
                 . "JOIN p.persona per1 "
                 . "JOIN a.empleado e "
@@ -1203,12 +1203,12 @@ class ReporteController extends Controller
 //                    "id"=>$row['id'],
                     "nombres"=>$row['nombres'],
                     "apellidos"=>$row['apellidos'],
-                    "tipocosto"=>"Abono",
+                    "tipocosto"=>"Devolución",
                     "nempleado"=>$row['nemp'],
                     "aempleado"=>$row['napel'],
                     "sucursal"=>$row['nombre'],
                     "costo"=>$row['monto'],
-                    "fechatransaccion"=>$row['fechaAbono']
+                    "fechatransaccion"=>$row['fechaDevolucion']
                 );
             
             array_push($listadoP, $ar);
@@ -1218,7 +1218,9 @@ class ReporteController extends Controller
 //            array_push($listadoP, 'Abono');
 //            array_push($listadoP, $row['monto']);
         }
-        
+        //var_dump($listadoP);
+        sort($listadoP);
+        //var_dump($listadoP);
         
         
 //        $dqlpac="SELECT pac.id, per.nombres, per.apellidos, emp.nombres nemp, emp.apellidos napel, paq.costo*(1-(d.porcentaje/100)) as costo,vp.fechaVenta,s.nombre FROM DGPlusbelleBundle:VentaPaquete vp "

@@ -56,9 +56,9 @@ class DevolucionController extends Controller
         $paciente = $request->get('paciente');
         
         $user = $this->get('security.token_storage')->getToken()->getUser();
-        var_dump($user);
-        die();
-        $entity->setEmpleado($empleado);
+        //var_dump($user->getPersona()->getEmpleado()[0]);
+        //die();
+        $entity->setEmpleado($user->getPersona()->getEmpleado()[0]);
         $entity->setfechaDevolucion(new \DateTime('now'));
         $form = $this->createCreateForm($entity,$paciente,$idpaquetes,$idtratamientos);
         $form->handleRequest($request);
@@ -96,7 +96,18 @@ class DevolucionController extends Controller
             'action' => $this->generateUrl('admin_devolucion_create', array('paciente' => $paciente, 'paquete' => $paquete, 'tratamiento' => $tratamientos)),
             'method' => 'POST',
         ));
+        $stringTra = "";
         
+        foreach($tratamientos as $key=>$val){
+            if($key=='0'){
+                $stringTra.="".$val;
+            }
+            else{
+                $stringTra.=",".$val;
+            }
+        }
+        
+        //var_dump($stringTra);
              $form
                 ->add('ventapaquete', 'entity', 
                   array( 'label'         => 'Paquetes','required'=>false,
@@ -194,7 +205,7 @@ class DevolucionController extends Controller
         //var_dump($paciente->getId());
         //var_dump($paciente->getPersona()->getId());
         foreach ($tratamientos as $tra){
-            $idtra=$tra->getId();
+            $idtra=$tra->getTratamiento()->getId();
             //var_dump($idpaq);
             //$cuota=$paq->getCuotas();
             $dql = "SELECT d FROM DGPlusbelleBundle:Devolucion d "

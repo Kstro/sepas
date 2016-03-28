@@ -75,13 +75,19 @@
             });  
 
             $(document).on("click","#dgplusbellebundle_devolucion_flagDevolucion_0", function(){
-                $("#paquete").show();
-                $("#tratamiento").hide();
+                {#$("#paquete").show();
+                $("#tratamiento").hide();#}
+                
+                $("#tratamiento").show();
+                $("#paquete").hide(); 
             });
             
             $(document).on("click","#dgplusbellebundle_devolucion_flagDevolucion_1", function(){
-                $("#tratamiento").show();
-                $("#paquete").hide(); 
+                {#$("#tratamiento").show();
+                $("#paquete").hide(); #}
+                
+                $("#paquete").show();
+                $("#tratamiento").hide();
             });
             
             if($('#dgplusbellebundle_devolucion_flagDevolucion_0').is(':checked')){

@@ -214,8 +214,8 @@
                     </button>
                 </div>#}
                 <div class="btn-group btn-group-sm pull-left">
-{#                    <input id="filterDatatables1" class="form-control input-sm" placeholder="Buscar...">#}
-                    {#<input id="filterDatatables2" class="form-control input-sm" placeholder="Buscar...">#}
+                    <input id="filterDatatables1" class="form-control input-sm" placeholder="Buscar...">
+                    <input id="filterDatatables2" class="form-control input-sm" placeholder="Buscar...">
                     <input id="filterDatatables3" class="form-control input-sm" placeholder="Buscar...">
                 </div>
               </div><!-- /btn-toolbar -->
@@ -265,24 +265,24 @@
                                         <div class="row">
                                             <div class="col-md-1 col-md-offset-3">
                                                 <div class="btn-group btn-group-sm pull-left">
-                                                    <button id="nueva-sesion" data-toggle="tooltip" data-container="body" title="Registrar sesion de tratamiento" class="btn btn-default datatables1-actions" role="button" onclick="sesionTratamiento({{ entity.id }});">
+                                                    {#<button id="nueva-sesion" data-toggle="tooltip" data-container="body" title="Registrar sesion de tratamiento" class="btn btn-default datatables1-actions" role="button" onclick="sesionTratamiento({{ entity.id }});">
                                                         <i class="fa fa-plus-square"></i><a href=""> </a>
-                                                    </button>
+                                                    </button>#}
                                                 </div>
                                             </div>
                                             <div class="col-md-1">
                                                 <div class="btn-group btn-group-sm pull-left">
-                                                    <button id="seguimiento-tratamiento" data-toggle="tooltip" data-container="body" title="Seguimiento del tratamiento" class="btn btn-default datatables1-actions seguimiento" role="button" onclick="seguimientoTratamiento({{ entity.id }});">
+                                                    {#<button id="seguimiento-tratamiento" data-toggle="tooltip" data-container="body" title="Seguimiento del tratamiento" class="btn btn-default datatables1-actions seguimiento" role="button" onclick="seguimientoTratamiento({{ entity.id }});">
                                                         <i class="fa fa-history"></i><a href=""> </a>
-                                                    </button>
+                                                    </button>#}
                                                 </div>
                                             </div> 
                                             {% if deuda != 0%}            
                                             <div class="col-md-1">
                                                 <div class="btn-group btn-group-sm pull-left">
-                                                    <button id="abono-tratamiento" data-toggle="tooltip" data-container="body" title="Nuevo abono" class="btn btn-default datatables1-actions abono" role="button" onclick="nuevoAbono('{{ idPaciente }}', 1);">
+                                                    {#<button id="abono-tratamiento" data-toggle="tooltip" data-container="body" title="Nuevo abono" class="btn btn-default datatables1-actions abono" role="button" onclick="nuevoAbono('{{ idPaciente }}', 1);">
                                                         <i class="fa fa-dollar"></i><a href=""> </a>
-                                                    </button>
+                                                    </button>#}
                                                 </div>
                                             </div> 
                                             {% endif %}        
@@ -473,9 +473,9 @@
                                         
                                         <div class="btn-group btn-group-sm pull-left">
                                             <div class="btn-group btn-group-sm pull-left">
-                                                <button id="exportar-pdf" data-toggle="tooltip" data-container="body" title="Detalle de consulta" class="btn btn-default datatables1-actions opciones" role="button" onclick="exportarConsultaPDF({{ entity.id }})">{{ entity.id }}
+                                                <button id="exportar-pdf" data-toggle="tooltip" data-container="body" title="Detalle de consulta" class="btn btn-default datatables1-actions opciones" role="button" onclick="exportarConsultaPDF({{ entity.id }})">
                                                     <i class="fa fa-list-alt"></i><a href=""> </a>
-                                                </button>                                                     
+                                                </button>
                                             </div>
                                         </div>
                                                 
@@ -602,8 +602,20 @@
                     $('#filterDatatables2').hide();
                     $('#filterDatatables3').hide();
                     
+                    $('#filterDatatables1').val('');
+                    $('#filterDatatables2').val('');
+                    $('#filterDatatables3').val('');
+                    $('#datatables1_filter').children().children().val('');
                     $('#datatables2_filter').children().children().val('');
                     $('#datatables3_filter').children().children().val('');
+                    
+                    $('#datatables1_filter>label>input').val('');
+                    $('#datatables2_filter>label>input').val('');
+                    $('#datatables3_filter>label>input').val('');
+                    
+                    $('#datatables1_filter>label>input').keyup();
+                    $('#datatables2_filter>label>input').keyup();
+                    $('#datatables3_filter>label>input').keyup();
                     
                 });
                 
@@ -614,21 +626,34 @@
                     //alert('oculto tabla1');
                     $("#tabla3").show();
                     $("#tabla2").hide();
-                    $("#tabla3").show();
+                    //$("#tabla3").show();
                     $("#tabla4").hide();
                     $("#tabla1").hide();
                     //$(this).addClass('btn btn-primary');
                     $("#tratamientos-datatables1").removeClass('btn btn-primary');
-                    $("#ventapaquetes-datatables2").removeClass('btn btn-primary');
+                    $("#consultas-datatables3").removeClass('btn btn-primary');
                     $("#tratamientos-datatables1").addClass('btn btn-default');
-                    $("#ventapaquetes-datatables2").addClass('btn btn-default');
+                    $("#consultas-datatables3").addClass('btn btn-default btn-primary');
                     
                     $('#filterDatatables1').hide();
                     $('#filterDatatables2').hide();
                     $('#filterDatatables3').show();
                     
+                    $('#filterDatatables1').val('');
+                    $('#filterDatatables2').val('');
+                    $('#filterDatatables3').val('');
+                    
                     $('#datatables1_filter').children().children().val('');
                     $('#datatables2_filter').children().children().val('');
+                    $('#datatables3_filter').children().children().val('');
+                    
+                    $('#datatables1_filter>label>input').val('');
+                    $('#datatables2_filter>label>input').val('');
+                    $('#datatables3_filter>label>input').val('');
+                    
+                    $('#datatables1_filter>label>input').keyup();
+                    $('#datatables2_filter>label>input').keyup();
+                    $('#datatables3_filter>label>input').keyup();
                     
                 });
                 /*
@@ -637,7 +662,7 @@
                     return false;
                 });
                 */
-                $('#filterDatatables1').on('keyup', function(event) {
+                $('#filterDatatables1').on('input', function(event) {
                     var filtro = $(this).val(); 
                     //alert(filtro);
                     $('#datatables1_filter>label>input').val($(this).val());
@@ -645,14 +670,14 @@
 
                 });
                 
-                $('#filterDatatables2').on('keyup', function(event) {
+                $('#filterDatatables2').on('input', function(event) {
                     var filtro = $(this).val(); 
                     //alert(filtro);
                     $('#datatables2_filter>label>input').val($(this).val());
                     $('#datatables2_filter>label>input').keyup();
                 });
                 
-                $('#filterDatatables3').on('keyup', function(event) {
+                $('#filterDatatables3').on('input', function(event) {
                     var filtro = $(this).val(); 
                     //alert(filtro);
                     $('#datatables3_filter>label>input').val($(this).val());
@@ -743,14 +768,14 @@
         //Oculta la tabla paquete
         //$('#tabla2').hide();
         //$('#tabla2').hide();
-        {# $('#filterDatatables2').hide();
-        $('#tabla2').hide();#}
+         $('#filterDatatables2').hide();
+        $('#tabla2').hide();
         
         $('#datatables1_filter, #datatables2_filter, #datatables3_filter').hide();
         
         //Oculta la tabla consulta
-        {#$('#filterDatatables3').hide();
-        $('#tabla3').hide();#}
+        $('#filterDatatables3').hide();
+        $('#tabla3').hide();
         $('#filterDatatables1, #filterDatatables2, #filterDatatables3').val('');
         
     });//Fin document ready
