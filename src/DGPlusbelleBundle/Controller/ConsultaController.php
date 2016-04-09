@@ -14,6 +14,7 @@ use DGPlusbelleBundle\Entity\Expediente;
 use DGPlusbelleBundle\Entity\HistorialClinico;
 use DGPlusbelleBundle\Entity\HistorialConsulta;
 use DGPlusbelleBundle\Entity\ConsultaProducto;
+use DGPlusbelleBundle\Entity\Paciente;
 use DGPlusbelleBundle\Entity\ImagenConsulta;
 use DGPlusbelleBundle\Form\ConsultaType;
 use DGPlusbelleBundle\Form\ConsultaConPacienteType;
@@ -1408,6 +1409,96 @@ class ConsultaController extends Controller
         $em->persist($expediente);
         $em->flush();
         return $numeroExp;
+    }
+    
+    
+    
+    
+    
+    
+    /**
+     * 
+     *
+     * @Route("/consulta/data/exp", name="admin_consulta_ajax")
+     */
+    public function dataconsultaAction(Request $request)
+    {
+        
+        $entity = new Paciente();
+        //$form = $this->createCreateForm($entity);
+     
+
+        $start = $request->query->get('start');
+        $draw = $request->query->get('draw');
+        $longitud = $request->query->get('length');
+        $busqueda = $request->query->get('search');
+        
+        $idPaciente = $request->query->get('id');
+        $idPaciente=  substr($idPaciente, 1);
+        
+        $em = $this->getDoctrine()->getEntityManager();
+        $expedientesTotal = $em->getRepository('DGPlusbelleBundle:Consulta')->findAll();
+        
+        $paciente['draw']=$draw++;  
+        $paciente['recordsTotal'] = count($expedientesTotal);
+        $paciente['recordsFiltered']= count($expedientesTotal);
+        $paciente['data']= array();
+        //var_dump($busqueda);
+        //die();
+        $arrayFiltro = explode(' ',$busqueda['value']);
+        
+        //echo count($arrayFiltro);
+        $busqueda['value'] = str_replace(' ', '%', $busqueda['value']);
+        if($busqueda['value']!=''){
+                                
+                    $dql = "SELECT con.id, con.fechaConsulta FROM DGPlusbelleBundle:Consulta "
+                        . "WHERE CONCAT(CONCAT(upper(per.nombres),upper(per.apellidos)),exp.numero) LIKE upper(:busqueda) "
+                        . "ORDER BY per.nombres ASC ";
+                    $paciente['data'] = $em->createQuery($dql)
+                            ->setParameters(array('busqueda'=>"%".$busqueda['value']."%"))
+                            ->getResult();
+                    
+                    $paciente['recordsFiltered']= count($paciente['data']);
+                    
+                    $dql = "SELECT exp.numero as expediente, pac.id as id,per.nombres,per.apellidos,DATE_FORMAT(pac.fechaNacimiento,'%d-%m-%Y') as fechaNacimiento, '<a><i style=\"cursor:pointer;\" data-toggle=\"tooltip\" data-original-title=\"Atrás\" class=\"infoPaciente fa fa-info-circle\"></i></a><a style=\"position:absolute; margin-left:10px;\"><i style=\"cursor:pointer;\"  class=\"expPaciente fa fa-list\"></i></a>'  as link FROM DGPlusbelleBundle:Paciente pac "
+                        . "JOIN pac.persona per "
+                        . "JOIN pac.expediente exp "
+                        . "WHERE CONCAT(CONCAT(upper(per.nombres),upper(per.apellidos)),exp.numero) LIKE upper(:busqueda) "
+                        . "ORDER BY per.nombres ASC ";
+                    $paciente['data'] = $em->createQuery($dql)
+                            ->setParameters(array('busqueda'=>"%".$busqueda['value']."%"))
+                            ->setFirstResult($start)
+                            ->setMaxResults($longitud)
+                            ->getResult();
+        }
+        else{
+            $dql = "SELECT DATE_FORMAT(con.fechaConsulta,'%d-%m-%Y') as fecha FROM DGPlusbelleBundle:Consulta con "
+                    . "WHERE con.paciente =:id "
+                    . "ORDER BY con.fechaConsulta DESC ";
+            $paciente['data'] = $em->createQuery($dql)
+                    ->setParameters(array('id'=>$idPaciente))
+                    ->setFirstResult($start)
+                    ->setMaxResults($longitud)
+                    ->getResult();
+            $paciente['recordsTotal'] = count($paciente['data']);
+        }
+        //$longitud = $request->query->get('length');
+        //var_dump($start);
+        
+//        var_dump(count($paciente['recordsTotal']));
+//        die();
+        
+//        $paciente['recordsFiltered']= count($paciente['data']);
+        //var_dump(count($pacientesTotal));
+        
+        //$array = array("draw"=>23);
+//        $paciente['draw']=23;
+//        $paciente['recordsTotal']=57;
+//        $paciente['recordsFiltered']=57;
+        
+        
+        return new Response(json_encode($paciente));
+    
     }
     
     
