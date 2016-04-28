@@ -59,50 +59,6 @@ class PacienteType extends AbstractType
                     'attr'=>array(
                     'class'=>'form-control input-sm telefonoemerPaciente'
                     )))
-                
-            ->add('tipoSangre','choice',array('label' => 'Tipo de sangre','required' => false,
-                    'choices'  => array('A+' => 'A+', 'B+' => 'B+', 'O+' => 'O+', 'AB+' => 'AB+','A-' => 'A-', 'B-' => 'B-', 'O-' => 'O-', 'AB-' => 'AB-'),
-                    'attr'=>array(
-                    'class'=>'form-control input-sm tipoSangre'
-                    )))   
-                
-            ->add('tabaquismo','choice',array('label' => 'Tabaquismo','required' => false,
-                    'choices'  => array('Nunca' => 'Nunca', 'Casual' => 'Casual', 'Moderado' => 'Moderado', 'Intenso' => 'Intenso'),
-                    'attr'=>array(
-                    'class'=>'form-control input-sm tabaquismo'
-                    )))   
-                
-            ->add('alcoholismo','choice',array('label' => 'Alcoholismo','required' => false,
-                    'choices'  => array('Nunca' => 'Nunca', 'Casual' => 'Casual', 'Moderado' => 'Moderado', 'Intenso' => 'Intenso'),
-                    'attr'=>array(
-                    'class'=>'form-control input-sm alcoholismo'
-                    )))   
-                
-                
-                
-            ->add('hereditarios','textarea',array('label' => 'Hereditarios','required' => false,
-                    'attr'=>array(
-                    'class'=>'form-control input-sm textarea'
-                    )))
-                
-            ->add('patologicos','textarea',array('label' => 'Patologicos','required' => false,
-                    'attr'=>array(
-                    'class'=>'form-control input-sm textarea'
-                    )))
-                
-                
-            ->add('noPatologicos','textarea',array('label' => 'No patologicos','required' => false,
-                    'attr'=>array(
-                    'class'=>'form-control input-sm textarea'
-                    )))
-                
-                
-            ->add('personaEmergencia','text',array('label' => 'En caso de Emergencia llamar a','required' => false,
-                    'attr'=>array(
-                    'class'=>'form-control input-sm emergenciaPaciente'
-                    )))
-                
-            
 //             ->add('enteradoPor','text',array('label' => 'Enterado por','required' => false,
 //                    'attr'=>array(
 //                    'class'=>'form-control input-sm'

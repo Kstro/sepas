@@ -188,6 +188,14 @@ class Paciente
     private $noPatologicos;
     
     
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="medicamentos_alergias", type="string", length=3, nullable=false)
+     */
+    private $medicamentosAlergias;
+    
+    
     
     /**
      * Get id
@@ -772,6 +780,33 @@ class Paciente
         return $this->noPatologicos;
     }
     
+    
+    
+    
+    
+    /**
+     * Set medicamentosAlergias
+     *
+     * @param string $medicamentosAlergias
+     *
+     * @return Paciente
+     */
+    public function setMedicamentosAlergias($medicamentosAlergias)
+    {
+        $this->medicamentosAlergias= $medicamentosAlergias;
+
+        return $this;
+    }
+
+    /**
+     * Get hereditarios
+     *
+     * @return string
+     */
+    public function getMedicamentosAlergias()
+    {
+        return $this->medicamentosAlergias;
+    }
     
     
     

@@ -102,9 +102,9 @@
     {% endif %}
     {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_USER')%}
         <li class="nav-item" role="presentation">
-            <a href="{{path('admin_consulta_expediente')}}">
+            <a href="{{path('admin_consulta_expediente_sd')}}">
                 <span class="nav-icon"><i class="fa fa-book"></i></span>
-                <span class="nav-text">Consultar expediente</span>
+                <span class="nav-text">Expedientes</span>
             </a>
         </li>
     {% endif %}
