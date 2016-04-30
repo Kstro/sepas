@@ -678,7 +678,7 @@ class PacienteController extends Controller
 	 */
         $entity = new Paciente();
         $form = $this->createCreateForm($entity);
-     
+        date_default_timezone_set('America/El_Salvador');
 
         $start = $request->query->get('start');
         $draw = $request->query->get('draw');
