@@ -713,8 +713,8 @@ class PacienteController extends Controller
                     
 //            $dql = "SELECT exp.numero as expediente, per.nombres,per.apellidos,DATE_FORMAT(pac.fechaNacimiento,'%d-%m-%Y') as fechaNacimiento, CONCAT('<a id=\"',pac.id,'\"><i style=\"cursor:pointer;\" data-toggle=\"tooltip\" data-original-title=\"Atrás\" class=\"infoPaciente fa fa-info-circle\"></i></a>') as link FROM DGPlusbelleBundle:Paciente pac "
 //                . "JOIN pac.persona per JOIN pac.expediente exp ORDER BY per.nombres ASC ";
-            $sql = "SELECT count(*) as total FROM listadoexpediente WHERE expediente='".strtoupper($busqueda['value'])."' ORDER BY fecha DESC";
-        
+            $sql = "SELECT count(*) as total FROM listadoexpediente WHERE expediente like '%".strtoupper($busqueda['value'])."S' ORDER BY fecha DESC";
+            
             $em = $this->getDoctrine()->getManager();
             $stmt = $em->getConnection()->prepare($sql);
             $stmt->execute();
@@ -733,14 +733,13 @@ class PacienteController extends Controller
 //                
 //                END AS detalles FROM listadoexpediente WHERE expediente='".strtoupper($busqueda['value'])."' ORDER BY fecha DESC LIMIT ".$start.",".$longitud;
             
-            $sql = "SELECT id as id, fecha as fecha,transaccion,atendido,realizado, 
+            $sql = "SELECT id as id, fecha as fecha,transaccion,upper(atendido) as atendido,realizado, 
                 CASE
-                WHEN transaccion='Consulta' AND atendido = 'JUAN CARLOS PACHECO CARDONA' THEN CONCAT('<a id=\"',idtransaccion,'\" class=\"link_ SD\">', 'Ver detalles</a>',' <a class=\"pull-right link\" id=\"',idtransaccion,'\">Eliminar consulta</a>')
-                WHEN transaccion='Consulta' AND atendido = 'MILDRED LARA DE PACHECO' THEN CONCAT('<a id=\"',idtransaccion,'\" class=\"link_ SD\">', 'Ver detalles</a>',' <a class=\"pull-right link\" id=\"',idtransaccion,'\">Eliminar consulta</a>')
+                WHEN transaccion='Consulta' THEN CONCAT('<a id=\"',idtransaccion,'\" class=\"link_ SD\">', 'Ver detalles</a>',' <a class=\"pull-right link\" id=\"',idtransaccion,'\">Eliminar consulta</a>')
                 WHEN transaccion = 'Venta paquete' THEN CONCAT('<a id=\"',idtransaccion,'\" class=\"link_ paquete\">', 'Ver detalles</a>')
                 ELSE CONCAT('<a id=\"',idtransaccion,'\" class=\"link_ tratamiento\">', 'Ver detalles</a>')
                 
-                END AS detalles FROM listadoexpediente WHERE expediente='".strtoupper($busqueda['value'])."' ORDER BY fecha DESC LIMIT ".$start.",".$longitud;
+                END AS detalles FROM listadoexpediente WHERE expediente like '%".strtoupper($busqueda['value'])."' ORDER BY fecha DESC LIMIT ".$start.",".$longitud;
         
 //            $em = $this->getDoctrine()->getManager();
             $stmt = $em->getConnection()->prepare($sql);
@@ -825,10 +824,10 @@ class PacienteController extends Controller
                         . "FROM DGPlusbelleBundle:Expediente exp "
                         . "JOIN exp.paciente pac "
                         . "JOIN pac.persona per "
-                        . "WHERE exp.numero=:busqueda";
+                        . "WHERE exp.numero like :busqueda";
         
         $paciente['data'] = $em->createQuery($dql)
-                ->setParameters(array('busqueda'=>strtoupper($busqueda))) 
+                ->setParameters(array('busqueda'=>strtoupper('%'.$busqueda))) 
                 ->getResult();
         
         //var_dump($paciente);

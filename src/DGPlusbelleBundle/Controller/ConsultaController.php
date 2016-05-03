@@ -11,6 +11,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use DGPlusbelleBundle\Entity\Consulta;
 use DGPlusbelleBundle\Entity\Signos;
+use DGPlusbelleBundle\Entity\Evaluacion;
 use DGPlusbelleBundle\Entity\Expediente;
 use DGPlusbelleBundle\Entity\HistorialClinico;
 use DGPlusbelleBundle\Entity\HistorialConsulta;
@@ -822,6 +823,7 @@ class ConsultaController extends Controller
                 $consulta = $entity;
             }
             $signos = $em->getRepository('DGPlusbelleBundle:Signos')->findBy(array('consulta'=>$consulta->getId()),array('id'=>'DESC'));
+            $evaluacion = $em->getRepository('DGPlusbelleBundle:Evaluacion')->findBy(array('consulta'=>$consulta->getId()),array('id'=>'DESC'));
             //Seteo del paciente en la entidad
             $entity->setPaciente($paciente);
             //var_dump($paciente);
@@ -948,6 +950,13 @@ class ConsultaController extends Controller
             $signos=$signos[0];
         }
         
+        if(count($evaluacion)==0){
+            $evaluacion=new Evaluacion();
+        }
+        else{
+            $evaluacion=$evaluacion[0];
+        }
+        
         
         
         $sucursales = $em->getRepository('DGPlusbelleBundle:Sucursal')->findBy(array('estado'=>1));
@@ -985,6 +994,7 @@ class ConsultaController extends Controller
             //'form'   => $form->createView(),
             'flag'   => $flag,
             'signos' => $signos,
+            'evaluacion' => $evaluacion,
         );
             
     }
@@ -3102,6 +3112,40 @@ class ConsultaController extends Controller
         
         if(count($consulta)!=0){
             $em->remove($consulta);
+            $em->flush();   
+            return new Response(json_encode(0)); //no error
+        }
+        else{
+            return new Response(json_encode(1));//error
+        }
+    }
+    
+    
+    
+    /**
+     * 
+     *
+     * @Route("/consulta/data/evaluacion", name="admin_evaluacion_guardar_ajax")
+     */
+    public function evaluacionAction(Request $request)
+    {
+
+        $em = $this->getDoctrine()->getEntityManager();
+        
+        $evaluacion = new Evaluacion();
+        
+        
+        $id = $request->get('id');
+        $idConsulta = $request->get('idConsulta');
+        $diagnostico = $request->get('diagnostico');
+        $estLaboratorios = $request->get('estLaboratorios');
+        $medicamentos = $request->get('medicamentos');
+        
+        $consulta = $em->getRepository('DGPlusbelleBundle:Consulta')->find($idConsulta);
+        
+        if(count($consulta)!=0){
+            
+            $em->remove($evaluacion);
             $em->flush();   
             return new Response(json_encode(0)); //no error
         }

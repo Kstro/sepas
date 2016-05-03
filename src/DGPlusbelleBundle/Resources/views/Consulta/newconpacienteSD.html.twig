@@ -193,13 +193,15 @@
               <li class=""><a href="#botabs1" data-toggle="tab">Datos generales</a></li>
               <li class="active"><a href="#botabs2" data-toggle="tab">Consulta</a></li>
               <li class=""><a href="#botabs3" data-toggle="tab">Signos</a></li>
+              
               <li class=""><a href="#botabs4" data-toggle="tab">Antecedentes y alergias</a></li>
               {#<li class=""><a href="#botabs5" data-toggle="tab">Costo</a></li>#}
               <li class=""><a href="#botabs6" data-toggle="tab">Imágenes</a></li>
 {#              <li class=""><a href="#botabs7" data-toggle="tab">Historia clínica</a></li>#}
               <li class=""><a href="#botabs8" data-toggle="tab">Receta médica</a></li>
               <li class=""><a href="#botabs9" data-toggle="tab">Vacunas</a></li>
-              
+              <li class=""><a href="#botabs10" data-toggle="tab">Enfermedades</a></li>
+              <li class=""><a href="#botabs11" data-toggle="tab">Evaluación</a></li>
             </ul>
             <div class="panel-body">
                 <div class="tab-content">
@@ -386,7 +388,7 @@
                             <div class="row  pull-right" style="margin-top:10px;">
                                 <div class="col-md-12">
                                     <div class="form-grouphide col-sm-12">
-                                        <button type="submit" id="guardarNuevoDatosGenerales" name="dgplusbellebundle_consulta[submit]" class="btn btn-success btn-xs btn btn">Guardar</button>
+                                        <button type="submit" id="guardarNuevoDatosGenerales" name="dgplusbellebundle_consulta[submit]" class="btn btn-success text-light btn-xs btn btn">Guardar</button>
                                     </div>
                                 </div>
                             </div>
@@ -399,12 +401,12 @@
                                 <div class="col-md-12">
                                     
                                     <div class="row" style="margin-top:20px;">
-                                        <div class="col-md-3">
+                                        {#<div class="col-md-3">
                                             <label>
                                                 Médico
                                             </label>
-                                        </div>
-                                        <div class="col-md-3">
+                                        </div>#}
+                                        <div class="col-md-2">
                                             <label>
                                                 Costo de consulta
                                             </label>
@@ -415,23 +417,23 @@
                                             </label>
                                         </div>#}
                                         
-                                        <div class="col-md-6">
+                                        <div class="col-md-2">
                                             <label>
                                                 Tipo consulta
                                             </label>
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-3">
-                                            <select id="medico_consulta" name="tratamiento" class="form-control input-sm">
+                                        {#<div class="col-md-3">
+                                            <select id="medico_consulta" name="tratamiento" class="form-control input-sm">#}
 {#                                                <option value="0" selected>Seleccione un médico...</option>#}
                                                 {#{% for empleado in empleados %}
                                                     <option value="{{empleado.id}}" {% if consulta.empleado!=null and consulta.tipoConsulta!=null and consulta.id!=null and empleado.id==consulta.empleado.id %} selected {% endif %}>{{empleado.persona.nombres}} {{empleado.persona.apellidos}}</option>#}
 {#                                                        <option value="{{empleado.id}}" {% if consulta.empleado is not null and empleado.id==consulta.empleado.id %} selected {% endif %}>{{empleado.persona.nombres}} {{empleado.persona.apellidos}}</option>
                                                 {% endfor %}#}
-                                            </select>  
-                                        </div>
-                                        <div class="col-md-3">
+                                            {#</select>  
+                                        </div>#}
+                                        <div class="col-md-2">
                                             <input type="text" id="costoConsulta" class="form-control" placeholder="$"/>
                                         </div>
                                         {#<div class="col-md-3">
@@ -440,7 +442,7 @@
                                             </select>  
                                         </div>#}
                                         
-                                        <div class="col-md-6">
+                                        <div class="col-md-2">
                                             <select id="tipo_consulta" class="form-control input-sm">
                                                 <option value="0" selected>Seleccione un tipo de consulta...</option>
                                                 {%for tipo in tipoConsulta %}
@@ -452,29 +454,45 @@
                                     </div>
                                     
                                     <div class="row" style="margin-top:20px;">
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
                                             <label>
-                                                Observación
+                                                Motivos
+                                            </label>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label>
+                                                Síntomas
+                                            </label>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label>
+                                                Aparatos
                                             </label>
                                         </div>
                                         
-                                        <div class="col-md-6">
+                                        {#<div class="col-md-6">
                                             <label>
                                                 Sucursal
                                             </label>
-                                        </div>
+                                        </div>#}
                                         
                                     </div>
                                     <div class="row">
                                                                                
-                                        <div class="col-md-6">
-                                            <textarea class="col-md-12 editorArea" id="observacionConsulta">{{consulta.observacion}}</textarea>
+                                        <div class="col-md-4">
+                                            <textarea class="col-md-12 editorArea" id="motivoConsulta">{{consulta.motivo}}</textarea>
+                                        </div>                                        
+                                        <div class="col-md-4">
+                                            <textarea class="col-md-12 editorArea" id="sintomasConsulta">{{consulta.sintomas}}</textarea>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <textarea class="col-md-12 editorArea" id="aparatosConsulta">{{consulta.aparatos}}</textarea>
                                         </div>
                                         
-                                        <div class="col-md-6">
-                                            <select id="sucursal_consulta" class="form-control input-sm">
+                                        {#<div class="col-md-6">
+                                            <select id="sucursal_consulta" class="form-control input-sm">#}
 {#                                                <option value="0" selected>Seleccione una sucursal...</option>#}
-                                                {% for sucursal in sucursales %}
+                                                {#{% for sucursal in sucursales %}
                                                     {% if loop.index == 0 %}
                                                         <option value="{{sucursal.id}}" {% if consulta.id!=null and sucursal.id==consulta.sucursal.id %} selected {% endif %}>{{sucursal.nombre}}</option>
                                                     {% else %}
@@ -483,11 +501,9 @@
                                                     
                                                 {% endfor %}
                                             </select>
-                                        </div>
-                                        
+                                        </div>#}
                                         
                                     </div>
-                                    
                                     
                                     <div class="row" style="display:none;margin-top:20px;">
                                         <div class="col-md-12">
@@ -519,7 +535,7 @@
                                         <div class="col-md-12">
                                             <div class="form-grouphide col-sm-12">
                                                 <a class="btn btn-default btn-xs" id="cancelarNuevoConsulta">Cancelar</a>
-                                                <button type="submit" id="guardarNuevoConsulta" name="dgplusbellebundle_consulta[submit]" class="btn btn-success btn-xs btn btn">Guardar</button>
+                                                <button type="submit" id="guardarNuevoConsulta" name="dgplusbellebundle_consulta[submit]" class="btn btn-success text-light btn-xs btn btn">Guardar</button>
                                             </div>
                                         </div>
                                     </div>
@@ -612,7 +628,7 @@
                                     <div class="row  pull-right" style="margin-top:10px;">
                                         <div class="col-md-12">
                                             <div class="form-grouphide col-sm-12">
-                                                <button type="submit" id="guardarSignosConsulta" name="dgplusbellebundle_consulta[submit]" class="btn btn-success btn-xs btn btn">Guardar</button>
+                                                <button type="submit" id="guardarSignosConsulta" name="dgplusbellebundle_consulta[submit]" class="btn btn-success text-light btn-xs btn btn">Guardar</button>
                                             </div>
                                         </div>
                                     </div>
@@ -657,7 +673,7 @@
                             <div class="col-md-12">
                                 <div class="form-grouphide col-sm-12">
                                     {#<a class="btn btn-default btn-xs" id="cancelarNuevoConsulta">Cancelar</a>#}
-                                    <button type="submit" id="guardarAntecedentes" name="dgplusbellebundle_antecedentes[submit]" class="btn btn-success btn-xs btn btn">Guardar</button>
+                                    <button type="submit" id="guardarAntecedentes" name="dgplusbellebundle_antecedentes[submit]" class="btn btn-success text-light btn-xs btn btn">Guardar</button>
                                 </div>
                             </div>
                         </div>
@@ -686,7 +702,7 @@
                                 <div class="col-md-12">
                                     <div class="form-grouphide col-sm-12">
                                         {#<a class="btn btn-default btn-xs" id="cancelarNuevoConsulta">Cancelar</a>#}
-                                        <button type="submit" id="guardarCostoConsulta" name="dgplusbellebundle_antecedentes[submit]" class="btn btn-success btn-xs btn btn">Guardar</button>
+                                        <button type="submit" id="guardarCostoConsulta" name="dgplusbellebundle_antecedentes[submit]" class="btn btn-success text-light btn-xs btn btn">Guardar</button>
                                     </div>
                                 </div>
                             </div>
@@ -738,7 +754,7 @@
                             <div class="col-md-12">
                                 <div class="form-grouphide col-sm-12">
                                     {#<a class="btn btn-default btn-xs" id="cancelarNuevoConsulta">Cancelar</a>#}
-                                    <button type="submit" id="guardarImagenes" name="dgplusbellebundle_antecedentes[submit]" class="btn btn-success btn-xs btn btn">Guardar</button>
+                                    <button type="submit" id="guardarImagenes" name="dgplusbellebundle_antecedentes[submit]" class="btn btn-success text-light btn-xs btn btn">Guardar</button>
                                 </div>
                             </div>
                         </div>
@@ -885,7 +901,7 @@
                                         <div class="col-md-12">
                                             <div class="form-grouphide col-sm-12">
                                                 {#<a class="btn btn-default btn-xs" id="cancelarNuevoConsulta">Cancelar</a>#}
-                                                <button type="submit" id="guardarReceta" name="dgplusbellebundle_antecedentes[submit]" class="btn btn-success btn-xs btn btn">Guardar</button>
+                                                <button type="submit" id="guardarReceta" name="dgplusbellebundle_antecedentes[submit]" class="btn btn-success text-light btn-xs btn btn">Guardar</button>
                                             </div>
                                         </div>
                                     </div>
@@ -896,20 +912,12 @@
                         </p>
                     
                     </div><!-- /tab-content -->
-                 <div class="tab-pane fade in" id="botabs9">
+                 <div class="tab-pane fade in" id="botabs9"> {#vacunas#}
                         <p>
                             <strong></strong>
-                            
-                            {%if existeReceta == false %}
-                                <div class="col-md-12" style="margin-top:20px;{# display:none;#}" id="idReceta">
-                                    <i class="fa fa-file-pdf-o" style="margin-right:10px;"></i>
-                                    <a id="recetaPrevPDF" style="cursor:pointer;">Generar PDF</a>
-                                    <hr>
-                                </div>
                                 <div class="row" style="margin-top:10px;">
-                                    
                                     <div class="col-md-12">
-                                        <textarea class="col-md-12 editorArea" id="receta" placeholder=""></textarea>
+                                        <select class="col-md-12 editorArea" id="receta" placeholder=""></select>
                                     </div>
                                     
                                     <div class="clearfix"></div>
@@ -924,14 +932,60 @@
                                         <div class="col-md-12">
                                             <div class="form-grouphide col-sm-12">
                                                 {#<a class="btn btn-default btn-xs" id="cancelarNuevoConsulta">Cancelar</a>#}
-                                                <button type="submit" id="guardarReceta" name="dgplusbellebundle_antecedentes[submit]" class="btn btn-success btn-xs btn btn">Guardar</button>
+                                                <button type="submit" id="guardarReceta" name="dgplusbellebundle_antecedentes[submit]" class="btn btn-success text-light btn-xs btn btn">Guardar</button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            {% else %}
-                                <i class="fa fa-file-pdf-o"></i><a class="generarPDF" href="{{path(rutaReceta,{id:consulta.id})}}"> Ver receta</a>
-                            {% endif %}
+                        </p>
+                    
+                    </div><!-- /tab-content -->
+                    <div class="tab-pane fade in" id="botabs10">
+                        <p>
+                            <strong></strong>
+                            
+                        </p>
+                    
+                    </div><!-- /tab-content -->
+                    <div class="tab-pane fade in" id="botabs11">
+                        <p>
+                            <strong></strong>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label>Diagnóstico</label>
+                                </div>
+                                <div class="col-md-4">
+                                    <label>Estudios de laboratorios</label>
+                                </div>
+                                <div class="col-md-4">
+                                    <label>Medicamentos</label>
+                                </div>
+                            </div>
+                            <div class="row" style="margin-top:20px;">
+                                <div class="col-md-4">
+                                    <textarea maxlength="400" style="height:100px;" id="diagnostico" class="form-control">{{evaluacion.diagnostico}}</textarea>
+                                </div>
+                                <div class="col-md-4">
+                                    <textarea maxlength="400" style="height:100px;" id="estLaboratorios" class="form-control">{{evaluacion.estLaboratorio}}</textarea>
+                                </div>
+                                <div class="col-md-4">
+                                    <textarea maxlength="400" style="height:100px;" id="medicamentos" class="form-control">{{evaluacion.medicamentos}}</textarea>
+                                </div>
+                            </div>
+                        <div class="row" style="margin-top:10px;">
+                                        <div class="col-md-12">
+                                            <hr>
+                                        </div>
+                                    </div>
+
+                                    <div class="row pull-right" style="margin-top:10px;">
+                                        <div class="col-md-12">
+                                            <div class="form-grouphide col-sm-12">
+                                                {#<a class="btn btn-default btn-xs" id="cancelarNuevoConsulta">Cancelar</a>#}
+                                                <button type="submit" id="guardarEvaluacion" name="dgplusbellebundle_antecedentes[submit]" class="btn btn-success text-light btn-xs btn btn">Guardar</button>
+                                            </div>
+                                        </div>
+                                    </div>
                         </p>
                     
                     </div><!-- /tab-content -->
@@ -3051,6 +3105,69 @@
                     }
                 });
             }
+        });
+        
+        
+        
+        
+        $(document).on('click','#guardarEvaluacion', function(){
+            var id = $('#idPaciente').val();
+            var idConsulta = $('#idConsulta').val();
+            var diagnostico = $('#diagnostico').val();
+            
+            var estLaboratorios = $('#estLaboratorios').val();
+            var medicamentos = $('#medicamentos').val();
+            
+            var medico = $('#medico_consulta').val();
+            var sucursal = $('#sucursal_consulta').val();
+            
+            
+            if(idConsulta==''){
+                $.ajax({
+                    data:{sucursal:sucursal,medico:medico,id:id,diagnostico:diagnostico,estLaboratorios:estLaboratorios,medicamentos:medicamentos,idConsulta:idConsulta},
+                    url:"{{path('admin_evaluacion_guardar_ajax')}}",
+                    type: "post",
+                    success: function (data) {
+                            //inicio = data.inicio++;
+                            if(data!=0){
+    {#                            bootbox.alert("Cambios guardados!", function() {});#}
+                                alertify.success("Evaluación guardada!");
+                                $('#idConsulta').val(data);
+
+                            }
+    {#                        console.log("pagina actual: "+data);
+                            console.log("Inicio de registro: "+data.inicioRegistro);#}
+
+                        },
+                    error: function (data) {
+                        alertify.error("Hubo un error al guardar la evaluación, intente de nuevo!");
+
+                    }
+                });
+            }
+            {#else{
+                $.ajax({
+                    data:{idConsulta:idConsulta,id:id,peso:peso,talla:talla,frecRespiratoria:frecRespiratoria,presionDiastolica:presionDiastolica,presionSistolica:presionSistolica,temperatura:temperatura,frecCardiaca:frecCardiaca},
+                    url:"{{path('admin_paciente_actualizar_signos_ajax')}}",
+                    type: "post",
+                    success: function (data) {
+                            //inicio = data.inicio++;
+                            if(data!=0){
+    {#                            bootbox.alert("Cambios guardados!", function() {});#}
+                                {#alertify.success("Signos vitales actualizados!");
+                                $('#idConsulta').val(data);#}
+
+{#                            }#}
+    {#                        console.log("pagina actual: "+data);
+                            console.log("Inicio de registro: "+data.inicioRegistro);#}
+
+    {# },
+                    error: function (data) {
+
+
+                    }
+                });
+            }#}
         });
         
         

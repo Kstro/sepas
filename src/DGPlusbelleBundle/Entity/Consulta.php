@@ -51,6 +51,27 @@ class Consulta
     private $observacion;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="motivo", type="string", length=200, nullable=true)
+     */
+    private $motivo;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="aparatos", type="string", length=200, nullable=true)
+     */
+    private $aparatos;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="sintomas", type="string", length=200, nullable=true)
+     */
+    private $sintomas;
+    
+    /**
      * @var boolean
      *
      * @ORM\Column(name="incapacidad", type="boolean", nullable=false)
@@ -205,12 +226,7 @@ class Consulta
     
     
     
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="sintomas", type="string", length=200, nullable=true)
-     */
-    private $sintomas;
+    
     
     
     
@@ -246,6 +262,82 @@ class Consulta
         return $this;
     }
 
+    
+    
+    /**
+     * Set sintomas
+     *
+     * @param string $sintomas
+     *
+     * @return Consulta
+     */
+    public function setSintomas($sintomas)
+    {
+        $this->sintomas= $sintomas;
+
+        return $this;
+    }
+
+    /**
+     * Get sintomas
+     *
+     * @return string
+     */
+    public function getSintomas()
+    {
+        return $this->sintomas;
+    }
+    
+    /**
+     * Set aparatos
+     *
+     * @param string $aparatos
+     *
+     * @return Consulta
+     */
+    public function setAparatos($aparatos)
+    {
+        $this->aparatos= $aparatos;
+
+        return $this;
+    }
+
+    /**
+     * Get aparatos
+     *
+     * @return string
+     */
+    public function getAparatos()
+    {
+        return $this->sintomas;
+    }
+    
+    /**
+     * Set motivo
+     *
+     * @param string $motivo
+     *
+     * @return Consulta
+     */
+    public function setMotivo($motivo)
+    {
+        $this->motivo = $motivo;
+
+        return $this;
+    }
+
+    /**
+     * Get motivo
+     *
+     * @return string
+     */
+    public function getMotivo()
+    {
+        return $this->motivo;
+    }
+    
+    
+    
     /**
      * Get fechaConsulta
      *
@@ -643,29 +735,6 @@ class Consulta
     }
     
     
-    /**
-     * Set observacion
-     *
-     * @param string $sintomas
-     *
-     * @return Consulta
-     */
-    public function setSintomas($sintomas)
-    {
-        $this->sintomas= $sintomas;
-
-        return $this;
-    }
-
-    /**
-     * Get sintomas
-     *
-     * @return string
-     */
-    public function getSintomas()
-    {
-        return $this->sintomas;
-    }
     
     
     
@@ -673,7 +742,7 @@ class Consulta
     
     
     /**
-     * Set observacion
+     * Set codigo
      *
      * @param string $codigo
      *
@@ -687,7 +756,7 @@ class Consulta
     }
 
     /**
-     * Get sintomas
+     * Get codigo
      *
      * @return string
      */
