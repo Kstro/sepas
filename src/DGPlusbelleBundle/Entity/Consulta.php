@@ -174,21 +174,21 @@ class Consulta
      *
      * @ORM\Column(name="peso", type="float", nullable=false)
      */
-    private $peso; 
+    //private $peso; 
     
     /**
      * @var float
      *
      * @ORM\Column(name="talla", type="float", nullable=false)
      */
-    private $talla; 
+    //private $talla; 
     
     /**
      * @var int
      *
      * @ORM\Column(name="frec_respiratoria", type="integer", nullable=false)
      */
-    private $frecRespiratoria; 
+    //private $frecRespiratoria; 
     
     
     /**
@@ -196,7 +196,7 @@ class Consulta
      *
      * @ORM\Column(name="presion_arterial_sistolica", type="integer", nullable=false)
      */
-    private $presionArterialSistolica; 
+    //private $presionArterialSistolica; 
     
     
     
@@ -205,7 +205,7 @@ class Consulta
      *
      * @ORM\Column(name="presion_arterial_diastolica", type="integer", nullable=false)
      */
-    private $presionArterialDiastolica; 
+    //private $presionArterialDiastolica; 
     
     
     
@@ -214,7 +214,7 @@ class Consulta
      *
      * @ORM\Column(name="temperatura", type="float", nullable=false)
      */
-    private $temperatura; 
+    //private $temperatura; 
     
     
     /**
@@ -222,7 +222,7 @@ class Consulta
      *
      * @ORM\Column(name="frec_cardiaca", type="float", nullable=false)
      */
-    private $frecCardiaca; 
+    //private $frecCardiaca; 
     
     
     

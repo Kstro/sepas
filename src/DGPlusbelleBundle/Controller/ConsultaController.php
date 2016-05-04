@@ -3132,21 +3132,37 @@ class ConsultaController extends Controller
 
         $em = $this->getDoctrine()->getEntityManager();
         
-        $evaluacion = new Evaluacion();
         
         
-        $id = $request->get('id');
+        
+        
         $idConsulta = $request->get('idConsulta');
         $diagnostico = $request->get('diagnostico');
         $estLaboratorios = $request->get('estLaboratorios');
         $medicamentos = $request->get('medicamentos');
         
         $consulta = $em->getRepository('DGPlusbelleBundle:Consulta')->find($idConsulta);
-        
+        $evaluacion= $paciente = $em->getRepository('DGPlusbelleBundle:Evaluacion')->findBy(array('consulta'=>$idConsulta));    
+//        var_dump($consulta);
         if(count($consulta)!=0){
+            if(count($evaluacion)==0){
+                $evaluacion = new Evaluacion();
+                $evaluacion->setConsulta($consulta);
+                $evaluacion->setDiagnostico($diagnostico);
+                $evaluacion->setEstLaboratorio($estLaboratorios);
+                $evaluacion->setMedicamentos($medicamentos);
+                $em->persist($evaluacion);
+                $em->flush();
+            }
+            else{
+                $evaluacion[0]->setConsulta($consulta);
+                $evaluacion[0]->setDiagnostico($diagnostico);
+                $evaluacion[0]->setEstLaboratorio($estLaboratorios);
+                $evaluacion[0]->setMedicamentos($medicamentos);
+                $em->merge($evaluacion[0]);
+                $em->flush();
+            }
             
-            $em->remove($evaluacion);
-            $em->flush();   
             return new Response(json_encode(0)); //no error
         }
         else{

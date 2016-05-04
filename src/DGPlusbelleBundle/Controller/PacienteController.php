@@ -1148,7 +1148,7 @@ class PacienteController extends Controller
         $frecCardiaca = $request->get('frecCardiaca');
         $medico= $request->get('medico');
 //        var_dump($medico);
-        $sucursal= $request->get('sucursal');
+        //$sucursal= $request->get('sucursal');
         
 //        $patologicos = $request->get('patologicos');
 //        $familiares = $request->get('familiares');
@@ -1164,7 +1164,7 @@ class PacienteController extends Controller
         
         $paciente = $em->getRepository('DGPlusbelleBundle:Paciente')->find($id);
         $medico = $em->getRepository('DGPlusbelleBundle:Empleado')->find(intval($medico));
-        $sucursal = $em->getRepository('DGPlusbelleBundle:Sucursal')->find($sucursal);
+        $sucursal = $em->getRepository('DGPlusbelleBundle:Sucursal')->find(1); // para sepes siempre es 1
         
         $signos = new Signos();
         $consulta = new Consulta();
