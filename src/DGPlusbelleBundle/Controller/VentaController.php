@@ -34,8 +34,18 @@ class VentaController  extends Controller
         $request = $this->getRequest();
         
         $idPacient= $request->get('id');  
-        $idPaciente=  substr($idPacient, 1);
+        $idPaciente=  substr($idPacient, 2);
         $paciente = $em->getRepository('DGPlusbelleBundle:Paciente')->find($idPaciente);
+        
+        $idConsulta= $request->get('idtransaccion'); 
+        $consultaid =  substr($idConsulta, 2);
+        
+        if($consultaid!=null){
+            //$consulta = $em->getRepository('DGPlusbelleBundle:Consulta')->find($consultaid);
+        }
+        else{
+            $consulta = null;
+        }
         
         $edad="";
         if(count($paciente)!=0){
