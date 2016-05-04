@@ -146,7 +146,7 @@ class Evaluacion
     /**
      * Set consulta
      *
-     * @param \DGPlusbelleBundle\Entity\Paciente $paciente
+     * @param \DGPlusbelleBundle\Entity\Paciente $consulta
      *
      * @return Consulta
      */

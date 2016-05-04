@@ -46,6 +46,10 @@
             position: absolute;
         }
         
+        .editorVacuna{
+            width:100%;
+        }
+        
         .col-md-4{
 {#            padding-top: 40px;#}
         }
@@ -192,7 +196,7 @@
               {#<li class="active"><a aria-expanded="false" href="#botabs1" data-toggle="tab">Datos generales</a></li>#}
               <li class=""><a href="#botabs1" data-toggle="tab">Datos generales</a></li>
               <li class="active"><a href="#botabs2" data-toggle="tab">Consulta</a></li>
-              <li class=""><a href="#botabs3" data-toggle="tab">Signos</a></li>
+              <li class=""><a href="#botabs3" data-toggle="tab">Exploración física</a></li>
               
               <li class=""><a href="#botabs4" data-toggle="tab">Antecedentes y alergias</a></li>
               {#<li class=""><a href="#botabs5" data-toggle="tab">Costo</a></li>#}
@@ -915,13 +919,31 @@
                  <div class="tab-pane fade in" id="botabs9"> {#vacunas#}
                         <p>
                             <strong></strong>
-                                <div class="row" style="margin-top:10px;">
-                                    <div class="col-md-12">
-                                        <select class="col-md-12 editorArea" id="receta" placeholder=""></select>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <label>Vacuna</label>
                                     </div>
-                                    
-                                    <div class="clearfix"></div>
-                                    
+                                    <div class="col-md-3">
+                                        <label>Costo ($)</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label>Número de aplicaciones</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <i class="fa fa-plus fa-2x" id="masVacuna" style="cursor:pointer;"></i>
+                                    </div>
+                                    <div class="row vacuna-content" style="margin-top:10px;">                                                                        
+                                        <div class="col-md-3">
+                                            <select style="width:100%;" class="col-md-12 editorVacuna form-control input-sm" id="vacunas" placeholder=""></select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input value="" name="costoVacuna" class="form-control input-sm form-control" placeholder="$"/>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input value="" name="aplicacionesVacuna" class="form-control input-sm form-control" placeholder="#"/>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
                                     <div class="row" style="margin-top:10px;">
                                         <div class="col-md-12">
                                             <hr>
@@ -2790,7 +2812,7 @@
     
     
     
-    
+     $('.editorVacuna').select2();
 
     jQuery(document).ready(function() {
         
@@ -2858,11 +2880,39 @@
         });#}
             
             
+       
             
-            
+        
+        
         /**********************************************
          * Metodos de guardar con ajax
          */
+        
+        
+        $(document).on('click','#masVacuna', function(){
+            var nuevaVacuna='<div style=\"margin-top:10px;\" class=\"col-md-3\">\n\
+                                <select class=\"col-md-12 editorVacuna form-control input-sm\" id=\"vacunas\"></select>\n\
+                            </div>\n\
+                            <div style=\"margin-top:10px;\" class=\"col-md-3\">\n\
+                                <input value=\"\" name=\"aplicacionesVacuna\" class=\"form-control input-sm form-control\" placeholder=\"$\"/>\n\
+                            </div>\n\
+                            <div style=\"margin-top:10px;\" class=\"col-md-3\">\n\
+                                <input value=\"\" name=\"costoVacuna\" class=\"form-control input-sm form-control\" placeholder=\"#\"/>\n\
+                            </div>\n\
+                            <div style=\"margin-top:10px;\" class=\"col-md-3\">\n\
+                                <i class="deleteVacuna fa fa-times" aria-hidden="true"></i>\n\
+                            </div>\n\
+                            <div class=\"clearfix\"></div>';
+            $('.vacuna-content').append(nuevaVacuna);
+            $('.editorVacuna').select2();
+        });
+        
+        $(document).on('click','.deleteVacuna', function(){
+            $(this).parent().remove();
+            
+        });
+        
+        
         $(document).on('click','#guardarNuevoDatosGenerales', function(){
             var id = $('#idPaciente').val();
             var nombres = $('#nombresPaciente').val();
@@ -3120,19 +3170,24 @@
             
             var medico = $('#medico_consulta').val();
             var sucursal = $('#sucursal_consulta').val();
+            console.log("Consulta: "+idConsulta);
+            console.log("Diagnostico: "+diagnostico);
+            console.log("Lab: "+estLaboratorios);
+            console.log("medicamentos: "+medicamentos);
+            console.log("Medico: "+medico);
+            console.log("Sucursal: "+sucursal);
             
-            
-            if(idConsulta==''){
+            if(idConsulta!=''){
                 $.ajax({
                     data:{sucursal:sucursal,medico:medico,id:id,diagnostico:diagnostico,estLaboratorios:estLaboratorios,medicamentos:medicamentos,idConsulta:idConsulta},
                     url:"{{path('admin_evaluacion_guardar_ajax')}}",
                     type: "post",
                     success: function (data) {
                             //inicio = data.inicio++;
-                            if(data!=0){
+                            if(data==0){
     {#                            bootbox.alert("Cambios guardados!", function() {});#}
                                 alertify.success("Evaluación guardada!");
-                                $('#idConsulta').val(data);
+                                //$('#idConsulta').val(data);
 
                             }
     {#                        console.log("pagina actual: "+data);
