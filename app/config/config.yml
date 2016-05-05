@@ -117,7 +117,7 @@ easy_admin:
     site_name: 'SEPES S.A. de C.V.'
     design:
         brand_color: '#1ABC9C'
-    entities:
+#    entities:
 #        Test:
 #            class: DGPlusbelleBundle\Entity\Test
 #            label: 'Test'
