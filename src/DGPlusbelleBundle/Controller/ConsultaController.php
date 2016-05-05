@@ -17,6 +17,7 @@ use DGPlusbelleBundle\Entity\HistorialClinico;
 use DGPlusbelleBundle\Entity\HistorialConsulta;
 use DGPlusbelleBundle\Entity\ConsultaProducto;
 use DGPlusbelleBundle\Entity\ImagenConsulta;
+use DGPlusbelleBundle\Entity\VacunaConsulta;
 use DGPlusbelleBundle\Form\ConsultaType;
 use DGPlusbelleBundle\Form\ConsultaConPacienteType;
 use DGPlusbelleBundle\Form\ConsultaProductoType;
@@ -802,6 +803,7 @@ class ConsultaController extends Controller
         $botox = Array();
         $valores = Array();
         $corporal = Array();
+        
         if($cadena != NULL) {
             //Obtener el id del parametro
             $idEntidad = substr($cadena, 1);
@@ -817,10 +819,11 @@ class ConsultaController extends Controller
             
             if($idconsulta!=null){
                 $consulta = $em->getRepository('DGPlusbelleBundle:Consulta')->find($idconsulta);
-                
+                $tieneVacunas = $em->getRepository('DGPlusbelleBundle:VacunaConsulta')->findBy(array('consulta'=>$idconsulta));
             }
             else{
                 $consulta = $entity;
+                $tieneVacunas = null;
             }
             $signos = $em->getRepository('DGPlusbelleBundle:Signos')->findBy(array('consulta'=>$consulta->getId()),array('id'=>'DESC'));
             $evaluacion = $em->getRepository('DGPlusbelleBundle:Evaluacion')->findBy(array('consulta'=>$consulta->getId()),array('id'=>'DESC'));
@@ -995,6 +998,7 @@ class ConsultaController extends Controller
             'flag'   => $flag,
             'signos' => $signos,
             'evaluacion' => $evaluacion,
+            'tieneVacunas'=>$tieneVacunas,
         );
             
     }
@@ -3143,6 +3147,76 @@ class ConsultaController extends Controller
         
         $consulta = $em->getRepository('DGPlusbelleBundle:Consulta')->find($idConsulta);
         $evaluacion= $paciente = $em->getRepository('DGPlusbelleBundle:Evaluacion')->findBy(array('consulta'=>$idConsulta));    
+//        var_dump($consulta);
+        if(count($consulta)!=0){
+            if(count($evaluacion)==0){
+                $evaluacion = new Evaluacion();
+                $evaluacion->setConsulta($consulta);
+                $evaluacion->setDiagnostico($diagnostico);
+                $evaluacion->setEstLaboratorio($estLaboratorios);
+                $evaluacion->setMedicamentos($medicamentos);
+                $em->persist($evaluacion);
+                $em->flush();
+            }
+            else{
+                $evaluacion[0]->setConsulta($consulta);
+                $evaluacion[0]->setDiagnostico($diagnostico);
+                $evaluacion[0]->setEstLaboratorio($estLaboratorios);
+                $evaluacion[0]->setMedicamentos($medicamentos);
+                $em->merge($evaluacion[0]);
+                $em->flush();
+            }
+            
+            return new Response(json_encode(0)); //no error
+        }
+        else{
+            return new Response(json_encode(1));//error
+        }
+    }
+    /**
+     * 
+     *
+     * @Route("/consulta/data/vacunas", name="admin_vacunas_guardar_ajax")
+     */
+    public function vacunasAction(Request $request)
+    {
+
+        $em = $this->getDoctrine()->getEntityManager();
+        
+        
+        
+        
+        
+        $idConsulta = $request->get('idConsulta');
+        $valores= $request->get('valores');
+        
+        
+        $consulta = $em->getRepository('DGPlusbelleBundle:Consulta')->find($idConsulta);
+        
+        
+        $tieneVacunas = $em->getRepository('DGPlusbelleBundle:VacunaConsulta')->findBy(array('consulta'=>$idConsulta));
+        if(count($tieneVacunas)!=0){
+            foreach($tieneVacunas as $key=>$reg){
+//                var_dump($reg);
+                $em->remove($reg);
+                $em->flush();
+            }
+        }
+        
+        foreach($valores as $key=>$row){
+            
+            $vacunaConsulta = new VacunaConsulta();
+            $vacuna = $em->getRepository('DGPlusbelleBundle:Vacuna')->find($row[0]);
+            $vacunaConsulta->setCosto($row[1]);
+            $vacunaConsulta->setConsulta($consulta);
+            $vacunaConsulta->setVacuna($vacuna);
+            $vacunaConsulta->setAplicaciones($row[2]);
+            
+            $em->persist($vacunaConsulta);
+            $em->flush();
+        }
+        
+        die();
 //        var_dump($consulta);
         if(count($consulta)!=0){
             if(count($evaluacion)==0){

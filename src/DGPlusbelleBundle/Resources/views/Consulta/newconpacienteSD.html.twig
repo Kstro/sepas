@@ -938,13 +938,13 @@
                                     </div>
                                     <div class="row vacuna-content" style="margin-top:10px;">                                                                        
                                         <div class="col-md-3">
-                                            <select style="width:100%;" class="col-md-12 editorVacuna form-control input-sm" id="vacunas0" placeholder=""></select>
+                                            <select style="width:100%;" class="col-md-12 valores editorVacuna form-control input-sm" id="vacunas0" placeholder=""></select>
                                         </div>
                                         <div class="col-md-3">
-                                            <input value="" name="costoVacuna" class="form-control input-sm form-control" placeholder="$"/>
+                                            <input value="" name="costoVacuna" class="costoVacuna valores form-control input-sm form-control" placeholder="$"/>
                                         </div>
                                         <div class="col-md-3">
-                                            <input value="" name="aplicacionesVacuna" class="form-control input-sm form-control" placeholder="#"/>
+                                            <input value="" name="aplicacionesVacuna" class="aplicacionesVacuna valores form-control input-sm form-control" placeholder="#"/>
                                         </div>
                                         <div class="clearfix"></div>
                                     </div>
@@ -958,7 +958,7 @@
                                         <div class="col-md-12">
                                             <div class="form-grouphide col-sm-12">
                                                 {#<a class="btn btn-default btn-xs" id="cancelarNuevoConsulta">Cancelar</a>#}
-                                                <button type="submit" id="guardarReceta" name="dgplusbellebundle_antecedentes[submit]" class="btn btn-success text-light btn-xs btn btn">Guardar</button>
+                                                <button type="submit" id="guardarVacunas" name="dgplusbellebundle_antecedentes[submit]" class="btn btn-success text-light btn-xs btn btn">Guardar</button>
                                             </div>
                                         </div>
                                     </div>
@@ -2926,17 +2926,21 @@
             templateResult: formatRepo, 
             templateSelection: formatRepoSelection 
         });
+        
+        $('.costoVacuna').mask('000.000.000.000.000,00', {reverse: true});
+        $('.aplicacionesVacuna').mask('0#');
+        
         $(document).on('click','#masVacuna', function(){
             
             var nuevaVacuna='<div class=\"nueva vacuna\" style=\"margin-top:10px;\" class=\"col-md-12\">\n\
                                 <div style=\"margin-top:10px;\" class=\"col-md-3\">\n\
-                                    <select class=\"col-md-12 editorVacuna form-control input-sm\" id=\"vacunas'+idvacuna+'\"></select>\n\
+                                    <select class=\"col-md-12 valores editorVacuna form-control input-sm\" id=\"vacunas'+idvacuna+'\"></select>\n\
                                 </div>\n\
                                 <div style=\"margin-top:10px;\" class=\"col-md-3\">\n\
-                                    <input value=\"\" name=\"aplicacionesVacuna\" class=\"form-control input-sm form-control\" placeholder=\"$\"/>\n\
+                                    <input value=\"\" name=\"aplicacionesVacuna\" class=\"valores form-control input-sm form-control\" placeholder=\"$\"/>\n\
                                 </div>\n\
                                 <div style=\"margin-top:10px;\" class=\"col-md-3\">\n\
-                                    <input value=\"\" name=\"costoVacuna\" class=\"form-control input-sm form-control\" placeholder=\"#\"/>\n\
+                                    <input value=\"\" name=\"costoVacuna\" class=\"valores form-control input-sm form-control\" placeholder=\"#\"/>\n\
                                 </div>\n\
                                 <div style=\"margin-top:10px;\" class=\"col-md-3\">\n\
                                     <i class="deleteVacuna fa fa-times" aria-hidden="true"></i>\n\
@@ -2977,11 +2981,19 @@
                 templateResult: formatRepo, 
                 templateSelection: formatRepoSelection 
             });
+            $('#vacunas'+idvacuna).mask('000.000.000.000.000,00', {reverse: true});
+            $('#vacunas'+idvacuna).mask('0#');
             idvacuna++;
+            
         });
         
         $(document).on('click','.deleteVacuna', function(){
             $(this).parent().parent().remove();
+        });
+        
+        
+        $(document).on('change','.editorVacuna', function(){
+            console.log('prueba');
         });
         
         
@@ -3042,6 +3054,82 @@
         });
         
         
+        $(document).on('click','#guardarVacunas', function(){
+            
+            var idConsulta = $('#idConsulta').val();
+            var id = $('#idPaciente').val();
+            var errores = 0;
+            {#var vacunas = new Array();
+            var costos = new Array();
+            var aplicaciones = new Array();#}
+            var reg = new Array();
+            var valores = new Array();
+            
+{#            console.log(idConsulta);#}
+                
+            
+            
+            valores=[];
+            
+            
+{#            alert(direccion);#}
+            
+            //alert(fechaNacimiento);
+            if(idConsulta!=''){
+                $('.valores').each(function(index,element){
+                    
+                    var valor = $(this).val();
+                    var ids = $(this).attr('id');
+                    if(valor==="" || valor === null){
+                        errores++;
+                    }
+                    reg.push(valor);
+                    
+                    if(((index+1)%3)==0 ){
+                        valores.push(reg);
+                        reg=[];
+                    }
+                });
+                console.log(valores);
+                if(errores!=0){
+                    bootbox.alert("Debe ingresar todos las opciones!", function() {});
+                }
+                else{
+                    console.log("todos");
+                
+
+                    $.ajax({
+                        data:{idConsulta:idConsulta,valores:valores},
+                        url:"{{path('admin_vacunas_guardar_ajax')}}",
+                        type: "post",
+                        success: function (data) {
+                                //inicio = data.inicio++;
+                                if(data==0){
+                                    var iTel='<i class="fa fa-phone"></i>';
+                                    var dir='<i class="fa fa-map-marker fa-fw"></i>';
+                                    var ocup = '<i class="fa fa-briefcase"></i>';
+                                    $('#telefono').html(iTel+" "+telefono1);
+                                    $('#direccionD').html(dir+" "+direccion);
+
+
+                                    $('#nombrePaciente').html(nombres+" "+apellidos);
+                                    $('#ocupacionPaciente').html(ocup+" "+ocupacion);
+                                    alertify.success("Cambios guardados!");
+                                }
+                            },
+                        error: function (data) {
+
+
+                        }
+                    });
+                }
+                
+            }
+            else{
+                bootbox.alert("Debe ingresar una consulta primero!", function() {});
+            }
+            
+        });
         
         
         $(document).on('click','#guardarNuevoConsulta', function(){
