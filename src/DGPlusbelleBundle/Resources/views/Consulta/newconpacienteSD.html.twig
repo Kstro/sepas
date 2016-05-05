@@ -50,6 +50,10 @@
             width:100%;
         }
         
+        .deleteVacuna{
+            cursor:pointer;
+        }
+        
         .col-md-4{
 {#            padding-top: 40px;#}
         }
@@ -934,7 +938,7 @@
                                     </div>
                                     <div class="row vacuna-content" style="margin-top:10px;">                                                                        
                                         <div class="col-md-3">
-                                            <select style="width:100%;" class="col-md-12 editorVacuna form-control input-sm" id="vacunas" placeholder=""></select>
+                                            <select style="width:100%;" class="col-md-12 editorVacuna form-control input-sm" id="vacunas0" placeholder=""></select>
                                         </div>
                                         <div class="col-md-3">
                                             <input value="" name="costoVacuna" class="form-control input-sm form-control" placeholder="$"/>
@@ -1029,7 +1033,7 @@
 
      <script src="{{ asset('Resources/alertifyjs/alertify.js') }}"></script>
      <script src="{{ asset('Resources/js/ConsultaPaciente.js') }}"></script>
-     <script src="{{ asset('Resources/js/ConsultaEstetica.js') }}"></script>
+{#     <script src="{{ asset('Resources/js/ConsultaEstetica.js') }}"></script>#}
     
     <script>
         $(function () { 
@@ -2888,28 +2892,96 @@
          * Metodos de guardar con ajax
          */
         
-        
+        var idvacuna=1;//facilita la creación de select2 dinamicos
+        $('#vacunas0').select2({
+            ajax: {
+                url: "{{path('busqueda_vacuna_select')}}",
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                  return {
+                    q: params.term, 
+                    page: params.page
+                  };
+                },
+                processResults: function (data, params) {
+                    var select2Data = $.map(data.data, function (obj) {
+                        obj.id = obj.id;
+                        obj.text = obj.nombre;
+
+                        return obj;
+                    });
+
+                    return {
+                        results: select2Data
+                        {#pagination: {
+                            more: (params.page * 30) < data.total_count
+                        }#}
+                    };
+                },
+                cache: true
+            },
+            escapeMarkup: function (markup) { return markup; }, 
+            minimumInputLength: 1,
+            templateResult: formatRepo, 
+            templateSelection: formatRepoSelection 
+        });
         $(document).on('click','#masVacuna', function(){
-            var nuevaVacuna='<div style=\"margin-top:10px;\" class=\"col-md-3\">\n\
-                                <select class=\"col-md-12 editorVacuna form-control input-sm\" id=\"vacunas\"></select>\n\
-                            </div>\n\
-                            <div style=\"margin-top:10px;\" class=\"col-md-3\">\n\
-                                <input value=\"\" name=\"aplicacionesVacuna\" class=\"form-control input-sm form-control\" placeholder=\"$\"/>\n\
-                            </div>\n\
-                            <div style=\"margin-top:10px;\" class=\"col-md-3\">\n\
-                                <input value=\"\" name=\"costoVacuna\" class=\"form-control input-sm form-control\" placeholder=\"#\"/>\n\
-                            </div>\n\
-                            <div style=\"margin-top:10px;\" class=\"col-md-3\">\n\
-                                <i class="deleteVacuna fa fa-times" aria-hidden="true"></i>\n\
-                            </div>\n\
-                            <div class=\"clearfix\"></div>';
+            
+            var nuevaVacuna='<div class=\"nueva vacuna\" style=\"margin-top:10px;\" class=\"col-md-12\">\n\
+                                <div style=\"margin-top:10px;\" class=\"col-md-3\">\n\
+                                    <select class=\"col-md-12 editorVacuna form-control input-sm\" id=\"vacunas'+idvacuna+'\"></select>\n\
+                                </div>\n\
+                                <div style=\"margin-top:10px;\" class=\"col-md-3\">\n\
+                                    <input value=\"\" name=\"aplicacionesVacuna\" class=\"form-control input-sm form-control\" placeholder=\"$\"/>\n\
+                                </div>\n\
+                                <div style=\"margin-top:10px;\" class=\"col-md-3\">\n\
+                                    <input value=\"\" name=\"costoVacuna\" class=\"form-control input-sm form-control\" placeholder=\"#\"/>\n\
+                                </div>\n\
+                                <div style=\"margin-top:10px;\" class=\"col-md-3\">\n\
+                                    <i class="deleteVacuna fa fa-times" aria-hidden="true"></i>\n\
+                                </div>\n\
+                                <div class=\"clearfix\"></div>\n\
+                            </div>';
             $('.vacuna-content').append(nuevaVacuna);
-            $('.editorVacuna').select2();
+                $('#vacunas'+idvacuna).select2({
+                ajax: {
+                    url: "{{path('busqueda_vacuna_select')}}",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                      return {
+                        q: params.term, 
+                        page: params.page
+                      };
+                    },
+                    processResults: function (data, params) {
+                        var select2Data = $.map(data.data, function (obj) {
+                            obj.id = obj.id;
+                            obj.text = obj.nombre;
+
+                            return obj;
+                        });
+
+                        return {
+                            results: select2Data
+                            {#pagination: {
+                                more: (params.page * 30) < data.total_count
+                            }#}
+                        };
+                    },
+                    cache: true
+                },
+                escapeMarkup: function (markup) { return markup; }, 
+                minimumInputLength: 1,
+                templateResult: formatRepo, 
+                templateSelection: formatRepoSelection 
+            });
+            idvacuna++;
         });
         
         $(document).on('click','.deleteVacuna', function(){
-            $(this).parent().remove();
-            
+            $(this).parent().parent().remove();
         });
         
         
