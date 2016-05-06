@@ -923,46 +923,122 @@
                  <div class="tab-pane fade in" id="botabs9"> {#vacunas#}
                         <p>
                             <strong></strong>
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        <label>Vacuna</label>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <label>Costo ($)</label>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <label>Número de aplicaciones</label>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <i class="fa fa-plus fa-2x" id="masVacuna" style="cursor:pointer;"></i>
-                                    </div>
-                                    <div class="row vacuna-content" style="margin-top:10px;">                                                                        
-                                        <div class="col-md-3">
-                                            <select style="width:100%;" class="col-md-12 valores editorVacuna form-control input-sm" id="vacunas0" placeholder=""></select>
+                                {% if existenVacunas %}
+                                    <div class="row" style="font-size: 18px;">
+                                        <div class="col-md-1">
+                                            <label>Costo total:</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input readonly id="costoTotalVacuna" class="pull-left" style="border:0px; background: transparent;"/>
                                         </div>
                                         <div class="col-md-3">
-                                            <input value="" name="costoVacuna" class="costoVacuna valores form-control input-sm form-control" placeholder="$"/>
+                                            <a href="{{path('admin_historial_consulta')}}?id=P{{consulta.paciente.id}}&idtransaccion=c-{{consulta.id}}" class="pull-left">Realizar venta</a>
+                                        </div>
+                                        
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-md-3"></div>
+                                        <div class="col-md-2">
+                                            <label>Vacuna</label>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label>Costo ($)</label>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label>Número de aplicaciones</label>
                                         </div>
                                         <div class="col-md-3">
-                                            <input value="" name="aplicacionesVacuna" class="aplicacionesVacuna valores form-control input-sm form-control" placeholder="#"/>
+                                            {#<i class="fa fa-plus fa-2x" id="masVacuna" style="cursor:pointer;"></i>#}
                                         </div>
                                         <div class="clearfix"></div>
-                                    </div>
-                                    <div class="row" style="margin-top:10px;">
-                                        <div class="col-md-12">
-                                            <hr>
+                                        <div class="row vacuna-content" style="margin-top:10px;">      
+                                            {% for row in vacunas %}
+                                                <div class="col-md-3"></div>
+                                                <div class="col-md-2">
+                                                    <label style="">{{row.vacuna.nombre}}</label>
+                                                    {#<select style="width:100%;" class="col-md-12 valores editorVacuna form-control input-sm" id="vacunas0" >
+                                                        <option value="{{row.vacuna.id}}">{{row.vacuna.nombre}}</option>
+                                                    </select>#}
+                                                </div>
+                                                <div class="col-md-2" style="text-align: right;">
+                                                    <label style="margin-right:140px;">{{row.costo|number_format(2, '.', ',') }}</label>
+{#                                                    <input value="{{row.costo}}" name="costoVacuna" class="costoVacuna valores form-control input-sm form-control" placeholder="$"/>#}
+                                                </div>
+                                                <div class="col-md-2" style="text-align: right;">
+                                                    <label style="margin-right:70px;">{{row.aplicaciones}}</label>
+{#                                                    <input value="{{row.aplicaciones}}" name="aplicacionesVacuna" class="aplicacionesVacuna valores form-control input-sm form-control" placeholder="#"/>#}
+                                                </div>
+                                                <div class="col-md-3"></div>
+                                                <div class="clearfix"></div>
+                                            {% endfor %}
                                         </div>
-                                    </div>
+                                        <div class="row" style="margin-top:10px;">
+                                            <div class="col-md-12">
+                                                <hr>
+                                            </div>
+                                        </div>
 
-                                    <div class="row pull-right" style="margin-top:10px;">
-                                        <div class="col-md-12">
-                                            <div class="form-grouphide col-sm-12">
-                                                {#<a class="btn btn-default btn-xs" id="cancelarNuevoConsulta">Cancelar</a>#}
-                                                <button type="submit" id="guardarVacunas" name="dgplusbellebundle_antecedentes[submit]" class="btn btn-success text-light btn-xs btn btn">Guardar</button>
+                                        <div class="row pull-right" style="margin-top:10px;">
+                                            <div class="col-md-12">
+                                                <div class="form-grouphide col-sm-12">
+                                                    {#<a class="btn btn-default btn-xs" id="cancelarNuevoConsulta">Cancelar</a>#}
+                                                    <button type="submit" id="guardarVacunas" name="dgplusbellebundle_antecedentes[submit]" class="btn btn-success text-light btn-xs btn btn">Guardar</button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                {% else %}
+                                    <div class="row" style="font-size: 18px;">
+                                        <div class="col-md-1">
+                                            <label>Costo total:</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input readonly id="costoTotalVacuna" class="pull-left" style="border:0px; background: transparent;"/>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <label>Vacuna</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label>Costo ($)</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label>Número de aplicaciones</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <i class="fa fa-plus fa-2x" id="masVacuna" style="cursor:pointer;"></i>
+                                        </div>
+                                        <div class="row vacuna-content" style="margin-top:10px;">                                                                        
+                                            <div class="col-md-3">
+                                                <select style="width:100%;" class="col-md-12 valores editorVacuna form-control input-sm" id="vacunas0" placeholder=""></select>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <input value="" name="costoVacuna" class="costoVacuna valores form-control input-sm form-control" placeholder="$"/>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <input value="" name="aplicacionesVacuna" class="aplicacionesVacuna valores form-control input-sm form-control" placeholder="#"/>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                        <div class="row" style="margin-top:10px;">
+                                            <div class="col-md-12">
+                                                <hr>
+                                            </div>
+                                        </div>
+
+                                        <div class="row pull-right" style="margin-top:10px;">
+                                            <div class="col-md-12">
+                                                <div class="form-grouphide col-sm-12">
+                                                    {#<a class="btn btn-default btn-xs" id="cancelarNuevoConsulta">Cancelar</a>#}
+                                                    <button type="submit" id="guardarVacunas" name="dgplusbellebundle_antecedentes[submit]" class="btn btn-success text-light btn-xs btn btn">Guardar</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
                         </p>
                     
                     </div><!-- /tab-content -->
@@ -2893,41 +2969,56 @@
          */
         
         var idvacuna=1;//facilita la creación de select2 dinamicos
-        $('#vacunas0').select2({
-            ajax: {
-                url: "{{path('busqueda_vacuna_select')}}",
-                dataType: 'json',
-                delay: 250,
-                data: function (params) {
-                  return {
-                    q: params.term, 
-                    page: params.page
-                  };
-                },
-                processResults: function (data, params) {
-                    var select2Data = $.map(data.data, function (obj) {
-                        obj.id = obj.id;
-                        obj.text = obj.nombre;
+        {% if not existenVacunas %}
+            $('#vacunas0').select2({
+                ajax: {
+                    url: "{{path('busqueda_vacuna_select')}}",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                      return {
+                        q: params.term, 
+                        page: params.page
+                      };
+                    },
+                    processResults: function (data, params) {
+                        var select2Data = $.map(data.data, function (obj) {
+                            obj.id = obj.id;
+                            obj.text = obj.nombre;
 
-                        return obj;
-                    });
+                            return obj;
+                        });
 
-                    return {
-                        results: select2Data
-                        {#pagination: {
-                            more: (params.page * 30) < data.total_count
-                        }#}
-                    };
+                        return {
+                            results: select2Data
+                            {#pagination: {
+                                more: (params.page * 30) < data.total_count
+                            }#}
+                        };
+                    },
+                    cache: true
                 },
-                cache: true
-            },
-            escapeMarkup: function (markup) { return markup; }, 
-            minimumInputLength: 1,
-            templateResult: formatRepo, 
-            templateSelection: formatRepoSelection 
-        });
-        
-        $('.costoVacuna').mask('000.000.000.000.000,00', {reverse: true});
+                escapeMarkup: function (markup) { return markup; }, 
+                minimumInputLength: 1,
+                templateResult: formatRepo, 
+                templateSelection: formatRepoSelection 
+            });
+        {% else %}
+            var costoTotalV = 0;
+            {% set total = 0 %}
+            {% for row in vacunas %}
+                
+                {% set total = total + row.costo|number_format(2, '.', ',') %}
+                    
+                
+{#                console.log("{{total|number_format(2, '.', ',')}}");#}
+                $('#costoTotalVacuna').val("$ {{total|number_format(2, '.', ',')}}");
+            {% endfor %}    
+            
+            
+        {% endif %}
+        {#$('.costoVacuna').mask('000000000000000.00', {reverse: true});
+        $('#costoTotalVacuna').mask('000000000000000.00', {reverse: true});#}
         $('.aplicacionesVacuna').mask('0#');
         
         $(document).on('click','#masVacuna', function(){
@@ -2937,10 +3028,10 @@
                                     <select class=\"col-md-12 valores editorVacuna form-control input-sm\" id=\"vacunas'+idvacuna+'\"></select>\n\
                                 </div>\n\
                                 <div style=\"margin-top:10px;\" class=\"col-md-3\">\n\
-                                    <input value=\"\" name=\"aplicacionesVacuna\" class=\"valores form-control input-sm form-control\" placeholder=\"$\"/>\n\
+                                    <input value=\"\" name=\"aplicacionesVacuna\" class=\"valores costoVacuna form-control input-sm form-control\" placeholder=\"$\"/>\n\
                                 </div>\n\
                                 <div style=\"margin-top:10px;\" class=\"col-md-3\">\n\
-                                    <input value=\"\" name=\"costoVacuna\" class=\"valores form-control input-sm form-control\" placeholder=\"#\"/>\n\
+                                    <input value=\"\" name=\"costoVacuna\" class=\"aplicacionesVacuna valores form-control input-sm form-control\" placeholder=\"#\"/>\n\
                                 </div>\n\
                                 <div style=\"margin-top:10px;\" class=\"col-md-3\">\n\
                                     <i class="deleteVacuna fa fa-times" aria-hidden="true"></i>\n\
@@ -2981,8 +3072,9 @@
                 templateResult: formatRepo, 
                 templateSelection: formatRepoSelection 
             });
-            $('#vacunas'+idvacuna).mask('000.000.000.000.000,00', {reverse: true});
-            $('#vacunas'+idvacuna).mask('0#');
+{#            $('#vacunas'+idvacuna).mask('000,000,000,000,000.00', {reverse: true});#}
+{#            $('.costoVacuna').mask('000,000,000,000,000.00', {reverse: true});#}
+{#            $('#vacunas'+idvacuna).mask('0#');#}
             idvacuna++;
             
         });
@@ -3079,11 +3171,26 @@
                 $('.valores').each(function(index,element){
                     
                     var valor = $(this).val();
-                    var ids = $(this).attr('id');
+                    
                     if(valor==="" || valor === null){
                         errores++;
                     }
-                    reg.push(valor);
+                    {#if($(this).hasClass('costoVacuna')){
+                        if(valor % 1 === 0){//verifica si es entero
+                            console.log("entero: "+valor);
+                            
+                            reg.push(valor+".00");
+                            console.log("entero despues: "+valor+".00");
+                        }
+                        else{
+                            console.log("decimal: "+valor);
+                            reg.push(valor);
+                            console.log("decimal despues: "+valor);
+                        }
+                    }
+                    else{#}
+                        reg.push(valor);
+{#                    }#}
                     
                     if(((index+1)%3)==0 ){
                         valores.push(reg);
@@ -3105,7 +3212,7 @@
                         success: function (data) {
                                 //inicio = data.inicio++;
                                 if(data==0){
-                                    var iTel='<i class="fa fa-phone"></i>';
+                                    {#var iTel='<i class="fa fa-phone"></i>';
                                     var dir='<i class="fa fa-map-marker fa-fw"></i>';
                                     var ocup = '<i class="fa fa-briefcase"></i>';
                                     $('#telefono').html(iTel+" "+telefono1);
@@ -3113,8 +3220,8 @@
 
 
                                     $('#nombrePaciente').html(nombres+" "+apellidos);
-                                    $('#ocupacionPaciente').html(ocup+" "+ocupacion);
-                                    alertify.success("Cambios guardados!");
+                                    $('#ocupacionPaciente').html(ocup+" "+ocupacion);#}
+                                    alertify.success("Vacunas guardadas!");
                                 }
                             },
                         error: function (data) {
@@ -3131,6 +3238,18 @@
             
         });
         
+        $('.costoVacuna').trigger('input');
+        
+        $(document).on('input','.costoVacuna',function(){
+            var valorTotal=0;
+            $('.costoVacuna').each(function(index,element){
+                valorTotal += parseFloat(($(this).val()).replace(',',''));
+                console.log(valorTotal);
+            });
+            $('#costoTotalVacuna').val(valorTotal.toFixed(2));
+                    
+            
+        });
         
         $(document).on('click','#guardarNuevoConsulta', function(){
             var id = $('#idPaciente').val();
@@ -3294,7 +3413,7 @@
             }
             else{
                 $.ajax({
-                    data:{idConsulta:idConsulta,id:id,peso:peso,talla:talla,frecRespiratoria:frecRespiratoria,presionDiastolica:presionDiastolica,presionSistolica:presionSistolica,temperatura:temperatura,frecCardiaca:frecCardiaca},
+                    data:{medico:medico,idConsulta:idConsulta,id:id,peso:peso,talla:talla,frecRespiratoria:frecRespiratoria,presionDiastolica:presionDiastolica,presionSistolica:presionSistolica,temperatura:temperatura,frecCardiaca:frecCardiaca},
                     url:"{{path('admin_paciente_actualizar_signos_ajax')}}",
                     type: "post",
                     success: function (data) {

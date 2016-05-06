@@ -1163,9 +1163,10 @@ class PacienteController extends Controller
         $em = $this->getDoctrine()->getEntityManager();
         
         $paciente = $em->getRepository('DGPlusbelleBundle:Paciente')->find($id);
-        $medico = $em->getRepository('DGPlusbelleBundle:Empleado')->find(intval($medico));
+//        $medicoObj = $em->getRepository('DGPlusbelleBundle:Empleado')->find(intval($medico));
+        $medicoObj = $em->getRepository('DGPlusbelleBundle:Empleado')->find(1);//Id Dr Panameño
         $sucursal = $em->getRepository('DGPlusbelleBundle:Sucursal')->find(1); // para sepes siempre es 1
-        
+        //var_dump($medicoObj);
         $signos = new Signos();
         $consulta = new Consulta();
         
@@ -1181,13 +1182,14 @@ class PacienteController extends Controller
             $signos->setFrecCardiaca($frecCardiaca);
             $signos->setTemperatura($temperatura);
             $signos->setConsulta($consulta);
+            date_default_timezone_set('America/El_Salvador');
             $consulta->setHoraInicio(new \DateTime('now'));
             $consulta->setHoraFin(new \DateTime('now'));
             $consulta->setFechaConsulta(new \DateTime('now'));
             $consulta->setPaciente($paciente);
             $consulta->setReportePlantilla(1);
             $consulta->setCostoConsulta(0);
-            $consulta->setEmpleado($medico);
+            $consulta->setEmpleado($medicoObj);
             
             $em->persist($consulta);
             $em->flush();
@@ -1236,7 +1238,7 @@ class PacienteController extends Controller
         $temperatura = $request->get('temperatura');
         $frecCardiaca = $request->get('frecCardiaca');
         $idConsulta = $request->get('idConsulta');
-        
+        $medico= $request->get('medico');
 //        $patologicos = $request->get('patologicos');
 //        $familiares = $request->get('familiares');
 //        $alergias = $request->get('alergias');
@@ -1249,6 +1251,7 @@ class PacienteController extends Controller
         $paciente = $em->getRepository('DGPlusbelleBundle:Paciente')->find($id);        
         $signos = $paciente = $em->getRepository('DGPlusbelleBundle:Signos')->findBy(array('consulta'=>$idConsulta));        
         $consulta = $paciente = $em->getRepository('DGPlusbelleBundle:Consulta')->find($idConsulta);
+        $medicoObj = $em->getRepository('DGPlusbelleBundle:Empleado')->find(intval($medico));
         
         if(count($paciente)!=0){
             //$persona = $em->getRepository('DGPlusbelleBundle:Persona')->find($paciente->getPersona()->getId());

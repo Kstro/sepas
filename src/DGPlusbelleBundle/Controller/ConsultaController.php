@@ -815,7 +815,7 @@ class ConsultaController extends Controller
             $plantillas = $em->getRepository('DGPlusbelleBundle:Plantilla')->findAll();
 
 //            $plantillasEstetica = $em->getRepository('DGPlusbelleBundle:Estetica')->findAll();
-            
+            $existenVacunas=false;
             
             if($idconsulta!=null){
                 $consulta = $em->getRepository('DGPlusbelleBundle:Consulta')->find($idconsulta);
@@ -827,6 +827,14 @@ class ConsultaController extends Controller
             }
             $signos = $em->getRepository('DGPlusbelleBundle:Signos')->findBy(array('consulta'=>$consulta->getId()),array('id'=>'DESC'));
             $evaluacion = $em->getRepository('DGPlusbelleBundle:Evaluacion')->findBy(array('consulta'=>$consulta->getId()),array('id'=>'DESC'));
+            $vacunas = $em->getRepository('DGPlusbelleBundle:VacunaConsulta')->findBy(array('consulta'=>$consulta->getId()));
+            
+            
+            if(count($vacunas)!=0){
+                $existenVacunas = true;
+            }
+            
+            
             //Seteo del paciente en la entidad
             $entity->setPaciente($paciente);
             //var_dump($paciente);
@@ -999,6 +1007,8 @@ class ConsultaController extends Controller
             'signos' => $signos,
             'evaluacion' => $evaluacion,
             'tieneVacunas'=>$tieneVacunas,
+            'existenVacunas'=>$existenVacunas,
+            'vacunas'=>$vacunas,
         );
             
     }
@@ -2280,7 +2290,7 @@ class ConsultaController extends Controller
             $consulta->setPaciente($paciente);
             $consulta->setEmpleado($empleado);
             $consulta->setTipoConsulta($tipoConsultaObj);
-            
+            date_default_timezone_set('America/El_Salvador');
             $consulta->setFechaConsulta(new \DateTime('now'));
             
 
@@ -3210,6 +3220,7 @@ class ConsultaController extends Controller
             $vacunaConsulta->setCosto($row[1]);
             $vacunaConsulta->setConsulta($consulta);
             $vacunaConsulta->setVacuna($vacuna);
+            $vacunaConsulta->setVentaVacuna(null);
             $vacunaConsulta->setAplicaciones($row[2]);
             
             $em->persist($vacunaConsulta);
