@@ -995,6 +995,17 @@
                                         <div class="col-md-6">
                                             <input readonly id="costoTotalVacuna" class="pull-left" style="border:0px; background: transparent;"/>
                                         </div>
+                                        <div class="col-md-2">
+                                            <label>Descuento</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <select style="width:100%;" class="form-control input-sm" id="descuentoVacuna">
+                                                {% for descuento in descuentos %}
+{#                                                <input readonly id="descuentoVacuna" class="pull-left" style="border:0px; background: transparent;"/>#}                                            
+                                                    <option value="{{descuento.id}}">{{descuento.nombre}} {{descuento.porcentaje}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
                                     </div>
                                     <hr>
                                     <div class="row">
@@ -2956,6 +2967,7 @@
     
     
      $('.editorVacuna').select2();
+     $('#descuentoVacuna').select2();
 
     jQuery(document).ready(function() {
         
@@ -3145,6 +3157,18 @@
         
         $(document).on('click','.deleteVacuna', function(){
             $(this).parent().parent().remove();
+            var valorTotal=0;
+            $('.costoVacuna').each(function(index,element){
+                if($(this).val()==''){
+                    valorTotal += 0;
+                }
+                else{
+                    valorTotal += parseFloat(($(this).val()).replace(',',''));
+                }
+                
+                console.log(valorTotal);
+            });
+            $('#costoTotalVacuna').val(valorTotal.toFixed(2));
         });
         
         
@@ -3214,6 +3238,7 @@
             
             var idConsulta = $('#idConsulta').val();
             var id = $('#idPaciente').val();
+            var idDescuento = $('#idDescuento').val();
             var errores = 0;
             {#var vacunas = new Array();
             var costos = new Array();
@@ -3270,7 +3295,7 @@
                 
 
                     $.ajax({
-                        data:{idConsulta:idConsulta,valores:valores},
+                        data:{idConsulta:idConsulta,valores:valores,idDescuento:idDescuento},
                         url:"{{path('admin_vacunas_guardar_ajax')}}",
                         type: "post",
                         success: function (data) {
@@ -3307,7 +3332,13 @@
         $(document).on('input','.costoVacuna',function(){
             var valorTotal=0;
             $('.costoVacuna').each(function(index,element){
-                valorTotal += parseFloat(($(this).val()).replace(',',''));
+                if($(this).val()==''){
+                    valorTotal += 0;
+                }
+                else{
+                    valorTotal += parseFloat(($(this).val()).replace(',',''));
+                }
+                
                 console.log(valorTotal);
             });
             $('#costoTotalVacuna').val(valorTotal.toFixed(2));

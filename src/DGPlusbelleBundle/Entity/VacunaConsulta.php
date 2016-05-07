@@ -35,6 +35,14 @@ class VacunaConsulta
      * @ORM\Column(name="aplicaciones", type="integer", length=30, nullable=false)
      */
     private $aplicaciones;  
+    
+    
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="descuento", type="integer", length=30, nullable=false)
+     */
+    private $descuento;  
    
     
     
@@ -93,6 +101,7 @@ class VacunaConsulta
     {
         return $this->costo;
     }
+    
     /**
      * Set aplicaciones
      *
@@ -115,6 +124,30 @@ class VacunaConsulta
     public function getAplicaciones()
     {
         return $this->aplicaciones;
+    }
+    
+    /**
+     * Set descuento
+     *
+     * @param int $descuento
+     *
+     * @return int
+     */
+    public function setDescuento($descuento)
+    {
+        $this->descuento = $descuento;
+
+        return $this;
+    }
+
+    /**
+     * Get descuento
+     *
+     * @return int
+     */
+    public function getDescuento()
+    {
+        return $this->descuento;
     }
     
     

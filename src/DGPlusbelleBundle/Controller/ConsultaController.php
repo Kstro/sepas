@@ -830,16 +830,19 @@ class ConsultaController extends Controller
             $vacunas = $em->getRepository('DGPlusbelleBundle:VacunaConsulta')->findBy(array('consulta'=>$consulta->getId()));
             
             
-            if(count($vacunas)!=0){
+            if(count($tieneVacunas)!=0){
                 $existenVacunas = true;
             }
-            
-            
+//            var_dump($existenVacunas);
+//            var_dump($idconsulta);
+//            var_dump($consulta->getId());
+            $descuentos = $em->getRepository('DGPlusbelleBundle:Descuento')->findBy(array('estado'=>1));
+//            var_dump($descuentos);
             //Seteo del paciente en la entidad
             $entity->setPaciente($paciente);
             //var_dump($paciente);
             //$form   = $this->createCreateForm($entity,2,$cadena, $paciente);
-            $entity->setPaciente($paciente);
+//            $entity->setPaciente($paciente);
             //var_dump($consulta->getEmpleado()->getPersona()->getNombres());
             
             
@@ -1009,6 +1012,7 @@ class ConsultaController extends Controller
             'tieneVacunas'=>$tieneVacunas,
             'existenVacunas'=>$existenVacunas,
             'vacunas'=>$vacunas,
+            'descuentos'=>$descuentos,
         );
             
     }
@@ -3198,6 +3202,7 @@ class ConsultaController extends Controller
         
         
         $idConsulta = $request->get('idConsulta');
+        $idDescuento = $request->get('idDescuento');
         $valores= $request->get('valores');
         
         
@@ -3221,6 +3226,7 @@ class ConsultaController extends Controller
             $vacunaConsulta->setConsulta($consulta);
             $vacunaConsulta->setVacuna($vacuna);
             $vacunaConsulta->setVentaVacuna(null);
+            $vacunaConsulta->setDescuento($idDescuento);
             $vacunaConsulta->setAplicaciones($row[2]);
             
             $em->persist($vacunaConsulta);
