@@ -374,7 +374,7 @@
                                                 {#<select id="dgplusbellebundle_venta_vacuna" name="dgplusbellebundle_venta[descuento]" class="venta-descuento" style="width: 100%">
                                                     <option value="" selected>Seleccione una vacuna ...</option>
                                                 </select>#}   
-                                                <select style="width:100%;" class="col-md-12 editorVacuna form-control input-sm" id="vacunas0" placeholder=""></select>
+                                                <select style="width:100%;" class="col-md-12 valores editorVacuna form-control input-sm" id="vacunas0" placeholder=""></select>
                                             </div>
                                         </div> 
                                         <div class="col-md-3">
@@ -382,7 +382,7 @@
                                             <div id="costo-venta" {#style="display:none;"#}>
                                                 <label>Costo ($)</label>
                                                 {#<input type="text" name="dgplusbellebundle_venta[costo]" id="dgplusbellebundle_venta_costo" class="form-control" style="width: 100%" placeholder="$">     #}
-                                                <input value="" name="costoVacuna" class="form-control input-sm form-control" placeholder="$"/>
+                                                <input value="" name="costoVacuna" class="form-control valores costoVacuna input-sm form-control" placeholder="$"/>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
@@ -391,7 +391,7 @@
                                             <div id="sesiones-tratamiento" {#style="display:none;"#}>
                                                 <label>Número de Aplicaciones</label>
                                                 {#<input type="text" name="dgplusbellebundle_venta[num_sesiones]" id="dgplusbellebundle_venta_sesiones" class="form-control" style="width: 100%" placeholder="#">   #}
-                                                <input value="" name="aplicacionesVacuna" class="form-control input-sm form-control" placeholder="#"/>
+                                                <input value="" name="aplicacionesVacuna" class="form-control aplicacionesVacuna valores input-sm form-control" placeholder="#"/>
                                             </div>
                                         </div>
                                         <div class="col-md-1">
@@ -898,12 +898,12 @@
                 // Al momento de hacer click en Registrar venta 
                 $(document).on("click", "#registro-venta", function(){
                     var idpac = '{{paciente.id}}';
-                    var paquete = $('#dgplusbellebundle_venta_paquete').val();
-                    var tratamiento = $('#dgplusbellebundle_venta_tratamiento').val();
-                    var sucursal = $('#dgplusbellebundle_venta_sucursal').val();
+                    //var paquete = $('#dgplusbellebundle_venta_paquete').val();
+                    //var tratamiento = $('#dgplusbellebundle_venta_tratamiento').val();
+                    //var sucursal = $('#dgplusbellebundle_venta_sucursal').val();
                     var descuento = $('#dgplusbellebundle_venta_descuento').val();
                     var empleado = $('#dgplusbellebundle_venta_empleado').val();
-                    var costo = $('#dgplusbellebundle_venta_costo').val();
+                    //var costo = $('#dgplusbellebundle_venta_costo').val();
                     var cuotas = $('#dgplusbellebundle_venta_cuotas').val();
                     var observaciones = $('#dgplusbellebundle_venta_observaciones').val();
                     var sesiones = '';
@@ -911,146 +911,145 @@
                     var tratamientos = new Array();
                     var flag = 0;
                     var draw = '';
+                    var errores = 0;
+                    var valores = new Array();
+                    var reg = new Array();
                     
-                    // Si se ha chequeado en el tipo de venta Paquete
-                    if($("#tipo-venta-paquete").is(':checked')) {
-                        if(paquete != null){
-                            if(sucursal != null){
-                                if(costo > 0){
-                                    if(cuotas > 0){
-                                        $.each( $('.sesionesPaqueteTrata'), function( key, value ) {
-                                            if($(this).val() > 0){
-                                                var elemento = $(this).attr('id');
-                                                var res = elemento.split("_"); 
-                                                var lastEl = res[res.length-1];
-                                                
-                                                tratamientos.push(lastEl); 
-                                                sesionesPaqueteTrata.push($(this).val()); 
-                                            }
-                                        });
-                                        
-                                        // Se obtiene la informacion necesaria para registrar la venta
-                                            var data = {
-                                                id : idpac,
-                                                paquete : paquete,
-                                                sucursal : sucursal,
-                                                empleado: empleado,
-                                                costo : costo,
-                                                descuento : descuento,
-                                                cuotas : cuotas,
-                                                observaciones : observaciones,
-                                                tratamientos : tratamientos,
-                                                sesiones : sesionesPaqueteTrata,
-                                            };
-                                            
-                                            // Se procede a registrar la venta del paquete mediante ajax
-                                            $.ajax({
-                                                data:  data,
-                                                url:   '{#{{path('admin_registro_nueva_venta_paquete')}}#}',
-                                                type:  'post',
-                                                success:  function (response) {
-                                                    //bootbox.alert('Se ha resgistrado con exito la venta del paquete ' + response.paquete);
-                                                    alertify.success('Se ha resgistrado con exito la venta del paquete');
-                                                    $('#num-label-ses').hide();
-                                                    
-                                                    var tabsSesiones = document.getElementById('tabs-sesiones');
-                                                    //var tabsImagenes = document.getElementById('tabs-imagenes');
-                                                    var tabsAbdev = document.getElementById('tabs-abdev');
-                                                    var seguimientoSesionesTratamiento = document.getElementById('seguimiento-sesiones-tratamiento');
-                                                    var detalleVentaInfo = document.getElementById('detalle-venta-info');
-                                                    var tabsSeguimiento = document.getElementById('tabs-seguimiento');
-                                                    tabsSeguimiento.style.display = 'block';
-                                                    var totalpagar = response.ventaPaqueteTratamientos.costo - response.ventaPaqueteTratamientos.descuento;
-                                                    
-                                                    console.log(response.ventaPaqueteTratamientos.descuento);
-                                                    id_ventapaquete = response.ventaPaquete;
-                                                    deuda_total = totalpagar;
-                                                    console.log(deuda_total);
-                                                    //$('#detalle-venta-deuda').html('$ ' + deuda_total);
-                                                    
-                                                    // Se guarda el select que será utilizado para el llenado de tratamientos
-                                                    var vtratamientos = $("#dgplusbellebundle_sesiones_tratamiento");
-                                                    //console.log(totalpagar);
-                                                    $('#detalle-venta-costo').html('$ ' + response.ventaPaqueteTratamientos.costo);
-                                                    $('#detalle-venta-cuotas').html(response.ventaPaqueteTratamientos.cuotas);
-                                                    $('#detalle-venta-deuda').html('$ ' + deuda_total);
-                                                    
-                                                    $('#label-tipo-venta').html('<p> Paquete</p>');
-                                                    $('#venta-paquete').html('<label>Paquete</label><p>' + response.paquete + '</p>');
-                                                    //$('#detalle-venta-total-can').html('$ ' + totalpagar);
-                                                    $.each( response.ventaPaqueteTratamientos.nomTratamientos, function( key, value ) {
-                                                        draw+= '<div class="row">';
-                                                        draw+= '<div class="col-md-5" style="margin-bottom: 10px;">';
-                                                        draw+= '<span>' + value + '</span>';
-                                                        draw+= '</div>';
-                                                        draw+= '<div class="col-md-7" style="margin-bottom: 10px;">';
-                                                        draw+= '<div class="row">';
+                    if(cuotas.length > 0){
+                        $('.valores').each(function(index,element){
+                            var valor = $(this).val();
 
-                                                        for (i = 0; i < response.ventaPaqueteTratamientos.sesiones[key]; i++) {
-                                                            draw+= '<div class="col-md-1" style="margin-bottom: 10px;">';
-                                                            draw+= '<img class="" style="height: 25px;"  src="{{ asset('Photos/Estados/sesion_pendiente.png')}}" title="Sesion pendiente">';
-                                                            draw+= '</div>';
-                                                        }
+                            if(valor==="" || valor === null){
+                                errores++;
+                            }                        
+                            reg.push(valor);
 
-                                                        draw+= '</div>';
-                                                        draw+= '</div>';
-                                                        draw+= '</div>';
-                                                    });
-                                                    
-                                                    $('#detalle-venta-tratamientos').html(draw);
-                                                    
-                                                    // LLenado del combobox de tratamientos de la sección de registro de sesiones
-                                                    // con los tratamientos que pertenecen al paquete que se le ha realizado la
-                                                    // la venta
-                                                    $(response.ventaPaqueteTratamientos.tratVenta).each(function(i, v){ 
-                                                        vtratamientos.append('<option value="' + v.id + '">' + v.nombre + '</option>');
-                                                    });
-                                                    
-                                                    var imgtratamientos = $("#dgplusbellebundle_imagenes_tratamiento");
-                                                    $(response.ventaPaqueteTratamientos.tratVenta).each(function(i, v){ 
-                                                        imgtratamientos.append('<option value="' + v.id + '">' + v.nombre + '</option>');
-                                                    });
-                                                    
-                                                    $("#dgplusbellebundle_imagenes_tratamiento").show();
-                                                    tabsSesiones.style.display = 'block';
-                                                    //tabsImagenes.style.display = 'block';
-                                                    tabsAbdev.style.display = 'block';
-                                                    seguimientoSesionesTratamiento.style.display = 'block';
-                                                    detalleVentaInfo.style.display = 'block';
-                                                    
-                                                    $('#registro-venta').attr("disabled", true);
-                                                    
-                                                    var registrarVenta = document.getElementById('registrar-venta');
-                                                    registrarVenta.style.display = 'none';
-                                                    
-                                                    var editarVenta = document.getElementById('modificar-venta');
-                                                    editarVenta.style.display = 'block';
-                                                }
-                                            });
-                                            
-                                        return false;
-                                        
-                                    } else {
-                                        bootbox.alert('No se ha ingresado la cantidad de cuotas');
-                                        $( "#dgplusbellebundle_venta_cuotas" ).focus();
-                                        return false;
-                                    }
-                                } else {
-                                    bootbox.alert('No se ha ingresado el valor a cancelar de la venta');
-                                    $( "#dgplusbellebundle_venta_costo" ).focus();
-                                    return false;
-                                }
-                            } else {
-                                bootbox.alert('No se ha seleccionado a la sucursal donde se ha realizado la venta');
-                                return false;
+                            if(((index+1)%3)==0 ){
+                                valores.push(reg);
+                                reg = [];
                             }
-                        } else {
-                            bootbox.alert('No se ha seleccionado el paquete que se va a vender');
+                        });
+                        
+                        console.log(valores);
+                        
+                        if(errores!=0){
+                            bootbox.alert("Debe ingresar todos las opciones!", function() {});
+                        } else {                        
+                            // Se obtiene la informacion necesaria para registrar la venta
+                            var data = {
+                                id : idpac,
+                                //paquete : paquete,
+                                //sucursal : sucursal,
+                                empleado: empleado,
+                                //costo : costo,
+                                descuento : descuento,
+                                cuotas : cuotas,
+                                observaciones : observaciones,
+                                valores : valores
+                                //tratamientos : tratamientos,
+                                //sesiones : sesionesPaqueteTrata,
+                            };
+
+                            // Se procede a registrar la venta del paquete mediante ajax
+                            $.ajax({
+                                data:  data,
+                                url:   '{{path('admin_registro_nueva_venta_vacuna')}}',
+                                type:  'post',
+                                success:  function (response) {
+                                    //bootbox.alert('Se ha resgistrado con exito la venta del paquete ' + response.paquete);
+                                    alertify.success('Se ha resgistrado con exito la venta del paquete');
+                                    $('#num-label-ses').hide();
+
+                                    var tabsSesiones = document.getElementById('tabs-sesiones');
+                                    //var tabsImagenes = document.getElementById('tabs-imagenes');
+                                    var tabsAbdev = document.getElementById('tabs-abdev');
+                                    var seguimientoSesionesTratamiento = document.getElementById('seguimiento-sesiones-tratamiento');
+                                    var detalleVentaInfo = document.getElementById('detalle-venta-info');
+                                    var tabsSeguimiento = document.getElementById('tabs-seguimiento');
+                                    tabsSeguimiento.style.display = 'block';
+                                    var totalpagar = response.ventaPaqueteTratamientos.costo - response.ventaPaqueteTratamientos.descuento;
+
+                                    console.log(response.ventaPaqueteTratamientos.descuento);
+                                    id_ventapaquete = response.ventaPaquete;
+                                    deuda_total = totalpagar;
+                                    console.log(deuda_total);
+                                    //$('#detalle-venta-deuda').html('$ ' + deuda_total);
+
+                                    // Se guarda el select que será utilizado para el llenado de tratamientos
+                                    var vtratamientos = $("#dgplusbellebundle_sesiones_tratamiento");
+                                    //console.log(totalpagar);
+                                    $('#detalle-venta-costo').html('$ ' + response.ventaPaqueteTratamientos.costo);
+                                    $('#detalle-venta-cuotas').html(response.ventaPaqueteTratamientos.cuotas);
+                                    $('#detalle-venta-deuda').html('$ ' + deuda_total);
+
+                                    $('#label-tipo-venta').html('<p> Paquete</p>');
+                                    $('#venta-paquete').html('<label>Paquete</label><p>' + response.paquete + '</p>');
+                                    //$('#detalle-venta-total-can').html('$ ' + totalpagar);
+                                    $.each( response.ventaPaqueteTratamientos.nomTratamientos, function( key, value ) {
+                                        draw+= '<div class="row">';
+                                        draw+= '<div class="col-md-5" style="margin-bottom: 10px;">';
+                                        draw+= '<span>' + value + '</span>';
+                                        draw+= '</div>';
+                                        draw+= '<div class="col-md-7" style="margin-bottom: 10px;">';
+                                        draw+= '<div class="row">';
+
+                                        for (i = 0; i < response.ventaPaqueteTratamientos.sesiones[key]; i++) {
+                                            draw+= '<div class="col-md-1" style="margin-bottom: 10px;">';
+                                            draw+= '<img class="" style="height: 25px;"  src="{{ asset('Photos/Estados/sesion_pendiente.png')}}" title="Sesion pendiente">';
+                                            draw+= '</div>';
+                                        }
+
+                                        draw+= '</div>';
+                                        draw+= '</div>';
+                                        draw+= '</div>';
+                                    });
+
+                                    $('#detalle-venta-tratamientos').html(draw);
+
+                                    // LLenado del combobox de tratamientos de la sección de registro de sesiones
+                                    // con los tratamientos que pertenecen al paquete que se le ha realizado la
+                                    // la venta
+                                    $(response.ventaPaqueteTratamientos.tratVenta).each(function(i, v){ 
+                                        vtratamientos.append('<option value="' + v.id + '">' + v.nombre + '</option>');
+                                    });
+
+                                    var imgtratamientos = $("#dgplusbellebundle_imagenes_tratamiento");
+                                    $(response.ventaPaqueteTratamientos.tratVenta).each(function(i, v){ 
+                                        imgtratamientos.append('<option value="' + v.id + '">' + v.nombre + '</option>');
+                                    });
+
+                                    $("#dgplusbellebundle_imagenes_tratamiento").show();
+                                    tabsSesiones.style.display = 'block';
+                                    //tabsImagenes.style.display = 'block';
+                                    tabsAbdev.style.display = 'block';
+                                    seguimientoSesionesTratamiento.style.display = 'block';
+                                    detalleVentaInfo.style.display = 'block';
+                                                
+                                    $('#registro-venta').attr("disabled", true);
+
+                                    var registrarVenta = document.getElementById('registrar-venta');
+                                    registrarVenta.style.display = 'none';
+
+                                    var editarVenta = document.getElementById('modificar-venta');
+                                    editarVenta.style.display = 'block';
+                                }
+                            });
+                        
                             return false;
                         }    
+                    } else {
+                        bootbox.alert('No se ha ingresado la cantidad de cuotas');
+                        $( "#dgplusbellebundle_venta_cuotas" ).focus();
+                        return false;
+                    }
+                                
+                        {# } else {
+                            bootbox.alert('No se ha seleccionado el paquete que se va a vender');
+                            return false;
+                        } #}   
                         
                     // Si se ha chequeado en el tipo de venta Tratamiento    
-                    } else {
+                    {# } else {
                         sesiones = $('#dgplusbellebundle_venta_sesiones').val();
                         
                         if(tratamiento != null){
@@ -1074,7 +1073,7 @@
                                             // Se procede a registrar la venta del tratamiento mediante ajax
                                             $.ajax({
                                                 data:  data,
-                                                url:   '{#{{path('admin_registro_nueva_venta_tratamiento')}}#}',
+                                                url:   '{{path('admin_registro_nueva_venta_tratamiento')}}',
                                                 type:  'post',
                                                 success:  function (response) {
                                                     //bootbox.alert('Se ha resgistrado con exito la venta del tratamiento ' + response.tratamiento);
@@ -1094,9 +1093,9 @@
                                                     $('#detalle-venta-cuotas').html(response.personaTratamiento.cuotas);
                                                     $('#detalle-venta-deuda').html('$ ' + deuda_total);
                                                     
-                                                    {#$('#detalle-venta-costo').html('$ ' + costoTratamiento);
+                                                    $('#detalle-venta-costo').html('$ ' + costoTratamiento);
                                                     $('#detalle-venta-cuotas').html(response.personaTratamiento.cuotas);
-                                                    $('#detalle-venta-deuda').html('$ ' + costoTratamiento);#}
+                                                    $('#detalle-venta-deuda').html('$ ' + costoTratamiento);
                                                     $('#detalle-venta-sesiones').html(response.personaTratamiento.sesiones);
                                                     
                                                     $('#label-tipo-venta').html('<p>Tratamiento</p>');
@@ -1136,10 +1135,10 @@
                                                     
                                                     $('#registro-venta').attr("disabled", true);
                                                     $("#imagenes-sesiones-tratamiento").hide();
-                                                    {#var id = 'P' + {{paciente.id}};
+                                                    var id = 'P' + {{paciente.id}};
                                                     var path = Routing.generate('admin_historial_consulta', {'id': id});
 
-                                                    window.open(path,'_self');#}
+                                                    window.open(path,'_self');
                                                 }
                                             });
                                             return false;
@@ -1165,8 +1164,8 @@
                         } else {
                             bootbox.alert('No se ha seleccionado el tratamiento que se va a vender');
                             return false;
-                        } 
-                    }    
+                        } #}
+                    //}    
                     
                     console.log(id_ventatratamiento);
                     return false;

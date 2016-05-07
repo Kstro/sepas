@@ -1,0 +1,16 @@
+{% extends 'DGPlusbelleBundle:Layout:layout.html.twig' %}
+
+{% block contenido -%}
+    <h1>Venta vacuna edit</h1>
+
+    {{ form(edit_form) }}
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('admin_venta_vacuna') }}">
+            Back to the list
+        </a>
+    </li>
+    <li>{{ form(delete_form) }}</li>
+</ul>
+{% endblock %}
