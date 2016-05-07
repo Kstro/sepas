@@ -67,6 +67,15 @@ class VacunaConsulta
      */
     private $vacuna;
     
+    /**
+     * @var \VentaVacuna
+     *
+     * @ORM\ManyToOne(targetEntity="VentaVacuna")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="venta_vacuna", referencedColumnName="id")
+     * })
+     */
+    private $ventaVacuna;
     
     /**
      * Get id
@@ -180,7 +189,7 @@ class VacunaConsulta
     /**
      * Set consulta
      *
-     * @param \DGPlusbelleBundle\Entity\Paciente $paciente
+     * @param \DGPlusbelleBundle\Entity\Paciente $consulta
      *
      * @return Consulta
      */
@@ -199,6 +208,30 @@ class VacunaConsulta
     public function getConsulta()
     {
         return $this->consulta;
+    }
+    
+    /**
+     * Set ventaVacuna
+     *
+     * @param \DGPlusbelleBundle\Entity\VentaVacuna $ventaVacuna
+     *
+     * @return VacunaConsulta
+     */
+    public function setVentaVacuna(\DGPlusbelleBundle\Entity\VentaVacuna $ventaVacuna= null)
+    {
+        $this->ventaVacuna= $ventaVacuna;
+
+        return $this;
+    }
+
+    /**
+     * Get ventaVacuna
+     *
+     * @return \DGPlusbelleBundle\Entity\VentaVacuna
+     */
+    public function getVentaVacuna()
+    {
+        return $this->ventaVacuna;
     }
    
 }
