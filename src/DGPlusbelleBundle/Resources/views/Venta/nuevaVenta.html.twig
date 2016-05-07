@@ -263,164 +263,259 @@
                     {# Sección en donde se registran ventas de paqutes/tratamientos #}                
                     <div id="registros-venta" class="tab-pane fade" style="margin-top: 20px;">
                         <form id="formulario-venta" method="POST" enctype="multipart/form-data">
-                            <div class="row" style="margin-top: 30px;">
-                                {# Selección de qué tipo de venta se va a realizar #}    
-                                <div class="col-md-2 hide">
-                                    <label class="pull-right">Tipo de venta:</label>      
-                                </div>
-                                <div class="col-md-2 hide">
-                                    <div id="label-tipo-venta">
-                                        <p>
-                                            <input type = "radio" name = "tipo-venta" id = "tipo-venta-paquete" value = "1" />
-                                            <label for = "tipo-venta-paquete">Paquete</label>
-                                        </p>
-                                        <p>
-                                            <input type = "radio" name = "tipo-venta" id = "tipo-venta-tratamiento" value = "0" />
-                                            <label for = "tipo-venta-tratamiento">Tratamiento</label>
-                                        </p> 
-                                    </div>
-                                </div>
+                            {% if consulta %}
+                                <div class="row" style="margin-top: 35px;">
+                                    <div class="col-md-4" style="margin-left: 30px;">
+                                        {# Area en donde se selecciona  el empleado que ha realizado la venta #}  
+                                        <div id="empleados-venta" {#style="display:none;"#}>
+                                            <label>Vendido por</label>
+                                            <select id="dgplusbellebundle_venta_empleado" name="dgplusbellebundle_venta[empleado]" class="venta-empleado" style="width: 100%">
+                                                <option value="" disabled selected>Seleccione un empleado ...</option>
 
-                                {# Area en donde se selecciona un paquete o tratamiento dependiendo el tipo de venta seleccionado#}    
-                                <div class="col-md-3 col-md-offset-1">
-                                    <div id="venta-paquete" style="display:none;">
-                                        <label>Paquete</label>
-                                        <select id="dgplusbellebundle_venta_paquete" name="dgplusbellebundle_venta[paquete]" class="venta-paquete" style="width: 100%">
-                                            <option value="" disabled selected>Seleccione un paquete...</option>
+                                                {% for empleado in empleadosVenta %}
+                                                    <option value="{{empleado.id}}"> {{empleado.persona}}</option>
+                                                {% endfor %}
+                                            </select>   
+                                        </div>
+                                    </div> 
+                                    <div class="col-md-3" style="display:none;">
+                                        {# Area en donde se seleciona  el descuento que se le va a aplicar a la venta en el caso de ser necesario #} 
+                                        <div id="descuento-venta" {#style="display:none;"#}>
+                                            <label>Descuento</label>
+                                            <select id="dgplusbellebundle_venta_descuento" name="dgplusbellebundle_venta[descuento]" class="venta-descuento" style="width: 100%">
+                                                <option value="" selected>Seleccione un tipo de descuento ...</option>
 
-                                            {% for vpaquete in ventaPaquetes %}
-                                                <option value="{{vpaquete.id}}"> {{vpaquete.nombre}}</option>
-                                            {% endfor %}
-                                        </select>   
-                                    </div>
-                                    <div id="venta-tratamiento" style="display:none;">
-                                        <label>Tratamiento</label>
-                                        <select id="dgplusbellebundle_venta_tratamiento" name="dgplusbellebundle_venta[tratamiento]" class="venta_tratamiento" style="width: 100%">
-                                            <option value="" disabled selected>Seleccione un tratamiento...</option>
-
-                                            {% for vtratamiento in ventaTratamientos %}
-                                                <option value="{{vtratamiento.id}}"> {{vtratamiento.nombre}}</option>
-                                            {% endfor %}
-                                        </select>    
+                                                {% for descuento in descuentos %}
+                                                    <option value="{{descuento.id}}"> {{descuento.nombre}} - {{descuento.porcentaje}}%</option>
+                                                {% endfor %}
+                                            </select>   
+                                        </div>
+                                    </div>        
+                                    <div class="col-md-2">
+                                        <div id="cuotas-venta" {#style="display:none;"#}>
+                                            <label>Cuotas</label>
+                                            <input type="text" name="dgplusbellebundle_venta[cuotas]" id="dgplusbellebundle_venta_cuotas" class="form-control" style="width: 100%">   
+                                        </div>
+                                    </div>        
+                                    <div class="col-md-3">
+                                        <div id="descuento-consulta" style="margin-left: 120px;">
+                                            <label>Descuento aplicado:</label>
+                                            <p>{{ descuento.nombre }} - {{ descuento.porcentaje }}%</p>
+                                        </div>
+                                    </div>        
+                                </div> 
+                                <div class="row">
+                                    <div id="vventa-observaciones" class="col-md-7 col-sm-7" style="margin-top: 30px; margin-bottom: 10px; {#display:none;#}">
+                                        <div id="venta-observaciones-label" style="margin-left: 30px;">
+                                            <label>Observaciones</label>
+                                        </div> 
+                                        <div class="clearfix"></div>
+                                        <div id="observaciones" style="margin-left: 30px;">
+                                            <textarea rows="4" cols="100" name="dgplusbellebundle_abono[observaciones]" id="dgplusbellebundle_venta_observaciones" class="form-control"></textarea> 
+                                        </div>     
                                     </div>    
-                                </div>
-                            </div>   
-                            <div class="row" style="margin-top: 35px;">
-                                <div class="col-md-3 hide"  style="margin-left: 30px;">
-                                    {# Area en donde se selecciona la sucursal en donde se realiza la venta #}    
-                                    <div id="sucursal-venta" style="display:none;">
-                                        <label>Sucursal</label>
-                                        <select id="dgplusbellebundle_venta_sucursal" name="dgplusbellebundle_venta[sucursal]" class="venta-sucursal" style="width: 100%">
-                                            <option value="" disabled selected>Seleccione una sucursal ...</option>
-
-                                            {% for sucursal in sucursales %}
-                                                <option value="{{sucursal.id}}"> {{sucursal.nombre}}</option>
-                                            {% endfor %}
-                                        </select>   
+                                </div> 
+                                <div class="row" style="margin-top:30px;"> 
+                                    <hr>
+                                    <div class="col-md-offset-2 col-md-3">
+                                        <label>Vacuna</label>
                                     </div>
-                                </div>
-                                <div class="col-md-4" style="margin-left: 30px;">
-                                    {# Area en donde se selecciona  el empleado que ha realizado la venta #}  
-                                    <div id="empleados-venta" {#style="display:none;"#}>
-                                        <label>Vendido por</label>
-                                        <select id="dgplusbellebundle_venta_empleado" name="dgplusbellebundle_venta[empleado]" class="venta-empleado" style="width: 100%">
-                                            <option value="" disabled selected>Seleccione un empleado ...</option>
+                                    <div class="col-md-2">
+                                        <label>Costo ($)</label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label>Número de aplicaciones</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        {#<i class="fa fa-plus fa-2x" id="masVacuna" style="cursor:pointer;"></i>#}
+                                    </div>    
+                                    <div class="clearfix"></div>
+                                    <div class="row vacuna-content" style="margin-top: 5px;">      
+                                        {% for row in vacunas %}
+                                            <div class="col-md-offset-2 col-md-3">
+                                                <label style="">{{row.vacuna.nombre}}</label>
+                                            </div>
+                                            <div class="col-md-2" style="text-align: right;">
+                                                <label style="margin-right:140px;">{{row.costo|number_format(2, '.', ',') }}</label>
+                                          </div>
+                                          <div class="col-md-3" style="margin: auto">
+                                              <label>{{row.aplicaciones}}</label>
+                                          </div>
+                                            <div class="clearfix"></div>
+                                        {% endfor %}
+                                    </div>
+                                </div>    
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-12 text-center" style="margin-top: 30px; margin-bottom: 10px; {#display:none;#}" id="registrar-venta">
+                                        <hr>
+                                        <input type="submit" value="Registrar venta" style="margin-bottom: 10px; background-color: #39a58a; color: #FFF;" class="btn" id="registro-consulta-venta"/>
+                                    </div>  
 
-                                            {% for empleado in empleadosVenta %}
-                                                <option value="{{empleado.id}}"> {{empleado.persona}}</option>
-                                            {% endfor %}
-                                        </select>   
+                                    <div class="col-md-12 col-sm-12 text-center" style="margin-top: 30px; margin-bottom: 10px; display:none;" id="modificar-venta">
+                                        <hr>
+                                        <input type="submit" value="Editar venta" style="margin-bottom: 10px; background-color: #39a58a; color: #FFF;" class="btn" id="edit-consulta-venta"/>
+                                    </div>
+                                </div>    
+                            {% else %}
+                                <div class="row" style="margin-top: 30px;">
+                                    {# Selección de qué tipo de venta se va a realizar #}    
+                                    <div class="col-md-2 hide">
+                                        <label class="pull-right">Tipo de venta:</label>      
+                                    </div>
+                                    <div class="col-md-2 hide">
+                                        <div id="label-tipo-venta">
+                                            <p>
+                                                <input type = "radio" name = "tipo-venta" id = "tipo-venta-paquete" value = "1" />
+                                                <label for = "tipo-venta-paquete">Paquete</label>
+                                            </p>
+                                            <p>
+                                                <input type = "radio" name = "tipo-venta" id = "tipo-venta-tratamiento" value = "0" />
+                                                <label for = "tipo-venta-tratamiento">Tratamiento</label>
+                                            </p> 
+                                        </div>
+                                    </div>
+
+                                    {# Area en donde se selecciona un paquete o tratamiento dependiendo el tipo de venta seleccionado#}    
+                                    <div class="col-md-3 col-md-offset-1">
+                                        <div id="venta-paquete" style="display:none;">
+                                            <label>Paquete</label>
+                                            <select id="dgplusbellebundle_venta_paquete" name="dgplusbellebundle_venta[paquete]" class="venta-paquete" style="width: 100%">
+                                                <option value="" disabled selected>Seleccione un paquete...</option>
+
+                                                {% for vpaquete in ventaPaquetes %}
+                                                    <option value="{{vpaquete.id}}"> {{vpaquete.nombre}}</option>
+                                                {% endfor %}
+                                            </select>   
+                                        </div>
+                                        <div id="venta-tratamiento" style="display:none;">
+                                            <label>Tratamiento</label>
+                                            <select id="dgplusbellebundle_venta_tratamiento" name="dgplusbellebundle_venta[tratamiento]" class="venta_tratamiento" style="width: 100%">
+                                                <option value="" disabled selected>Seleccione un tratamiento...</option>
+
+                                                {% for vtratamiento in ventaTratamientos %}
+                                                    <option value="{{vtratamiento.id}}"> {{vtratamiento.nombre}}</option>
+                                                {% endfor %}
+                                            </select>    
+                                        </div>    
+                                    </div>
+                                </div>   
+                                <div class="row" style="margin-top: 35px;">
+                                    <div class="col-md-3 hide"  style="margin-left: 30px;">
+                                        {# Area en donde se selecciona la sucursal en donde se realiza la venta #}    
+                                        <div id="sucursal-venta" style="display:none;">
+                                            <label>Sucursal</label>
+                                            <select id="dgplusbellebundle_venta_sucursal" name="dgplusbellebundle_venta[sucursal]" class="venta-sucursal" style="width: 100%">
+                                                <option value="" disabled selected>Seleccione una sucursal ...</option>
+
+                                                {% for sucursal in sucursales %}
+                                                    <option value="{{sucursal.id}}"> {{sucursal.nombre}}</option>
+                                                {% endfor %}
+                                            </select>   
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4" style="margin-left: 30px;">
+                                        {# Area en donde se selecciona  el empleado que ha realizado la venta #}  
+                                        <div id="empleados-venta" {#style="display:none;"#}>
+                                            <label>Vendido por</label>
+                                            <select id="dgplusbellebundle_venta_empleado" name="dgplusbellebundle_venta[empleado]" class="venta-empleado" style="width: 100%">
+                                                <option value="" disabled selected>Seleccione un empleado ...</option>
+
+                                                {% for empleado in empleadosVenta %}
+                                                    <option value="{{empleado.id}}"> {{empleado.persona}}</option>
+                                                {% endfor %}
+                                            </select>   
+                                        </div>
+                                    </div> 
+                                    <div class="col-md-3">
+                                        {# Area en donde se seleciona  el descuento que se le va a aplicar a la venta en el caso de ser necesario #} 
+                                        <div id="descuento-venta" {#style="display:none;"#}>
+                                            <label>Descuento</label>
+                                            <select id="dgplusbellebundle_venta_descuento" name="dgplusbellebundle_venta[descuento]" class="venta-descuento" style="width: 100%">
+                                                <option value="" selected>Seleccione un tipo de descuento ...</option>
+
+                                                {% for descuento in descuentos %}
+                                                    <option value="{{descuento.id}}"> {{descuento.nombre}} - {{descuento.porcentaje}}%</option>
+                                                {% endfor %}
+                                            </select>   
+                                        </div>
+                                    </div>        
+                                    <div class="col-md-2">
+                                        <div id="cuotas-venta" {#style="display:none;"#}>
+                                            <label>Cuotas</label>
+                                            <input type="text" name="dgplusbellebundle_venta[cuotas]" id="dgplusbellebundle_venta_cuotas" class="form-control" style="width: 100%">   
+                                        </div>
+                                    </div>        
+                                </div>     
+                                <div class="row">
+                                    <div id="vventa-observaciones" class="col-md-7 col-sm-7" style="margin-top: 30px; margin-bottom: 10px; {#display:none;#}">
+                                        <div id="venta-observaciones-label" style="margin-left: 30px;">
+                                            <label>Observaciones</label>
+                                        </div> 
+                                        <div class="clearfix"></div>
+                                        <div id="observaciones" style="margin-left: 30px;">
+                                            <textarea rows="4" cols="100" name="dgplusbellebundle_abono[observaciones]" id="dgplusbellebundle_venta_observaciones" class="form-control"></textarea> 
+                                        </div>     
+                                    </div>    
+                                </div> 
+                                <hr>        
+                                <div class="row" style="margin-top: 50px;">
+                                    <div class="col-md-9" style="margin-left: 125px;">
+                                        <div class="row vacuna-content">
+                                            <div class="col-md-3">
+                                                {# Area en donde se seleciona  el descuento que se le va a aplicar a la venta en el caso de ser necesario #} 
+                                                <div id="vacuna-venta" {#style="display:none;"#}>
+                                                    <label>Vacuna</label>
+                                                    {#<select id="dgplusbellebundle_venta_vacuna" name="dgplusbellebundle_venta[descuento]" class="venta-descuento" style="width: 100%">
+                                                        <option value="" selected>Seleccione una vacuna ...</option>
+                                                    </select>#}   
+                                                    <select style="width:100%;" class="col-md-12 valores editorVacuna form-control input-sm" id="vacunas0" placeholder=""></select>
+                                                </div>
+                                            </div> 
+                                            <div class="col-md-3">
+                                                {# Area en donde se ingresa  el cossto($) del paquete o tratamiento que se ha vendido #}
+                                                <div id="costo-venta" {#style="display:none;"#}>
+                                                    <label>Costo ($)</label>
+                                                    {#<input type="text" name="dgplusbellebundle_venta[costo]" id="dgplusbellebundle_venta_costo" class="form-control" style="width: 100%" placeholder="$">     #}
+                                                    <input value="" name="costoVacuna" class="form-control valores costoVacuna input-sm form-control" placeholder="$"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                {# Area en donde se ingresa  el número de sesiones de un tratamiento en el caso 
+                                                   de haber seleccionado el tipo de venta tratamiento                           #}  
+                                                <div id="sesiones-tratamiento" {#style="display:none;"#}>
+                                                    <label>Número de Aplicaciones</label>
+                                                    {#<input type="text" name="dgplusbellebundle_venta[num_sesiones]" id="dgplusbellebundle_venta_sesiones" class="form-control" style="width: 100%" placeholder="#">   #}
+                                                    <input value="" name="aplicacionesVacuna" class="form-control aplicacionesVacuna valores input-sm form-control" placeholder="#"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-1">
+
+                                                <div id="costo-venta" style="margin-top: 20px;">
+                                                    <i id="masVacuna" class="fa fa-plus fa-2x" style="cursor:pointer;"></i>
+                                                </div>
+                                            </div> 
+                                            <div class="clearfix"></div>  
+                                        </div>
+                                    </div>                                     
+                                </div>                                        
+                                <div class="row" style="margin-top: 50px;">
+                                    <hr id="hr-tratamientos-paquete" class="hide">
+                                    <div class="col-md-6 col-md-offset-2">
+                                        <div id="tratamientos-paquete" style="display:none;"></div>
+                                    </div>    
+                                </div>            
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-12 text-center" style="margin-top: 30px; margin-bottom: 10px; {#display:none;#}" id="registrar-venta">
+                                        <hr>
+                                        <input type="submit" value="Registrar venta" style="margin-bottom: 10px; background-color: #39a58a; color: #FFF;" class="btn" id="registro-venta"/>
+                                    </div>  
+
+                                    <div class="col-md-12 col-sm-12 text-center" style="margin-top: 30px; margin-bottom: 10px; display:none;" id="modificar-venta">
+                                        <hr>
+                                        <input type="submit" value="Editar venta" style="margin-bottom: 10px; background-color: #39a58a; color: #FFF;" class="btn" id="edit-venta"/>
                                     </div>
                                 </div> 
-                                <div class="col-md-3">
-                                    {# Area en donde se seleciona  el descuento que se le va a aplicar a la venta en el caso de ser necesario #} 
-                                    <div id="descuento-venta" {#style="display:none;"#}>
-                                        <label>Descuento</label>
-                                        <select id="dgplusbellebundle_venta_descuento" name="dgplusbellebundle_venta[descuento]" class="venta-descuento" style="width: 100%">
-                                            <option value="" selected>Seleccione un tipo de descuento ...</option>
-
-                                            {% for descuento in descuentos %}
-                                                <option value="{{descuento.id}}"> {{descuento.nombre}} - {{descuento.porcentaje}}%</option>
-                                            {% endfor %}
-                                        </select>   
-                                    </div>
-                                </div>        
-                                <div class="col-md-2">
-                                    <div id="cuotas-venta" {#style="display:none;"#}>
-                                        <label>Cuotas</label>
-                                        <input type="text" name="dgplusbellebundle_venta[cuotas]" id="dgplusbellebundle_venta_cuotas" class="form-control" style="width: 100%">   
-                                    </div>
-                                </div>        
-                            </div>     
-                            <div class="row">
-                                <div id="vventa-observaciones" class="col-md-7 col-sm-7" style="margin-top: 30px; margin-bottom: 10px; {#display:none;#}">
-                                    <div id="venta-observaciones-label" style="margin-left: 30px;">
-                                        <label>Observaciones</label>
-                                    </div> 
-                                    <div class="clearfix"></div>
-                                    <div id="observaciones" style="margin-left: 30px;">
-                                        <textarea rows="4" cols="100" name="dgplusbellebundle_abono[observaciones]" id="dgplusbellebundle_venta_observaciones" class="form-control"></textarea> 
-                                    </div>     
-                                </div>    
-                            </div> 
-                            <hr>        
-                            <div class="row" style="margin-top: 50px;">
-                                <div class="col-md-9" style="margin-left: 125px;">
-                                    <div class="row vacuna-content">
-                                        <div class="col-md-3">
-                                            {# Area en donde se seleciona  el descuento que se le va a aplicar a la venta en el caso de ser necesario #} 
-                                            <div id="vacuna-venta" {#style="display:none;"#}>
-                                                <label>Vacuna</label>
-                                                {#<select id="dgplusbellebundle_venta_vacuna" name="dgplusbellebundle_venta[descuento]" class="venta-descuento" style="width: 100%">
-                                                    <option value="" selected>Seleccione una vacuna ...</option>
-                                                </select>#}   
-                                                <select style="width:100%;" class="col-md-12 valores editorVacuna form-control input-sm" id="vacunas0" placeholder=""></select>
-                                            </div>
-                                        </div> 
-                                        <div class="col-md-3">
-                                            {# Area en donde se ingresa  el cossto($) del paquete o tratamiento que se ha vendido #}
-                                            <div id="costo-venta" {#style="display:none;"#}>
-                                                <label>Costo ($)</label>
-                                                {#<input type="text" name="dgplusbellebundle_venta[costo]" id="dgplusbellebundle_venta_costo" class="form-control" style="width: 100%" placeholder="$">     #}
-                                                <input value="" name="costoVacuna" class="form-control valores costoVacuna input-sm form-control" placeholder="$"/>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            {# Area en donde se ingresa  el número de sesiones de un tratamiento en el caso 
-                                               de haber seleccionado el tipo de venta tratamiento                           #}  
-                                            <div id="sesiones-tratamiento" {#style="display:none;"#}>
-                                                <label>Número de Aplicaciones</label>
-                                                {#<input type="text" name="dgplusbellebundle_venta[num_sesiones]" id="dgplusbellebundle_venta_sesiones" class="form-control" style="width: 100%" placeholder="#">   #}
-                                                <input value="" name="aplicacionesVacuna" class="form-control aplicacionesVacuna valores input-sm form-control" placeholder="#"/>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-1">
-                                            
-                                            <div id="costo-venta" style="margin-top: 20px;">
-                                                <i id="masVacuna" class="fa fa-plus fa-2x" style="cursor:pointer;"></i>
-                                            </div>
-                                        </div> 
-                                        <div class="clearfix"></div>  
-                                    </div>
-                                </div>                                     
-                            </div>                                        
-                            <div class="row" style="margin-top: 50px;">
-                                <hr id="hr-tratamientos-paquete" class="hide">
-                                <div class="col-md-6 col-md-offset-2">
-                                    <div id="tratamientos-paquete" style="display:none;"></div>
-                                </div>    
-                            </div>            
-                            <div class="row">
-                                <div class="col-md-12 col-sm-12 text-center" style="margin-top: 30px; margin-bottom: 10px; {#display:none;#}" id="registrar-venta">
-                                    <hr>
-                                    <input type="submit" value="Registrar venta" style="margin-bottom: 10px; background-color: #39a58a; color: #FFF;" class="btn" id="registro-venta"/>
-                                </div>  
-                                
-                                <div class="col-md-12 col-sm-12 text-center" style="margin-top: 30px; margin-bottom: 10px; display:none;" id="modificar-venta">
-                                    <hr>
-                                    <input type="submit" value="Editar venta" style="margin-bottom: 10px; background-color: #39a58a; color: #FFF;" class="btn" id="edit-venta"/>
-                                </div>
-                            </div> 
+                            {% endif %}            
                         </form>                
                         <div class="row" style="margin-top: 50px;"></div>
                     </div>
@@ -957,7 +1052,7 @@
                                 type:  'post',
                                 success:  function (response) {
                                     //bootbox.alert('Se ha resgistrado con exito la venta del paquete ' + response.paquete);
-                                    alertify.success('Se ha resgistrado con exito la venta del paquete');
+                                    alertify.success('Se ha resgistrado con exito la venta de vacunas');
                                     $('#num-label-ses').hide();
 
                                     var tabsSesiones = document.getElementById('tabs-sesiones');
@@ -1171,6 +1266,77 @@
                     return false;
                 });
                 
+                // Al momento de hacer click en Registrar venta 
+                $(document).on("click", "#registro-consulta-venta", function(){
+                    var idpac = '{{paciente.id}}';
+                    var descuento = '{{ descuento.id }}';
+                    var consulta = '{{ consulta.id }}';
+                    var empleado = $('#dgplusbellebundle_venta_empleado').val();
+                    var cuotas = $('#dgplusbellebundle_venta_cuotas').val();
+                    var observaciones = $('#dgplusbellebundle_venta_observaciones').val();
+                    var sesiones = '';
+                    var sesionesPaqueteTrata = new Array();
+                    var tratamientos = new Array();
+                    var flag = 0;
+                    var draw = '';
+                    var errores = 0;
+                    var valores = new Array();
+                    var reg = new Array();
+                    
+                    if(cuotas.length > 0){
+                        //$('.valores').each(function(index,element){
+                        {% for row in vacunas %}    
+                            reg.push('{{ row.vacuna.id }}');
+                            reg.push('{{ row.costo }}');
+                            reg.push('{{ row.aplicaciones }}');
+                            
+                            valores.push(reg);
+                            reg = [];
+                        {% endfor %}    
+                        //});
+                        
+                        console.log(valores);
+                        
+                        if(errores!=0){
+                            bootbox.alert("Debe ingresar todos las opciones!", function() {});
+                        } else {                        
+                            // Se obtiene la informacion necesaria para registrar la venta
+                            var data = {
+                                id : idpac,
+                                empleado: empleado,
+                                descuento : descuento,
+                                cuotas : cuotas,
+                                observaciones : observaciones,
+                                consulta : consulta,
+                                valores : valores
+                            };
+
+                            // Se procede a registrar la venta del paquete mediante ajax
+                            $.ajax({
+                                data:  data,
+                                url:   '{{path('admin_registro_nueva_venta_vacuna_consulta')}}',
+                                type:  'post',
+                                success:  function (response) {
+                                    alertify.success('Se ha resgistrado con exito la venta de vacunas');
+                                    
+                                    //console.log(response.ventaPaqueteTratamientos.descuento);
+                                    //id_ventapaquete = response.ventaPaquete;
+                                    //deuda_total = totalpagar;
+                                    //console.log(deuda_total);
+                                    //$('#detalle-venta-deuda').html('$ ' + deuda_total);                                    
+                                }
+                            });
+                        
+                            return false;
+                        }    
+                    } else {
+                        bootbox.alert('No se ha ingresado la cantidad de cuotas');
+                        $( "#dgplusbellebundle_venta_cuotas" ).focus();
+                        return false;
+                    }
+                                     
+                    return false;
+                });
                 
                 // Al momento de hacer click en Editar venta 
                 $(document).on("click", "#edit-venta", function(){
@@ -1808,13 +1974,13 @@
 
                     var nuevaVacuna='<div class=\"nueva vacuna\" style=\"margin-top:10px;\" class=\"col-md-12\">\n\
                                         <div style=\"margin-top:10px;\" class=\"col-md-3\">\n\
-                                            <select class=\"col-md-12 editorVacuna form-control input-sm\" id=\"vacunas'+idvacuna+'\"></select>\n\
+                                            <select class=\"col-md-12 editorVacuna valores form-control input-sm\" id=\"vacunas'+idvacuna+'\"></select>\n\
                                         </div>\n\
                                         <div style=\"margin-top:10px;\" class=\"col-md-3\">\n\
-                                            <input value=\"\" name=\"aplicacionesVacuna\" class=\"form-control input-sm form-control\" placeholder=\"$\"/>\n\
+                                            <input value=\"\" name=\"aplicacionesVacuna\" class=\"form-control valores input-sm form-control\" placeholder=\"$\"/>\n\
                                         </div>\n\
                                         <div style=\"margin-top:10px;\" class=\"col-md-3\">\n\
-                                            <input value=\"\" name=\"costoVacuna\" class=\"form-control input-sm form-control\" placeholder=\"#\"/>\n\
+                                            <input value=\"\" name=\"costoVacuna\" class=\"form-control valores input-sm form-control\" placeholder=\"#\"/>\n\
                                         </div>\n\
                                         <div style=\"margin-top:10px;\" class=\"col-md-3\">\n\
                                             <i class="deleteVacuna fa fa-times" aria-hidden="true"></i>\n\

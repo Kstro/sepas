@@ -342,4 +342,106 @@ class VentaVacunaController extends Controller
             return new Response('0');              
         } 
    }
+   
+   /**
+    * Ajax utilizado para registrar una nueva venta de vacunas
+    *  
+    * @Route("/registro-vacuna/consulta/nueva-venta/set", name="admin_registro_nueva_venta_vacuna_consulta")
+    */
+    public function registrarNuevaVentaVacunaConsultaAction()
+    {
+        $isAjax = $this->get('Request')->isXMLhttpRequest();
+        if($isAjax){
+            $em = $this->getDoctrine()->getManager();
+            $usuario= $this->get('security.token_storage')->getToken()->getUser();
+            
+            $id = $this->get('request')->request->get('id');
+            $empleadoId = $this->get('request')->request->get('empleado');
+            $cuotas = $this->get('request')->request->get('cuotas');
+            $valores = $this->get('request')->request->get('valores');
+            $descuentoId = $this->get('request')->request->get('descuento');
+            $observaciones = $this->get('request')->request->get('observaciones');
+            $consultaId = $this->get('request')->request->get('consulta');
+            
+            $ventaVacuna = new VentaVacuna();
+            
+            $consulta = $em->getRepository('DGPlusbelleBundle:Consulta')->find($consultaId);
+            $paciente = $em->getRepository('DGPlusbelleBundle:Paciente')->find($id);
+            $ventaVacuna->setPaciente($paciente);
+            
+            if(!is_null($empleadoId) && $empleadoId != ''){
+                $empleado = $em->getRepository('DGPlusbelleBundle:Empleado')->find($empleadoId);
+                $ventaVacuna->setEmpleado($empleado);
+            }
+            
+            $ventaVacuna->setCuotas($cuotas);
+            
+            if(!is_null($descuentoId)){
+                $descuento = $em->getRepository('DGPlusbelleBundle:Descuento')->find($descuentoId);
+                $ventaVacuna->setDescuento($descuento);
+            }
+            
+            if(!is_null($observaciones)){
+                $ventaVacuna->setObservaciones($observaciones);
+            }
+            
+            $ventaVacuna->setFechaVenta(new \DateTime('now'));
+            $ventaVacuna->setEstado(1);
+            $ventaVacuna->setMontoTotal(0);
+            
+            $em->persist($ventaVacuna);
+            $em->flush();
+            
+            $montoTotal = 0;
+            foreach($valores as $key=>$row){
+                //$vacunaConsulta = new \DGPlusbelleBundle\Entity\VacunaConsulta();
+                $vacuna = $em->getRepository('DGPlusbelleBundle:Vacuna')->find($row[0]);
+                
+                $vacunaConsulta = $em->getRepository('DGPlusbelleBundle:VacunaConsulta')->findOneBy(array('consulta' => $consulta,
+                                                                                                       'vacuna' => $vacuna
+                                                                                                       ));
+//                                                                                                       var_dump($vacunaConsulta);
+                //$vacunaConsulta->setCosto($row[1]);
+                //$vacunaConsulta->setConsulta(null);
+                //$vacunaConsulta->setVacuna($vacuna);
+                $vacunaConsulta->setVentaVacuna($ventaVacuna);
+                //$vacunaConsulta->setAplicaciones($row[2]);
+
+                $montoTotal+=$vacunaConsulta->getCosto();
+                
+                $em->merge($vacunaConsulta);
+                $em->flush();
+            }
+            
+            $ventaVacuna->setMontoTotal($montoTotal);
+            $em->merge($ventaVacuna);
+            $em->flush();
+            
+            if($ventaVacuna->getDescuento()){    
+                $totaldesc = ($ventaVacuna->getMontoTotal() * $ventaVacuna->getDescuento()->getPorcentaje()) / 100;
+            } else {
+                $totaldesc = 0;
+            }
+            
+            $ventaPaqueteTratamientos = array(
+                                        'id' => $ventaVacuna->getId(), 
+                                        'costo' => $ventaVacuna->getMontoTotal(), 
+                                        'descuento' => $totaldesc, 
+                                        'cuotas' => $ventaVacuna->getCuotas()
+                                    );
+            
+            $this->get('bitacora')->escribirbitacora("Se registro una nueva venta de vacunas ", $usuario->getId());
+            
+            $response = new JsonResponse();
+            $response->setData(array(
+                                'exito'       => '1',
+                                'ventaVacuna' => $ventaVacuna->getId(),
+                                'ventaPaqueteTratamientos' => $ventaPaqueteTratamientos
+                               ));  
+            
+            return $response; 
+        } else {    
+            return new Response('0');              
+        } 
+   }
 }
