@@ -296,7 +296,7 @@ class IncapacidadController extends Controller
         $busqueda = $request->query->get('search');
         
         $em = $this->getDoctrine()->getEntityManager();
-        $expedientesTotal = $em->getRepository('DGPlusbelleBundle:Paciente')->findAll();
+        $expedientesTotal = $em->getRepository('DGPlusbelleBundle:Incapacidad')->findAll();
         
         $paciente['draw']=$draw++;  
         $paciente['recordsTotal'] = count($expedientesTotal);
@@ -310,7 +310,7 @@ class IncapacidadController extends Controller
         if($busqueda['value']!=''){
             
                     
-                    $dql = "SELECT exp.numero as expediente, inc.id as id,CONCAT(CONCAT(per.nombres,' '), per.apellidos) as nombres, DATE_FORMAT(inc.fechaInicial,'%d-%m-%Y') as fechaInicial, DATE_FORMAT(inc.fechaFinal,'%d-%m-%Y') as fechaFinal,inc.notas, concat(concat('<a id=\"',inc.id),'\"><i style=\"cursor:pointer;color:#000\" data-toggle=\"tooltip\" data-original-title=\"Atrás\" class=\"infoIncapacidad fa fa-list-alt\"></i></a>')  as link FROM DGPlusbelleBundle:Incapacidad inc "
+                    $dql = "SELECT exp.numero as expediente, inc.id as id,CONCAT(CONCAT(per.nombres,' '), per.apellidos) as nombres, DATE_FORMAT(inc.fechaInicial,'%d-%m-%Y') as fechaInicial, DATE_FORMAT(inc.fechaFinal,'%d-%m-%Y') as fechaFinal,inc.notas, concat(concat('<a id=\"',inc.id),'\"><i style=\"cursor:pointer;color:#000\" data-toggle=\"tooltip\" data-original-title=\"Atrás\" class=\"infoIncapacidad fa fa-list-alt\"></i></a>','<a style=\"margin-left:5px;\" id=\"',inc.id,'\"><i style=\"cursor:pointer;color:#000\" data-toggle=\"tooltip\" data-original-title=\"Atrás\" class=\"eliminarIncapacidad fa fa-times\"></i></a>')  as link FROM DGPlusbelleBundle:Incapacidad inc "
                         . "JOIN inc.paciente pac "
                         . "JOIN pac.persona per "
                         . "JOIN pac.expediente exp "
@@ -323,7 +323,7 @@ class IncapacidadController extends Controller
                     
                     $paciente['recordsFiltered']= count($paciente['data']);
                     
-                    $dql = "SELECT exp.numero as expediente, inc.id as id,CONCAT(CONCAT(per.nombres,' '), per.apellidos) as nombres, DATE_FORMAT(inc.fechaInicial,'%d-%m-%Y') as fechaInicial, DATE_FORMAT(inc.fechaFinal,'%d-%m-%Y') as fechaFinal,inc.notas, concat(concat('<a id=\"',inc.id),'\"><i style=\"cursor:pointer;color:#000\" data-toggle=\"tooltip\" data-original-title=\"Atrás\" class=\"infoIncapacidad fa fa-list-alt\"></i></a>')  as link FROM DGPlusbelleBundle:Incapacidad inc "
+                    $dql = "SELECT exp.numero as expediente, inc.id as id,CONCAT(CONCAT(per.nombres,' '), per.apellidos) as nombres, DATE_FORMAT(inc.fechaInicial,'%d-%m-%Y') as fechaInicial, DATE_FORMAT(inc.fechaFinal,'%d-%m-%Y') as fechaFinal,inc.notas, concat(concat('<a id=\"',inc.id),'\"><i style=\"cursor:pointer;color:#000\" data-toggle=\"tooltip\" data-original-title=\"Atrás\" class=\"infoIncapacidad fa fa-list-alt\"></i></a>','<a style=\"margin-left:5px;\" id=\"',inc.id,'\"><i style=\"cursor:pointer;color:#000\" data-toggle=\"tooltip\" data-original-title=\"Atrás\" class=\"eliminarIncapacidad fa fa-times\"></i></a>')  as link FROM DGPlusbelleBundle:Incapacidad inc "
                         . "JOIN inc.paciente pac "
                         . "JOIN pac.persona per "
                         . "JOIN pac.expediente exp "
@@ -338,7 +338,7 @@ class IncapacidadController extends Controller
         }
         else{
 //            $dql = "SELECT exp.numero as expediente, pac.id as id,CONCAT(per.nombres, per.apellidos) as nombres, '<a ><i style=\"cursor:pointer;\"  class=\"infoPaciente fa fa-info-circle\"></i></a>' as link FROM DGPlusbelleBundle:Incapacidad inc "
-            $dql = "SELECT exp.numero as expediente, inc.id as id,CONCAT(CONCAT(per.nombres,' '), per.apellidos) as nombres, DATE_FORMAT(inc.fechaInicial,'%d-%m-%Y') as fechaInicial, DATE_FORMAT(inc.fechaFinal,'%d-%m-%Y') as fechaFinal,inc.notas, concat(concat('<a id=\"',inc.id),'\"><i style=\"cursor:pointer;color:#000\" data-toggle=\"tooltip\" data-original-title=\"Atrás\" class=\"infoIncapacidad fa fa-list-alt\"></i></a>')  as link FROM DGPlusbelleBundle:Incapacidad inc "
+            $dql = "SELECT exp.numero as expediente, inc.id as id,CONCAT(CONCAT(per.nombres,' '), per.apellidos) as nombres, DATE_FORMAT(inc.fechaInicial,'%d-%m-%Y') as fechaInicial, DATE_FORMAT(inc.fechaFinal,'%d-%m-%Y') as fechaFinal,inc.notas, concat(concat('<a id=\"',inc.id),'\"><i style=\"cursor:pointer;color:#000\" data-toggle=\"tooltip\" data-original-title=\"Atrás\" class=\"infoIncapacidad fa fa-list-alt\"></i></a>','<a style=\"margin-left:5px;\" id=\"',inc.id,'\"><i style=\"cursor:pointer;color:#000\" data-toggle=\"tooltip\" data-original-title=\"Atrás\" class=\"eliminarIncapacidad fa fa-times\"></i></a>')  as link FROM DGPlusbelleBundle:Incapacidad inc "
                 . "JOIN inc.paciente pac "
                 . "JOIN pac.persona per "
                 . "JOIN pac.expediente exp ORDER BY inc.id DESC ";
@@ -360,4 +360,107 @@ class IncapacidadController extends Controller
         
         return new Response(json_encode($paciente));
     }
+    
+    
+    
+    
+    
+    
+    /**
+     * 
+     *
+     * @Route("/incapacidad/data/consulta/guardar", name="admin_consulta_guardar_incapacidad_ajax")
+     */
+    public function dataConsultaAction(Request $request)
+    {
+        
+        /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+	 * Easy set variables
+	 */
+	
+	/* Array of database columns which should be read and sent back to DataTables. Use a space where
+	 * you want to insert a non-database field (for example a counter or static image)
+	 */
+        $incapacidad = new Incapacidad();
+
+        
+        $idPaciente = $request->get('idPaciente');
+        $idEmpleado = 1;
+        $fechaInicio = $request->get('fechaInicio');
+        $fechaFin = $request->get('fechaFin');
+        $notas = $request->get('notas');
+//        var_dump($fechaInicio);
+//        var_dump($fechaFin);
+        
+        
+        $em = $this->getDoctrine()->getEntityManager();
+        $pacienteObj = $em->getRepository('DGPlusbelleBundle:Paciente')->find($idPaciente);
+        $empleadoObj = $em->getRepository('DGPlusbelleBundle:Empleado')->find(1); //Sepes solo el dr
+        
+        
+        $incapacidad->setFechaInicial(new \DateTime($fechaInicio));
+        $incapacidad->setFechaFinal(new \DateTime($fechaFin));
+        $incapacidad->setFechaRegistro(new \DateTime('now'));
+        
+        $incapacidad->setNotas($notas);
+        $incapacidad->setPaciente($pacienteObj);
+        $incapacidad->setEmpleado($empleadoObj);
+        
+        $em->persist($incapacidad);
+        $em->flush();
+        
+        return new Response(json_encode(0));
+        
+    }
+    
+    
+    
+    
+    
+    
+    /**
+     * 
+     *
+     * @Route("/incapacidad/data/consulta/eliminar", name="admin_consulta_eliminar_incapacidad_ajax")
+     */
+    public function dataEliminarIncapacidadAction(Request $request)
+    {
+        
+        /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+	 * Easy set variables
+	 */
+	
+	/* Array of database columns which should be read and sent back to DataTables. Use a space where
+	 * you want to insert a non-database field (for example a counter or static image)
+	 */
+        
+
+        
+        $idIncapacidad = $request->get('id');
+        
+//        var_dump($fechaInicio);
+//        var_dump($fechaFin);
+        
+        
+        $em = $this->getDoctrine()->getEntityManager();
+        $incapacidadObj = $em->getRepository('DGPlusbelleBundle:Incapacidad')->find($idIncapacidad);
+        
+        
+        
+        
+        $em->remove($incapacidadObj);
+        $em->flush();
+        
+        return new Response(json_encode(0));
+        
+        
+        
+        
+    }
+    
+    
+    
+    
+    
+    
 }
