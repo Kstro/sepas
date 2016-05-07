@@ -925,20 +925,27 @@
                             <strong></strong>
                                 {% if existenVacunas %}
                                     <div class="row" style="font-size: 18px;">
-                                        <div class="col-md-1">
-                                            <label>Costo total:</label>
+                                        <div class="col-md-3">
+                                            <label style="float:left;">Costo: $</label>
+                                            <input readonly id="costoTotalVacuna" class="pull-left" style="margin-left: 10px; border:0px solid #000; background: transparent;"/>
                                         </div>
-                                        <div class="col-md-6">
-                                            <input readonly id="costoTotalVacuna" class="pull-left" style="border:0px; background: transparent;"/>
+                                        <div class="col-md-4">
+                                            <label style="float:left;">Descuento: %</label>
+                                            <input readonly id="costoDescTotalVacuna" class="pull-left" style="margin-left: 10px; float:right;border:0px solid #000; background: transparent;"/>
                                         </div>
                                         <div class="col-md-3">
-                                            <a href="{{path('admin_historial_consulta')}}?id=P{{consulta.paciente.id}}&idtransaccion=c-{{consulta.id}}" class="pull-left">Realizar venta</a>
+                                            <label style="float:left;">Total a pagar: $</label>
+                                            <input readonly id="totalPagar" class="pull-left" style="margin-left: 10px; border:0px solid #000; background: transparent;"/>
                                         </div>
+                                        {% if vacunas[0].ventaVacuna is null %}
+                                            <div class="col-md-2 pull-right">
+                                                <a href="{{path('admin_historial_consulta')}}?id=P{{consulta.paciente.id}}&idtransaccion=c-{{consulta.id}}" class="pull-left">Realizar venta</a>
+                                            </div>
+                                        {% endif %}
                                     </div>
                                     <hr>
                                     <div class="row">
-                                        <div class="col-md-3"></div>
-                                        <div class="col-md-2">
+                                        <div class="col-md-offset-3 col-md-2">
                                             <label>Vacuna</label>
                                         </div>
                                         <div class="col-md-2">
@@ -947,14 +954,13 @@
                                         <div class="col-md-2">
                                             <label>Número de aplicaciones</label>
                                         </div>
-                                        <div class="col-md-3">
+                                        <div class="clearfix">
                                             {#<i class="fa fa-plus fa-2x" id="masVacuna" style="cursor:pointer;"></i>#}
                                         </div>
-                                        <div class="clearfix"></div>
                                         <div class="row vacuna-content" style="margin-top:10px;">      
                                             {% for row in vacunas %}
-                                                <div class="col-md-3"></div>
-                                                <div class="col-md-2">
+                                                
+                                                <div class="col-md-offset-3 col-md-2">
                                                     <label style="">{{row.vacuna.nombre}}</label>
                                                     {#<select style="width:100%;" class="col-md-12 valores editorVacuna form-control input-sm" id="vacunas0" >
                                                         <option value="{{row.vacuna.id}}">{{row.vacuna.nombre}}</option>
@@ -968,7 +974,7 @@
                                                     <label style="margin-right:70px;">{{row.aplicaciones}}</label>
 {#                                                    <input value="{{row.aplicaciones}}" name="aplicacionesVacuna" class="aplicacionesVacuna valores form-control input-sm form-control" placeholder="#"/>#}
                                                 </div>
-                                                <div class="col-md-3"></div>
+                                                
                                                 <div class="clearfix"></div>
                                             {% endfor %}
                                         </div>
@@ -982,7 +988,7 @@
                                             <div class="col-md-12">
                                                 <div class="form-grouphide col-sm-12">
                                                     {#<a class="btn btn-default btn-xs" id="cancelarNuevoConsulta">Cancelar</a>#}
-                                                    <button type="submit" id="guardarVacunas" name="dgplusbellebundle_antecedentes[submit]" class="btn btn-success text-light btn-xs btn btn">Guardar</button>
+                                                    {#<button type="submit" id="guardarVacunas" name="dgplusbellebundle_antecedentes[submit]" class="btn btn-success text-light btn-xs btn btn">Guardar</button>#}
                                                 </div>
                                             </div>
                                         </div>
@@ -996,7 +1002,7 @@
                                             <input readonly id="costoTotalVacuna" class="pull-left" style="border:0px; background: transparent;"/>
                                         </div>
                                         <div class="col-md-2">
-                                            <label>Descuento</label>
+                                            <label>Descuento: </label>
                                         </div>
                                         <div class="col-md-3">
                                             <select style="width:100%;" class="form-control input-sm" id="descuentoVacuna">
@@ -3036,50 +3042,53 @@
         });#}
             
         var porcDescuento=0;
-       
-        var idDescuentoPrecarga = $('#descuentoVacuna').val(); 
         
-        var valorTotalPre=0;
-            $('.costoVacuna').each(function(index,element){
-                if($(this).val()==''){
-                    valorTotalPre += 0;
-                }
-                else{
-                    valorTotalPre += parseFloat(($(this).val()).replace(',',''));
-                }
-                console.log(valorTotalPre*(1-(porcDescuento/100)));
-            });
+        {% if not existenVacunas %}
         
-        $('#costoTotalVacuna').val((valorTotalPre*(1-(porcDescuento/100))).toFixed(2));
-        
-        $.ajax({
-                data:{idDescuento:idDescuentoPrecarga},
-                url:"{{path('busqueda_descuento_porcentaje_select')}}",
-                type: "post",
-                success: function (data) {
-                        //inicio = data.inicio++;
-                        console.log(data);
-                        if(data!=-1){
-                            var monto = valorTotalPre;
-                            porcDescuento=data;
-                            var nuevoTotal = monto*(1-(data/100));
-                            $('#costoTotalVacuna').val((monto*(1-(porcDescuento/100))).toFixed(2));
-                            
+            var idDescuentoPrecarga = $('#descuentoVacuna').val(); 
 
-                            
-                            
-{#                            bootbox.alert("Cambios guardados!", function() {});#}
-{#                            alertify.success("Cambios guardados!");#}
-                        }
-                        
-                        {#console.log("pagina actual: "+data);
-                        console.log("Inicio de registro: "+data.inicioRegistro);#}
-                    },
-                error: function (data) {
+            var valorTotalPre=0;
+                $('.costoVacuna').each(function(index,element){
+                    if($(this).val()==''){
+                        valorTotalPre += 0;
+                    }
+                    else{
+                        valorTotalPre += parseFloat(($(this).val()).replace(',',''));
+                    }
+                    console.log(valorTotalPre*(1-(porcDescuento/100)));
+                });
+
+            $('#costoTotalVacuna').val((valorTotalPre*(1-(porcDescuento/100))).toFixed(2));
+
+            $.ajax({
+                    data:{idDescuento:idDescuentoPrecarga},
+                    url:"{{path('busqueda_descuento_porcentaje_select')}}",
+                    type: "post",
+                    success: function (data) {
+                            //inicio = data.inicio++;
+                            console.log(data);
+                            if(data!=-1){
+                                var monto = valorTotalPre;
+                                porcDescuento=data;
+                                var nuevoTotal = monto*(1-(data/100));
+                                $('#costoTotalVacuna').val((monto*(1-(porcDescuento/100))).toFixed(2));
 
 
-                }
-            });
+
+
+    {#                            bootbox.alert("Cambios guardados!", function() {});#}
+    {#                            alertify.success("Cambios guardados!");#}
+                            }
+
+                            {#console.log("pagina actual: "+data);
+                            console.log("Inicio de registro: "+data.inicioRegistro);#}
+                        },
+                    error: function (data) {
+
+
+                    }
+                });
+                {% endif %}  
         
         /**********************************************
          * Metodos de guardar con ajax
@@ -3123,15 +3132,44 @@
         {% else %}
             var costoTotalV = 0;
             {% set total = 0 %}
+            {% set totalDesc = 0 %}
+            {% set idDesc = 0 %}
             {% for row in vacunas %}
                 
                 {% set total = total + row.costo|number_format(2, '.', ',') %}
-                    
+                {% set idDesc = row.descuento %}
+                {#$('#costoDescTotalVacuna').val({{row.descuento|number_format(2, '.', ',')}});#}
+                
+                
+    
+            
+                
                 
 {#                console.log("{{total|number_format(2, '.', ',')}}");#}
                 $('#costoTotalVacuna').val("$ {{total|number_format(2, '.', ',')}}");
             {% endfor %}    
-            
+                var idDescuento = {{idDesc}};
+                var total = {{total}};
+                $.ajax({
+                    data:{idDescuento:idDescuento },
+                    url:"{{path('busqueda_descuento_porcentaje_select')}}",
+                    type: "post",
+                    success: function (data) {
+{#                            console.log(data);#}
+                            if(data!=-1){
+                                var monto = {{total}};
+                                var porcDescuento=data;
+                                console.log("monto: "+monto);
+                                console.log("data:" +data);
+                                var nuevoTotal = monto*(1-(data/100));
+                                $('#totalPagar').val((monto*(1-(porcDescuento/100))).toFixed(2));
+                                $('#costoTotalVacuna').val((total).toFixed(2));
+                                $('#costoDescTotalVacuna').val((parseFloat(porcDescuento)).toFixed(2));
+                            }
+                        },
+                    error: function (data) {
+                    }
+                });
             
         {% endif %}
         {#$('.costoVacuna').mask('000000000000000.00', {reverse: true});
@@ -3228,8 +3266,17 @@
                         //inicio = data.inicio++;
                         console.log(data);
                         if(data!=-1){
-{#                            var monto = $('#costoTotalVacuna').val();#}
-                            var monto = valorTotalPre;
+                            var valorTotal = 0;
+                            $('.costoVacuna').each(function(index,element){
+                                if($(this).val()==''){
+                                    valorTotal += 0;
+                                }
+                                else{
+                                    valorTotal += parseFloat(($(this).val()).replace(',',''));
+                                }
+                                console.log(valorTotal*(1-(porcDescuento-100)));
+                            });
+                            var monto = valorTotal;
                             porcDescuento=data;
                             var nuevoTotal = monto*(1-(data/100));
                             $('#costoTotalVacuna').val((monto*(1-(data/100))).toFixed(2));
@@ -3239,7 +3286,7 @@
                             
                             
 {#                            bootbox.alert("Cambios guardados!", function() {});#}
-                            alertify.success("Cambios guardados!");
+{#                            alertify.success("Cambios guardados!");#}
                         }
                         
                         {#console.log("pagina actual: "+data);
