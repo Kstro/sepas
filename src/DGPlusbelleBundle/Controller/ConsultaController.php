@@ -3232,33 +3232,33 @@ class ConsultaController extends Controller
             $em->persist($vacunaConsulta);
             $em->flush();
         }
-        
-        die();
+        return new Response(json_encode(0)); //no error
+        //die();
 //        var_dump($consulta);
-        if(count($consulta)!=0){
-            if(count($evaluacion)==0){
-                $evaluacion = new Evaluacion();
-                $evaluacion->setConsulta($consulta);
-                $evaluacion->setDiagnostico($diagnostico);
-                $evaluacion->setEstLaboratorio($estLaboratorios);
-                $evaluacion->setMedicamentos($medicamentos);
-                $em->persist($evaluacion);
-                $em->flush();
-            }
-            else{
-                $evaluacion[0]->setConsulta($consulta);
-                $evaluacion[0]->setDiagnostico($diagnostico);
-                $evaluacion[0]->setEstLaboratorio($estLaboratorios);
-                $evaluacion[0]->setMedicamentos($medicamentos);
-                $em->merge($evaluacion[0]);
-                $em->flush();
-            }
-            
-            return new Response(json_encode(0)); //no error
-        }
-        else{
-            return new Response(json_encode(1));//error
-        }
+//        if(count($consulta)!=0){
+//            if(count($evaluacion)==0){
+//                $evaluacion = new Evaluacion();
+//                $evaluacion->setConsulta($consulta);
+//                $evaluacion->setDiagnostico($diagnostico);
+//                $evaluacion->setEstLaboratorio($estLaboratorios);
+//                $evaluacion->setMedicamentos($medicamentos);
+//                $em->persist($evaluacion);
+//                $em->flush();
+//            }
+//            else{
+//                $evaluacion[0]->setConsulta($consulta);
+//                $evaluacion[0]->setDiagnostico($diagnostico);
+//                $evaluacion[0]->setEstLaboratorio($estLaboratorios);
+//                $evaluacion[0]->setMedicamentos($medicamentos);
+//                $em->merge($evaluacion[0]);
+//                $em->flush();
+//            }
+//            
+//            return new Response(json_encode(0)); //no error
+//        }
+//        else{
+//            return new Response(json_encode(1));//error
+//        }
     }
     
     
@@ -3288,6 +3288,33 @@ class ConsultaController extends Controller
                 ->getResult();
         
         return new Response(json_encode($paciente));
+    }
+    
+    
+    /**
+    * Ajax utilizado para buscar informacion de una consulta de estetica
+    *  
+    * @Route("/busqueda-descuento-select/data/porc", name="busqueda_descuento_porcentaje_select")
+    */
+    public function getDescuentoAction(Request $request)
+    {
+        $idDescuento = $request->get('idDescuento');
+//        var_dump($idDescuento);
+        $em = $this->getDoctrine()->getEntityManager();
+        
+        $descuentoObj = $em->getRepository('DGPlusbelleBundle:Descuento')->find($idDescuento);
+//        var_dump($descuentoObj->getPorcentaje());
+        if(count($descuentoObj)!=0){
+//            echo "se encontro";
+            return new Response(json_encode($descuentoObj->getPorcentaje()));
+        }
+        else{
+//            echo "no se encontro";
+            return new Response(json_encode(-1));
+        }
+        
+//        return new Response(json_encode($descuentoObj));
+        
     }
     
     

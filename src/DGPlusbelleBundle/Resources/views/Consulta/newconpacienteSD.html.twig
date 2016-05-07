@@ -3035,10 +3035,51 @@
             return false;            
         });#}
             
-            
+        var porcDescuento=0;
        
-            
+        var idDescuentoPrecarga = $('#descuentoVacuna').val(); 
         
+        var valorTotalPre=0;
+            $('.costoVacuna').each(function(index,element){
+                if($(this).val()==''){
+                    valorTotalPre += 0;
+                }
+                else{
+                    valorTotalPre += parseFloat(($(this).val()).replace(',',''));
+                }
+                console.log(valorTotalPre*(1-(porcDescuento/100)));
+            });
+        
+        $('#costoTotalVacuna').val((valorTotalPre*(1-(porcDescuento/100))).toFixed(2));
+        
+        $.ajax({
+                data:{idDescuento:idDescuentoPrecarga},
+                url:"{{path('busqueda_descuento_porcentaje_select')}}",
+                type: "post",
+                success: function (data) {
+                        //inicio = data.inicio++;
+                        console.log(data);
+                        if(data!=-1){
+                            var monto = valorTotalPre;
+                            porcDescuento=data;
+                            var nuevoTotal = monto*(1-(data/100));
+                            $('#costoTotalVacuna').val((monto*(1-(porcDescuento/100))).toFixed(2));
+                            
+
+                            
+                            
+{#                            bootbox.alert("Cambios guardados!", function() {});#}
+{#                            alertify.success("Cambios guardados!");#}
+                        }
+                        
+                        {#console.log("pagina actual: "+data);
+                        console.log("Inicio de registro: "+data.inicioRegistro);#}
+                    },
+                error: function (data) {
+
+
+                }
+            });
         
         /**********************************************
          * Metodos de guardar con ajax
@@ -3166,7 +3207,7 @@
                     valorTotal += parseFloat(($(this).val()).replace(',',''));
                 }
                 
-                console.log(valorTotal);
+                console.log(valorTotal*(1-(porcDescuento-100)));
             });
             $('#costoTotalVacuna').val(valorTotal.toFixed(2));
         });
@@ -3174,6 +3215,41 @@
         
         $(document).on('change','.editorVacuna', function(){
             console.log('prueba');
+        });
+        
+        $(document).on('change','#descuentoVacuna', function(){
+            var idDescuento = $(this).val();
+            console.log(idDescuento);
+            $.ajax({
+                data:{idDescuento:idDescuento},
+                url:"{{path('busqueda_descuento_porcentaje_select')}}",
+                type: "post",
+                success: function (data) {
+                        //inicio = data.inicio++;
+                        console.log(data);
+                        if(data!=-1){
+{#                            var monto = $('#costoTotalVacuna').val();#}
+                            var monto = valorTotalPre;
+                            porcDescuento=data;
+                            var nuevoTotal = monto*(1-(data/100));
+                            $('#costoTotalVacuna').val((monto*(1-(data/100))).toFixed(2));
+{#                            $('#costoTotalVacuna').val(""+(monto*(1-(data/100))));#}
+                            
+
+                            
+                            
+{#                            bootbox.alert("Cambios guardados!", function() {});#}
+                            alertify.success("Cambios guardados!");
+                        }
+                        
+                        {#console.log("pagina actual: "+data);
+                        console.log("Inicio de registro: "+data.inicioRegistro);#}
+                    },
+                error: function (data) {
+
+
+                }
+            });
         });
         
         
@@ -3238,7 +3314,7 @@
             
             var idConsulta = $('#idConsulta').val();
             var id = $('#idPaciente').val();
-            var idDescuento = $('#idDescuento').val();
+            var idDescuento = $('#descuentoVacuna').val();
             var errores = 0;
             {#var vacunas = new Array();
             var costos = new Array();
@@ -3292,8 +3368,6 @@
                 }
                 else{
                     console.log("todos");
-                
-
                     $.ajax({
                         data:{idConsulta:idConsulta,valores:valores,idDescuento:idDescuento},
                         url:"{{path('admin_vacunas_guardar_ajax')}}",
@@ -3339,9 +3413,9 @@
                     valorTotal += parseFloat(($(this).val()).replace(',',''));
                 }
                 
-                console.log(valorTotal);
+                console.log(valorTotal*(1-(porcDescuento/100)));
             });
-            $('#costoTotalVacuna').val(valorTotal.toFixed(2));
+            $('#costoTotalVacuna').val((valorTotal*(1-(porcDescuento/100))).toFixed(2));
                     
             
         });
