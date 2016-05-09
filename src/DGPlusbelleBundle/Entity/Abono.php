@@ -62,6 +62,16 @@ class Abono
      */
     private $paciente;
     
+    /**
+     * @var \VentaVacuna
+     *
+     * @ORM\ManyToOne(targetEntity="VentaVacuna")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="venta_vacuna", referencedColumnName="id")
+     * })
+     */
+    private $ventaVacuna;
+    
      /**
      * @var \ventaPaquete
      *
@@ -250,6 +260,29 @@ class Abono
         return $this->ventaPaquete;
     }
     
+     /**
+     * Set ventaVacuna
+     *
+     * @param \DGPlusbelleBundle\Entity\VentaVacuna $ventaVacuna
+     *
+     * @return Abono
+     */
+    public function setVentaVacuna(\DGPlusbelleBundle\Entity\VentaVacuna $ventaVacuna = null)
+    {
+        $this->ventaVacuna = $ventaVacuna;
+
+        return $this;
+    }
+
+    /**
+     * Get ventaVacuna
+     *
+     * @return \DGPlusbelleBundle\Entity\VentaVacuna
+     */
+    public function getVentaVacuna()
+    {
+        return $this->ventaVacuna;
+    }
     
      /**
      * Set personaTratamiento

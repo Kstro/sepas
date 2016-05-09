@@ -10,6 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use DGPlusbelleBundle\Entity\VentaVacuna;
 use DGPlusbelleBundle\Form\VentaVacunaType;
+use Doctrine\ORM\Query\ResultSetMapping;
 
 /**
  * VentaVacuna controller.
@@ -294,7 +295,9 @@ class VentaVacunaController extends Controller
             $em->flush();
             
             $montoTotal = 0;
-            $nomTratamientos = array();
+            $nomvac = array();
+            $costovac = array();
+            $aplicacionesvac = array();
             foreach($valores as $key=>$row){
 
                 $vacunaConsulta = new \DGPlusbelleBundle\Entity\VacunaConsulta();
@@ -302,6 +305,11 @@ class VentaVacunaController extends Controller
                 $vacunaConsulta->setCosto($row[1]);
                 $vacunaConsulta->setConsulta(null);
                 $vacunaConsulta->setVacuna($vacuna);
+                if($descuento){
+                    $vacunaConsulta->setDescuento($descuento->getId());
+                } else {
+                    $vacunaConsulta->setDescuento(0);
+                }    
                 $vacunaConsulta->setVentaVacuna($ventaVacuna);
                 $vacunaConsulta->setAplicaciones($row[2]);
 
@@ -309,23 +317,49 @@ class VentaVacunaController extends Controller
                 
                 $em->persist($vacunaConsulta);
                 $em->flush();
+                $nomvac[$key]['nombre'] = $vacuna->getNombre();
+                $nomvac[$key]['costo'] = $vacunaConsulta->getCosto();
+                $nomvac[$key]['aplicaciones'] = $vacunaConsulta->getAplicaciones();
+                
+                $seguimiento = new \DGPlusbelleBundle\Entity\SeguimientoAplicacionVacuna();
+                $seguimiento->setVentaVacuna($ventaVacuna);
+                $seguimiento->setVacuna($vacuna);
+                $seguimiento->setNumAplicacion(0);
             }
             
             $ventaVacuna->setMontoTotal($montoTotal);
             $em->merge($ventaVacuna);
             $em->flush();
             
+            
+            
             if($ventaVacuna->getDescuento()){    
                 $totaldesc = ($ventaVacuna->getMontoTotal() * $ventaVacuna->getDescuento()->getPorcentaje()) / 100;
+                $porcentaje = $ventaVacuna->getDescuento()->getPorcentaje();
             } else {
                 $totaldesc = 0;
+                $porcentaje = 0;
             }
+            
+            $idVenta =$ventaVacuna->getId();
+            $rsm2 = new ResultSetMapping();
+            $sql2 = "select cast(sum(abo.monto) as decimal(36,2)) abonos, count(abo.monto) cuotas "
+                    . "from abono abo inner join venta_vacuna p on abo.venta_vacuna = p.id "
+                    . "where p.id = '$idVenta'";
+            
+            $rsm2->addScalarResult('abonos','abonos');
+            $rsm2->addScalarResult('cuotas','cuotas');
+            
+            $abonos = $em->createNativeQuery($sql2, $rsm2)
+                    ->getSingleResult();
             
             $ventaPaqueteTratamientos = array(
                                         'id' => $ventaVacuna->getId(), 
                                         'costo' => $ventaVacuna->getMontoTotal(), 
                                         'descuento' => $totaldesc, 
-                                        'cuotas' => $ventaVacuna->getCuotas()
+                                        'cuotas' => $ventaVacuna->getCuotas(),
+                                        'desc' => $ventaVacuna->getDescuento()->getNombre().' - '.$ventaVacuna->getDescuento()->getPorcentaje(),
+                                        'observaciones' => $ventaVacuna->getObservaciones()
                                     );
             
             $this->get('bitacora')->escribirbitacora("Se registro una nueva venta de vacunas ", $usuario->getId());
@@ -334,7 +368,11 @@ class VentaVacunaController extends Controller
             $response->setData(array(
                                 'exito'       => '1',
                                 'ventaVacuna' => $ventaVacuna->getId(),
-                                'ventaPaqueteTratamientos' => $ventaPaqueteTratamientos
+                                'porcentaje' => $porcentaje,
+                                'nomvac' => $nomvac,
+                                'abonos' => $abonos,
+                                'empleado' => $ventaVacuna->getEmpleado()->getPersona()->getNombres().' '.$ventaVacuna->getEmpleado()->getPersona()->getApellidos(),
+                                'ventaVacunas' => $ventaPaqueteTratamientos
                                ));  
             
             return $response; 
@@ -394,23 +432,22 @@ class VentaVacunaController extends Controller
             
             $montoTotal = 0;
             foreach($valores as $key=>$row){
-                //$vacunaConsulta = new \DGPlusbelleBundle\Entity\VacunaConsulta();
                 $vacuna = $em->getRepository('DGPlusbelleBundle:Vacuna')->find($row[0]);
                 
                 $vacunaConsulta = $em->getRepository('DGPlusbelleBundle:VacunaConsulta')->findOneBy(array('consulta' => $consulta,
                                                                                                        'vacuna' => $vacuna
                                                                                                        ));
-//                                                                                                       var_dump($vacunaConsulta);
-                //$vacunaConsulta->setCosto($row[1]);
-                //$vacunaConsulta->setConsulta(null);
-                //$vacunaConsulta->setVacuna($vacuna);
-                $vacunaConsulta->setVentaVacuna($ventaVacuna);
-                //$vacunaConsulta->setAplicaciones($row[2]);
 
+                $vacunaConsulta->setVentaVacuna($ventaVacuna);
                 $montoTotal+=$vacunaConsulta->getCosto();
                 
                 $em->merge($vacunaConsulta);
                 $em->flush();
+                
+                $seguimiento = new \DGPlusbelleBundle\Entity\SeguimientoAplicacionVacuna();
+                $seguimiento->setVentaVacuna($ventaVacuna);
+                $seguimiento->setVacuna($vacuna);
+                $seguimiento->setNumAplicacion(0);
             }
             
             $ventaVacuna->setMontoTotal($montoTotal);
@@ -419,15 +456,30 @@ class VentaVacunaController extends Controller
             
             if($ventaVacuna->getDescuento()){    
                 $totaldesc = ($ventaVacuna->getMontoTotal() * $ventaVacuna->getDescuento()->getPorcentaje()) / 100;
+                $porcentaje = $ventaVacuna->getDescuento()->getPorcentaje();
             } else {
                 $totaldesc = 0;
+                $porcentaje = 0;
             }
+            
+            $idVenta =$ventaVacuna->getId();
+            $rsm2 = new ResultSetMapping();
+            $sql2 = "select cast(sum(abo.monto) as decimal(36,2)) abonos, count(abo.monto) cuotas "
+                    . "from abono abo inner join venta_vacuna p on abo.venta_vacuna = p.id "
+                    . "where p.id = '$idVenta'";
+            
+            $rsm2->addScalarResult('abonos','abonos');
+            $rsm2->addScalarResult('cuotas','cuotas');
+            
+            $abonos = $em->createNativeQuery($sql2, $rsm2)
+                    ->getSingleResult();
             
             $ventaPaqueteTratamientos = array(
                                         'id' => $ventaVacuna->getId(), 
                                         'costo' => $ventaVacuna->getMontoTotal(), 
                                         'descuento' => $totaldesc, 
-                                        'cuotas' => $ventaVacuna->getCuotas()
+                                        'cuotas' => $ventaVacuna->getCuotas(),
+                                        'observaciones' => $ventaVacuna->getObservaciones()
                                     );
             
             $this->get('bitacora')->escribirbitacora("Se registro una nueva venta de vacunas ", $usuario->getId());
@@ -436,7 +488,10 @@ class VentaVacunaController extends Controller
             $response->setData(array(
                                 'exito'       => '1',
                                 'ventaVacuna' => $ventaVacuna->getId(),
-                                'ventaPaqueteTratamientos' => $ventaPaqueteTratamientos
+                                'porcentaje' => $porcentaje,
+                                'abonos' => $abonos,
+                                'empleado' => $ventaVacuna->getEmpleado()->getPersona()->getNombres().' '.$ventaVacuna->getEmpleado()->getPersona()->getApellidos(),
+                                'ventaVacunas' => $ventaPaqueteTratamientos
                                ));  
             
             return $response; 
