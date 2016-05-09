@@ -566,8 +566,12 @@
                                     <div class="row">
                                         <div class="col-md-4">
                                             <label>
-                                                Peso (Kg)
+                                                Peso (Kg)/ Libras:
                                             </label>
+                                            <label id="libras">
+                                                
+                                            </label>
+                                            
                                         </div>
                                         <div class="col-md-4">
                                             <label>
@@ -603,9 +607,14 @@
                                                 Temperatura (°C)
                                             </label>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-2">
                                             <label>
                                                 Frecuencia cardiaca (x minuto)
+                                            </label>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label>
+                                                SPO2
                                             </label>
                                         </div>
                                         
@@ -622,8 +631,11 @@
                                         <div class="col-md-4">
                                             <input id="temperaturaPaciente" value="{{signos.temperatura}}" name="temperaturaPaciente" class="form-control input-sm form-control"/>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-2">
                                             <input id="frecCardiaca" value="{{signos.frecCardiaca}}" name="frecCardiaca" class="form-control input-sm form-control"/>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input id="spo" value="{{signos.spo}}" name="spo" class="form-control input-sm form-control"/>
                                         </div>
                                     </div>
                                     
@@ -3298,8 +3310,14 @@
                 }
             });
         });
-        
-        
+        if($('#pesoPaciente').val()!=''){
+            
+            $('#libras').html(($('#pesoPaciente').val()*2.20).toFixed(2)+ " lbs");
+        }
+      
+        $(document).on('input', '#pesoPaciente',function(){
+            $('#libras').html(($(this).val()*2.20).toFixed(2)+" lbs");
+        });
         $(document).on('click','#guardarNuevoDatosGenerales', function(){
             var id = $('#idPaciente').val();
             var nombres = $('#nombresPaciente').val();
@@ -3600,13 +3618,15 @@
             var presionSistolica= $('#presionSistolica').val();
             var temperatura = $('#temperaturaPaciente').val();
             var frecCardiaca = $('#frecCardiaca').val();
+            var frecCardiaca = $('#frecCardiaca').val();
+            var spo = $('#spo').val();
             var medico = $('#medico_consulta').val();
             var sucursal = $('#sucursal_consulta').val();
-            
+            console.log(id);
             
             if(idConsulta==''){
                 $.ajax({
-                    data:{sucursal:sucursal,medico:medico,id:id,peso:peso,talla:talla,frecRespiratoria:frecRespiratoria,presionDiastolica:presionDiastolica,presionSistolica:presionSistolica,temperatura:temperatura,frecCardiaca:frecCardiaca},
+                    data:{spo:spo,sucursal:sucursal,medico:medico,id:id,peso:peso,talla:talla,frecRespiratoria:frecRespiratoria,presionDiastolica:presionDiastolica,presionSistolica:presionSistolica,temperatura:temperatura,frecCardiaca:frecCardiaca},
                     url:"{{path('admin_paciente_guardar_signos_ajax')}}",
                     type: "post",
                     success: function (data) {
@@ -3629,7 +3649,7 @@
             }
             else{
                 $.ajax({
-                    data:{medico:medico,idConsulta:idConsulta,id:id,peso:peso,talla:talla,frecRespiratoria:frecRespiratoria,presionDiastolica:presionDiastolica,presionSistolica:presionSistolica,temperatura:temperatura,frecCardiaca:frecCardiaca},
+                    data:{spo:spo,medico:medico,idConsulta:idConsulta,id:id,peso:peso,talla:talla,frecRespiratoria:frecRespiratoria,presionDiastolica:presionDiastolica,presionSistolica:presionSistolica,temperatura:temperatura,frecCardiaca:frecCardiaca},
                     url:"{{path('admin_paciente_actualizar_signos_ajax')}}",
                     type: "post",
                     success: function (data) {
