@@ -42,9 +42,13 @@ class VentaController  extends Controller
         
         if($consultaid!=null){
             $consulta = $em->getRepository('DGPlusbelleBundle:Consulta')->find($consultaid);
+            $vacunaConsulta = $em->getRepository('DGPlusbelleBundle:VacunaConsulta')->findBy(array('consulta' => $consulta));
+            $descuentoConsulta = $em->getRepository('DGPlusbelleBundle:Descuento')->find($vacunaConsulta[0]->getDescuento());
         }
         else{
             $consulta = null;
+            $vacunaConsulta = null;
+            $descuentoConsulta = null;
         }
         
         //var_dump($consulta);
@@ -88,16 +92,19 @@ class VentaController  extends Controller
         $descuentos = $em->getRepository('DGPlusbelleBundle:Descuento')->findBy(array('estado' => true));
         
         return array(
+            'consulta' => $consulta,
+            'descuento'  => $descuentoConsulta,
+            'descuentos' => $descuentos,
             'edad' => $edad,
-            'paciente' => $paciente,
+            'empleadosVenta' => $empleadosVenta,
             'expediente'=>$expnum,
+            'paciente' => $paciente,
             'paquetesnoedit'=>$regnoeditpaquete,
+            'sucursales' => $sucursales,
             'tratamientosnoedit'=>$regnoedittratamiento,
+            'vacunas' => $vacunaConsulta,
             'ventaPaquetes' => $ventaPaquetes,
             'ventaTratamientos' => $ventaTratamientos,
-            'sucursales' => $sucursales,
-            'empleadosVenta' => $empleadosVenta,
-            'descuentos' => $descuentos,
             'idPaciente'=>$idPacient
             );
     }
