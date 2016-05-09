@@ -735,8 +735,10 @@ class FPDFService {
         $pdi  = new \FPDF_FPDI();
         
         //var_dump($urlLogo);
-        $logo = $urlLogo.'logo-01.png';
-        $logo2 = $urlLogo.'logo-01.png';
+//        $logo = $urlLogo.'logo-01.png';
+//        $logo2 = $urlLogo.'logo-01.png';
+        $logo = $urlLogo.'logo01.jpg';
+        $logo2 = $urlLogo.'logo01.jpg';
         html_entity_decode("&aacute;");
         $pdf->FPDF('P','mm','Letter');
         $pdf->SetTopMargin(0);
@@ -745,32 +747,32 @@ class FPDFService {
         $pdf->AddPage();
         $pdf->SetFillColor(255);
         
-        $pdf->SetFont('Arial','B',16);
+        $pdf->SetFont('Arial','B',24);
 //        $pdf->Cell(120,32,$consulta[0]->getDetallePlantilla()->getPlantilla()->getNombre());
-        $pdf->Cell(70);
+        $pdf->Cell(120);
         //$pdf->Cell(120,32,utf8_decode($consulta[0]->getDetallePlantilla()->getPlantilla()->getNombre()));
-        $pdf->Cell(120,32,utf8_decode('Receta médica'));
-        
-        $pdf->Image($logo, 20, 5, 50, 20);
-        $pdf->Image($logo2, 150, 5, 50, 20);
+        $pdf->Cell(120,40,utf8_decode('Receta médica'));
+        $pdf->SetFont('Arial','B',16);
+        $pdf->Image($logo, 20, 10, 90);
+//        $pdf->Image($logo2, 150, 5, 60);
         $pdf->Line(20, 25.5, 200, 25.5);
         $pdf->Line(20, 26, 200, 26);
         
+        $pdf->Ln(10);
         
-        
-        $pdf->SetFont('Arial','',11);
-        $pdf->SetY(20);
-        $pdf->SetX(20);
-        $pdf->Cell(88, 27, utf8_decode($medico['nombre']));
-        
-        $pdf->Ln(5);
-        $pdf->SetX(20);
-        $pdf->Cell(85, 27, utf8_decode($medico['cargo']));
-        
-        $pdf->Ln(5);
-        $pdf->SetX(20);
-        $pdf->Cell(85, 27, utf8_decode($medico['codigo']));
-        
+//        $pdf->SetFont('Arial','',11);
+//        $pdf->SetY(20);
+//        $pdf->SetX(20);
+//        $pdf->Cell(88, 27, utf8_decode($medico['nombre']));
+//        
+//        $pdf->Ln(5);
+//        $pdf->SetX(20);
+//        $pdf->Cell(85, 27, utf8_decode($medico['cargo']));
+//        
+//        $pdf->Ln(5);
+//        $pdf->SetX(20);
+//        $pdf->Cell(85, 27, utf8_decode($medico['codigo']));
+//        
         //var_dump($otros);
         $i=20;
         foreach($otros as $key => $otro){
@@ -799,43 +801,43 @@ class FPDFService {
         //var_dump($paciente->getPersona()->getNombres());
         $this->mostrarCelda($pdf, 32, 'Nombre: ', utf8_decode($paciente->getPersona()->getNombres().' '.$paciente->getPersona()->getApellidos()));
         
-        if($paciente->getFechaNacimiento()!=null){
-		$fecha = $paciente->getFechaNacimiento()->format("Y-m-d");    
-		list($Y,$m,$d) = explode("-",$fecha);
-	        $edad = date("md") < $m.$d ? date("Y")-$Y-1 : date("Y")-$Y;   
-	        $this->mostrarCelda($pdf, 13, 'Edad: ', $edad /*.' '. htmlentities('Años', ENT_QUOTES,'UTF-8')*/);             
-        }
-        else{
-		$fecha = 'Fecha de nacimiento no registrada ';
-		$this->mostrarCelda($pdf, 13, 'Edad: ', $fecha);
-        }
+//        if($paciente->getFechaNacimiento()!=null){
+//		$fecha = $paciente->getFechaNacimiento()->format("Y-m-d");    
+//		list($Y,$m,$d) = explode("-",$fecha);
+//	        $edad = date("md") < $m.$d ? date("Y")-$Y-1 : date("Y")-$Y;   
+//	        $this->mostrarCelda($pdf, 13, 'Edad: ', $edad /*.' '. htmlentities('Años', ENT_QUOTES,'UTF-8')*/);             
+//        }
+//        else{
+//		$fecha = 'Fecha de nacimiento no registrada ';
+//		$this->mostrarCelda($pdf, 13, 'Edad: ', $fecha);
+//        }
         
         $pdf->Ln(7);
 //        $this->mostrarCelda($pdf, 32, 'Expediente No.: ', $paciente->getExpediente()[0]->getNumero());
-  	if($paciente->getExpediente()[0]!=null){
-        	$this->mostrarCelda($pdf, 32, 'Expediente No.: ', $paciente->getExpediente()[0]->getNumero());
-        }
-        else{
-        	$this->mostrarCelda($pdf, 32, 'Expediente No.: ', ' ');
-        }      
-        $sexoPaciente = $paciente->getSexo();
-        $sexo = '';
-
-        if($sexoPaciente == 'M'){
-            $sexo = 'Masculino';
-        }
-        if($sexoPaciente == 'F'){
-            $sexo = 'Femenino';
-        }
+//  	if($paciente->getExpediente()[0]!=null){
+//        	$this->mostrarCelda($pdf, 32, 'Expediente No.: ', $paciente->getExpediente()[0]->getNumero());
+//        }
+//        else{
+//        	$this->mostrarCelda($pdf, 32, 'Expediente No.: ', ' ');
+//        }      
+//        $sexoPaciente = $paciente->getSexo();
+//        $sexo = '';
+//
+//        if($sexoPaciente == 'M'){
+//            $sexo = 'Masculino';
+//        }
+//        if($sexoPaciente == 'F'){
+//            $sexo = 'Femenino';
+//        }
+//        
+//        $this->mostrarCelda($pdf, 13, 'Sexo: ', $sexo);
         
-        $this->mostrarCelda($pdf, 13, 'Sexo: ', $sexo);
-        
-        $pdf->Ln(10);
+//        $pdf->Ln(15);
         $pdf->SetFont('Arial','B',13);
-        $pdf->Cell(32,27,'FX:');
+        $pdf->Cell(32,27,'');
 //        $pdf->Cell(40, 27, $plantilla[0]->getPlantilla()->getNombre().': ', 0, 'L', false);
-        $pdf->Line(20, 97, 200, 97);
-        $pdf->Ln(18);
+        $pdf->Line(20, 57, 200, 57);
+        $pdf->Ln(15);
 //        foreach ($consulta as $value) {
 //            $pdf->SetX(25);
 //            $pdf->SetFont('Arial','B',10);
@@ -1277,7 +1279,8 @@ class FPDFService {
         $this->pdf->Cell(120,42,utf8_decode("Incapacidad médica"));
         //$this->pdf->Cell(120,32,$consulta[0]->getDetallePlantilla()->getPlantilla()->getNombre());
         
-        $this->pdf->Image($logo, 150, 5, 50, 20);
+//          $this->pdf->Image($logo, 150, 5, 50, 20);
+        $pdf->Image($logo, 20, 10, 90);
         $this->pdf->Line(20, 25.5, 200, 25.5);
         $this->pdf->Line(20, 26, 200, 26);
         
@@ -1309,11 +1312,11 @@ class FPDFService {
         
         
         
-        $this->mostrarCelda($this->pdf, 13, 'Edad: ', $edad /*.' '. htmlentities('Años', ENT_QUOTES,'UTF-8')*/);
+//        $this->mostrarCelda($this->pdf, 13, 'Edad: ', $edad /*.' '. htmlentities('Años', ENT_QUOTES,'UTF-8')*/);
         
         $this->pdf->Ln(7);
         $jump=$jump+7;
-        $this->mostrarCelda($this->pdf, 32, 'Expediente No.: ', $consulta[0]->getPaciente()->getExpediente()[0]->getNumero());
+//        $this->mostrarCelda($this->pdf, 32, 'Expediente No.: ', $consulta[0]->getPaciente()->getExpediente()[0]->getNumero());
         
         $sexoPaciente = $consulta[0]->getPaciente()->getSexo();
 
@@ -1325,7 +1328,7 @@ class FPDFService {
             $sexo = 'Femenino';
         }
         
-        $this->mostrarCelda($this->pdf, 13, 'Sexo: ', $sexo);
+//        $this->mostrarCelda($this->pdf, 13, 'Sexo: ', $sexo);
         
         $this->pdf->Ln(10);
         $jump=$jump+10;

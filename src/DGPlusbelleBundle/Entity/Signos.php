@@ -71,6 +71,12 @@ class Signos
      * @ORM\Column(name="frec_cardiaca", type="integer", length=30, nullable=false)
      */
     private $frecCardiaca;
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="spo", type="integer", length=30, nullable=false)
+     */
+    private $spo;
 
     
     /**
@@ -291,6 +297,37 @@ class Signos
     public function getConsulta()
     {
         return $this->consulta;
+    }
+    /**
+     * Set consulta
+     *
+     * @param \DGPlusbelleBundle\Entity\Paciente $paciente
+     *
+     * @return Consulta
+     */
+   
+    /**
+     * Set spo
+     *
+     * @param int $spo
+     *
+     * @return int
+     */
+    public function setSpo($spo)
+    {
+        $this->spo= $spo;
+
+        return $this;
+    }
+
+    /**
+     * Get spo
+     *
+     * @return int
+     */
+    public function getSpo()
+    {
+        return $this->spo;
     }
    
 }

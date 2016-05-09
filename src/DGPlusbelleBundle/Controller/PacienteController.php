@@ -1138,7 +1138,7 @@ class PacienteController extends Controller
         
 
         $id = $request->get('id');
-        
+//        var_dump($id);
         $peso = $request->get('peso');
         $talla = $request->get('talla');
         $frecRespiratoria = $request->get('frecRespiratoria');
@@ -1146,8 +1146,9 @@ class PacienteController extends Controller
         $presionSistolica = $request->get('presionSistolica');
         $temperatura = $request->get('temperatura');
         $frecCardiaca = $request->get('frecCardiaca');
+        $spo= $request->get('spo');
         $medico= $request->get('medico');
-//        var_dump($medico);
+//        var_dump($spo);
         //$sucursal= $request->get('sucursal');
         
 //        $patologicos = $request->get('patologicos');
@@ -1166,7 +1167,7 @@ class PacienteController extends Controller
 //        $medicoObj = $em->getRepository('DGPlusbelleBundle:Empleado')->find(intval($medico));
         $medicoObj = $em->getRepository('DGPlusbelleBundle:Empleado')->find(1);//Id Dr Panameño
         $sucursal = $em->getRepository('DGPlusbelleBundle:Sucursal')->find(1); // para sepes siempre es 1
-        //var_dump($medicoObj);
+//        var_dump($paciente);
         $signos = new Signos();
         $consulta = new Consulta();
         
@@ -1182,6 +1183,7 @@ class PacienteController extends Controller
             $signos->setFrecCardiaca($frecCardiaca);
             $signos->setTemperatura($temperatura);
             $signos->setConsulta($consulta);
+            $signos->setSpo($spo);
             date_default_timezone_set('America/El_Salvador');
             $consulta->setHoraInicio(new \DateTime('now'));
             $consulta->setHoraFin(new \DateTime('now'));
@@ -1237,8 +1239,10 @@ class PacienteController extends Controller
         $presionSistolica = $request->get('presionSistolica');
         $temperatura = $request->get('temperatura');
         $frecCardiaca = $request->get('frecCardiaca');
+        $spo= $request->get('spo');
         $idConsulta = $request->get('idConsulta');
         $medico= $request->get('medico');
+//        var_dump($spo);
 //        $patologicos = $request->get('patologicos');
 //        $familiares = $request->get('familiares');
 //        $alergias = $request->get('alergias');
@@ -1246,13 +1250,13 @@ class PacienteController extends Controller
 //        $patologicos = $request->get('patologicos');
 //        $familiares = $request->get('familiares');
 //        $alergias = $request->get('alergias');
-        
+//        var_dump($id);
         $em = $this->getDoctrine()->getEntityManager();        
-        $paciente = $em->getRepository('DGPlusbelleBundle:Paciente')->find($id);        
-        $signos = $paciente = $em->getRepository('DGPlusbelleBundle:Signos')->findBy(array('consulta'=>$idConsulta));        
-        $consulta = $paciente = $em->getRepository('DGPlusbelleBundle:Consulta')->find($idConsulta);
+        $paciente = $em->getRepository('DGPlusbelleBundle:Paciente')->find(intval($id));        
+        $signos = $em->getRepository('DGPlusbelleBundle:Signos')->findBy(array('consulta'=>$idConsulta));        
+        $consulta = $em->getRepository('DGPlusbelleBundle:Consulta')->find($idConsulta);
         $medicoObj = $em->getRepository('DGPlusbelleBundle:Empleado')->find(intval($medico));
-        
+//        var_dump($paciente);
         if(count($paciente)!=0){
             //$persona = $em->getRepository('DGPlusbelleBundle:Persona')->find($paciente->getPersona()->getId());
             if(count($signos)==0){
@@ -1265,6 +1269,7 @@ class PacienteController extends Controller
                 $signos->setFrecCardiaca($frecCardiaca);
                 $signos->setTemperatura($temperatura);
                 $signos->setConsulta($consulta);
+                $signos->setSpo($spo);
                 $em->persist($signos);
                 $em->flush();
             }
@@ -1277,6 +1282,7 @@ class PacienteController extends Controller
                 $signos[0]->setFrecCardiaca($frecCardiaca);
                 $signos[0]->setTemperatura($temperatura);
                 $signos[0]->setConsulta($consulta);
+                $signos[0]->setSpo($spo);
                 $em->merge($signos[0]);
                 $em->flush();
             }

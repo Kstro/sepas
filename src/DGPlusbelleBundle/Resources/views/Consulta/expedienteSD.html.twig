@@ -289,7 +289,9 @@
                     var idPac = $('#consulta').children().attr('href');
 {#                    var idPacArray2 = id.split('-');#}
                     var idPacArray = idPac.split('=');
-                    //console.log(idPacArray);
+                    {#console.log(idPacArray);
+                    console.log("id"+idPac);#}
+{#                    return false;#}
                     switch(id[0]){
                         case "c":
                             if($(this).hasClass('SD')){
@@ -304,6 +306,9 @@
                             break;
                         case "p":
                             url = Routing.generate('admin_editarventa_paquete', { id: id}); 
+                            break;    
+                        case "v":
+                            url = Routing.generate('admin_historial_consulta', { id: idPacArray[1],idtransaccion:id});
                             break;
                     }
                     console.log(url);
