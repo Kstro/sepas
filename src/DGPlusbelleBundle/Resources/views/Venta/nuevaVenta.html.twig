@@ -377,6 +377,67 @@
                                     </div>
                                     {% endif %}    
                                 </div>    
+                            {% elseif ventaVacuna %} 
+                                <div class="row" style="margin-top: 35px;">
+                                    <div class="col-md-4" style="margin-left: 30px;">
+                                        {# Area en donde se selecciona  el empleado que ha realizado la venta #}  
+                                        <div id="empleados-venta">
+                                            <label>Vendido por</label>
+                                            <p>{{ ventaVacuna.empleado }}</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div id="cuotas-venta">
+                                            <label>Cuotas</label>
+                                            <p>{{ ventaVacuna.cuotas }}</p>
+                                        </div>    
+                                    </div>  
+                                    <div class="col-md-3">
+                                        <div id="descuento-consulta" style="margin-left: 120px;">
+                                            <label>Descuento aplicado:</label>
+                                            {% if descuento %}
+                                                <p>{{ descuento.nombre }} - {{ descuento.porcentaje }}%</p>
+                                            {% else %}
+                                                <p>No se ha aplicado descuento</p>
+                                            {% endif %}    
+                                        </div>
+                                    </div>     
+                                </div>
+                                <div class="row">
+                                    <div id="vventa-observaciones" class="col-md-7 col-sm-7" style="margin-top: 30px; margin-bottom: 10px; {#display:none;#}">        
+                                        <div id="venta-observaciones-label" style="margin-left: 30px;">
+                                            <label>Observaciones</label>
+                                            <p>{{ ventaVacuna.observaciones }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row" style="margin-top:30px;" id="detalle-vacunas-vendidas"> 
+                                    <hr>
+                                    <div class="col-md-offset-2 col-md-3">
+                                        <label>Vacuna</label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label>Costo ($)</label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label>Número de aplicaciones</label>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <div class="row vacuna-content" style="margin-top: 5px;">      
+                                        {% for row in vacunas %}
+                                            <div class="col-md-offset-2 col-md-3">
+                                                <label style="">{{row.vacuna.nombre}}</label>
+                                            </div>
+                                            <div class="col-md-2" style="text-align: right;">
+                                                <label style="margin-right:140px;">{{row.costo|number_format(2, '.', ',') }}</label>
+                                          </div>
+                                          <div class="col-md-3" style="margin: auto">
+                                              <label>{{row.aplicaciones}}</label>
+                                          </div>
+                                            <div class="clearfix"></div>
+                                        {% endfor %}
+                                    </div>
+                                </div>    
                             {% else %}
                                 <div class="row" style="margin-top: 30px;">
                                     {# Selección de qué tipo de venta se va a realizar #}    
@@ -1532,7 +1593,8 @@
                 // Al momento de hacer click en Registrar nueva sesion de tratamiento 
                 $(document).on("click", "#registrar-sesiones-tratamiento", function(){
                     //var sucursal = $('#dgplusbellebundle_venta_sucursal').val();
-                    var empleado = $('#dgplusbellebundle_venta_empleado').val();
+                    var idpac = '{{paciente.id}}';
+                    var empleado = $('#dgplusbellebundle_sesiones_empleado').val();
                     //var sesionesPaqueteTrata = new Array();
                     //var tratamientos = new Array();
                     //var flag = 0;
@@ -1560,7 +1622,7 @@
 
                                     var datos = {
                                         id : id_ventavacuna,
-                                        //sucursal : sucursal,
+                                        idpac : idpac,
                                         empleado: empleado,
                                         vacuna: tratamiento
                                     };
@@ -2241,16 +2303,17 @@
         function nuevaSesionPaqueteTratamiento(data){
             var mensaje = '';
             //console.log(data);
-            
+            $('#detalle-venta-tratamientos').html('');
             $.ajax({
                 data:  data,
                 url:   '{{path('admin_aplicacionvacuna_nueva')}}',
                 type:  'post',
                 success:  function (response) {
                     alertify.success('Se ha resgistrado con exito la sesion del tratamiento');
+                    
                     $('.close').click();
-                    var tabsImagenes = document.getElementById('tabs-imagenes');
-                    tabsImagenes.style.display = 'block';
+                    //var tabsImagenes = document.getElementById('tabs-imagenes');
+                    //tabsImagenes.style.display = 'block';
 
                     var vtratamientos = $("#dgplusbellebundle_sesiones_tratamiento");
                     $('#idSesion').val(id_ventapaquete);
@@ -2264,21 +2327,21 @@
                         mensaje+= '<div class="col-md-7" style="margin-bottom: 10px;">';
                         mensaje+= '<div class="row">';
 
-                        if(value.numSesion == 0){
+                        if(value.numAplicacion == 0){
                             //console.log(value.numSesion);
-                            for (var i = 0; i < value.sesiones; i++) {
+                            for (var i = 0; i < value.aplicaciones; i++) {
                                 mensaje += '<div class="col-md-1" style="margin-bottom: 10px;">';
                                 mensaje += '<img class="" style="height: 25px;"  src="{{ asset('Photos/Estados/sesion_pendiente.png')}}" title="Sesion pendiente">';
                                 mensaje += '</div>';
                             }    
                         } else {
-                            console.log(value.numSesion);
-                            for (var i = 0; i < value.numSesion; i++) {
+                            console.log(value.numAplicacion);
+                            for (var i = 0; i < value.numAplicacion; i++) {
                                 mensaje += '<div class="col-md-1" style="margin-bottom: 10px;">';
                                 mensaje += '<img class="" style="height: 25px;"  src="{{ asset('Photos/Estados/sesion_realizada.png')}}" title="Sesion realizada">';
                                 mensaje += '</div>';
                             }
-                            for (var i = 0; i < value.sesiones - value.numSesion; i++) {
+                            for (var i = 0; i < value.aplicaciones - value.numAplicacion; i++) {
                                 mensaje += '<div class="col-md-1" style="margin-bottom: 10px;">';
                                 mensaje += '<img class="" style="height: 25px;"  src="{{ asset('Photos/Estados/sesion_pendiente.png')}}" title="Sesion pendiente">';
                                 mensaje += '</div>';
