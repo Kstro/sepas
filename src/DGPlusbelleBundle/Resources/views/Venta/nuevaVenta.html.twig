@@ -1138,6 +1138,8 @@
                     var draw3 = '';
                     var draw4 = '';
                     var draw5 = '';
+                    var draw6 = '';
+                    var draw7 = '';
                     var errores = 0;
                     var valores = new Array();
                     var reg = new Array();
@@ -1244,6 +1246,59 @@
                                     $('#detalle-venta-cuotas').html(response.ventaVacunas.cuotas);
                                     $('#detalle-venta-deuda').html('$ ' + deuda_total);
                                     
+                                    $.each( response.ventasVacuna, function( key, value ) {
+                                        //console.log(value);
+                                        draw6+= '<div class="row">';
+                                        draw6+= '<div class="col-md-5" style="margin-bottom: 10px;">';
+                                        draw6+= '<span>' + value.ntrata + '</span>';
+                                        draw6+= '</div>';
+                                        draw6+= '<div class="col-md-7" style="margin-bottom: 10px;">';
+                                        draw6+= '<div class="row">';
+
+                                        if(value.numAplicacion == 0){
+                                            //console.log(value.numSesion);
+                                            for (var i = 0; i < value.aplicaciones; i++) {
+                                                draw6 += '<div class="col-md-1" style="margin-bottom: 10px;">';
+                                                draw6 += '<img class="" style="height: 25px;"  src="{{ asset('Photos/Estados/sesion_pendiente.png')}}" title="Sesion pendiente">';
+                                                draw6 += '</div>';
+                                            }    
+                                        } else {
+                                            console.log(value.numAplicacion);
+                                            for (var i = 0; i < value.numAplicacion; i++) {
+                                                draw6 += '<div class="col-md-1" style="margin-bottom: 10px;">';
+                                                draw6 += '<img class="" style="height: 25px;"  src="{{ asset('Photos/Estados/sesion_realizada.png')}}" title="Sesion realizada">';
+                                                draw6 += '</div>';
+                                            }
+                                            for (var i = 0; i < value.aplicaciones - value.numAplicacion; i++) {
+                                                draw6 += '<div class="col-md-1" style="margin-bottom: 10px;">';
+                                                draw6 += '<img class="" style="height: 25px;"  src="{{ asset('Photos/Estados/sesion_pendiente.png')}}" title="Sesion pendiente">';
+                                                draw6 += '</div>';
+                                            }
+                                        }
+
+                                        draw6+= '</div>';
+                                        draw6+= '</div>';
+                                        draw6+= '</div>';
+                                    });
+                                    
+                                    $('#detalle-venta-tratamientos').html(draw6);
+                                    
+                                    draw7+= '<label>Vacuna</label>';
+                                    draw7+= '<select id="dgplusbellebundle_sesiones_tratamiento" name="dgplusbellebundle_venta_sesiones[tratamiento]" class="sesion_tratamiento" style="width: 100%">';
+                                    draw7+= '<option value="" disabled selected>Seleccione una vacuna...</option>';
+                                    
+                                    $.each( response.vacunasPaquete, function( key, value ) {
+                                        console.log(value);
+                                        draw7+= '<option value="' + value.id + '">'+ value.nombre +'</option>';
+                                    });
+                                    draw7+= '</select>';
+                                    
+                                    $('#sesiones-tratamiento').html(draw7);
+                                    $('#dgplusbellebundle_sesiones_tratamiento').select2();
+                                    
+                                    //console.log(draw6);
+                                    //$('#seguimiento-tratamientos-realizados').html(mensaje);
+                                    
                                     var tabsSesiones = document.getElementById('tabs-sesiones');
                                     var tabsAbdev = document.getElementById('tabs-abdev');
                                     var tabsSeguimiento = document.getElementById('tabs-seguimiento');
@@ -1283,6 +1338,7 @@
                     var draw1 = '';
                     var draw2 = '';
                     var draw3 = '';
+                    var draw4 = '';
                     var errores = 0;
                     var valores = new Array();
                     var reg = new Array();
@@ -1353,6 +1409,44 @@
                                     $('#detalle-venta-costo').html('$ ' + costo.toFixed(2));
                                     $('#detalle-venta-cuotas').html(response.ventaVacunas.cuotas);
                                     $('#detalle-venta-deuda').html('$ ' + deuda_total);
+                                    
+                                    $.each( response.ventasVacuna, function( key, value ) {
+                                        //console.log(value);
+                                        draw4+= '<div class="row">';
+                                        draw4+= '<div class="col-md-5" style="margin-bottom: 10px;">';
+                                        draw4+= '<span>' + value.ntrata + '</span>';
+                                        draw4+= '</div>';
+                                        draw4+= '<div class="col-md-7" style="margin-bottom: 10px;">';
+                                        draw4+= '<div class="row">';
+
+                                        if(value.numAplicacion == 0){
+                                            //console.log(value.numSesion);
+                                            for (var i = 0; i < value.aplicaciones; i++) {
+                                                draw4 += '<div class="col-md-1" style="margin-bottom: 10px;">';
+                                                draw4 += '<img class="" style="height: 25px;"  src="{{ asset('Photos/Estados/sesion_pendiente.png')}}" title="Sesion pendiente">';
+                                                draw4 += '</div>';
+                                            }    
+                                        } else {
+                                            console.log(value.numAplicacion);
+                                            for (var i = 0; i < value.numAplicacion; i++) {
+                                                draw4 += '<div class="col-md-1" style="margin-bottom: 10px;">';
+                                                draw4 += '<img class="" style="height: 25px;"  src="{{ asset('Photos/Estados/sesion_realizada.png')}}" title="Sesion realizada">';
+                                                draw4 += '</div>';
+                                            }
+                                            for (var i = 0; i < value.aplicaciones - value.numAplicacion; i++) {
+                                                draw4 += '<div class="col-md-1" style="margin-bottom: 10px;">';
+                                                draw4 += '<img class="" style="height: 25px;"  src="{{ asset('Photos/Estados/sesion_pendiente.png')}}" title="Sesion pendiente">';
+                                                draw4 += '</div>';
+                                            }
+                                        }
+
+                                        draw4+= '</div>';
+                                        draw4+= '</div>';
+                                        draw4+= '</div>';
+                                    });
+                                    console.log(draw4);
+                                    //$('#seguimiento-tratamientos-realizados').html(mensaje);
+                                    $('#detalle-venta-tratamientos').html(draw4);
                                     
                                     var tabsSesiones = document.getElementById('tabs-sesiones');
                                     var tabsAbdev = document.getElementById('tabs-abdev');
@@ -2303,7 +2397,7 @@
         function nuevaSesionPaqueteTratamiento(data){
             var mensaje = '';
             //console.log(data);
-            $('#detalle-venta-tratamientos').html('');
+            $('#detalle-venta-tratamientos div').html('');
             $.ajax({
                 data:  data,
                 url:   '{{path('admin_aplicacionvacuna_nueva')}}',

@@ -107,7 +107,11 @@ class VentaController  extends Controller
 
                     $aplicacionesVenta = $em->createNativeQuery($sql, $rsm)
                             ->getResult();
-                }        
+                }  else {
+                    $abonos = null;
+                    $aplicacionesVenta = null;
+                    $vacunasPaquete = null;
+                }      
             }
             else{
                 $consulta = null;
@@ -183,6 +187,14 @@ class VentaController  extends Controller
 
             $aplicacionesVenta = $em->createNativeQuery($sql, $rsm)
                     ->getResult();
+        } else {
+            $abonos = null;
+            $aplicacionesVenta = null;            
+            $consulta = null;
+            $descuentoConsulta = null;
+            $vacunaConsulta = null;
+            $vacunasPaquete = null;
+            $ventaVacuna = null;
         }
             
         $edad="";

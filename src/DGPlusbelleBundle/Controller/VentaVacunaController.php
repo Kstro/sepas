@@ -298,18 +298,22 @@ class VentaVacunaController extends Controller
             $nomvac = array();
             $costovac = array();
             $aplicacionesvac = array();
+            
+            
             foreach($valores as $key=>$row){
-
+                //var_dump($row);
                 $vacunaConsulta = new \DGPlusbelleBundle\Entity\VacunaConsulta();
                 $vacuna = $em->getRepository('DGPlusbelleBundle:Vacuna')->find($row[0]);
                 $vacunaConsulta->setCosto($row[1]);
                 $vacunaConsulta->setConsulta(null);
                 $vacunaConsulta->setVacuna($vacuna);
+                
                 if($descuento){
                     $vacunaConsulta->setDescuento($descuento->getId());
                 } else {
                     $vacunaConsulta->setDescuento(0);
                 }    
+                
                 $vacunaConsulta->setVentaVacuna($ventaVacuna);
                 $vacunaConsulta->setAplicaciones($row[2]);
 
@@ -317,6 +321,7 @@ class VentaVacunaController extends Controller
                 
                 $em->persist($vacunaConsulta);
                 $em->flush();
+                
                 $nomvac[$key]['nombre'] = $vacuna->getNombre();
                 $nomvac[$key]['costo'] = $vacunaConsulta->getCosto();
                 $nomvac[$key]['aplicaciones'] = $vacunaConsulta->getAplicaciones();
@@ -325,6 +330,8 @@ class VentaVacunaController extends Controller
                 $seguimiento->setVentaVacuna($ventaVacuna);
                 $seguimiento->setVacuna($vacuna);
                 $seguimiento->setNumAplicacion(0);
+                $em->persist($seguimiento);
+                $em->flush();
             }
             
             $ventaVacuna->setMontoTotal($montoTotal);
@@ -353,6 +360,52 @@ class VentaVacunaController extends Controller
             $abonos = $em->createNativeQuery($sql2, $rsm2)
                     ->getSingleResult();
             
+            $rsm = new ResultSetMapping();
+            $ventaid = $ventaVacuna->getId();
+            
+            $sql = "select ven.id as id,"
+                    . "tra.nombre as ntrata, "
+                    . "pt.aplicaciones as aplicaciones, "
+                    . "seg.num_aplicacion as numAplicacion "
+                    . "from venta_vacuna ven "
+                    . "inner join seguimiento_aplicacion_vacuna seg on ven.id = seg.venta_vacuna "
+                    . "inner join empleado emp on ven.empleado = emp.id "
+                    . "inner join paciente pac on ven.paciente = pac.id "
+                    . "inner join vacuna_consulta pt on ven.id = pt.venta_vacuna "
+                    . "inner join vacuna tra on pt.id_vacuna = tra.id "
+                    . "left outer join descuento des on ven.descuento = des.id "
+                    . "where ven.id = '$ventaid' and seg.vacuna = pt.id_vacuna";
+
+            $rsm->addScalarResult('id','id');
+            $rsm->addScalarResult('ntrata','ntrata');
+            $rsm->addScalarResult('aplicaciones','aplicaciones');
+            $rsm->addScalarResult('numAplicacion','numAplicacion');
+
+            $mensaje = $em->createNativeQuery($sql, $rsm)
+                    ->getResult();
+            
+            $vacunas = $em->getRepository('DGPlusbelleBundle:VacunaConsulta')->findBy(array('ventaVacuna' => $idVenta));
+
+            $idvacunas = array();      
+            foreach ($vacunas as $trat){
+                $idvac = $trat->getVacuna()->getId();
+
+                $seguimiento = $em->getRepository('DGPlusbelleBundle:SeguimientoAplicacionVacuna')->findOneBy(array('vacuna' => $trat->getVacuna(),
+                                                                                                                    'ventaVacuna' => $ventaVacuna
+                                                                                                                ));
+
+                if($seguimiento->getNumAplicacion() < $trat->getAplicaciones()){
+                    array_push($idvacunas, $idvac); 
+                }            
+            }
+
+            $dql = "SELECT t.id, t.nombre FROM DGPlusbelleBundle:Vacuna t "
+                        . "WHERE t.id IN (:ids) ";
+
+            $vacunasPaquete = $em->createQuery($dql)
+                               ->setParameter('ids', $idvacunas)
+                               ->getResult();  
+            
             $ventaPaqueteTratamientos = array(
                                         'id' => $ventaVacuna->getId(), 
                                         'costo' => $ventaVacuna->getMontoTotal(), 
@@ -368,6 +421,8 @@ class VentaVacunaController extends Controller
             $response->setData(array(
                                 'exito'       => '1',
                                 'ventaVacuna' => $ventaVacuna->getId(),
+                                'ventasVacuna' => $mensaje,
+                                'vacunasPaquete' => $vacunasPaquete,
                                 'porcentaje' => $porcentaje,
                                 'nomvac' => $nomvac,
                                 'abonos' => $abonos,
@@ -448,6 +503,8 @@ class VentaVacunaController extends Controller
                 $seguimiento->setVentaVacuna($ventaVacuna);
                 $seguimiento->setVacuna($vacuna);
                 $seguimiento->setNumAplicacion(0);
+                $em->persist($seguimiento);
+                $em->flush();
             }
             
             $ventaVacuna->setMontoTotal($montoTotal);
@@ -474,6 +531,30 @@ class VentaVacunaController extends Controller
             $abonos = $em->createNativeQuery($sql2, $rsm2)
                     ->getSingleResult();
             
+            $rsm = new ResultSetMapping();
+            $ventaid = $ventaVacuna->getId();
+            
+            $sql = "select ven.id as id,"
+                    . "tra.nombre as ntrata, "
+                    . "pt.aplicaciones as aplicaciones, "
+                    . "seg.num_aplicacion as numAplicacion "
+                    . "from venta_vacuna ven "
+                    . "inner join seguimiento_aplicacion_vacuna seg on ven.id = seg.venta_vacuna "
+                    . "inner join empleado emp on ven.empleado = emp.id "
+                    . "inner join paciente pac on ven.paciente = pac.id "
+                    . "inner join vacuna_consulta pt on ven.id = pt.venta_vacuna "
+                    . "inner join vacuna tra on pt.id_vacuna = tra.id "
+                    . "left outer join descuento des on ven.descuento = des.id "
+                    . "where ven.id = '$ventaid' and seg.vacuna = pt.id_vacuna";
+
+            $rsm->addScalarResult('id','id');
+            $rsm->addScalarResult('ntrata','ntrata');
+            $rsm->addScalarResult('aplicaciones','aplicaciones');
+            $rsm->addScalarResult('numAplicacion','numAplicacion');
+
+            $mensaje = $em->createNativeQuery($sql, $rsm)
+                    ->getResult();
+            
             $ventaPaqueteTratamientos = array(
                                         'id' => $ventaVacuna->getId(), 
                                         'costo' => $ventaVacuna->getMontoTotal(), 
@@ -488,6 +569,7 @@ class VentaVacunaController extends Controller
             $response->setData(array(
                                 'exito'       => '1',
                                 'ventaVacuna' => $ventaVacuna->getId(),
+                                'ventasVacuna' => $mensaje,
                                 'porcentaje' => $porcentaje,
                                 'abonos' => $abonos,
                                 'empleado' => $ventaVacuna->getEmpleado()->getPersona()->getNombres().' '.$ventaVacuna->getEmpleado()->getPersona()->getApellidos(),
