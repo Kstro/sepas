@@ -124,11 +124,16 @@ class VentaController  extends Controller
             }
         } elseif ($transaccion == 'v') {
             $consulta = null;
-            $descuentoConsulta = null;
             
             $ventaId =  substr($idTransaccion, 2);
             $ventaVacuna = $em->getRepository('DGPlusbelleBundle:VentaVacuna')->find($ventaId);
             $vacunaConsulta = $em->getRepository('DGPlusbelleBundle:VacunaConsulta')->findBy(array('ventaVacuna' => $ventaVacuna));
+            
+            if($ventaVacuna->getDescuento()){
+                $descuentoConsulta = $ventaVacuna->getDescuento();
+            } else {
+                $descuentoConsulta = null;
+            }   
             
             $idVenta =$ventaVacuna->getId();
             $rsm2 = new ResultSetMapping();

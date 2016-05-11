@@ -113,8 +113,8 @@
                 
                 {# Aquí se colocan los nombres de cada sección (tabs) #}    
                 <ul class="nav nav-tabs" style="margin-top: 30px;">
-                    <li class="active"><a data-toggle="tab" href="#datos-generales">Datos generales</a></li>
-                    <li><a data-toggle="tab" href="#registros-venta">Registro de venta</a></li>
+                    <li><a data-toggle="tab" href="#datos-generales">Datos generales</a></li>
+                    <li class="active"><a data-toggle="tab" href="#registros-venta">Registro de venta</a></li>
                     <li><a data-toggle="tab" href="#registro-sesiones" {% if ventaVacuna %} style="display:block;" {% else %} style="display:none;" {% endif %} id="tabs-sesiones">Registro de aplicaciones de vacuna</a></li>
                     <li><a data-toggle="tab" href="#seguimiento-venta" {% if ventaVacuna %} style="display:block;" {% else %} style="display:none;" {% endif %} id="tabs-seguimiento">Seguimiento de la venta</a></li>
                     <li><a data-toggle="tab" href="#abonos-devoluciones" {% if ventaVacuna %} style="display:block;" {% else %} style="display:none;" {% endif %} id="tabs-abdev">Abonos{# / Devoluciones#}</a></li>
@@ -124,7 +124,7 @@
                 {# Aquí se encuentran las secciones de las tabs #}    
                 <div class="tab-content">
                     {# Sección en donde se registra la información general del paciente a quien se le va a efectuar la venta #}
-                    <div id="datos-generales" class="tab-pane fade in active" style="margin-top: 20px;">
+                    <div id="datos-generales" class="tab-pane fade" style="margin-top: 20px;">
                         <form id="formulario-datos-gnales" method="POST" enctype="multipart/form-data">
                             <div class="row" style="margin-top: 30px;">
                                 <div class="col-md-3" style="margin-left: 30px;">
@@ -261,7 +261,7 @@
                     </div>
                                    
                     {# Sección en donde se registran ventas de paqutes/tratamientos #}                
-                    <div id="registros-venta" class="tab-pane fade" style="margin-top: 20px;">
+                    <div id="registros-venta" class="tab-pane fade in active" style="margin-top: 20px;">
                         <form id="formulario-venta" method="POST" enctype="multipart/form-data">
                             {% if consulta %}
                                 <div class="row" style="margin-top: 35px;">
@@ -441,18 +441,18 @@
                             {% else %}
                                 <div class="row" style="margin-top: 30px;">
                                     {# Selección de qué tipo de venta se va a realizar #}    
-                                    <div class="col-md-2 hide">
+                                    <div class="col-md-2 {# hide #}">
                                         <label class="pull-right">Tipo de venta:</label>      
                                     </div>
-                                    <div class="col-md-2 hide">
+                                    <div class="col-md-2 {#hide#}">
                                         <div id="label-tipo-venta">
                                             <p>
                                                 <input type = "radio" name = "tipo-venta" id = "tipo-venta-paquete" value = "1" />
-                                                <label for = "tipo-venta-paquete">Paquete</label>
+                                                <label for = "tipo-venta-paquete">Vacunas</label>
                                             </p>
                                             <p>
                                                 <input type = "radio" name = "tipo-venta" id = "tipo-venta-tratamiento" value = "0" />
-                                                <label for = "tipo-venta-tratamiento">Tratamiento</label>
+                                                <label for = "tipo-venta-tratamiento">Medicamentos</label>
                                             </p> 
                                         </div>
                                     </div>
@@ -605,50 +605,56 @@
                     {# Sección en donde se registran las sesiones de un tratamiento #}
                     <div id="registro-sesiones" class="tab-pane fade" style="margin-top: 20px;">
                         <form id="formulario-sesiones-tratamiento" method="POST" enctype="multipart/form-data">
-                            <div class="row" style="margin-top: 35px;" style="display:none;">
-                                {#<div class="col-md-3"  style="margin-left: 30px;">
-                                    <div id="sucursal-sesion">
-                                        <label>Sucursal</label>
-                                        <select id="dgplusbellebundle_sesiones_sucursal" name="dgplusbellebundle_venta_sesiones[sucursal]" class="sesion-sucursal" style="width: 100%">
-                                            <option value="" disabled selected>Seleccione una sucursal ...</option>
+                            {% if vacunasPaquete %}
+                                <div class="row" style="margin-top: 35px;" style="display:none;">
+                                    {#<div class="col-md-3"  style="margin-left: 30px;">
+                                        <div id="sucursal-sesion">
+                                            <label>Sucursal</label>
+                                            <select id="dgplusbellebundle_sesiones_sucursal" name="dgplusbellebundle_venta_sesiones[sucursal]" class="sesion-sucursal" style="width: 100%">
+                                                <option value="" disabled selected>Seleccione una sucursal ...</option>
 
-                                            {% for sucursal in sucursales %}
-                                                <option value="{{sucursal.id}}"> {{sucursal.nombre}}</option>
-                                            {% endfor %}
-                                        </select>   
-                                    </div>
-                                </div>#}
-                                <div class="col-md-4" style="margin-left: 30px;">
-                                    {# Area en donde se selecciona  el empleado que ha realizado la venta #}  
-                                    <div id="empleado-sesion">
-                                        <label>Empleado</label>
-                                        <select id="dgplusbellebundle_sesiones_empleado" name="dgplusbellebundle_venta_sesiones[empleado]" class="sesion-empleado" style="width: 100%">
-                                            <option value="" disabled selected>Seleccione un empleado ...</option>
+                                                {% for sucursal in sucursales %}
+                                                    <option value="{{sucursal.id}}"> {{sucursal.nombre}}</option>
+                                                {% endfor %}
+                                            </select>   
+                                        </div>
+                                    </div>#}
+                                    <div class="col-md-4" style="margin-left: 30px;">
+                                        {# Area en donde se selecciona  el empleado que ha realizado la venta #}  
+                                        <div id="empleado-sesion">
+                                            <label>Empleado</label>
+                                            <select id="dgplusbellebundle_sesiones_empleado" name="dgplusbellebundle_venta_sesiones[empleado]" class="sesion-empleado" style="width: 100%">
+                                                <option value="" disabled selected>Seleccione un empleado ...</option>
 
-                                            {% for empleado in empleadosVenta %}
-                                                <option value="{{empleado.id}}"> {{empleado.persona}}</option>
-                                            {% endfor %}
-                                        </select>   
-                                    </div>
-                                </div> 
-                                <div class="col-md-3" {#style="display:none;"#} id="seguimiento-sesiones-tratamiento">
-                                    <div id="sesiones-tratamiento">
-                                        <label>Vacuna</label>
-                                        <select id="dgplusbellebundle_sesiones_tratamiento" name="dgplusbellebundle_venta_sesiones[tratamiento]" class="sesion_tratamiento" style="width: 100%">
-                                            <option value="" disabled selected>Seleccione una vacuna...</option>
-                                             {% for vacuna in vacunasPaquete %}
-                                                <option value="{{vacuna.id}}"> {{vacuna.nombre}}</option>
-                                            {% endfor %}
-                                        </select>    
+                                                {% for empleado in empleadosVenta %}
+                                                    <option value="{{empleado.id}}"> {{empleado.persona}}</option>
+                                                {% endfor %}
+                                            </select>   
+                                        </div>
+                                    </div> 
+                                    <div class="col-md-3" {#style="display:none;"#} id="seguimiento-sesiones-tratamiento">
+                                        <div id="sesiones-tratamiento">
+                                            <label>Vacuna</label>
+                                            <select id="dgplusbellebundle_sesiones_tratamiento" name="dgplusbellebundle_venta_sesiones[tratamiento]" class="sesion_tratamiento" style="width: 100%">
+                                                <option value="" disabled selected>Seleccione una vacuna...</option>
+                                                 {% for vacuna in vacunasPaquete %}
+                                                    <option value="{{vacuna.id}}"> {{vacuna.nombre}}</option>
+                                                {% endfor %}
+                                            </select>    
+                                        </div>    
+                                    </div>        
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-12 text-center" style="margin-top: 30px; margin-bottom: 10px;" id="registrar-sesiones-tratamiento">
+                                        <hr>
+                                        <input type="submit" value="Registrar sesión de tratamiento" style="margin-bottom: 10px; background-color: #39a58a; color: #FFF;" class="btn" id="registro-sesiones-tratamiento"/>
                                     </div>    
-                                </div>        
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12 col-sm-12 text-center" style="margin-top: 30px; margin-bottom: 10px;" id="registrar-sesiones-tratamiento">
-                                    <hr>
-                                    <input type="submit" value="Registrar sesión de tratamiento" style="margin-bottom: 10px; background-color: #39a58a; color: #FFF;" class="btn" id="registro-sesiones-tratamiento"/>
-                                </div>    
-                            </div>             
+                                </div>             
+                            {% else %}
+                                <div style="margin-left: 30px;">
+                                    <p style="font-size: 20px;">Las aplicaciones de vacuna para ésta venta, se han completado.</p>
+                                </div>
+                            {% endif %}    
                         </form>
                         <div class="row" style="margin-top: 50px;"></div>                
                     </div>
@@ -736,10 +742,34 @@
                                     </div>
                                     <div class="col-md-6" style="margin-bottom: 10px;">
                                         {% if abonos %}
-                                            <span id="detalle-venta-deuda">$ {% if ventaVacuna %}{{ ((ventaVacuna.montoTotal - (ventaVacuna.descuento.porcentaje * ventaVacuna.montoTotal)/100) - abonos.abonos)|number_format(2, '.', ',') }}{% endif %}</span>
+                                            {% if ventaVacuna.descuento %}
+                                                <span id="detalle-venta-deuda">$ {% if ventaVacuna %}{{ ((ventaVacuna.montoTotal - (ventaVacuna.descuento.porcentaje * ventaVacuna.montoTotal)/100) - abonos.abonos)|number_format(2, '.', ',') }}{% endif %}</span>
+                                            {% else %} 
+                                                <span id="detalle-venta-deuda">$ {% if ventaVacuna %}{{ ((ventaVacuna.montoTotal - (0 * ventaVacuna.montoTotal)/100) - abonos.abonos)|number_format(2, '.', ',') }}{% endif %}</span>
+                                            {% endif %} 
                                         {% else %}
-                                            <span id="detalle-venta-deuda">$ {% if ventaVacuna %}{{ (ventaVacuna.montoTotal - (ventaVacuna.descuento.porcentaje * ventaVacuna.montoTotal)/100)|number_format(2, '.', ',') }}{% endif %}</span>
-                                        {% endif %}    
+                                            {% if ventaVacuna %}
+                                                {% if ventaVacuna.descuento %}
+                                                    <span id="detalle-venta-deuda">$ {% if ventaVacuna %}{{ (ventaVacuna.montoTotal - (ventaVacuna.descuento.porcentaje * ventaVacuna.montoTotal)/100)|number_format(2, '.', ',') }}{% endif %}</span>
+                                                {% else %} 
+                                                    <span id="detalle-venta-deuda">$ {% if ventaVacuna %}{{ (ventaVacuna.montoTotal - (0 * ventaVacuna.montoTotal)/100)|number_format(2, '.', ',') }}{% endif %}</span>
+                                                {% endif %} 
+                                            {% endif %}
+                                        {% endif %}
+                                        
+                                        {#{% if ventaVacuna.descuento %}
+                                            {% if abonos %}
+                                                <span id="detalle-venta-deuda">$ {% if ventaVacuna %}{{ ((ventaVacuna.montoTotal - (ventaVacuna.descuento.porcentaje * ventaVacuna.montoTotal)/100) - abonos.abonos)|number_format(2, '.', ',') }}{% endif %}</span>
+                                            {% else %}
+                                                <span id="detalle-venta-deuda">$ {% if ventaVacuna %}{{ (ventaVacuna.montoTotal - (ventaVacuna.descuento.porcentaje * ventaVacuna.montoTotal)/100)|number_format(2, '.', ',') }}{% endif %}</span>
+                                            {% endif %}    
+                                        {% else %}
+                                            {% if abonos %}
+                                                <span id="detalle-venta-deuda">$ {% if ventaVacuna %}{{ ((ventaVacuna.montoTotal - (0 * ventaVacuna.montoTotal)/100) - abonos.abonos)|number_format(2, '.', ',') }}{% endif %}</span>
+                                            {% else %}
+                                                <span id="detalle-venta-deuda">$ {% if ventaVacuna %}{{ (ventaVacuna.montoTotal - (0 * ventaVacuna.montoTotal)/100)|number_format(2, '.', ',') }}{% endif %}</span>
+                                            {% endif %}  
+                                        {% endif %} #}   
                                     </div>
                                 </div>
                             </div>
@@ -2398,6 +2428,8 @@
             var mensaje = '';
             //console.log(data);
             $('#detalle-venta-tratamientos div').html('');
+            $('#detalle-venta-tratamientos').html('');
+            
             $.ajax({
                 data:  data,
                 url:   '{{path('admin_aplicacionvacuna_nueva')}}',
@@ -2429,7 +2461,7 @@
                                 mensaje += '</div>';
                             }    
                         } else {
-                            console.log(value.numAplicacion);
+                            //console.log(value.numAplicacion);
                             for (var i = 0; i < value.numAplicacion; i++) {
                                 mensaje += '<div class="col-md-1" style="margin-bottom: 10px;">';
                                 mensaje += '<img class="" style="height: 25px;"  src="{{ asset('Photos/Estados/sesion_realizada.png')}}" title="Sesion realizada">';
@@ -2446,17 +2478,22 @@
                         mensaje+= '</div>';
                         mensaje+= '</div>';
                     });
-                    console.log(mensaje);
+                    //console.log(mensaje);
                     //$('#seguimiento-tratamientos-realizados').html(mensaje);
                     $('#detalle-venta-tratamientos').html(mensaje);
 
-                    // Se vacía el select
-                    vtratamientos.find('option').remove();
-                    vtratamientos.append('<option value="" disabled selected>Seleccione un tratamiento ...</option>');
+                    if(response.tratVenta.length > 0){
+                        // Se vacía el select
+                        vtratamientos.find('option').remove();
+                        vtratamientos.append('<option value="" disabled selected>Seleccione un tratamiento ...</option>');
 
-                    $(response.tratVenta).each(function(i, v){ 
-                        vtratamientos.append('<option value="' + v.id + '">' + v.nombre + '</option>');
-                    });
+                        $(response.tratVenta).each(function(i, v){ 
+                            vtratamientos.append('<option value="' + v.id + '">' + v.nombre + '</option>');
+                        });
+                    } else {
+                        $('#formulario-sesiones-tratamiento').html('<div style="margin-left: 30px;"><p style="font-size: 20px;">Las aplicaciones de vacuna para esta venta, se han completado.</p></div>');
+                    }
+
                     //$('#dgplusbellebundle_sesiones_tratamiento option[value=""]').attr("selected",true);
                 }
             });

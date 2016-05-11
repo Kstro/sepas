@@ -888,33 +888,37 @@ class PacienteController extends Controller
             $abonos = $em->createNativeQuery($sql2, $rsm2)
                     ->getSingleResult();
             
-            $deudaTotal+= ($value->getMontoTotal() - (($value->getDescuento()->getPorcentaje() * $value->getMontoTotal())/100)) - $abonos['abonos'] ;
+            if($value->getDescuento()){
+                $deudaTotal+= ($value->getMontoTotal() - (($value->getDescuento()->getPorcentaje() * $value->getMontoTotal())/100)) - $abonos['abonos'] ;
+            } else {
+                $deudaTotal+= ($value->getMontoTotal() - ((0 * $value->getMontoTotal())/100)) - $abonos['abonos'] ;
+            }
             
-//            $dql = "SELECT seg.numSesion FROM DGPlusbelleBundle:SeguimientoPaquete seg"
-//                    . " INNER JOIN seg.idVentaPaquete ven"
+            $dql = "SELECT seg.numAplicacion FROM DGPlusbelleBundle:SeguimientoAplicacionVacuna seg"
+                    . " INNER JOIN seg.ventaVacuna ven"
 //                    . " INNER JOIN seg.tratamiento tra"
-//                    . " WHERE ven.id = :venta";
-//
-//            $seguimiento = $em->createQuery($dql)
-//                           ->setParameter('venta', $ventaId)
-//                           ->getResult();
-//            
-//            foreach ($seguimiento as $value) {
-//                $sesionesPendientes+=$value['numSesion'];
-//            }
-//            
-//            $dql = "SELECT det.numSesiones FROM DGPlusbelleBundle:DetalleVentaPaquete det"
-//                    . " INNER JOIN det.ventaPaquete ven"
+                    . " WHERE ven.id = :venta";
+
+            $seguimiento = $em->createQuery($dql)
+                           ->setParameter('venta', $ventaId)
+                           ->getResult();
+            
+            foreach ($seguimiento as $value) {
+                $sesionesPendientes+=$value['numAplicacion'];
+            }
+            
+            $dql = "SELECT det.aplicaciones FROM DGPlusbelleBundle:VacunaConsulta det"
+                    . " INNER JOIN det.ventaVacuna ven"
 //                    . " INNER JOIN det.tratamiento tra"
-//                    . " WHERE ven.id = :venta";
-//
-//            $sesionesVenta = $em->createQuery($dql)
-//                           ->setParameter('venta', $ventaId)
-//                           ->getResult();
-//            
-//            foreach ($sesionesVenta as $value) {
-//                $sesionesTotal+=$value['numSesiones'];
-//            }                        
+                    . " WHERE ven.id = :venta";
+
+            $sesionesVenta = $em->createQuery($dql)
+                           ->setParameter('venta', $ventaId)
+                           ->getResult();
+            
+            foreach ($sesionesVenta as $value) {
+                $sesionesTotal+=$value['aplicaciones'];
+            }                        
         }
         
         foreach ($personaTratamiento as $value) {
