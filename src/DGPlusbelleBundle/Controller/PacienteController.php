@@ -868,17 +868,19 @@ class PacienteController extends Controller
         
         $persona = $em->getRepository('DGPlusbelleBundle:Persona')->find($personaId['id']);
         $ventaPaquete = $em->getRepository('DGPlusbelleBundle:VentaPaquete')->findBy(array('paciente' => $persona));
+        $pacientedata = $em->getRepository('DGPlusbelleBundle:Paciente')->findBy(array('persona' => $persona));
+        $ventaVacuna = $em->getRepository('DGPlusbelleBundle:VentaVacuna')->findBy(array('paciente' => $pacientedata));
         $personaTratamiento = $em->getRepository('DGPlusbelleBundle:PersonaTratamiento')->findBy(array('paciente' => $persona));
         $deudaTotal = 0;
         $sesionesTotal = 0;
         $sesionesPendientes = 0;
         
-        foreach ($ventaPaquete as $value) {
+        foreach ($ventaVacuna as $value) {
             $ventaId = $value->getId();
             $rsm2 = new ResultSetMapping();
 
             $sql2 = "select cast(IFNULL(sum(abo.monto),0) as decimal(36,2)) abonos "
-                    . "from abono abo inner join venta_paquete vp on abo.venta_paquete = vp.id "
+                    . "from abono abo inner join venta_vacuna vp on abo.venta_vacuna = vp.id "
                     . "where vp.id = '$ventaId'";
 
             $rsm2->addScalarResult('abonos','abonos');
@@ -886,33 +888,33 @@ class PacienteController extends Controller
             $abonos = $em->createNativeQuery($sql2, $rsm2)
                     ->getSingleResult();
             
-            $deudaTotal+= ($value->getCosto() - (($value->getDescuento()->getPorcentaje() * $value->getCosto())/100)) - $abonos['abonos'] ;
+            $deudaTotal+= ($value->getMontoTotal() - (($value->getDescuento()->getPorcentaje() * $value->getMontoTotal())/100)) - $abonos['abonos'] ;
             
-            $dql = "SELECT seg.numSesion FROM DGPlusbelleBundle:SeguimientoPaquete seg"
-                    . " INNER JOIN seg.idVentaPaquete ven"
-                    . " INNER JOIN seg.tratamiento tra"
-                    . " WHERE ven.id = :venta";
-
-            $seguimiento = $em->createQuery($dql)
-                           ->setParameter('venta', $ventaId)
-                           ->getResult();
-            
-            foreach ($seguimiento as $value) {
-                $sesionesPendientes+=$value['numSesion'];
-            }
-            
-            $dql = "SELECT det.numSesiones FROM DGPlusbelleBundle:DetalleVentaPaquete det"
-                    . " INNER JOIN det.ventaPaquete ven"
-                    . " INNER JOIN det.tratamiento tra"
-                    . " WHERE ven.id = :venta";
-
-            $sesionesVenta = $em->createQuery($dql)
-                           ->setParameter('venta', $ventaId)
-                           ->getResult();
-            
-            foreach ($sesionesVenta as $value) {
-                $sesionesTotal+=$value['numSesiones'];
-            }                        
+//            $dql = "SELECT seg.numSesion FROM DGPlusbelleBundle:SeguimientoPaquete seg"
+//                    . " INNER JOIN seg.idVentaPaquete ven"
+//                    . " INNER JOIN seg.tratamiento tra"
+//                    . " WHERE ven.id = :venta";
+//
+//            $seguimiento = $em->createQuery($dql)
+//                           ->setParameter('venta', $ventaId)
+//                           ->getResult();
+//            
+//            foreach ($seguimiento as $value) {
+//                $sesionesPendientes+=$value['numSesion'];
+//            }
+//            
+//            $dql = "SELECT det.numSesiones FROM DGPlusbelleBundle:DetalleVentaPaquete det"
+//                    . " INNER JOIN det.ventaPaquete ven"
+//                    . " INNER JOIN det.tratamiento tra"
+//                    . " WHERE ven.id = :venta";
+//
+//            $sesionesVenta = $em->createQuery($dql)
+//                           ->setParameter('venta', $ventaId)
+//                           ->getResult();
+//            
+//            foreach ($sesionesVenta as $value) {
+//                $sesionesTotal+=$value['numSesiones'];
+//            }                        
         }
         
         foreach ($personaTratamiento as $value) {
