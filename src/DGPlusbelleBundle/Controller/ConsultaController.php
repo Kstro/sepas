@@ -2267,7 +2267,9 @@ class ConsultaController extends Controller
         $sucursal = $request->get('sucursal');
         $observaciones = $request->get('observaciones');
         $costo = $request->get('costoconsulta');
-        
+        $motivo = $request->get('motivo');
+        $sintomas= $request->get('sintomas');
+        $aparatos = $request->get('aparatos');
 //        $patologicos = $request->get('patologicos');
 //        $familiares = $request->get('familiares');
 //        $alergias = $request->get('alergias');
@@ -2282,10 +2284,12 @@ class ConsultaController extends Controller
         $em = $this->getDoctrine()->getEntityManager();
         
         $paciente = $em->getRepository('DGPlusbelleBundle:Paciente')->find($id);
-        $empleado= $em->getRepository('DGPlusbelleBundle:Empleado')->find($medico);
+//        $empleado= $em->getRepository('DGPlusbelleBundle:Empleado')->find($medico);
+        $empleado= $em->getRepository('DGPlusbelleBundle:Empleado')->find(1);
 //        $tratamientoObj = $em->getRepository('DGPlusbelleBundle:Tratamiento')->find($tratamiento);
         $tipoConsultaObj = $em->getRepository('DGPlusbelleBundle:TipoConsulta')->find($tipoConsulta);
-        $sucursalObj = $em->getRepository('DGPlusbelleBundle:Sucursal')->find($sucursal);
+//        $sucursalObj = $em->getRepository('DGPlusbelleBundle:Sucursal')->find($sucursal);
+        $sucursalObj = $em->getRepository('DGPlusbelleBundle:Sucursal')->find(1);
         
         
         
@@ -2297,7 +2301,9 @@ class ConsultaController extends Controller
             date_default_timezone_set('America/El_Salvador');
             $consulta->setFechaConsulta(new \DateTime('now'));
             
-
+            $consulta->setMotivo($motivo);
+            $consulta->setAparatos($aparatos);
+            $consulta->setSintomas($sintomas);
             //hora inicio 
             $consulta->setHoraInicio(new \DateTime('now'));
             //hora fin
@@ -2352,6 +2358,9 @@ class ConsultaController extends Controller
         $observaciones = $request->get('observaciones');
         $idConsulta = $request->get('idconsulta');
         $costo = $request->get('costoconsulta');
+        $motivo = $request->get('motivo');
+        $sintomas= $request->get('sintomas');
+        $aparatos = $request->get('aparatos');
 //        var_dump($medico);
 //        $patologicos = $request->get('patologicos');
 //        $familiares = $request->get('familiares');
@@ -2369,11 +2378,13 @@ class ConsultaController extends Controller
         
         
         $paciente = $em->getRepository('DGPlusbelleBundle:Paciente')->find($id);
-        $empleado= $em->getRepository('DGPlusbelleBundle:Empleado')->find($medico);
+//        $empleado= $em->getRepository('DGPlusbelleBundle:Empleado')->find($medico);
+        $empleado= $em->getRepository('DGPlusbelleBundle:Empleado')->find(1);
         //var_dump($empleado);
 //        $tratamientoObj = $em->getRepository('DGPlusbelleBundle:Tratamiento')->find($tratamiento);
         $tipoConsultaObj = $em->getRepository('DGPlusbelleBundle:TipoConsulta')->find($tipoConsulta);
-        $sucursalObj = $em->getRepository('DGPlusbelleBundle:Sucursal')->find($sucursal);
+//        $sucursalObj = $em->getRepository('DGPlusbelleBundle:Sucursal')->find($sucursal);
+        $sucursalObj = $em->getRepository('DGPlusbelleBundle:Sucursal')->find(1);
         
         
         
@@ -2393,6 +2404,9 @@ class ConsultaController extends Controller
             $consulta->setObservacion($observaciones);
 //            $consulta->setTratamiento($tratamientoObj);
             $consulta->setSucursal($sucursalObj);
+            $consulta->setMotivo($motivo);
+            $consulta->setAparatos($aparatos);
+            $consulta->setSintomas($sintomas);
             
             $consulta->setReportePlantilla(1);
             $consulta->setCostoConsulta($costo);

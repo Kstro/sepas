@@ -309,7 +309,7 @@ class Consulta
      */
     public function getAparatos()
     {
-        return $this->sintomas;
+        return $this->aparatos;
     }
     
     /**

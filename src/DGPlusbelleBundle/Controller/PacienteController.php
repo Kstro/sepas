@@ -1107,8 +1107,8 @@ class PacienteController extends Controller
             
             
             $paciente->setPatologicos($patologicos);
-            $paciente->setFamiliares($familiares);
-            $paciente->setAlergias($alergias);
+            $paciente->setHereditarios($familiares);
+            $paciente->setMedicamentosAlergias($alergias);
 //            var_dump($paciente);
             $em->merge($paciente);
             $em->flush();

@@ -735,7 +735,7 @@
                                 <div class="col-md-12">
                                     <form id="formImagen" role="form" enctype="multipart/form-data" method="post">
                                         <input id="file-input" required type="file" name="file[]" multiple>
-                                        <input type="text" id="idConsulta" value="{% if consulta.id is null %}{%else%}{{consulta.id}}{%endif%}" name="idConsulta" class="form-control input-sm"/>
+                                        <input type="hidden" id="idConsulta" value="{% if consulta.id is null %}{%else%}{{consulta.id}}{%endif%}" name="idConsulta" class="form-control input-sm"/>
                                     </form>
                                     {#<form action="#" id="formImagen" enctype="multipart/form-data"  method="post">
                                         <div class="form-group">
@@ -3495,6 +3495,9 @@
             var observaciones = $('#observacionConsulta').val();
             var idconsulta=$('#idConsulta').val();
             var costoconsulta=$('#costoConsulta').val();
+            var motivo=$('#motivoConsulta').val();
+            var sintomas=$('#sintomasConsulta').val();
+            var aparatos=$('#aparatosConsulta').val();
             //alert(medico+","+tratamiento+","+tipoConsulta+","+observaciones+","+sucursal);
             
             
@@ -3517,7 +3520,7 @@
 {#                            if(result){#}
                                 //console.log(result);
                                 $.ajax({
-                                    data:{id:id,medico:medico,tipoConsulta:tipoConsulta,sucursal:sucursal,observaciones:observaciones,idconsulta:idconsulta,costoconsulta:costoconsulta},
+                                    data:{motivo:motivo,sintomas:sintomas,aparatos:aparatos,id:id,medico:medico,tipoConsulta:tipoConsulta,sucursal:sucursal,observaciones:observaciones,idconsulta:idconsulta,costoconsulta:costoconsulta},
                                     url:"{{path('admin_consulta_actualizar_ajax')}}",
                                     type: "post",
                                     success: function (data) {
@@ -3547,7 +3550,7 @@
                             if(result){
                                 //console.log(result);
                                 $.ajax({
-                                    data:{id:id,medico:medico,tratamiento:tratamiento,tipoConsulta:tipoConsulta,sucursal:sucursal,observaciones:observaciones,costoconsulta:costoconsulta},
+                                    data:{sitomas:sintomas,aparatos:aparatos,motivo:motivo,id:id,medico:medico,tratamiento:tratamiento,tipoConsulta:tipoConsulta,sucursal:sucursal,observaciones:observaciones,costoconsulta:costoconsulta},
                                     url:"{{path('admin_consulta_guardar_ajax')}}",
                                     type: "post",
                                     success: function (data) {

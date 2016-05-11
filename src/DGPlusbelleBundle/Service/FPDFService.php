@@ -413,37 +413,39 @@ class FPDFService {
         $logo2 = $urlLogo.'logo01.jpg';
         html_entity_decode("&aacute;");
         $pdf->FPDF('P','mm','Letter');
-	$pdf->SetTopMargin(0);
-	$pdf->SetLeftMargin(20);
+        $pdf->SetTopMargin(0);
+        $pdf->SetLeftMargin(20);
         $pdf->SetAutoPageBreak(true, 6);
         $pdf->AddPage();
         $pdf->SetFillColor(255);
         
-        $pdf->SetFont('Arial','B',16);
+        $pdf->SetFont('Arial','B',24);
 //        $pdf->Cell(120,32,$consulta[0]->getDetallePlantilla()->getPlantilla()->getNombre());
-        $pdf->Cell(70);
+        $pdf->Cell(120);
         //$pdf->Cell(120,32,utf8_decode($consulta[0]->getDetallePlantilla()->getPlantilla()->getNombre()));
-        $pdf->Cell(120,32,utf8_decode('Receta médica'));
-        
-        $pdf->Image($logo, 20, 5, 50, 20);
-        $pdf->Image($logo2, 150, 5, 50, 20);
+        $pdf->Cell(120,40,utf8_decode('Receta médica'));
+        $pdf->SetFont('Arial','B',16);
+        $pdf->Image($logo, 20, 10, 90);
+//        $pdf->Image($logo2, 150, 5, 60);
         $pdf->Line(20, 25.5, 200, 25.5);
         $pdf->Line(20, 26, 200, 26);
         
+        $pdf->Ln(10);
         
         
-        $pdf->SetFont('Arial','',11);
-        $pdf->SetY(20);
-        $pdf->SetX(20);
-        $pdf->Cell(88, 27, utf8_decode($medico['nombre']));
-        
-        $pdf->Ln(5);
-        $pdf->SetX(20);
-        $pdf->Cell(85, 27, utf8_decode($medico['cargo']));
-        
-        $pdf->Ln(5);
-        $pdf->SetX(20);
-        $pdf->Cell(85, 27, utf8_decode($medico['codigo']));
+//        
+//        $pdf->SetFont('Arial','',11);
+//        $pdf->SetY(20);
+//        $pdf->SetX(20);
+//        $pdf->Cell(88, 27, utf8_decode($medico['nombre']));
+//        
+//        $pdf->Ln(5);
+//        $pdf->SetX(20);
+//        $pdf->Cell(85, 27, utf8_decode($medico['cargo']));
+//        
+//        $pdf->Ln(5);
+//        $pdf->SetX(20);
+//        $pdf->Cell(85, 27, utf8_decode($medico['codigo']));
         
         //var_dump($otros);
         $i=20;
@@ -467,7 +469,7 @@ class FPDFService {
         //$pdf->Line(20, 47, 200, 47);
         
         $pdf->Ln(5);
-        $this->mostrarCelda($pdf, 32, 'Fecha: ', $consulta[0]->getConsultaReceta()->getFechaConsulta()->format("d/m/Y"));
+        $this->mostrarCelda($pdf, 32, 'Fecha: ', $consulta[0]->getConsultaReceta()->getFechaConsulta()->format("d-m-Y"));
         $this->mostrarCelda($pdf, 32, 'Proxima cita: ','_______________');
         $pdf->Ln(7);
         $this->mostrarCelda($pdf, 32, 'Nombre: ', utf8_decode($consulta[0]->getConsultaReceta()->getPaciente()->getPersona()->getNombres().' '.$consulta[0]->getConsultaReceta()->getPaciente()->getPersona()->getApellidos()));
@@ -482,10 +484,10 @@ class FPDFService {
           $edad="N/A";
         }
         
-        $this->mostrarCelda($pdf, 13, 'Edad: ', $edad /*.' '. htmlentities('Años', ENT_QUOTES,'UTF-8')*/);
+//        $this->mostrarCelda($pdf, 13, 'Edad: ', $edad /*.' '. htmlentities('Años', ENT_QUOTES,'UTF-8')*/);
         
         $pdf->Ln(7);
-        $this->mostrarCelda($pdf, 32, 'Expediente No.: ', $consulta[0]->getConsultaReceta()->getPaciente()->getExpediente()[0]->getNumero());
+//        $this->mostrarCelda($pdf, 32, 'Expediente No.: ', $consulta[0]->getConsultaReceta()->getPaciente()->getExpediente()[0]->getNumero());
         
         $sexoPaciente = $consulta[0]->getConsultaReceta()->getPaciente()->getSexo();
         $sexo = '';
@@ -496,19 +498,19 @@ class FPDFService {
             $sexo = 'Femenino';
         }
         
-        $this->mostrarCelda($pdf, 13, 'Sexo: ', $sexo);
+//        $this->mostrarCelda($pdf, 13, 'Sexo: ', $sexo);
         
         $pdf->Ln(10);
         $pdf->SetFont('Arial','B',13);
 //        $pdf->Cell(32,27,'FX:');
-        $pdf->Cell(40, 27, $consulta[0]->getDetallePlantilla()->getNombre().': ', 0, 'L', false);
-        $pdf->Line(20, 97, 200, 97);
-        $pdf->Ln(18);
+//        $pdf->Cell(40, 27, $consulta[0]->getDetallePlantilla()->getNombre().': ', 0, 'L', false);
+        $pdf->Line(20, 57, 200, 57);
+        $pdf->Ln(5);
         foreach ($consulta as $value) {
-            $pdf->SetX(25);
+            $pdf->SetX(15);
             $pdf->SetFont('Arial','B',10);
             
-            $pdf->SetX(30);
+            $pdf->SetX(25);
             $pdf->SetFont('Arial','',10);
             $pdf->MultiCell(170, 5, $value->getValorDetalle(), 0, 'J', false);
             $this->pdf->Ln(10);
