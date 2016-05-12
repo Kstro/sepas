@@ -264,7 +264,7 @@ class VentaVacuna
         return $this->cuotas;
     }
     
-        /**
+    /**
      * Set descuento
      *
      * @param \DGPlusbelleBundle\Entity\Descuento $descuento

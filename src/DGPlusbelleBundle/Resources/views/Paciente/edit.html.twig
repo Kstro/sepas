@@ -43,11 +43,14 @@
         </div>
         <div class="row">
             <div class="col-md-6">
-            {{ form_row(edit_form.personaEmergencia) }}
+                {{ form_row(edit_form.personaEmergencia) }}
             </div>
             <div class="col-md-3">
-            {{ form_row(edit_form.telefonoEmergencia) }}
-            {# {{ form_row(form.estado) }}#}
+                {{ form_row(edit_form.telefonoEmergencia) }}
+                {# {{ form_row(form.estado) }}#}
+            </div>
+            <div class="col-md-3">
+                {{ form_row(edit_form.file) }}
             </div>
            {# <div class="col-md-2">
             {{ form_row(edit_form.enteradoPor) }}
@@ -57,14 +60,14 @@
         
         
         
-        <div class="row">        
-        <div class="col-md-12">
-            <h3>Antecedentes</h3>
-            <hr>
+        {#<div class="row">        
+            <div class="col-md-12">
+                <h3>Antecedentes</h3>
+                <hr>
+            </div>
         </div>
-    </div>
-    
-    <div class="row">        
+#}
+    {#<div class="row">        
         <div class="col-md-12">
             <div class="col-md-4">
                 {{ form_row(edit_form.tipoSangre) }}
@@ -92,7 +95,7 @@
                 {{ form_row(edit_form.noPatologicos) }}
             </div>
         </div>
-    </div>
+    </div>#}
             
             
             

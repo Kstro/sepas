@@ -71,17 +71,23 @@ class ConsultaController extends Controller
         $expediente = $request->get('id');
         //echo $expediente;
         //$entities = $em->getRepository('DGPlusbelleBundle:Paciente')->findAll();
-        $dql = $dql = "SELECT p.id, exp.numero, per.nombres, per.apellidos  FROM DGPlusbelleBundle:Paciente p"
+        $dql = $dql = "SELECT p.id, exp.numero, per.nombres, per.apellidos FROM DGPlusbelleBundle:Paciente p"
                 . " INNER JOIN p.persona per"
                 . " JOIN p.expediente exp";
         $entities = $em->createQuery($dql)
                        //->setParameter('tipo',1)
                        ->getResult();
-        //var_dump($entities);
+        $dql = $dql = "SELECT p FROM DGPlusbelleBundle:Paciente p"
+                . " INNER JOIN p.persona per"
+                . " JOIN p.expediente exp where exp.numero =:numero";
+        $paciente = $em->createQuery($dql)
+                       ->setParameter('numero',$expediente)
+                       ->getResult();
+//        var_dump($paciente);
         //var_dump($entities[0]->getExpediente()[0]->getNumero());
         //die();
         return array(
-            //'pacientes' => $entities,
+            'paciente' => $paciente,
             'tipo'  => 1,
             'expediente'=>$expediente,
         );

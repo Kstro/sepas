@@ -41,10 +41,15 @@
                 <div class="float-bar clearfix" >
                   <div class="col-sm-11">
                     <div class="visible-xs">
+                        
                       <h2 class="display-name media-heading text-teal"></h2>
 {#                      <p class="text-muted mb-4x"><span class="mr-2x">Senior UI Design</span> <span><i class="fa fa-map-marker fa-fw"></i> San Francisco, CA</span></p>#}
                     </div>
+                    <div class="col-md-2">
+                            <img id="fotoPaciente" style="border-radius: 50px; margin-top:-24px;width:100%;" src="">
+                    </div>
                     <div class="hidden-xs">
+                        
                       <h2 class="media-heading text-light" id="nombrePaciente">{#{{ paciente.persona.nombres}} {{ paciente.persona.apellidos}}#}</h2>
                         <p class="mb-4x text-light">
                             <span class="mr-1x" id="expediente">
@@ -289,16 +294,14 @@
                     var idPac = $('#consulta').children().attr('href');
 {#                    var idPacArray2 = id.split('-');#}
                     var idPacArray = idPac.split('=');
-                    {#console.log(idPacArray);
-                    console.log("id"+idPac);#}
-{#                    return false;#}
+                    //console.log(idPacArray);
                     switch(id[0]){
                         case "c":
                             if($(this).hasClass('SD')){
                                 url = Routing.generate('admin_consulta_nueva_paciente_SD', { id: idPacArray[1],idtransaccion:id}); 
                             }
                             else{
-                                url = Routing.generate('admin_consulta_nueva_paciente_LPB', { id: idPacArray[1],idtransaccion:id}); 
+                                url = Routing.generate('admin_consulta_nueva_paciente_SD', { id: idPacArray[1],idtransaccion:id}); 
                             }
                             break;
                         case "t":
@@ -306,9 +309,9 @@
                             break;
                         case "p":
                             url = Routing.generate('admin_editarventa_paquete', { id: id}); 
-                            break;    
+                            break;
                         case "v":
-                            url = Routing.generate('admin_historial_consulta', { id: idPacArray[1],idtransaccion:id});
+                            url = Routing.generate('admin_historial_consulta', { id: id}); 
                             break;
                     }
                     console.log(url);
@@ -711,7 +714,7 @@
                                 //console.log(href);
                                 $('#consultaEst').children().attr('href',hrefconsultaEst);#}
 
-                                var hrefventa="";
+                                var hrefventa=""
                                 hrefventa = $('#venta').children().attr('href');
                                 hrefventa = hrefventa+"?id=P"+data.data[0].id;
 
@@ -757,14 +760,14 @@
                                 else{
                                     $('#edad').html(edad+" "+data.edad);
                                 }
-                                var aplicacionesPtes = '';
-                                aplicacionesPtes+= '<strrong>Aplicaciones de vacuna:</strong> ' + data.sesionesPendientes + '/' + data.sesionesTotal;
-                                
-                                if(data.sesionesPendientes != data.sesionesTotal){
-                                    aplicacionesPtes+= '<a href="" style="color: #2E64FE; font-size: 15px;"> Ver vacunas pendientes</a>';
+                                if(data.data[0].foto!=null){
+                                    $('#fotoPaciente').attr('src',"{{ asset('Photos/Paciente/')}}"+data.data[0].foto);
+                                }
+                                else{
+                                    $('#fotoPaciente').attr('src',"{{ asset('Photos/Paciente/')}}"+"generico02.jpg");
                                 }
                                 
-                                $('#total-sesiones').html(aplicacionesPtes);
+                                $('#total-sesiones').html('<strrong>Sesiones:</strong> ' + data.sesionesPendientes + '/' + data.sesionesTotal);
                                 $('#deuda-total').html('<strrong>Deuda:</strong> $ ' + data.deuda.toFixed(2));
 
                             {#<i class="fa fa-birthday-cake"></i>#}

@@ -3,6 +3,8 @@
 namespace DGPlusbelleBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Paciente
@@ -196,6 +198,18 @@ class Paciente
     private $medicamentosAlergias;
     
     
+    /**
+     * @Assert\File(maxSize="6000000")
+     */
+    private $file;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="foto", type="string", length=255, nullable=true)
+     */
+    private $foto;
+    
     
     /**
      * Get id
@@ -207,6 +221,27 @@ class Paciente
         return $this->id;
     }
 
+    
+    /**
+     * Sets file.
+     *
+     * @param UploadedFile $file
+     */
+    public function setFile(UploadedFile $file = null)
+    {
+        $this->file = $file;
+    }
+
+    /**
+     * Get file.
+     *
+     * @return UploadedFile
+     */
+    public function getFile()
+    {
+        return $this->file;
+    }
+    
     /**
      * Set dui
      *
@@ -809,6 +844,30 @@ class Paciente
     }
     
     
+    
+    /**
+     * Set foto
+     *
+     * @param string $foto
+     *
+     * @return Empleado
+     */
+    public function setFoto($foto)
+    {
+        $this->foto = $foto;
+
+        return $this;
+    }
+
+    /**
+     * Get foto
+     *
+     * @return string
+     */
+    public function getFoto()
+    {
+        return $this->foto;
+    }
     
     
 }

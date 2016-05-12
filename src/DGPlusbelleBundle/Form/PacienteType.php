@@ -65,6 +65,9 @@ class PacienteType extends AbstractType
 //                    )))
             //->add('estado')
            // ->add('persona')
+            ->add('file',null, array('label'=>'Foto de paciente','required'=>false,
+                'attr'=>array('class'=>'fotoEmpleado'
+                )))
         ;
     }
     

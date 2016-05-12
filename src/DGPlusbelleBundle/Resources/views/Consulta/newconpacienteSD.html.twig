@@ -117,6 +117,13 @@
                       <h2 class="display-name media-heading text-teal"></h2>
 {#                      <p class="text-muted mb-4x"><span class="mr-2x">Senior UI Design</span> <span><i class="fa fa-map-marker fa-fw"></i> San Francisco, CA</span></p>#}
                     </div>
+                    <div class="col-md-2">
+                        {% if paciente.foto is null %}
+                            <img id="fotoPaciente" style="border-radius: 50px; margin-top:-20px;width:100%;" src="{{ asset('Photos/Paciente/')}}generico02.jpg">
+                        {% else %}
+                            <img id="fotoPaciente" style="border-radius: 50px; margin-top:-20px;width:100%;" src="{{ asset('Photos/Paciente/')}}{{paciente.foto}}">
+                        {% endif %}
+                    </div>
                     <div class="hidden-xs">
                       <h2 class="media-heading text-light" id="nombrePaciente">{{ paciente.persona.nombres}} {{ paciente.persona.apellidos}}</h2>
                         <p class="mb-4x text-light">
@@ -127,7 +134,8 @@
                             <span class="mr-2x" id="ocupacionPaciente">
                                 <i class="fa fa-briefcase"></i>
                                 {% if paciente.ocupacion == ""%}
-                                    No se ha especificado profesión
+                                    -
+                                    {#No se ha especificado profesión#}
                                 {% else %}
                                     {{paciente.ocupacion}}
                                 {% endif %}
@@ -136,7 +144,8 @@
                                 <i class="fa fa-phone"></i>
                                 
                                 {% if paciente.persona.telefono== ""%}
-                                    No ingresado al sistema
+                                    -
+                                    {#No ingresado al sistema#}
                                 {% else %}
                                     {{paciente.persona.telefono}}
                                 {% endif %}
@@ -152,7 +161,8 @@
                                 <i class="fa fa-map-marker fa-fw"></i>
                                 
                                 {% if paciente.persona.direccion == ""%}
-                                    No ingresado al sistema
+                                    -
+                                    {#No ingresado al sistema#}
                                 {% else %}
                                     {{paciente.persona.direccion}}
                                 {% endif %}
@@ -212,7 +222,7 @@
               <li class=""><a href="#botabs11" data-toggle="tab">Evaluación</a></li>
             </ul>
             <div class="panel-body">
-                <div class="tab-content">
+                <div class="tab-content col-md-9">
                     <div class="tab-pane fade in" id="botabs1">
                         <p><strong></strong>
                             <div class="row" style="margin-top:20px;">
@@ -228,12 +238,12 @@
                                 </div>
                                 <div class="col-md-1">
                                     <label>
-                                        Telefono 1
+                                        Teléfono 1
                                     </label>
                                 </div>
                                 <div class="col-md-1">
                                     <label>
-                                        Telefono 2
+                                        Teléfono 2
                                     </label>
                                 </div>
 
@@ -263,7 +273,6 @@
                                 </div>
                                 <div class="col-md-4">
                                     <input type="hidden" id="idPaciente" value="{{paciente.id}}" name="idPaciente" class="form-control input-sm"/>
-                                    
                                 </div>
                             </div>
                         
@@ -469,7 +478,7 @@
                                         </div>
                                         <div class="col-md-4">
                                             <label>
-                                                Síntomas
+                                                Historia clínica
                                             </label>
                                         </div>
                                         <div class="col-md-4">
@@ -656,49 +665,7 @@
                             </div>
                         </p>
                     </div>
-                    <div class="tab-pane fade in" id="botabs4">
-                        <p>
-                            <strong>Antecedentes y alergias</strong>
-                        </p>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <label>Patológicos</label>
-                            </div>
-                            <div class="col-md-4">
-                                <label>Familiares</label>
-                            </div>
-                            <div class="col-md-4">
-                                <label>Alergias</label>
-                            </div>
-                        </div>
-                        <div class="row" style="margin-top:20px;">
-                            <div class="col-md-4">
-                                <textarea maxlength="400" style="height:100px;" id="antecedentesPatologicos" class="form-control">{{paciente.patologicos}}</textarea>
-                            </div>
-                            <div class="col-md-4">
-                                <textarea maxlength="400" style="height:100px;" id="antecedentesFamiliares" class="form-control">{{paciente.hereditarios}}</textarea>
-                            </div>
-                            <div class="col-md-4">
-                                <textarea maxlength="400" style="height:100px;" id="antecedentesAlergias" class="form-control">{{paciente.medicamentosAlergias}}</textarea>
-                            </div>
-                        </div>
-                            
-                        <div class="row" style="margin-top:10px;">
-                            <div class="col-md-12">
-                                <hr>
-                            </div>
-                        </div>
-
-                        <div class="row  pull-right" style="margin-top:10px;">
-                            <div class="col-md-12">
-                                <div class="form-grouphide col-sm-12">
-                                    {#<a class="btn btn-default btn-xs" id="cancelarNuevoConsulta">Cancelar</a>#}
-                                    <button type="submit" id="guardarAntecedentes" name="dgplusbellebundle_antecedentes[submit]" class="btn btn-success text-light btn-xs btn btn">Guardar</button>
-                                </div>
-                            </div>
-                        </div>
-                        
-                    </div>
+                    
                     <div class="tab-pane fade in" id="botabs5">
                         <p><strong></strong>
                             <div class="row">
@@ -1183,7 +1150,62 @@
                         </p>
                     
                     </div><!-- /tab-content -->
-            </div><!-- /panel-body -->
+            </div>
+                <div class="tab-pane fade in col-md-3" id="botabs4" style="border-left: 1px solid #7C7E81;">
+                    <p>
+                        <strong>Antecedentes y alergias</strong>
+                    </p>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label>Patológicos</label>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top:20px;">
+                        <div class="col-md-12">
+                            <textarea maxlength="400" style="height:100px;" id="antecedentesPatologicos" class="form-control">{{paciente.patologicos}}</textarea>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top:20px;">
+                        <div class="col-md-12">
+                            <label>Familiares</label>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top:20px;">
+                        <div class="col-md-12">
+                            <textarea maxlength="400" style="height:100px;" id="antecedentesFamiliares" class="form-control">{{paciente.hereditarios}}</textarea>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top:20px;">
+                        <div class="col-md-12">
+                            <label>Alergias</label>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top:20px;">
+                        <div class="col-md-12">
+                            <textarea maxlength="400" style="height:100px;" id="antecedentesAlergias" class="form-control">{{paciente.medicamentosAlergias}}</textarea>
+                        </div>
+                    </div>
+                        
+                        
+                        
+                        
+
+                    <div class="row" style="margin-top:10px;">
+                        <div class="col-md-12">
+                            <hr>
+                        </div>
+                    </div>
+
+                    <div class="row  pull-right" style="margin-top:10px;">
+                        <div class="col-md-12">
+                            <div class="form-grouphide col-sm-12">
+                                {#<a class="btn btn-default btn-xs" id="cancelarNuevoConsulta">Cancelar</a>#}
+                                <button type="submit" id="guardarAntecedentes" name="dgplusbellebundle_antecedentes[submit]" class="btn btn-success text-light btn-xs btn btn">Guardar</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
         </div>
     {% else %}
         

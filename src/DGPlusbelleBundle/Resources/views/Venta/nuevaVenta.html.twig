@@ -67,6 +67,13 @@
                             <div class="col-lg-6" >
                                 <div class="float-bar clearfix" >
                                     <div class="col-sm-11">
+                                        <div class="col-md-2">
+                                            {% if paciente.foto is null %}
+                                                <img id="fotoPaciente" style="border-radius: 50px; margin-top:-20px;width:100%;" src="{{ asset('Photos/Paciente/')}}generico02.jpg">
+                                            {% else %}
+                                                <img id="fotoPaciente" style="border-radius: 50px; margin-top:-20px;width:100%;" src="{{ asset('Photos/Paciente/')}}{{paciente.foto}}">
+                                            {% endif %}
+                                        </div>
                                         <div class="visible-xs">{#display-name media-heading text-teal#}
                                             <h2 class="media-heading text-light" id="nombrePaciente">{{ paciente.persona.nombres}} {{ paciente.persona.apellidos}}</h2>
                                         </div>
@@ -334,6 +341,11 @@
                                         {% endif %}
                                     </div>    
                                 </div> 
+                                <div class="row" id="detalle-medicamentos-vendidos">
+                                    <label>Medicamentos: </label>
+                                    <textarea style="resize: vertical; ">dfvsdfgvbfsdvfsdv</textarea>
+                                </div>
+                                    
                                 <div class="row" style="margin-top:30px;" id="detalle-vacunas-vendidas"> 
                                     <hr>
                                     <div class="col-md-offset-2 col-md-3">
@@ -542,7 +554,15 @@
                                 <hr>        
                                 <div class="row" style="margin-top: 50px;">
                                     <div class="col-md-9" style="margin-left: 125px;">
-                                        <div class="row vacuna-content" id="detalle-vacunas-vendidas">
+                                        <div class="row" style="margin-top:30px; display: none;" id="detalle-medicamentos-vendidos">
+                                            <div class="col-md-2">
+                                                <label>Medicamentos: </label>
+                                            </div>
+                                            <div class="col-md-10">
+                                                <textarea style="width: 100%;resize: vertical;"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="row vacuna-content" style="display:none;" id="detalle-vacunas-vendidas">
                                             <div class="col-md-3">
                                                 {# Area en donde se seleciona  el descuento que se le va a aplicar a la venta en el caso de ser necesario #} 
                                                 <div id="vacuna-venta" {#style="display:none;"#}>
@@ -625,7 +645,6 @@
                                             <label>Empleado</label>
                                             <select id="dgplusbellebundle_sesiones_empleado" name="dgplusbellebundle_venta_sesiones[empleado]" class="sesion-empleado" style="width: 100%">
                                                 <option value="" disabled selected>Seleccione un empleado ...</option>
-
                                                 {% for empleado in empleadosVenta %}
                                                     <option value="{{empleado.id}}"> {{empleado.persona}}</option>
                                                 {% endfor %}
@@ -962,7 +981,11 @@
                 
                 // Al hacer click en la opcion de tipo de venta de paquete
                 $(document).on("click","#tipo-venta-paquete", function(){
-                    var ventaPaquete = document.getElementById('venta-paquete');
+                    
+                    $('#detalle-vacunas-vendidas').show();
+                    $('#detalle-medicamentos-vendidos').hide();
+                    
+                    {#var ventaPaquete = document.getElementById('venta-paquete');
                     var ventaTratamiento = document.getElementById('venta-tratamiento');
                     var ventaSucursal = document.getElementById('sucursal-venta');
                     var empleadosVenta = document.getElementById('empleados-venta');
@@ -970,10 +993,10 @@
                     var costoVenta = document.getElementById('costo-venta');
                     var descuentoVenta = document.getElementById('descuento-venta');
                     var cuotasVenta = document.getElementById('cuotas-venta');
-                    var registrarVenta = document.getElementById('registrar-venta');
+                    var registrarVenta = document.getElementById('registrar-venta');#}
                     //var observaciones = document.getElementById('vventa-observaciones');
                     
-                    ventaPaquete.style.display = 'block';
+                    {#ventaPaquete.style.display = 'block';
                     ventaTratamiento.style.display = 'none';
                     ventaSucursal.style.display = 'block';
                     empleadosVenta.style.display = 'block';
@@ -981,19 +1004,23 @@
                     costoVenta.style.display = 'block';
                     descuentoVenta.style.display = 'block';
                     cuotasVenta.style.display = 'block';
-                    registrarVenta.style.display = 'block';
+                    registrarVenta.style.display = 'block';#}
                     //observaciones.style.display = 'block';
                     
-                    $('#dgplusbellebundle_venta_costo').val('');
+                    {#$('#dgplusbellebundle_venta_costo').val('');
                     $('#dgplusbellebundle_venta_cuotas').val('');
                     $('#dgplusbellebundle_venta_descuento').val('');
-                    $('#dgplusbellebundle_venta_paquete').val('');
+                    $('#dgplusbellebundle_venta_paquete').val('');#}
                     $('#vventa-observaciones').show();
                 });
                 
                 // Al hacer click en la opcion de tipo de venta de tratamiento
                 $(document).on("click","#tipo-venta-tratamiento", function(){
-                    var ventaPaquete = document.getElementById('venta-paquete');
+                    
+                    $('#detalle-vacunas-vendidas').hide();
+                    $('#detalle-medicamentos-vendidos').show();
+                    
+                    {#var ventaPaquete = document.getElementById('venta-paquete');
                     var ventaTratamiento = document.getElementById('venta-tratamiento');
                     var ventaSucursal = document.getElementById('sucursal-venta');
                     var empleadosVenta = document.getElementById('empleados-venta');
@@ -1002,10 +1029,10 @@
                     var descuentoVenta = document.getElementById('descuento-venta');
                     var cuotasVenta = document.getElementById('cuotas-venta');
                     var registrarVenta = document.getElementById('registrar-venta');
-                    var tratamientosPaquete = document.getElementById('tratamientos-paquete');
+                    var tratamientosPaquete = document.getElementById('tratamientos-paquete');#}
                     //var observaciones = document.getElementById('vventa_observaciones');
                     
-                    ventaPaquete.style.display = 'none';
+                    {#ventaPaquete.style.display = 'none';
                     ventaTratamiento.style.display = 'block';
                     ventaSucursal.style.display = 'block';
                     empleadosVenta.style.display = 'block';
@@ -1014,15 +1041,25 @@
                     descuentoVenta.style.display = 'block';
                     cuotasVenta.style.display = 'block';
                     registrarVenta.style.display = 'block';
-                    tratamientosPaquete.style.display = 'none';
+                    tratamientosPaquete.style.display = 'none';#}
                     //observaciones.style.display = 'block';
                     
-                    $('#dgplusbellebundle_venta_costo').val('');
+                    {#$('#dgplusbellebundle_venta_costo').val('');
                     $('#dgplusbellebundle_venta_cuotas').val('');
                     $('#dgplusbellebundle_venta_descuento').val('');
-                    $('#dgplusbellebundle_venta_tratamiento').val('');
-                    $('#vventa-observaciones').show();
+                    $('#dgplusbellebundle_venta_tratamiento').val('');#}
+{#                    $('#vventa-observaciones').show();#}
                 });
+                
+                if($('#tipo-venta-tratamiento').is(':checked')){
+                    $('#tipo-venta-tratamiento').click();
+                    console.log('venta de medicamentos');
+                }
+                if($('#tipo-venta-paquete').is(':checked')){
+                    $('#tipo-venta-paquete').click();
+                    console.log('venta de vacunas');
+                }
+                
                 
                 // Al seleccionar un paquete
                 $(document).on("change","#dgplusbellebundle_venta_paquete", function(){
@@ -1154,6 +1191,9 @@
                     //var paquete = $('#dgplusbellebundle_venta_paquete').val();
                     //var tratamiento = $('#dgplusbellebundle_venta_tratamiento').val();
                     //var sucursal = $('#dgplusbellebundle_venta_sucursal').val();
+                    
+                    
+                                       
                     var descuento = $('#dgplusbellebundle_venta_descuento').val();
                     var empleado = $('#dgplusbellebundle_venta_empleado').val();
                     //var costo = $('#dgplusbellebundle_venta_costo').val();
@@ -1192,7 +1232,7 @@
                         console.log(valores);
                         
                         if(errores!=0){
-                            bootbox.alert("Debe ingresar todos las opciones!", function() {});
+                            bootbox.alert("Debe ingresar todas las opciones!", function() {});
                         } else {                        
                             // Se obtiene la informacion necesaria para registrar la venta
                             var data = {

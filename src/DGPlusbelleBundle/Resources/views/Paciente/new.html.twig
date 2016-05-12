@@ -38,24 +38,22 @@
     </div>
     <div class="row">
         <div class="col-md-6">
-        {{ form_row(form.personaEmergencia) }}
+            {{ form_row(form.personaEmergencia) }}
         </div>
         <div class="col-md-3">
-        {{ form_row(form.telefonoEmergencia) }}
-        {# {{ form_row(form.estado) }}#}
+            {{ form_row(form.telefonoEmergencia) }}
         </div>
-       {# <div class="col-md-2">
-        {{ form_row(form.enteradoPor) }}
-        
-        </div>#}
+        <div class="col-md-3">
+            {{ form_row(form.file) }}
+        </div>
     </div>
   
    
             <div class="form-grouphide col-sm-9">
                 <a href="{{ path('admin_paciente') }}" class="btn btn-default btn-sm" id="cancelarNuevo">Cancelar</a>
-                {{ form_widget(form.submit) }}    
-                <a id="guardarCrearCita" href="{{path('admin_historial_consulta')}}" class="btn btn-success btn-sm">Guardar y crear cita</a>
-                <a id="guardarVerExpediente" href="{{path('admin_historial_consulta')}}" class="btn btn-success btn-sm">Guardar y ver expediente</a>
+                {{ form_widget(form.submit) }}
+                <a id="guardarCrearCita" href="{{path('admin_historial_consulta')}}" class="btn btn-success btn-sm text-light">Guardar y crear cita</a>
+                <a id="guardarVerExpediente" href="{{path('admin_historial_consulta')}}" class="btn btn-success btn-sm text-light">Guardar y ver expediente</a>
             </div>
             
             

@@ -93,8 +93,10 @@ class PacienteController extends Controller
         $apellidos = $entity->getPersona()->getApellidos();
 
         if ($form->isValid()) {
-           //$entity->setEstado(TRUE);
             $em = $this->getDoctrine()->getManager();
+            
+           //$entity->setEstado(TRUE);
+            
             $entity->getPersona()->setNombres(ucfirst($nombres));
             $entity->getPersona()->setApellidos(ucfirst($apellidos));
             $entity->setFechaRegistro(new \DateTime('now'));
@@ -103,6 +105,20 @@ class PacienteController extends Controller
             $this->generarExpediente($entity);
             $em->flush();
 
+            if($entity->getFile()!=null){
+                $path = $this->container->getParameter('photo.paciente');
+
+                $fecha = date('Y-m-d His');
+                $extension = $entity->getFile()->getClientOriginalExtension();
+                $nombreArchivo = $entity->getId()."-".$fecha.".".$extension;
+                //$em->persist($entity);
+                //$em->flush();
+                //var_dump($path.$nombreArchivo);
+                $entity->setFoto($nombreArchivo);
+                $entity->getFile()->move($path,$nombreArchivo);
+                $em->merge($entity);
+            }
+            
             $usuario= $this->get('security.token_storage')->getToken()->getUser();
             $this->get('bitacora')->escribirbitacora("Se registro un nuevo paciente",$usuario->getId());
             
@@ -131,7 +147,7 @@ class PacienteController extends Controller
 
         $form->add('submit', 'submit', array('label' => 'Guardar',
                                                'attr'=>
-                                                        array('class'=>'btn btn-success btn-sm')
+                                                        array('class'=>'btn btn-success btn-sm text-light')
                                                  
          ));
 
@@ -250,6 +266,24 @@ class PacienteController extends Controller
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
+            $path = $this->container->getParameter('photo.paciente');
+            $foto = $entity->getFoto();
+            if($foto!=null){
+                unlink($path.$foto);
+            }
+            if($entity->getFile()!=null){
+                
+
+                $fecha = date('Y-m-d His');
+                $extension = $entity->getFile()->getClientOriginalExtension();
+                $nombreArchivo = $entity->getId()."-".$fecha.".".$extension;
+                //$em->persist($entity);
+                //$em->flush();
+                //var_dump($path.$nombreArchivo);
+                $entity->setFoto($nombreArchivo);
+                $entity->getFile()->move($path,$nombreArchivo);
+                $em->merge($entity);
+            }
             $em->flush();
 
             $usuario= $this->get('security.token_storage')->getToken()->getUser();
@@ -819,7 +853,7 @@ class PacienteController extends Controller
         //var_dump($longitud);
         
         $em = $this->getDoctrine()->getEntityManager();
-        $dql = "SELECT pac.id as id, pac.ocupacion, per.direccion,per.telefono,per.nombres as nombres,per.apellidos as apellidos, DATE_FORMAT(pac.fechaNacimiento,'%Y-%m-%d') as fechaNacimiento, per.direccion, "
+        $dql = "SELECT pac.id as id, pac.foto,pac.ocupacion, per.direccion,per.telefono,per.nombres as nombres,per.apellidos as apellidos, DATE_FORMAT(pac.fechaNacimiento,'%Y-%m-%d') as fechaNacimiento, per.direccion, "
                         . " CONCAT('<a href=\"\">','Ver','</a>') as detalles "
                         . "FROM DGPlusbelleBundle:Expediente exp "
                         . "JOIN exp.paciente pac "
