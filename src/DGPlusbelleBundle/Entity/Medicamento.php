@@ -34,6 +34,14 @@ class Medicamento
      * @ORM\Column(name="nombre", type="string",  nullable=false)
      */
     private $nombre;
+    
+    
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_venta", type="datetime", nullable=false)
+     */
+    private $fechaVenta;
       
     
     /**
@@ -72,6 +80,26 @@ class Medicamento
      * @ORM\Column(name="observaciones", type="string",  nullable=false)
      */
     private $observaciones;
+    
+    
+    /**
+     * @var \Paciente
+     *
+     * @ORM\ManyToOne(targetEntity="Paciente", inversedBy="ventapaquete")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="paciente", referencedColumnName="id")
+     * })
+     */
+    private $paciente;
+    
+    
+    
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="costo", type="float", nullable=false)
+     */
+    private $costo; 
         
     
     /**
@@ -245,6 +273,83 @@ class Medicamento
     
     public function setMantenimiento() {
             return $this->getNombre();
+    }
+    
+    
+    /**
+     * Set fechaVenta
+     *
+     * @param \DateTime $fechaVenta
+     *
+     * @return VentaVacuna
+     */
+    public function setFechaVenta($fechaVenta)
+    {
+        $this->fechaVenta = $fechaVenta;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaVenta
+     *
+     * @return \DateTime
+     */
+    public function getFechaVenta()
+    {
+        return $this->fechaVenta;
+    }
+    
+    
+    
+    /**
+     * Set paciente
+     *
+     * @param \DGPlusbelleBundle\Entity\Persona $paciente
+     *
+     * @return VentaPaquete
+     */
+    public function setPaciente(\DGPlusbelleBundle\Entity\Paciente $paciente = null)
+    {
+        $this->paciente = $paciente;
+
+        return $this;
+    }
+
+    /**
+     * Get paciente
+     *
+     * @return \DGPlusbelleBundle\Entity\Paciente
+     */
+    public function getPaciente()
+    {
+        return $this->paciente;
+    }
+    
+    
+    
+    /**
+     * Set Costo
+     *
+     * @param float $Costo
+     *
+     * @return VentaVacuna
+     */
+    public function setCosto($costo)
+    {
+        $this->costo= $costo;
+
+        return $this;
+    }
+
+    /**
+     * Get montoTotal
+     *
+     * @return float
+     */
+    public function getCosto()
+    {
+        return $this->costo;
     }
  
    

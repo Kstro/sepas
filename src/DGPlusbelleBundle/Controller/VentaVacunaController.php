@@ -9,6 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use DGPlusbelleBundle\Entity\VentaVacuna;
+use DGPlusbelleBundle\Entity\Medicamento;
 use DGPlusbelleBundle\Form\VentaVacunaType;
 use Doctrine\ORM\Query\ResultSetMapping;
 
@@ -574,6 +575,83 @@ class VentaVacunaController extends Controller
                                 'abonos' => $abonos,
                                 'empleado' => $ventaVacuna->getEmpleado()->getPersona()->getNombres().' '.$ventaVacuna->getEmpleado()->getPersona()->getApellidos(),
                                 'ventaVacunas' => $ventaPaqueteTratamientos
+                               ));  
+            
+            return $response; 
+        } else {    
+            return new Response('0');              
+        } 
+   }
+   
+   
+   
+   
+   
+   
+   
+   /**
+    * Ajax utilizado para registrar una nueva venta de vacunas
+    *  
+    * @Route("/registro-medicamento/nueva-venta/set", name="admin_registro_nueva_venta_medicamento")
+    */
+    public function registrarNuevaVentaMedicamentoAction()
+    {
+        $isAjax = $this->get('Request')->isXMLhttpRequest();
+        if($isAjax){
+            $em = $this->getDoctrine()->getManager();
+            $usuario= $this->get('security.token_storage')->getToken()->getUser();
+            
+            $id = $this->get('request')->request->get('id');
+            $empleadoId = $this->get('request')->request->get('empleado');
+            $cuotas = $this->get('request')->request->get('cuotas');
+            //$valores = $this->get('request')->request->get('valores');
+            $descuentoId = $this->get('request')->request->get('descuento');
+            $observaciones = $this->get('request')->request->get('observaciones');
+            $costoMedicamento = $this->get('request')->request->get('costoMedicamento');
+            $medicamentos = $this->get('request')->request->get('medicamentos');
+            
+            
+            $medicamento = new Medicamento();
+            
+            
+                       
+            
+            
+            $pacienteObj= $em->getRepository('DGPlusbelleBundle:Paciente')->find($id);
+            $empleadoObj= $em->getRepository('DGPlusbelleBundle:Empleado')->find($empleadoId);
+            $descuentoObj= $em->getRepository('DGPlusbelleBundle:Descuento')->find($descuentoId);
+            
+            
+            $medicamento->setNombre($medicamentos);
+            $medicamento->setEstado(1);
+            $medicamento->setEmpleado($empleadoObj);
+            
+            $medicamento->setDescuento($descuentoObj);
+            $medicamento->setCuotas($cuotas);
+            
+            $medicamento->setObservaciones($observaciones);
+            $medicamento->setFechaVenta(new \DateTime('now'));
+            $medicamento->setPaciente($pacienteObj);
+            $medicamento->setCosto($costoMedicamento);
+            
+            
+            
+            //var_dump($medicamento);
+            $em->persist($medicamento);
+            $em->flush();
+            
+            
+            $response = new JsonResponse();
+            $response->setData(array(
+                                'exito'       => '1',
+                                //'ventaVacuna' => $ventaVacuna->getId(),
+//                                'ventasVacuna' => $mensaje,
+//                                'vacunasPaquete' => $vacunasPaquete,
+//                                'porcentaje' => $porcentaje,
+//                                'nomvac' => $nomvac,
+//                                'abonos' => $abonos,
+//                                'empleado' => $ventaVacuna->getEmpleado()->getPersona()->getNombres().' '.$ventaVacuna->getEmpleado()->getPersona()->getApellidos(),
+//                                'ventaVacunas' => $ventaPaqueteTratamientos
                                ));  
             
             return $response; 

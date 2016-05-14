@@ -39,7 +39,19 @@ class VentaController  extends Controller
         
         $idTransaccion= $request->get('idtransaccion'); 
         $transaccion =  substr($idTransaccion, 0, 1);
-        
+        $medicamentoObj=null;
+        if($transaccion == 'm'){
+//            var_dump($transaccion);
+            $medicamentoid=  substr($idTransaccion, 2);
+            $medicamentoObj=$em->getRepository('DGPlusbelleBundle:Medicamento')->find($medicamentoid);
+            $abonos = null;
+            $aplicacionesVenta = null;            
+            $consulta = null;
+            $descuentoConsulta = null;
+            $vacunaConsulta = null;
+            $vacunasPaquete = null;
+            $ventaVacuna = null;
+        }
         if($transaccion == 'c'){
             $consultaid =  substr($idTransaccion, 2);
 
@@ -258,7 +270,9 @@ class VentaController  extends Controller
             'ventaTratamientos' => $ventaTratamientos,
             'ventaVacuna' => $ventaVacuna,
             'vacunasPaquete' => $vacunasPaquete,
-            'idPaciente'=>$idPacient
+            'idPaciente'=>$idPacient,
+            'transaccion'=>$transaccion,
+            'medicamentoObj'=>$medicamentoObj,
         );
     }
     

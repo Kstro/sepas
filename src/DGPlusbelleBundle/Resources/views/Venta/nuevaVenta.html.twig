@@ -35,7 +35,7 @@
         }
         
         textarea{
-            resize: none;
+            resize: vertical;
         }
         
         #info_paciente tr td{
@@ -270,6 +270,9 @@
                     {# Sección en donde se registran ventas de paqutes/tratamientos #}                
                     <div id="registros-venta" class="tab-pane fade in active" style="margin-top: 20px;">
                         <form id="formulario-venta" method="POST" enctype="multipart/form-data">
+                            
+                            
+                            
                             {% if consulta %}
                                 <div class="row" style="margin-top: 35px;">
                                     <div class="col-md-4" style="margin-left: 30px;">
@@ -343,7 +346,8 @@
                                 </div> 
                                 <div class="row" id="detalle-medicamentos-vendidos">
                                     <label>Medicamentos: </label>
-                                    <textarea style="resize: vertical; ">dfvsdfgvbfsdvfsdv</textarea>
+                                    <textarea id="listado-medicamentos-vendidos" style="resize: vertical; "></textarea>
+                                    <input type="text" id="costoMedicamento" value=""/>
                                 </div>
                                     
                                 <div class="row" style="margin-top:30px;" id="detalle-vacunas-vendidas"> 
@@ -450,6 +454,72 @@
                                         {% endfor %}
                                     </div>
                                 </div>    
+                            {% elseif transaccion=='m' %}
+                                
+                                <div class="row" style="margin-top: 35px;">
+                                    <div class="col-md-4" style="margin-left: 30px;">
+                                            {# Area en donde se selecciona  el empleado que ha realizado la venta #}  
+                                            <div id="empleados-venta" {#style="display:none;"#}>
+                                                    <label>Vendido por</label>
+                                                    <p>{{ medicamentoObj.empleado }}</p>
+                                            </div>
+                                        
+                                    </div> 
+                                    <div class="col-md-3">
+                                        {# Area en donde se seleciona  el descuento que se le va a aplicar a la venta en el caso de ser necesario #} 
+                                        <div id="descuento-venta">
+                                            <label>Descuento aplicado: </label>
+                                            <p>{{medicamentoObj.descuento.nombre}} {{medicamentoObj.descuento.porcentaje}}%</p>
+                                        </div>
+                                    </div>        
+                                    <div class="col-md-2">
+                                        <div id="cuotas-venta" {#style="display:none;"#}>
+                                            <label>Cuotas</label>
+                                            <p>{{ medicamentoObj.cuotas }}</p>
+                                        </div>
+                                    </div>
+                                </div> 
+                                <div class="row" style="margin-top: 35px;">
+                                    <div class="col-md-4" style="margin-left: 30px;">
+                                            {# Area en donde se selecciona  el empleado que ha realizado la venta #}  
+                                            <div id="empleados-venta" {#style="display:none;"#}>
+                                                <label>Observaciones</label>
+                                                <p>{{ medicamentoObj.observaciones}}</p>
+                                            </div>
+                                    </div> 
+                                    <div class="col-md-3">
+                                        {# Area en donde se seleciona  el descuento que se le va a aplicar a la venta en el caso de ser necesario #} 
+                                        <div id="descuento-venta">
+                                            <label>Costo medicamento vendidos: </label>
+                                            <p>{{medicamentoObj.costo}}</p>
+                                        </div>
+                                    </div>     
+                                    <div class="col-md-3">
+                                        {# Area en donde se seleciona  el descuento que se le va a aplicar a la venta en el caso de ser necesario #} 
+                                        <div id="descuento-venta">
+                                            <label>Medicamentos vendidos: </label>
+                                            <p>{{medicamentoObj.nombre}}</p>
+                                        </div>
+                                    </div>    
+                                       
+                                    {#<div class="col-md-2">#}
+                                        {#<div id="cuotas-venta" {#style="display:none;"#} {#>
+                                            {#<label>Costo de medicamento</label>
+                                            <p>{{ medicamentoObj.cuotas }}</p>
+                                        </div>
+                                    </div>        #}
+                                </div> 
+                                <div class="row" style="margin-top: 35px;">
+                                    <div class="col-md-4" style="margin-left: 30px;">
+                                        {# Area en donde se selecciona  el empleado que ha realizado la venta #}  
+                                        <div id="empleados-venta" {#style="display:none;"#} style="font-size: 20px;">
+                                            <label><strong>Costo total: </strong></label>
+                                            <p><strong>$ {{ medicamentoObj.costo*(1-medicamentoObj.descuento.porcentaje/100)|number_format(2,'.',',')}}</strong></p>
+                                        </div>
+                                    </div    
+                                </div> 
+                            
+                                    
                             {% else %}
                                 <div class="row" style="margin-top: 30px;">
                                     {# Selección de qué tipo de venta se va a realizar #}    
@@ -544,11 +614,11 @@
                                     <div id="vventa-observaciones" class="col-md-7 col-sm-7" style="margin-top: 30px; margin-bottom: 10px; {#display:none;#}">
                                         <div id="venta-observaciones-label" style="margin-left: 30px;">
                                             <label>Observaciones</label>
-                                        </div> 
+                                        </div>
                                         <div class="clearfix"></div>
                                         <div id="observaciones" style="margin-left: 30px;">
-                                            <textarea rows="4" cols="100" name="dgplusbellebundle_abono[observaciones]" id="dgplusbellebundle_venta_observaciones" class="form-control"></textarea> 
-                                        </div>     
+                                            <textarea rows="4" cols="100" name="dgplusbellebundle_abono[observaciones]" id="dgplusbellebundle_venta_observaciones" class="form-control"></textarea>
+                                        </div>
                                     </div>    
                                 </div> 
                                 <hr>        
@@ -558,8 +628,14 @@
                                             <div class="col-md-2">
                                                 <label>Medicamentos: </label>
                                             </div>
-                                            <div class="col-md-10">
-                                                <textarea style="width: 100%;resize: vertical;"></textarea>
+                                            <div class="col-md-6">
+                                                <textarea style="width:100%;" id="listado-medicamentos-vendidos" style="resize: vertical; "></textarea>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label>Costo medicamentos: </label>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <input type="text" id="costoMedicamento" value=""/>
                                             </div>
                                         </div>
                                         <div class="row vacuna-content" style="display:none;" id="detalle-vacunas-vendidas">
@@ -617,6 +693,8 @@
                                         <input type="submit" value="Editar venta" style="margin-bottom: 10px; background-color: #39a58a; color: #FFF;" class="btn" id="edit-venta"/>
                                     </div>
                                 </div> 
+                                        
+                                        
                             {% endif %}            
                         </form>                
                         <div class="row" style="margin-top: 50px;"></div>
@@ -984,7 +1062,8 @@
                     
                     $('#detalle-vacunas-vendidas').show();
                     $('#detalle-medicamentos-vendidos').hide();
-                    
+                    $('#registro-venta').show();
+                    $('#dgplusbellebundle_venta_cuotas').removeAttr('readonly');
                     {#var ventaPaquete = document.getElementById('venta-paquete');
                     var ventaTratamiento = document.getElementById('venta-tratamiento');
                     var ventaSucursal = document.getElementById('sucursal-venta');
@@ -1019,7 +1098,9 @@
                     
                     $('#detalle-vacunas-vendidas').hide();
                     $('#detalle-medicamentos-vendidos').show();
-                    
+                    $('#registro-venta').show();
+                    $('#dgplusbellebundle_venta_cuotas').val(1);
+                    $('#dgplusbellebundle_venta_cuotas').attr('readonly','readonly');
                     {#var ventaPaquete = document.getElementById('venta-paquete');
                     var ventaTratamiento = document.getElementById('venta-tratamiento');
                     var ventaSucursal = document.getElementById('sucursal-venta');
@@ -1054,15 +1135,21 @@
                 if($('#tipo-venta-tratamiento').is(':checked')){
                     $('#tipo-venta-tratamiento').click();
                     console.log('venta de medicamentos');
+                    $('#registro-venta').show();
                 }
                 if($('#tipo-venta-paquete').is(':checked')){
                     $('#tipo-venta-paquete').click();
                     console.log('venta de vacunas');
+                    $('#registro-venta').show();
                 }
                 
+                if(!($('#tipo-venta-tratamiento').is(':checked') || $('#tipo-venta-paquete').is(':checked'))){
+                    $('#registro-venta').hide();
+                }
                 
                 // Al seleccionar un paquete
                 $(document).on("change","#dgplusbellebundle_venta_paquete", function(){
+                    $('#registro-venta').show();
                     var tratamientosPaquete = document.getElementById('tratamientos-paquete');
                     var draw = '';
                     var id = $(this).val();
@@ -1213,179 +1300,217 @@
                     var errores = 0;
                     var valores = new Array();
                     var reg = new Array();
-                    
-                    if(cuotas.length > 0){
-                        $('.valores').each(function(index,element){
-                            var valor = $(this).val();
+                    if($('#tipo-venta-paquete').is(':checked')){//verifica si es venta de vacuna
+                        if(cuotas.length > 0){
+                            $('.valores').each(function(index,element){
+                                var valor = $(this).val();
 
-                            if(valor==="" || valor === null){
-                                errores++;
-                            }                        
-                            reg.push(valor);
+                                if(valor==="" || valor === null){
+                                    errores++;
+                                }
+                                reg.push(valor);
 
-                            if(((index+1)%3)==0 ){
-                                valores.push(reg);
-                                reg = [];
-                            }
-                        });
-                        
-                        console.log(valores);
-                        
-                        if(errores!=0){
-                            bootbox.alert("Debe ingresar todas las opciones!", function() {});
-                        } else {                        
-                            // Se obtiene la informacion necesaria para registrar la venta
-                            var data = {
-                                id : idpac,
-                                empleado: empleado,
-                                descuento : descuento,
-                                cuotas : cuotas,
-                                observaciones : observaciones,
-                                valores : valores
-                                //sesiones : sesionesPaqueteTrata,
-                            };
-
-                            // Se procede a registrar la venta del paquete mediante ajax
-                            $.ajax({
-                                data:  data,
-                                url:   '{{path('admin_registro_nueva_venta_vacuna')}}',
-                                type:  'post',
-                                success:  function (response) {
-                                    id_ventavacuna = response.ventaVacuna;
-                                    
-                                    alertify.success('Se ha resgistrado con exito la venta de vacunas');
-                                    $('#detalle-vacunas-vendidas').html('');
-                                    
-                                    draw1+='<label>Vendido por</label>';                            
-                                    draw1+='<p>' + response.empleado + '</p>';
-                                    
-                                    draw2+='<label>Cuotas</label>';                            
-                                    draw2+='<p>' + response.ventaVacunas.cuotas + '</p>';
-                                    
-                                    draw3+='<div id="venta-observaciones-label" style="margin-left: 30px;">';
-                                    draw3+='<label>Observaciones</label>';                            
-                                    draw3+='<p>' + response.ventaVacunas.observaciones + '</p>';
-                                    draw3+='</div>';
-                                    
-                                    draw4+='<label>Descuento aplicado:</label>';
-                                    draw4+='<p>'+ response.ventaVacunas.desc +'%</p>';
-                                    
-                                    draw5+='<hr>';
-                                    draw5+='<div class="col-md-offset-2 col-md-3">';
-                                    draw5+='<label>Vacuna</label>';
-                                    draw5+='</div>';
-                                    draw5+='<div class="col-md-2">';
-                                    draw5+='<label>Costo ($)</label>';
-                                    draw5+='</div>';
-                                    draw5+='<div class="col-md-2">';
-                                    draw5+='<label>Numero de aplicaciones</label>';
-                                    draw5+='</div>';
-                                    draw5+='<div class="clearfix"></div>';
-                                    draw5+='<div class="row vacuna-content" style="margin-top: 5px;">';
-                                    $.each( response.nomvac, function( key, value ) {
-                                        draw5+='<div class="col-md-offset-2 col-md-3">';
-                                        draw5+='<label style="">' + value.nombre + '</label>';
-                                        draw5+='</div>';
-                                        draw5+='<div class="col-md-2" style="text-align: right;">';
-                                        draw5+='<label style="margin-right:140px;">' + value.costo + '</label>';
-                                        draw5+='</div>';
-                                        draw5+='<div class="col-md-3" style="margin: auto">';
-                                        draw5+='<label>' + value.aplicaciones + '</label>';
-                                        draw5+='</div>';
-                                        draw5+='<div class="clearfix"></div>';
-                                    });                                   
-                                    draw5+='</div>';
-                                    
-                                    $('#empleados-venta').html(draw1);
-                                    $('#cuotas-venta').html(draw2);
-                                    $('#vventa-observaciones').html(draw3);
-                                    $('#descuento-venta').html(draw4);
-                                    $('#detalle-vacunas-vendidas').html(draw5);
-                                    
-                                    $('#registrar-venta').hide();
-                                    
-                                    if(response.abonos.abonos = null) {
-                                        deuda_total = (response.ventaVacunas.costo - ((response.porcentaje * response.ventaVacunas.costo)/100)).toFixed(2);
-                                    } else {
-                                        deuda_total = (response.ventaVacunas.costo - ((response.porcentaje * response.ventaVacunas.costo)/100) - response.abonos.abonos).toFixed(2);
-                                    }
-                                    
-                                    var costo = response.ventaVacunas.costo;
-                                    
-                                    $('#detalle-venta-costo').html('$ ' + costo.toFixed(2));
-                                    $('#detalle-venta-cuotas').html(response.ventaVacunas.cuotas);
-                                    $('#detalle-venta-deuda').html('$ ' + deuda_total);
-                                    
-                                    $.each( response.ventasVacuna, function( key, value ) {
-                                        //console.log(value);
-                                        draw6+= '<div class="row">';
-                                        draw6+= '<div class="col-md-5" style="margin-bottom: 10px;">';
-                                        draw6+= '<span>' + value.ntrata + '</span>';
-                                        draw6+= '</div>';
-                                        draw6+= '<div class="col-md-7" style="margin-bottom: 10px;">';
-                                        draw6+= '<div class="row">';
-
-                                        if(value.numAplicacion == 0){
-                                            //console.log(value.numSesion);
-                                            for (var i = 0; i < value.aplicaciones; i++) {
-                                                draw6 += '<div class="col-md-1" style="margin-bottom: 10px;">';
-                                                draw6 += '<img class="" style="height: 25px;"  src="{{ asset('Photos/Estados/sesion_pendiente.png')}}" title="Sesion pendiente">';
-                                                draw6 += '</div>';
-                                            }    
-                                        } else {
-                                            console.log(value.numAplicacion);
-                                            for (var i = 0; i < value.numAplicacion; i++) {
-                                                draw6 += '<div class="col-md-1" style="margin-bottom: 10px;">';
-                                                draw6 += '<img class="" style="height: 25px;"  src="{{ asset('Photos/Estados/sesion_realizada.png')}}" title="Sesion realizada">';
-                                                draw6 += '</div>';
-                                            }
-                                            for (var i = 0; i < value.aplicaciones - value.numAplicacion; i++) {
-                                                draw6 += '<div class="col-md-1" style="margin-bottom: 10px;">';
-                                                draw6 += '<img class="" style="height: 25px;"  src="{{ asset('Photos/Estados/sesion_pendiente.png')}}" title="Sesion pendiente">';
-                                                draw6 += '</div>';
-                                            }
-                                        }
-
-                                        draw6+= '</div>';
-                                        draw6+= '</div>';
-                                        draw6+= '</div>';
-                                    });
-                                    
-                                    $('#detalle-venta-tratamientos').html(draw6);
-                                    
-                                    draw7+= '<label>Vacuna</label>';
-                                    draw7+= '<select id="dgplusbellebundle_sesiones_tratamiento" name="dgplusbellebundle_venta_sesiones[tratamiento]" class="sesion_tratamiento" style="width: 100%">';
-                                    draw7+= '<option value="" disabled selected>Seleccione una vacuna...</option>';
-                                    
-                                    $.each( response.vacunasPaquete, function( key, value ) {
-                                        console.log(value);
-                                        draw7+= '<option value="' + value.id + '">'+ value.nombre +'</option>';
-                                    });
-                                    draw7+= '</select>';
-                                    
-                                    $('#sesiones-tratamiento').html(draw7);
-                                    $('#dgplusbellebundle_sesiones_tratamiento').select2();
-                                    
-                                    //console.log(draw6);
-                                    //$('#seguimiento-tratamientos-realizados').html(mensaje);
-                                    
-                                    var tabsSesiones = document.getElementById('tabs-sesiones');
-                                    var tabsAbdev = document.getElementById('tabs-abdev');
-                                    var tabsSeguimiento = document.getElementById('tabs-seguimiento');
-                                    
-                                    tabsSesiones.style.display = 'block';
-                                    tabsAbdev.style.display = 'block';
-                                    tabsSeguimiento.style.display = 'block';
+                                if(((index+1)%3)==0 ){
+                                    valores.push(reg);
+                                    reg = [];
                                 }
                             });
-                        
+
+                            console.log(valores);
+
+                            if(errores!=0){
+                                bootbox.alert("Debe ingresar todas las opciones!", function() {});
+                            } else {                        
+                                // Se obtiene la informacion necesaria para registrar la venta
+                                var data = {
+                                    id : idpac,
+                                    empleado: empleado,
+                                    descuento : descuento,
+                                    cuotas : cuotas,
+                                    observaciones : observaciones,
+                                    valores : valores
+                                    //sesiones : sesionesPaqueteTrata,
+                                };
+
+                                // Se procede a registrar la venta del paquete mediante ajax
+                                $.ajax({
+                                    data:  data,
+                                    url:   '{{path('admin_registro_nueva_venta_vacuna')}}',
+                                    type:  'post',
+                                    success:  function (response) {
+                                        id_ventavacuna = response.ventaVacuna;
+
+                                        alertify.success('Se ha resgistrado con exito la venta de vacunas');
+                                        $('#detalle-vacunas-vendidas').html('');
+
+                                        draw1+='<label>Vendido por</label>';                            
+                                        draw1+='<p>' + response.empleado + '</p>';
+
+                                        draw2+='<label>Cuotas</label>';                            
+                                        draw2+='<p>' + response.ventaVacunas.cuotas + '</p>';
+
+                                        draw3+='<div id="venta-observaciones-label" style="margin-left: 30px;">';
+                                        draw3+='<label>Observaciones</label>';                            
+                                        draw3+='<p>' + response.ventaVacunas.observaciones + '</p>';
+                                        draw3+='</div>';
+
+                                        draw4+='<label>Descuento aplicado:</label>';
+                                        draw4+='<p>'+ response.ventaVacunas.desc +'%</p>';
+
+                                        draw5+='<hr>';
+                                        draw5+='<div class="col-md-offset-2 col-md-3">';
+                                        draw5+='<label>Vacuna</label>';
+                                        draw5+='</div>';
+                                        draw5+='<div class="col-md-2">';
+                                        draw5+='<label>Costo ($)</label>';
+                                        draw5+='</div>';
+                                        draw5+='<div class="col-md-2">';
+                                        draw5+='<label>Numero de aplicaciones</label>';
+                                        draw5+='</div>';
+                                        draw5+='<div class="clearfix"></div>';
+                                        draw5+='<div class="row vacuna-content" style="margin-top: 5px;">';
+                                        $.each( response.nomvac, function( key, value ) {
+                                            draw5+='<div class="col-md-offset-2 col-md-3">';
+                                            draw5+='<label style="">' + value.nombre + '</label>';
+                                            draw5+='</div>';
+                                            draw5+='<div class="col-md-2" style="text-align: right;">';
+                                            draw5+='<label style="margin-right:140px;">' + value.costo + '</label>';
+                                            draw5+='</div>';
+                                            draw5+='<div class="col-md-3" style="margin: auto">';
+                                            draw5+='<label>' + value.aplicaciones + '</label>';
+                                            draw5+='</div>';
+                                            draw5+='<div class="clearfix"></div>';
+                                        });                                   
+                                        draw5+='</div>';
+
+                                        $('#empleados-venta').html(draw1);
+                                        $('#cuotas-venta').html(draw2);
+                                        $('#vventa-observaciones').html(draw3);
+                                        $('#descuento-venta').html(draw4);
+                                        $('#detalle-vacunas-vendidas').html(draw5);
+
+                                        $('#registrar-venta').hide();
+
+                                        if(response.abonos.abonos = null) {
+                                            deuda_total = (response.ventaVacunas.costo - ((response.porcentaje * response.ventaVacunas.costo)/100)).toFixed(2);
+                                        } else {
+                                            deuda_total = (response.ventaVacunas.costo - ((response.porcentaje * response.ventaVacunas.costo)/100) - response.abonos.abonos).toFixed(2);
+                                        }
+
+                                        var costo = response.ventaVacunas.costo;
+
+                                        $('#detalle-venta-costo').html('$ ' + costo.toFixed(2));
+                                        $('#detalle-venta-cuotas').html(response.ventaVacunas.cuotas);
+                                        $('#detalle-venta-deuda').html('$ ' + deuda_total);
+
+                                        $.each( response.ventasVacuna, function( key, value ) {
+                                            //console.log(value);
+                                            draw6+= '<div class="row">';
+                                            draw6+= '<div class="col-md-5" style="margin-bottom: 10px;">';
+                                            draw6+= '<span>' + value.ntrata + '</span>';
+                                            draw6+= '</div>';
+                                            draw6+= '<div class="col-md-7" style="margin-bottom: 10px;">';
+                                            draw6+= '<div class="row">';
+
+                                            if(value.numAplicacion == 0){
+                                                //console.log(value.numSesion);
+                                                for (var i = 0; i < value.aplicaciones; i++) {
+                                                    draw6 += '<div class="col-md-1" style="margin-bottom: 10px;">';
+                                                    draw6 += '<img class="" style="height: 25px;"  src="{{ asset('Photos/Estados/sesion_pendiente.png')}}" title="Sesion pendiente">';
+                                                    draw6 += '</div>';
+                                                }    
+                                            } else {
+                                                console.log(value.numAplicacion);
+                                                for (var i = 0; i < value.numAplicacion; i++) {
+                                                    draw6 += '<div class="col-md-1" style="margin-bottom: 10px;">';
+                                                    draw6 += '<img class="" style="height: 25px;"  src="{{ asset('Photos/Estados/sesion_realizada.png')}}" title="Sesion realizada">';
+                                                    draw6 += '</div>';
+                                                }
+                                                for (var i = 0; i < value.aplicaciones - value.numAplicacion; i++) {
+                                                    draw6 += '<div class="col-md-1" style="margin-bottom: 10px;">';
+                                                    draw6 += '<img class="" style="height: 25px;"  src="{{ asset('Photos/Estados/sesion_pendiente.png')}}" title="Sesion pendiente">';
+                                                    draw6 += '</div>';
+                                                }
+                                            }
+
+                                            draw6+= '</div>';
+                                            draw6+= '</div>';
+                                            draw6+= '</div>';
+                                        });
+
+                                        $('#detalle-venta-tratamientos').html(draw6);
+
+                                        draw7+= '<label>Vacuna</label>';
+                                        draw7+= '<select id="dgplusbellebundle_sesiones_tratamiento" name="dgplusbellebundle_venta_sesiones[tratamiento]" class="sesion_tratamiento" style="width: 100%">';
+                                        draw7+= '<option value="" disabled selected>Seleccione una vacuna...</option>';
+
+                                        $.each( response.vacunasPaquete, function( key, value ) {
+                                            console.log(value);
+                                            draw7+= '<option value="' + value.id + '">'+ value.nombre +'</option>';
+                                        });
+                                        draw7+= '</select>';
+
+                                        $('#sesiones-tratamiento').html(draw7);
+                                        $('#dgplusbellebundle_sesiones_tratamiento').select2();
+
+                                        //console.log(draw6);
+                                        //$('#seguimiento-tratamientos-realizados').html(mensaje);
+
+                                        var tabsSesiones = document.getElementById('tabs-sesiones');
+                                        var tabsAbdev = document.getElementById('tabs-abdev');
+                                        var tabsSeguimiento = document.getElementById('tabs-seguimiento');
+
+                                        tabsSesiones.style.display = 'block';
+                                        tabsAbdev.style.display = 'block';
+                                        tabsSeguimiento.style.display = 'block';
+                                    }
+                                });
+
+                                return false;
+                            }    
+                        } else {
+                            bootbox.alert('No se ha ingresado la cantidad de cuotas');
+                            $( "#dgplusbellebundle_venta_cuotas" ).focus();
                             return false;
-                        }    
-                    } else {
-                        bootbox.alert('No se ha ingresado la cantidad de cuotas');
-                        $( "#dgplusbellebundle_venta_cuotas" ).focus();
-                        return false;
-                    }                                                    
+                        }
+                    }
+                    else{
+                        var medicamentos = $('#listado-medicamentos-vendidos').val();
+                        var costoMedicamento = $('#costoMedicamento').val();
+                        
+                        if(empleado === 0 || descuento === 0 || cuotas === '' || medicamentos === ''){
+                            bootbox.alert('Debe completar todos los campos!');
+                            return false;
+                        }
+                        
+                        console.log(costoMedicamento);
+                        //return false;
+                        
+                        var data = {
+                            id : idpac,
+                            empleado: empleado,
+                            descuento : descuento,
+                            cuotas : 1, //siempre sera 1 para los medicamentos
+                            observaciones : observaciones,
+                            valores : valores,
+                            medicamentos:medicamentos,
+                            costoMedicamento:costoMedicamento
+                        };
+                        
+                        console.log(data);
+                        
+                        $.ajax({
+                            data:  data,
+                            url:   '{{path('admin_registro_nueva_venta_medicamento')}}',
+                            type:  'post',
+                            success:  function (response) {
+                                console.log("error");
+                            },
+                            error:  function (response) {
+                                console.log("error");
+                            }
+                        });
+                    }
                     return false;
                 });
                 
