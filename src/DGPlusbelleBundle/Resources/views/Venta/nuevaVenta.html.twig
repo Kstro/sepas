@@ -346,7 +346,7 @@
                                 </div> 
                                 <div class="row" id="detalle-medicamentos-vendidos">
                                     <label>Medicamentos: </label>
-                                    <textarea id="listado-medicamentos-vendidos" style="resize: vertical; "></textarea>
+                                    <textarea id="listado-medicamentos-vendidos" style="resize: vertical; min-height: 150px; "></textarea>
                                     <input type="text" id="costoMedicamento" value=""/>
                                 </div>
                                     
@@ -629,7 +629,7 @@
                                                 <label>Medicamentos: </label>
                                             </div>
                                             <div class="col-md-6">
-                                                <textarea style="width:100%;" id="listado-medicamentos-vendidos" style="resize: vertical; "></textarea>
+                                                <textarea id="listado-medicamentos-vendidos" style="resize: vertical; height: 150px; width:100%;"></textarea>
                                             </div>
                                             <div class="col-md-2">
                                                 <label>Costo medicamentos: </label>
@@ -1504,7 +1504,36 @@
                             url:   '{{path('admin_registro_nueva_venta_medicamento')}}',
                             type:  'post',
                             success:  function (response) {
-                                console.log("error");
+                                console.log(response);
+                                if(response.exito==0){
+                                    
+                                    {#console.log("ID: "+response.medicamento);
+                                    console.log("Vendido por: "+response.empleado);
+                                    console.log("Descuento: "+response.descuento);
+                                    console.log("Cuotas: "+response.cuotas);
+                                    console.log("Observaciones: "+response.observaciones);
+                                    console.log("Medicamento: "+response.nombre);
+                                    console.log("Medicamento: "+medicamentos);
+                                    console.log("Costo medicamento: "+response.costoMedicamento);                                  #}
+                                      
+                                    $('#label-tipo-venta').html('');
+                                    $('#label-tipo-venta').html("<strong>Medicamento</strong>");
+                                    
+                                    $('#empleados-venta').html("<label>Vendido por</label><br><strong>"+response.empleado+"</strong>");
+                                    $('#descuento-venta').html("<label>Descuento</label><br><strong>"+response.descuento+" %</strong>");
+                                    $('#cuotas-venta').html("<label>Cuotas</label><br><strong>"+response.cuotas+"</strong>");
+                                    $('#vventa-observaciones').html("<div id=\"venta-observaciones-label\" style=\"margin-left: 30px;\"><label>Observaciones</label></div><br><div id=\"observaciones\" style=\"margin-left: 30px;\"><strong>"+response.observaciones+"</strong>");
+                                    $('#detalle-medicamentos-vendidos').html("<div class='col-md-2'>\n\
+                                                                                <label>Medicamentos:</label>\n\
+                                                                            </div>\n\
+                                                                            <div class='col-md-6'><strong>"+medicamentos+"</strong></div>\n\
+                                                                            <div class='col-md-2'>\n\
+                                                                                <label>Costo medicamentos:</label>\n\
+                                                                            </div>\n\
+                                                                            <div class='col-md-2'><strong>$ "+response.costoMedicamento+"</strong></div>");
+            
+                                    alertify.success("Venta realizada!");
+                                }  
                             },
                             error:  function (response) {
                                 console.log("error");

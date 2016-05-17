@@ -643,14 +643,14 @@ class VentaVacunaController extends Controller
             
             $response = new JsonResponse();
             $response->setData(array(
-                                'exito'       => '1',
-                                //'ventaVacuna' => $ventaVacuna->getId(),
-//                                'ventasVacuna' => $mensaje,
-//                                'vacunasPaquete' => $vacunasPaquete,
-//                                'porcentaje' => $porcentaje,
-//                                'nomvac' => $nomvac,
-//                                'abonos' => $abonos,
-//                                'empleado' => $ventaVacuna->getEmpleado()->getPersona()->getNombres().' '.$ventaVacuna->getEmpleado()->getPersona()->getApellidos(),
+                                'exito'       => '0',
+                                'medicamento' => $medicamento->getId(),
+                                'empleado' => $medicamento->getEmpleado()->getPersona()->getNombres().' '.$medicamento->getEmpleado()->getPersona()->getApellidos(),
+                                'descuento'=> $medicamento->getDescuento()->getPorcentaje(),
+                                'cuotas'=>$medicamento->getCuotas(),
+                                'observaciones'=>$medicamento->getObservaciones(),
+                                'nombre'=>$medicamento->getNombre(),
+                                'costoMedicamento' => $medicamento->getCosto()
 //                                'ventaVacunas' => $ventaPaqueteTratamientos
                                ));  
             

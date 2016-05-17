@@ -136,9 +136,9 @@ class Medicamento
         return $this->nombre;
     }
 
-    public function getMantenimiento() {
-            return $this->nombre;
-    }
+//    public function getMantenimiento() {
+//            return $this->nombre;
+//    }
     
     
     
