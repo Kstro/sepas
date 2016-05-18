@@ -2630,7 +2630,8 @@
                 type:  'post',
                 success:  function (response) {
                     alertify.success('Se ha resgistrado con exito la sesion del tratamiento');
-                    
+                    $('#detalle-venta-tratamientos div').html('');
+                    $('#detalle-venta-tratamientos').html('');
                     $('.close').click();
                     //var tabsImagenes = document.getElementById('tabs-imagenes');
                     //tabsImagenes.style.display = 'block';
@@ -2673,9 +2674,10 @@
                         mensaje+= '</div>';
                     });
                     //console.log(mensaje);
-                    //$('#seguimiento-tratamientos-realizados').html(mensaje);
-                    $('#detalle-venta-tratamientos').html(mensaje);
-
+{#                    $('#seguimiento-tratamientos-realizados').html(mensaje);#}
+                    var contenedor = $('#detalle-venta-tratamientos').parent();
+                    $(contenedor).html(mensaje);
+{#                    $('#detalle-venta-tratamientos').next().remove();#}
                     if(response.tratVenta.length > 0){
                         // Se vacía el select
                         vtratamientos.find('option').remove();
