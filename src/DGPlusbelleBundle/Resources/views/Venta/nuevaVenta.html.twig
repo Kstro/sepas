@@ -703,7 +703,7 @@
                     {# Sección en donde se registran las sesiones de un tratamiento #}
                     <div id="registro-sesiones" class="tab-pane fade" style="margin-top: 20px;">
                         <form id="formulario-sesiones-tratamiento" method="POST" enctype="multipart/form-data">
-                            {% if vacunasPaquete %}
+                            {% if vacunasPaquete or not ventaVacuna %}
                                 <div class="row" style="margin-top: 35px;" style="display:none;">
                                     {#<div class="col-md-3"  style="margin-left: 30px;">
                                         <div id="sucursal-sesion">
