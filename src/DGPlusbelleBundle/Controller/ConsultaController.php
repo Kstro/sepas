@@ -810,6 +810,8 @@ class ConsultaController extends Controller
         $valores = Array();
         $corporal = Array();
         
+        
+        
         if($cadena != NULL) {
             //Obtener el id del parametro
             $idEntidad = substr($cadena, 1);
@@ -819,6 +821,7 @@ class ConsultaController extends Controller
             $paciente = $em->getRepository('DGPlusbelleBundle:Paciente')->find($idEntidad);
             
             $plantillas = $em->getRepository('DGPlusbelleBundle:Plantilla')->findAll();
+            $codigos = $em->getRepository('DGPlusbelleBundle:Codigo')->findBy(array('estado'=>1));
 
 //            $plantillasEstetica = $em->getRepository('DGPlusbelleBundle:Estetica')->findAll();
             $existenVacunas=false;
@@ -1019,6 +1022,7 @@ class ConsultaController extends Controller
             'existenVacunas'=>$existenVacunas,
             'vacunas'=>$vacunas,
             'descuentos'=>$descuentos,
+            'codigos'=>$codigos,
         );
             
     }
@@ -2276,6 +2280,7 @@ class ConsultaController extends Controller
         $motivo = $request->get('motivo');
         $sintomas= $request->get('sintomas');
         $aparatos = $request->get('aparatos');
+        $codigo= $request->get('codigo');
 //        $patologicos = $request->get('patologicos');
 //        $familiares = $request->get('familiares');
 //        $alergias = $request->get('alergias');
@@ -2296,6 +2301,7 @@ class ConsultaController extends Controller
         $tipoConsultaObj = $em->getRepository('DGPlusbelleBundle:TipoConsulta')->find($tipoConsulta);
 //        $sucursalObj = $em->getRepository('DGPlusbelleBundle:Sucursal')->find($sucursal);
         $sucursalObj = $em->getRepository('DGPlusbelleBundle:Sucursal')->find(1);
+        $codigoObj = $em->getRepository('DGPlusbelleBundle:Codigo')->find($codigo);
         
         
         
@@ -2310,6 +2316,7 @@ class ConsultaController extends Controller
             $consulta->setMotivo($motivo);
             $consulta->setAparatos($aparatos);
             $consulta->setSintomas($sintomas);
+            $consulta->setCodigoConsulta($codigoObj);
             //hora inicio 
             $consulta->setHoraInicio(new \DateTime('now'));
             //hora fin
@@ -2367,6 +2374,7 @@ class ConsultaController extends Controller
         $motivo = $request->get('motivo');
         $sintomas= $request->get('sintomas');
         $aparatos = $request->get('aparatos');
+        $codigo= $request->get('codigo');
 //        var_dump($medico);
 //        $patologicos = $request->get('patologicos');
 //        $familiares = $request->get('familiares');
@@ -2391,6 +2399,7 @@ class ConsultaController extends Controller
         $tipoConsultaObj = $em->getRepository('DGPlusbelleBundle:TipoConsulta')->find($tipoConsulta);
 //        $sucursalObj = $em->getRepository('DGPlusbelleBundle:Sucursal')->find($sucursal);
         $sucursalObj = $em->getRepository('DGPlusbelleBundle:Sucursal')->find(1);
+        $codigoObj = $em->getRepository('DGPlusbelleBundle:Codigo')->find($codigo);
         
         
         
@@ -2413,6 +2422,7 @@ class ConsultaController extends Controller
             $consulta->setMotivo($motivo);
             $consulta->setAparatos($aparatos);
             $consulta->setSintomas($sintomas);
+            $consulta->setCodigoConsulta($codigoObj);
             
             $consulta->setReportePlantilla(1);
             $consulta->setCostoConsulta($costo);
@@ -3155,6 +3165,29 @@ class ConsultaController extends Controller
         }
         else{
             return new Response(json_encode(1));//error
+        }
+    }
+    
+    /**
+     * 
+     *
+     * @Route("/consulta/data/codigo_precio", name="admin_paciente_codigo_get_precio")
+     */
+    public function dataGetPrecioAction(Request $request)
+    {
+
+        $id = $request->get('idCodigo');
+        
+        $em = $this->getDoctrine()->getEntityManager();
+        
+        $codigo = $em->getRepository('DGPlusbelleBundle:Codigo')->find($id);
+        
+        if(count($codigo)!=0){
+            
+            return new Response(json_encode(floatval($codigo->getPrecio()))); //no error
+        }
+        else{
+            return new Response(json_encode(-1));//error
         }
     }
     

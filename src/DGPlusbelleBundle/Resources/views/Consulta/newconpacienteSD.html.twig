@@ -212,7 +212,7 @@
               <li class="active"><a href="#botabs2" data-toggle="tab">Consulta</a></li>
               <li class=""><a href="#botabs3" data-toggle="tab">Exploración física</a></li>
               
-              <li class=""><a href="#botabs4" data-toggle="tab">Antecedentes y alergias</a></li>
+              {#<li class=""><a href="#botabs4" data-toggle="tab">Antecedentes y alergias</a></li>#}
               {#<li class=""><a href="#botabs5" data-toggle="tab">Costo</a></li>#}
               <li class=""><a href="#botabs6" data-toggle="tab">Imágenes</a></li>
 {#              <li class=""><a href="#botabs7" data-toggle="tab">Historia clínica</a></li>#}
@@ -310,11 +310,11 @@
                                 
                                 <div class="col-md-3">
                                     <select id="estadoCivil" name="estadoCivil" class="col-md-12 form-control input-sm estadocivilPaciente form-control" style="width:100%;">
-                                        <option {% if paciente.estadoCivil== ''%} selected {% endif %} value="">Seleccione estado civil...</option>            
-                                        <option {% if paciente.estadoCivil== 'Soltero/a' %} selected {% endif %} value="Soltero/a">Soltero/a</option>            
-                                        <option {% if paciente.estadoCivil== 'Casado/a' %} selected {% endif %} value="Casado/a">Casado/a</option>            
-                                        <option {% if paciente.estadoCivil== 'Divorciado/a' %} selected {% endif %} value="Divorciado/a">Divorciado/a</option>            
-                                        <option {% if paciente.estadoCivil== 'Acompañado/a'%} selected {% endif %} value="Acompañado/a">Acompañado/a</option>            
+                                        <option {% if paciente.estadoCivil== ''%} selected {% endif %} value="">Seleccione estado civil...</option>
+                                        <option {% if paciente.estadoCivil== 'Soltero/a' %} selected {% endif %} value="Soltero/a">Soltero/a</option>
+                                        <option {% if paciente.estadoCivil== 'Casado/a' %} selected {% endif %} value="Casado/a">Casado/a</option>
+                                        <option {% if paciente.estadoCivil== 'Divorciado/a' %} selected {% endif %} value="Divorciado/a">Divorciado/a</option>
+                                        <option {% if paciente.estadoCivil== 'Acompañado/a'%} selected {% endif %} value="Acompañado/a">Acompañado/a</option>
                                         <option {% if paciente.estadoCivil== 'Viudo/a'%} selected {% endif %} value="Viudo/a">Viudo/a</option>
                                     </select>
                                 </div>
@@ -434,9 +434,15 @@
                                             </label>
                                         </div>#}
                                         
-                                        <div class="col-md-2">
+                                        <div class="col-md-offset-2 col-md-4">
                                             <label>
                                                 Tipo consulta
+                                            </label>
+                                        </div>
+                                        
+                                        <div class="col-md-2">
+                                            <label>
+                                                Código de consulta
                                             </label>
                                         </div>
                                     </div>
@@ -459,11 +465,20 @@
                                             </select>  
                                         </div>#}
                                         
-                                        <div class="col-md-2">
+                                        <div class="col-md-offset-2 col-md-4">
                                             <select id="tipo_consulta" class="form-control input-sm">
                                                 <option value="0" selected>Seleccione un tipo de consulta...</option>
                                                 {%for tipo in tipoConsulta %}
                                                     <option value="{{tipo.id}}" {% if consulta.tipoConsulta!=null and consulta.id!=null and tipo.id==consulta.tipoConsulta.id %} selected {% endif %}>{{tipo.nombre}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                            
+                                        <div class="col-md-4">
+                                            <select id="codigo_consulta" class="form-control input-sm">
+                                                <option value="0" selected>Seleccione un código de consulta...</option>
+                                                {%for cod in codigos %}
+                                                    <option value="{{cod.id}}" {% if consulta.codigoConsulta!=null and consulta.id!=null and cod.id==consulta.codigoConsulta.id %} selected {% endif %}>{{cod.codigo}}</option>
                                                 {% endfor %}
                                             </select>
                                         </div>
@@ -3006,10 +3021,13 @@
     
     
     
-     $('.editorVacuna').select2();
-     $('#descuentoVacuna').select2();
+     
 
     jQuery(document).ready(function() {
+        
+        $('.editorVacuna').select2();
+        $('#descuentoVacuna').select2();
+        $('#codigo_consulta').select2();
         
         $('.calZebra').Zebra_DatePicker({
             months:['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
@@ -3520,8 +3538,10 @@
             var motivo=$('#motivoConsulta').val();
             var sintomas=$('#sintomasConsulta').val();
             var aparatos=$('#aparatosConsulta').val();
+            var codigo = $('#codigo_consulta').val();
             //alert(medico+","+tratamiento+","+tipoConsulta+","+observaciones+","+sucursal);
-            
+            //console.log(codigo);
+            //return false;
             
             
 {#            alert(medico);#}
@@ -3532,6 +3552,10 @@
                 bootbox.alert("Debe seleccionar un tratamiento!", function() {});
             }
             else{#}
+            if(codigo==0){
+                bootbox.alert("Debe seleccionar un código de consulta!", function() {});
+            }
+            else{
                 if(tipoConsulta==0){
                     bootbox.alert("Debe seleccionar un tipo de consulta!", function() {});
                 }
@@ -3539,10 +3563,10 @@
                     if(idconsulta!=''){
                         {#bootbox.confirm("Desea registrar esta consulta para el paciente?", function(result) {#}
                             {#Example.show("Confirm result: "+result);#}
-{#                            if(result){#}
+{#                            if(result){#}w
                                 //console.log(result);
                                 $.ajax({
-                                    data:{motivo:motivo,sintomas:sintomas,aparatos:aparatos,id:id,medico:medico,tipoConsulta:tipoConsulta,sucursal:sucursal,observaciones:observaciones,idconsulta:idconsulta,costoconsulta:costoconsulta},
+                                    data:{codigo:codigo,motivo:motivo,sintomas:sintomas,aparatos:aparatos,id:id,medico:medico,tipoConsulta:tipoConsulta,sucursal:sucursal,observaciones:observaciones,idconsulta:idconsulta,costoconsulta:costoconsulta},
                                     url:"{{path('admin_consulta_actualizar_ajax')}}",
                                     type: "post",
                                     success: function (data) {
@@ -3572,7 +3596,7 @@
                             if(result){
                                 //console.log(result);
                                 $.ajax({
-                                    data:{sitomas:sintomas,aparatos:aparatos,motivo:motivo,id:id,medico:medico,tratamiento:tratamiento,tipoConsulta:tipoConsulta,sucursal:sucursal,observaciones:observaciones,costoconsulta:costoconsulta},
+                                    data:{codigo:codigo,sitomas:sintomas,aparatos:aparatos,motivo:motivo,id:id,medico:medico,tratamiento:tratamiento,tipoConsulta:tipoConsulta,sucursal:sucursal,observaciones:observaciones,costoconsulta:costoconsulta},
                                     url:"{{path('admin_consulta_guardar_ajax')}}",
                                     type: "post",
                                     success: function (data) {
@@ -3596,10 +3620,41 @@
                         }); 
                     }
                 }
+            }
 {#            }#}
             
         });
         
+        $(document).on('change','#codigo_consulta', function(){
+            var idCodigo = $(this).val();
+            
+            $.ajax({
+                data:{idCodigo:idCodigo},
+                url:"{{path('admin_paciente_codigo_get_precio')}}",
+                type: "post",
+                success: function (data) {
+                        //inicio = data.inicio++;
+                        console.log(data);
+                        if(data!=-1){
+                            console.log(data);
+{#                            bootbox.alert("Cambios guardados!", function() {});#}
+                            $('#costoConsulta').val(data);
+                            
+                        }
+                        else{
+                            alertify.error("Hubo un error, intente de nuevo recargando la página!");
+                        }
+                        
+                        {#console.log("pagina actual: "+data);
+                        console.log("Inicio de registro: "+data.inicioRegistro);#}
+                    },
+                error: function (data) {
+
+                }
+            });
+            
+            
+        });
         
         $(document).on('click','#guardarAntecedentes', function(){
             var id = $('#idPaciente').val();

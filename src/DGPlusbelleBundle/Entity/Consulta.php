@@ -165,7 +165,15 @@ class Consulta
     private $ventapaq;
 
     
-    
+    /**
+     * @var \Paciente
+     *
+     * @ORM\ManyToOne(targetEntity="Codigo")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="codigo_consulta", referencedColumnName="id")
+     * })
+     */
+    private $codigoConsulta;
     
     
     
@@ -530,15 +538,7 @@ class Consulta
         return $this;
     }
 
-    /**
-     * Get paciente
-     *
-     * @return \DGPlusbelleBundle\Entity\Paciente
-     */
-    public function getPaciente()
-    {
-        return $this->paciente;
-    }
+    
 
     /**
      * Set tipoConsulta
@@ -744,25 +744,25 @@ class Consulta
     /**
      * Set codigo
      *
-     * @param string $codigo
+     * @param string $codigoConsulta
      *
      * @return Consulta
      */
-    public function setCodigo($codigo)
+    public function setCodigoConsulta($codigoConsulta)
     {
-        $this->codigo = $codigo;
+        $this->codigoConsulta= $codigoConsulta;
 
         return $this;
     }
 
     /**
-     * Get codigo
+     * Get codigoConsulta
      *
      * @return string
      */
-    public function getCodigo()
+    public function getCodigoConsulta()
     {
-        return $this->codigo;
+        return $this->codigoConsulta;
     }
     
     
@@ -947,6 +947,33 @@ class Consulta
     public function getFrecCardiaca()
     {
         return $this->frecCardiaca;
+    }
+    
+    
+    
+    
+    /**
+     * Set codigo
+     *
+     * @param \DGPlusbelleBundle\Entity\Codigo $codigo
+     *
+     * @return Codigo
+     */
+    public function setCodigo(\DGPlusbelleBundle\Entity\Codigo $codigo = null)
+    {
+        $this->codigo= $codigo;
+
+        return $this;
+    }
+
+    /**
+     * Get paciente
+     *
+     * @return \DGPlusbelleBundle\Entity\Paciente
+     */
+    public function getPaciente()
+    {
+        return $this->paciente;
     }
 
 }

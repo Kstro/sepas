@@ -344,11 +344,11 @@
                                         {% endif %}
                                     </div>    
                                 </div> 
-                                <div class="row" id="detalle-medicamentos-vendidos">
+                                {#<div class="row" id="detalle-medicamentos-vendidos">
                                     <label>Medicamentos: </label>
                                     <textarea id="listado-medicamentos-vendidos" style="resize: vertical; min-height: 150px; "></textarea>
                                     <input type="text" id="costoMedicamento" value=""/>
-                                </div>
+                                </div>#}
                                     
                                 <div class="row" style="margin-top:30px;" id="detalle-vacunas-vendidas"> 
                                     <hr>
@@ -493,7 +493,7 @@
                                             <label>Costo medicamento vendidos: </label>
                                             <p>{{medicamentoObj.costo}}</p>
                                         </div>
-                                    </div>     
+                                    </div>
                                     <div class="col-md-3">
                                         {# Area en donde se seleciona  el descuento que se le va a aplicar a la venta en el caso de ser necesario #} 
                                         <div id="descuento-venta">
@@ -516,7 +516,7 @@
                                             <label><strong>Costo total: </strong></label>
                                             <p><strong>$ {{ medicamentoObj.costo*(1-medicamentoObj.descuento.porcentaje/100)|number_format(2,'.',',')}}</strong></p>
                                         </div>
-                                    </div    
+                                    </div>    
                                 </div> 
                             
                                     
@@ -1419,7 +1419,7 @@
                                                     draw6 += '<img class="" style="height: 25px;"  src="{{ asset('Photos/Estados/sesion_pendiente.png')}}" title="Sesion pendiente">';
                                                     draw6 += '</div>';
                                                 }    
-                                            } else {
+                                            } else {    
                                                 console.log(value.numAplicacion);
                                                 for (var i = 0; i < value.numAplicacion; i++) {
                                                     draw6 += '<div class="col-md-1" style="margin-bottom: 10px;">';
