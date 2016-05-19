@@ -60,7 +60,7 @@ class VentaController  extends Controller
                 $vacunaConsulta = $em->getRepository('DGPlusbelleBundle:VacunaConsulta')->findBy(array('consulta' => $consulta));
                 $descuentoConsulta = $em->getRepository('DGPlusbelleBundle:Descuento')->find($vacunaConsulta[0]->getDescuento());
                 $ventaVacuna = $vacunaConsulta[0]->getVentaVacuna();   
-
+                
                 if($ventaVacuna){
                     $idVenta =$ventaVacuna->getId();
                     $rsm2 = new ResultSetMapping();
@@ -140,7 +140,7 @@ class VentaController  extends Controller
             $ventaId =  substr($idTransaccion, 2);
             $ventaVacuna = $em->getRepository('DGPlusbelleBundle:VentaVacuna')->find($ventaId);
             $vacunaConsulta = $em->getRepository('DGPlusbelleBundle:VacunaConsulta')->findBy(array('ventaVacuna' => $ventaVacuna));
-            
+            //var_dump($ventaVacuna);
             if($ventaVacuna->getDescuento()){
                 $descuentoConsulta = $ventaVacuna->getDescuento();
             } else {
@@ -151,7 +151,7 @@ class VentaController  extends Controller
             $rsm2 = new ResultSetMapping();
             $sql2 = "select cast(sum(abo.monto) as decimal(36,2)) abonos, count(abo.monto) cuotas "
                         . "from abono abo inner join venta_vacuna p on abo.venta_vacuna = p.id "
-                        . "where p.id = '$idVenta'";
+                        . "where p.id = $idVenta";
 
             $rsm2->addScalarResult('abonos','abonos');
             $rsm2->addScalarResult('cuotas','cuotas');
@@ -160,7 +160,7 @@ class VentaController  extends Controller
                     ->getSingleResult();
 
             $vacunas = $em->getRepository('DGPlusbelleBundle:VacunaConsulta')->findBy(array('ventaVacuna' => $idVenta));
-
+            var_dump($abonos);
             $idvacunas = array();      
             foreach ($vacunas as $trat){
                 $idvac = $trat->getVacuna()->getId();

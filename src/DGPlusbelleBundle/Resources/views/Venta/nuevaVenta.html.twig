@@ -899,7 +899,7 @@
                                     </div>
                                 </div> 
                                 <div id="detalle-venta-tratamientos"></div>    
-                                <div class="row">
+                                <div id="precarga" class="row">
                                     <div class="col-md-12" style="margin-bottom: 10px;">
                                         {% if ventaVacuna %}
                                             {% for vacuna in aplicacionesVenta %}
@@ -1018,6 +1018,13 @@
             
             {% if ventaVacuna %}
                 id_ventavacuna = {{ventaVacuna.id}};
+                {% if(abonos.abonos) %}
+                    deuda_total = {{abonos.abonos}};
+                {%else%}
+                    {% for vacuna in vacunas %}
+                        deuda_total = {{vacunas[0].costo}};
+                {% endif %}
+                console.log("deuda total: "+deuda_total);
             {% endif %}
             
             $(document).ready(function(){
@@ -2668,22 +2675,23 @@
                                 mensaje += '</div>';
                             }
                         }
-
+                        $('#precarga').remove();
                         mensaje+= '</div>';
                         mensaje+= '</div>';
                         mensaje+= '</div>';
                     });
                     //console.log(mensaje);
 {#                    $('#seguimiento-tratamientos-realizados').html(mensaje);#}
-                    var contenedor = $('#detalle-venta-tratamientos').parent();
-                    $(contenedor).html(mensaje);
+{#                    var contenedor = $('#detalle-venta-tratamientos').parent();#}
+                    $('#detalle-venta-tratamientos').html(mensaje);
+{#                    $(contenedor).html(mensaje);#}
 {#                    $('#detalle-venta-tratamientos').next().remove();#}
                     if(response.tratVenta.length > 0){
                         // Se vacía el select
                         vtratamientos.find('option').remove();
                         vtratamientos.append('<option value="" disabled selected>Seleccione un tratamiento ...</option>');
 
-                        $(response.tratVenta).each(function(i, v){ 
+                        $(response.tratVenta).each(function(i, v){
                             vtratamientos.append('<option value="' + v.id + '">' + v.nombre + '</option>');
                         });
                     } else {
