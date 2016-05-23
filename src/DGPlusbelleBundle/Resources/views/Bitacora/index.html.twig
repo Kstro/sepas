@@ -1,4 +1,4 @@
-{% extends 'DGPlusbelleBundle:Layout:layout.html.twig' %}
+{% extends 'DGPlusbelleBundle:Layout:layouterp.html.twig' %}
 
 {% block contenido -%}
     <!-- ============================================
@@ -81,10 +81,13 @@
         
     {% endblock %}
 {% block javascripts_step %}
-       
+        
+        <script src="{{ asset('Resources/Zebra/js/zebra_datepicker.js') }}"></script>
+        <script src="{{ asset('Resources/wrapkit/scripts/dataTables.bootstrap.js') }}"></script>
+        <script src="{{ asset('Resources/wrapkit/scripts/dataTables.tableTools.js') }}"></script>
         <script>
             
-             $(document).ready(function(){
+            $(document).ready(function(){
             
                 $('#filterDatatables1').on('keyup', function(event) {
                     var filtro = $(this).val(); 
@@ -97,6 +100,7 @@
                 
                 $('#datatables1').DataTable({ 
                     searching:true,
+                    dom:"ftp",
                     "order":[[0, "desc"],[1,"desc"]],
                     "columnDefs": [
                            { "orderable": false, "targets": 0 },

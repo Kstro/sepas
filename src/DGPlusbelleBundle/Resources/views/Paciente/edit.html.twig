@@ -13,50 +13,52 @@
     {{ form_start(edit_form) }}
     {{ form_errors(edit_form) }}
         <div class="row">
-          <!--    <div class="col-xs-12 col-sm-6">   -->
-            {% include 'DGPlusbelleBundle:Persona:form.html.twig' with { 'form': edit_form.persona }%}
-        <!--     </div> -->
-            <div class="col-md-3">
-                {{ form_row(edit_form.dui) }}
-            </div>
-            <div class="col-md-3">
-                {{ form_row(edit_form.estadoCivil) }}
-            </div>
-            <div class="col-md-3">
-            {{ form_row(edit_form.sexo) }}
-             </div>
+      <!--    <div class="col-xs-12 col-sm-6">   -->
+        {% include 'DGPlusbelleBundle:Persona:form.html.twig' with { 'form': edit_form.persona }%}
+    <!--     </div> -->
+        <div class="col-md-3">
+            {{ form_row(edit_form.dui) }}
         </div>
-        <div class="row">
-            <div class="col-md-3">
-            {{ form_row(edit_form.ocupacion) }}
-             </div>
+        
+        <div class="col-md-3">
+            {{ form_row(edit_form.estadoCivil) }}
+        </div>
+        <div class="col-md-3">
+        {{ form_row(edit_form.sexo) }}
+         </div>
+         <div class="col-md-3">
+        {{ form_row(edit_form.ocupacion) }}
+         </div>
+        
+        
 
-            <div class="col-md-3">
-            {{ form_row(edit_form.lugarTrabajo) }}
-            </div>
-            <div class="col-md-3">
-            {{ form_row(edit_form.fechaNacimiento) }}
-            </div>
-            <div class="col-md-3">
-            {{ form_row(edit_form.referidoPor) }}
-             </div>
+        <div class="col-md-3">
+        {{ form_row(edit_form.lugarTrabajo) }}
         </div>
-        <div class="row">
-            <div class="col-md-6">
-                {{ form_row(edit_form.personaEmergencia) }}
-            </div>
-            <div class="col-md-3">
-                {{ form_row(edit_form.telefonoEmergencia) }}
-                {# {{ form_row(form.estado) }}#}
-            </div>
-            <div class="col-md-3">
-                {{ form_row(edit_form.file) }}
-            </div>
-           {# <div class="col-md-2">
-            {{ form_row(edit_form.enteradoPor) }}
-            
-            </div>#}
+        
+        
+        <div class="clearfix"></div>
+        
+        <div class="col-md-3">
+        {{ form_row(edit_form.fechaNacimiento) }}
         </div>
+        <div class="col-md-3">
+        {{ form_row(edit_form.referidoPor) }}
+         </div>
+    
+        <div class="col-md-6">
+            {{ form_row(edit_form.personaEmergencia) }}
+        </div>
+        
+        <div class="clearfix"></div>
+        
+        <div class="col-md-3">
+            {{ form_row(edit_form.telefonoEmergencia) }}
+        </div>
+        <div class="col-md-3">
+            {{ form_row(edit_form.file) }}
+        </div>
+    </div>
         
         
         

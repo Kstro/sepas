@@ -6,7 +6,11 @@
       {#<a href="page-profile.html">#}
         <span class="status dotted dotted-primary" data-toggle="tooltip" data-container="body" title="Conectado"></span>
         {% block imagenPerfil %}
-            <img class="media-object img-circle" src="{{ asset('Photos/Empleado/')}}{{app.user.persona.empleado[0].foto}}" alt="photo profile">
+            {#<div class="row">
+                <div class="col-md-2">#}
+                    <img class="media-object img-circle" style="width:50px;" src="{{ asset('Photos/Empleado/')}}{{app.user.persona.empleado[0].foto}}" alt="photo profile">
+                {#</div>
+            </div>#}
         {% endblock %}
 {#      </a>#}
     </div>
@@ -23,6 +27,15 @@
 </div><!-- /.sidebar-block -->
 <!-- /profile -->
 
+<!-- /navigation -->
+{#<div class="col-md-2" style="border-right: 1px solid #f3f3f3;">
+    <!-- Left Navigation -->
+    <ul style="list-style: none; padding: 0;">
+        <a href="{{ path('admin_cita') }}" class="leftnava colorAnclas"><li class="leftnav left active">Menu<span class="pull-right right"></span></li></a>
+        <a href="" class="leftnava colorAnclas" style="text-decoration: none;"><li class="leftnav left ">Configuraci&oacute;n</li></a>
+
+    </ul>
+</div>	#}
 <!-- /navigation -->
 <div class="nav-wrapper">
   <ul class="nav nav-stacked" role="navigation">
@@ -209,12 +222,12 @@
     {% endif %}
     
     {% if is_granted('ROLE_ADMIN') %}  
-        <li class="nav-item" role="presentation">
+        {#<li class="nav-item" role="presentation">
           <a href="{{ path('admin_rol') }}">
             <span class="nav-icon"><i class="fa fa-exchange"></i></span>
             <span class="nav-text">Gestionar roles</span>
           </a>
-        </li> 
+        </li>#}
         
        {# <li class="nav-item" role="presentation">
           <a href="#" data-toggle="nav-child">
@@ -243,13 +256,13 @@
           </ul>
         </li>
     {% endif %}#}
-    {% if is_granted('ROLE_ADMIN') %}
+    {#{% if is_granted('ROLE_ADMIN') %}
         <li class="collapse-item" role="presentation">
           <a href="#" data-sidebar="toggleCollapse">
             <i class="fa fa-angle-double-left"></i>
           </a>
         </li>
-    {% endif %}
+    {% endif %}#}
     
   </ul>
 </div>

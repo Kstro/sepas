@@ -1076,21 +1076,21 @@ class ReporteController extends Controller
         
         $listadoP = array();
         
-        $dqlpac="SELECT p.id, per.nombres, per.apellidos, emp.nombres nemp, emp.apellidos napel, c.costoConsulta, c.fechaConsulta, s.nombre, c.observacion FROM DGPlusbelleBundle:Consulta c "
+        $dqlpac="SELECT p.id, per.nombres, per.apellidos, emp.nombres nemp, emp.apellidos napel, c.costoConsulta, DATE_FORMAT(c.fechaConsulta,'%d-%m-%Y %H:%i') as fechaConsulta, s.nombre, c.observacion FROM DGPlusbelleBundle:Consulta c "
                 . "JOIN c.paciente p "
                 . "JOIN p.persona per "
                 . "JOIN c.empleado e "
                 . "JOIN e.persona emp "
                 . "JOIN c.sucursal s "
                 . "WHERE c.fechaConsulta BETWEEN :fechainicio AND :fechafin ORDER BY c.fechaConsulta ASC";
-       
+        //Listado de consultas
         $listadopaciente = $em->createQuery($dqlpac)
                        ->setParameters(array('fechainicio'=>$anioInicioUser,'fechafin'=>$anioFinUser))
                        //->setParameter('mes','_____0'.'1'.'___')
                        ->getResult();
         
         
-//        var_dump($listadopaciente);
+        //var_dump($listadopaciente);
         foreach ($listadopaciente as $row) {
             $ar = array(
 //                    "id"=>$row['id'],
@@ -1115,20 +1115,28 @@ class ReporteController extends Controller
 //        
 //        var_dump($listadoP);  
 //        die();
+//        var_dump($anioInicioUser);
+//        var_dump($anioFinUser);
         
-        
-        $dqlpac="SELECT p.id, per1.nombres, per1.apellidos, per2.nombres nemp, per2.apellidos napel, a.monto, a.fechaAbono, s.nombre FROM DGPlusbelleBundle:Abono a "
+        $dqlpac="SELECT p.id, per1.nombres, per1.apellidos, per2.nombres nemp, per2.apellidos napel, a.monto, DATE_FORMAT(a.fechaAbono,'%d-%m-%Y %H:%i') as fechaAbono FROM DGPlusbelleBundle:Abono a "
                 . "JOIN a.paciente p "
                 . "JOIN p.persona per1 "
                 . "JOIN a.empleado e "
-                . "JOIN e.persona per2 "
-                . "JOIN a.sucursal s "
+                . "JOIN e.persona per2 "                
                 . "WHERE a.fechaAbono BETWEEN :fechainicio AND :fechafin ORDER BY per1.nombres ASC";
+//        $dqlpac="SELECT p.id, per1.nombres, per1.apellidos, per2.nombres nemp, per2.apellidos napel, a.monto, DATE_FORMAT(a.fechaAbono,'%d-%m-%Y %H:%i') as fechaAbono, s.nombre FROM DGPlusbelleBundle:Abono a "
+//                . "JOIN a.paciente p "
+//                . "JOIN p.persona per1 "
+//                . "JOIN a.empleado e "
+//                . "JOIN e.persona per2 "
+//                . "JOIN a.sucursal s "
+//                . "WHERE DATE_FORMAT(a.fechaAbono,'%Y-%m-%d') BETWEEN :fechainicio AND :fechafin ORDER BY per1.nombres ASC";
+        //listado de abonos
         $listadoabono = $em->createQuery($dqlpac)
                        ->setParameters(array('fechainicio'=>$anioInicioUser,'fechafin'=>$anioFinUser))
                        //->setParameter('mes','_____0'.'1'.'___')
                        ->getResult();
-        
+        //var_dump($listadoabono);
         foreach ($listadoabono as $row) {
             $ar = array(
 //                    "id"=>$row['id'],
@@ -1137,11 +1145,11 @@ class ReporteController extends Controller
                     "tipocosto"=>"Abono",
                     "nempleado"=>$row['nemp'],
                     "aempleado"=>$row['napel'],
-                    "sucursal"=>$row['nombre'],
+                    "sucursal"=>'SEPES',
                     "costo"=>$row['monto'],
                     "fechatransaccion"=>$row['fechaAbono']
                 );
-            
+                
             array_push($listadoP, $ar);
 //            array_push($listadoP, $listadoabono);
 //            array_push($listadoP, $row['nombres']);
@@ -1149,22 +1157,19 @@ class ReporteController extends Controller
 //            array_push($listadoP, 'Abono');
 //            array_push($listadoP, $row['monto']);
         }
+        //var_dump($listadoP);
         
         
-        
-        $dqlpac="SELECT p.id, p.nombres, p.apellidos, e.nombres nemp, e.apellidos napel, a.costoConsulta as monto, a.fechaVenta, s.nombre FROM DGPlusbelleBundle:PersonaTratamiento a "
+        $dqlpac="SELECT p.id, p.nombres, p.apellidos, e.nombres nemp, e.apellidos napel, a.costoConsulta as monto, DATE_FORMAT(a.fechaVenta,'%d-%m-%Y %H:%i') as fechaVenta FROM DGPlusbelleBundle:PersonaTratamiento a "
                 . "JOIN a.paciente p "
-                
                 . "JOIN a.empleado e "
-                
-                . "JOIN a.sucursal s "
-                . "WHERE a.fechaVenta BETWEEN :fechainicio AND :fechafin ORDER BY p.nombres ASC";
-        $listadoabono = $em->createQuery($dqlpac)
+                . "WHERE a.cuotas = 1 AND a.fechaVenta BETWEEN :fechainicio AND :fechafin ORDER BY p.nombres ASC";
+        $ventatratamiento = $em->createQuery($dqlpac)
                        ->setParameters(array('fechainicio'=>$anioInicioUser,'fechafin'=>$anioFinUser))
                        //->setParameter('mes','_____0'.'1'.'___')
                        ->getResult();
-        
-        foreach ($listadoabono as $row) {
+        //var_dump($ventatratamiento);
+        foreach ($ventatratamiento as $row) {
             $ar = array(
 //                    "id"=>$row['id'],
                     "nombres"=>$row['nombres'],
@@ -1172,7 +1177,7 @@ class ReporteController extends Controller
                     "tipocosto"=>"Venta tratamiento",
                     "nempleado"=>$row['nemp'],
                     "aempleado"=>$row['napel'],
-                    "sucursal"=>$row['nombre'],
+                    "sucursal"=>'SEPES',
                     "costo"=>$row['monto'],
                     "fechatransaccion"=>$row['fechaVenta']
                 );
@@ -1184,21 +1189,21 @@ class ReporteController extends Controller
 //            array_push($listadoP, 'Abono');
 //            array_push($listadoP, $row['monto']);
         }
+//        var_dump($ventatratamiento);
         
-        
-        $dqlpac="SELECT p.id, per1.nombres, per1.apellidos, per2.nombres nemp, per2.apellidos napel, a.monto , a.fechaDevolucion, 'SEPES' as nombre FROM DGPlusbelleBundle:Devolucion a "
+        $dqlpac="SELECT p.id, per1.nombres, per1.apellidos, per2.nombres nemp, per2.apellidos napel, a.monto , DATE_FORMAT(a.fechaDevolucion,'%d-%m-%Y %H:%i')as fechaDevolucion, 'SEPES' as nombre FROM DGPlusbelleBundle:Devolucion a "
                 . "JOIN a.paciente p "
                 . "JOIN p.persona per1 "
                 . "JOIN a.empleado e "
                 . "JOIN e.persona per2 "
                 
                 . "WHERE a.fechaDevolucion BETWEEN :fechainicio AND :fechafin ORDER BY per1.nombres ASC";
-        $listadoabono = $em->createQuery($dqlpac)
+        $devolucion = $em->createQuery($dqlpac)
                        ->setParameters(array('fechainicio'=>$anioInicioUser,'fechafin'=>$anioFinUser))
                        //->setParameter('mes','_____0'.'1'.'___')
                        ->getResult();
-        
-        foreach ($listadoabono as $row) {
+        //var_dump($devolucion);
+        foreach ($devolucion as $row) {
             $ar = array(
 //                    "id"=>$row['id'],
                     "nombres"=>$row['nombres'],
@@ -1259,7 +1264,7 @@ class ReporteController extends Controller
         
         
         
-        $dqlpac="SELECT pac.id, pac.nombres, pac.apellidos, per2.nombres as nemp, per2.apellidos as napel,'0' as costo, date_format(pt.fechaRegistro,'%d-%m-%Y') as fechaVenta, 'SEPES' as nombre FROM DGPlusbelleBundle:Incapacidad pt "
+        $dqlpac="SELECT pac.id, pac.nombres, pac.apellidos, per2.nombres as nemp, per2.apellidos as napel,'0' as costo, date_format(pt.fechaRegistro,'%d-%m-%Y %H:%i') as fechaVenta, 'SEPES' as nombre FROM DGPlusbelleBundle:Incapacidad pt "
                 . "JOIN pt.paciente per "
                 . "JOIN per.persona pac "
                 . "JOIN pt.empleado emp "
@@ -1334,6 +1339,56 @@ class ReporteController extends Controller
                 array_push($ingresos, 0);
             }
             
+//            $dql = "SELECT sum(p.costo*(1-(d.porcentaje/100))) as total FROM DGPlusbelleBundle:VentaPaquete vp "
+//                    . "INNER JOIN vp.paquete p "
+//                    . "JOIN vp.descuento d "
+//                    . "WHERE vp.cuotas=1 AND vp.fechaVenta BETWEEN :fechainicio AND :fechafin AND vp.sucursal=:sucursal ";
+//                   
+//            
+//            
+//            $ingresosVentaPaquete= $em->createQuery($dql)
+//                       ->setParameters(array('fechainicio'=>$anioInicioUser,'fechafin'=>$anioFinUser,'sucursal'=>$sucursal))
+//                       //->setParameter('mes','_____0'.'1'.'___')
+//                       ->getResult();
+            //echo "ventaspaquetes";
+            
+            
+            $dqlpac="SELECT pac.id, per1.nombres, per1.apellidos, per2.nombres as nemp, per2.apellidos as napel,(vv.montoTotal*(1-(des.porcentaje))) as costo, date_format(vv.fechaVenta,'%d-%m-%Y %H:%i') as fechaVenta, 'SEPES' as nombre FROM DGPlusbelleBundle:VentaVacuna vv "
+                . "JOIN vv.paciente pac "
+                . "JOIN pac.persona per1 "
+                . "JOIN vv.empleado emp "
+                . "JOIN emp.persona per2 "
+                . "JOIN vv.descuento des "
+                . "WHERE vv.cuotas=1 AND vv.fechaVenta BETWEEN :fechainicio AND :fechafin ORDER BY fechaVenta ASC";
+            $ventacacunas= $em->createQuery($dqlpac)
+                       ->setParameters(array('fechainicio'=>$anioInicioUser,'fechafin'=>$anioFinUser))
+                       //->setParameter('mes','_____0'.'1'.'___')
+                       ->getResult();
+            //var_dump($ventacacunas);
+        foreach ($ventacacunas as $row) {
+            $ar = array(
+//                    "id"=>$row['id'],
+                    "nombres"=>$row['nombres'],
+                    "apellidos"=>$row['apellidos'],
+                    "tipocosto"=>"Venta vacuna",
+                    "nempleado"=>$row['nemp'],
+                    "aempleado"=>$row['napel'],
+                    //"sucursal"=>$row['nombre'],
+                    "costo"=>$row['costo'],
+                    "fechatransaccion"=>$row['fechaVenta']
+                );
+            
+            array_push($listadoP, $ar);
+//            array_push($listadoP, $listadotratamientos);
+//            array_push($listadoP, $row['nombres']);
+//            array_push($listadoP, $row['apellidos']);
+//            array_push($listadoP, 'Venta tratamiento');
+//            array_push($listadoP, $row['costo']);
+        }
+            
+        
+        //array_multisort($listadoP);
+        //var_dump($listadoP);
             $dql = "SELECT sum(p.costo*(1-(d.porcentaje/100))) as total FROM DGPlusbelleBundle:VentaPaquete vp "
                     . "INNER JOIN vp.paquete p "
                     . "JOIN vp.descuento d "
@@ -1345,7 +1400,6 @@ class ReporteController extends Controller
                        ->setParameters(array('fechainicio'=>$anioInicioUser,'fechafin'=>$anioFinUser,'sucursal'=>$sucursal))
                        //->setParameter('mes','_____0'.'1'.'___')
                        ->getResult();
-            //echo "ventaspaquetes";
             
             
             

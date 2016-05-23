@@ -1,8 +1,8 @@
-{% extends '::base.html.twig' %}
+
 
 
 {% block css %}
-    {{parent()}}
+
     <style>
         #select2-dgplusbellebundle_cierreadministrativo_empleado-container{
             width: 400px;
@@ -15,12 +15,13 @@
             width: 400px;
         }
     </style>
+    
 {% endblock %}
 
 {% block body -%}
 <div class="panel panel-default">
   <!-- Default panel contents -->
-<div class="panel-heading"><p>Nuevo cierre administrativo</p></div>
+<div class="panel-heading"><strong>Nuevo cierre administrativo</strong></div>
 <div class="panel-body">
 
     {{ form_start(form) }}
@@ -31,19 +32,20 @@
         </div>
         
         <div class="clearfix"></div>
-        <div class="col-md-2">
+        <div class="col-md-4">
             {{ form_row(form.fecha) }}
         </div>
-        <div class="col-md-2">
+        <div class="col-md-4">
             {{ form_row(form.horaInicio) }}
         </div>
-        <div class="col-md-2">
+        <div class="col-md-4">
             {{ form_row(form.horaFin) }}
         </div>
+        <div class="clearfix"></div>
         <div class="col-md-6">
             {{ form_row(form.motivo) }}
         </div>
-         
+        <div class="clearfix"></div> 
         {#{{ form_row(form.estado) }}#}
   
  

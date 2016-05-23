@@ -14,22 +14,28 @@
     {{ form_errors(edit_form) }}
  
    {% include 'DGPlusbelleBundle:Persona:edit_form.html.twig' with { 'edit_form': edit_form.persona }%} 
-        <div class="col-xs-12 col-sm-2">
+        <div class="row">
+               <div class="col-md-12">
+                  <h3 class="text">Meta</h3>
+                  <hr>
+                </div>
+        </div>
+        <div class="col-md-3">
             {{ form_row(edit_form.cargo) }}
         </div>
      {#   <div class="col-xs-12 col-sm-2">
             {{ form_row(edit_form.sucursal) }}
         </div>  #}
-        <div class="col-xs-12 col-sm-2">
-        {{ form_row(edit_form.porcentaje) }}
-         </div> 
-         <div class="col-xs-12 col-sm-2">
-        {{ form_row(edit_form.meta) }}
-         </div> 
-         <div class="col-xs-12 col-sm-2">
-        {{ form_row(edit_form.bono) }}
-         </div> 
-        <div class="col-xs-12 col-sm-4">
+        <div class="col-md-3">
+            {{ form_row(edit_form.porcentaje) }}
+        </div> 
+        <div class="col-md-3">
+            {{ form_row(edit_form.meta) }}
+        </div> 
+        <div class="col-md-3">
+            {{ form_row(edit_form.bono) }}
+        </div> 
+        <div class="col-xs-12 col-sm-12">
             <label class="control-label" for="dgplusbellebundle_empleado_sucursal">Foto de perfil</label>
             
             
@@ -51,10 +57,15 @@
                         
         </div> 
         
-        
-         <div class="col-xs-12 col-sm-3">
-      {#  {{ form_row(edit_form.foto) }} #}
-         </div>
+        <div class="col-xs-12 col-sm-3">
+     
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <h3 class="text">Tratamiento</h3>
+                <hr>
+            </div>
+        </div>
           <div class="col-xs-12 col-sm-12">
         {{ form_row(edit_form.tratamiento) }}
          </div>

@@ -160,7 +160,7 @@ class VentaController  extends Controller
                     ->getSingleResult();
 
             $vacunas = $em->getRepository('DGPlusbelleBundle:VacunaConsulta')->findBy(array('ventaVacuna' => $idVenta));
-            var_dump($abonos);
+//            var_dump($abonos);
             $idvacunas = array();      
             foreach ($vacunas as $trat){
                 $idvac = $trat->getVacuna()->getId();

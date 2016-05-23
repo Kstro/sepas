@@ -1,0 +1,48 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 05-20-2016, 01:50:42 PM
+    Author     : Digitality 5
+*/
+
+
+        .placas>div:last-child {
+            position:absolute;
+        }
+        .addItem{
+            position: absolute;
+            height: 50px;
+            float: right;
+            margin-bottom: 50px;
+            padding-bottom: 100px;
+            top: -65px;
+            left: -2px;
+        }
+        
+            .addItem div {
+                position: absolute;
+            }
+        
+        /*.col-md-6{
+            padding-top: 40px;
+        }*/
+        
+        #dgplusbellebundle_consulta_horaInicio_hourSelectBoxItContainer, #dgplusbellebundle_consulta_horaInicio_minuteSelectBoxItContainer{
+            width:75px;
+        }
+        
+        #listadoa>div>div>div>div>label{
+            display: none;
+        }
+        
+        textarea{
+            resize: vertical;
+        }
+        
+        #info_paciente tr td{
+            border: 1px solid black;
+        }
+    

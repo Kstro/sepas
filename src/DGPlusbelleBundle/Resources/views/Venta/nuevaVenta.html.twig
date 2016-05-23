@@ -1,47 +1,13 @@
 {#{% extends 'DGPlusbelleBundle:Layout:general.html.twig' %}#}
-{% extends 'DGPlusbelleBundle:Layout:layout.html.twig' %}
+{% extends 'DGPlusbelleBundle:Layout:layouterp.html.twig' %}
 
 {% block css %}
     {{parent()}}
     <link rel="stylesheet" href="{{ asset('Resources/alertifyjs/css/alertify.css') }}">
-    <style>
-        .placas>div:last-child {
-            position:absolute;
-        }
-        .addItem{
-            position: absolute;
-            height: 50px;
-            float: right;
-            margin-bottom: 50px;
-            padding-bottom: 100px;
-            top: -65px;
-            left: -2px;
-        }
-        
-            .addItem div {
-                position: absolute;
-            }
-        
-        /*.col-md-6{
-            padding-top: 40px;
-        }*/
-        
-        #dgplusbellebundle_consulta_horaInicio_hourSelectBoxItContainer, #dgplusbellebundle_consulta_horaInicio_minuteSelectBoxItContainer{
-            width:75px;
-        }
-        
-        #listadoa>div>div>div>div>label{
-            display: none;
-        }
-        
-        textarea{
-            resize: vertical;
-        }
-        
-        #info_paciente tr td{
-            border: 1px solid black;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ asset('Resources/css/nuevaventa.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/css/select2.min.css" rel="stylesheet" />
+
+    
     
 {% endblock %}
 
@@ -60,7 +26,7 @@
     {#                <div class="col-md-12"><hr></div>#}
                 </div>
                 <div class="content-hero content-hero-lg" style="min-height:140px;">
-                    <div style="height:150px;background: #39a58a; opacity: 1.0" class="content-hero-overlay "></div>
+                    <div style="height:50px;background: #39a58a; opacity: 1.0" class="content-hero-overlay "></div>
                     <div  style="" class="content-hero-body" ></div>
                     <div  style="" class="content-hero-bar" {#style="margin-top:-180px; background-color: red; position: relative;"#}>
                         <div class="row" {#style="margin-top:-180px; background-color: red; position: relative;"#}>
@@ -82,7 +48,7 @@
                                             <p class="mb-4x text-light">
                                                 <span class="mr-1x" id="expediente">
                                                     <i class="fa fa-clipboard"></i> {#{{ expediente }}#}
-                                                    <a style="color:#FFF;text-decoration: underline;" href="{{path('admin_consulta_expediente_sd',{id:paciente.expediente[0].numero})}}">{{paciente.expediente[0].numero}}</a>
+                                                    <a style="color:#000;text-decoration: underline;" href="{{path('admin_consulta_expediente_sd',{id:paciente.expediente[0].numero})}}">{{paciente.expediente[0].numero}}</a>
                                                 </span>
 
                                                 <span class="mr-1x" id="telefono">
@@ -134,7 +100,7 @@
                     <div id="datos-generales" class="tab-pane fade" style="margin-top: 20px;">
                         <form id="formulario-datos-gnales" method="POST" enctype="multipart/form-data">
                             <div class="row" style="margin-top: 30px;">
-                                <div class="col-md-3" style="margin-left: 30px;">
+                                <div class="col-md-3">
                                     {# Area en donde se ingresa el nombre del paciente a quien se le hará la venta #}    
                                     <div id="nombrePaciente-venta">
                                         <label>Nombres</label>
@@ -148,14 +114,14 @@
                                         <input type="text" name="dgplusbellebundle_venta[apellidos]" id="dgplusbellebundle_venta_apellidos" class="form-control" style="width: 100%" value="{{ paciente.persona.apellidos}}">     
                                     </div>
                                 </div> 
-                                <div class="col-md-2">
+                                <div class="col-md-3">
                                     {# Area en donde se ingresa el telefono 1 del paciente a quien se le hará la venta #}    
                                     <div id="telefono1Paciente-venta">
                                         <label>Telefono 1</label>
                                         <input type="text" name="dgplusbellebundle_venta[telefono1]" id="dgplusbellebundle_venta_telefono1" class="form-control" style="width: 100%" value="{{ paciente.persona.telefono}}">     
                                     </div>
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-md-3">
                                     {# Area en donde se ingresa el telefono 1 del paciente a quien se le hará la venta #}    
                                     <div id="telefono2Paciente-venta">
                                         <label>Telefono 2</label>
@@ -164,7 +130,7 @@
                                 </div>    
                             </div>    
                             <div class="row" style="margin-top: 30px;">
-                                <div class="col-md-4" style="margin-left: 30px;">
+                                <div class="col-md-4" >
                                     {# Area en donde se ingresa la dirección de la persona #}    
                                     <div id="direccionPaciente-venta">
                                         <label>Direccion</label>
@@ -172,20 +138,20 @@
                                     </div>
                                 </div>
                                 <div class="col-md-2">
-                                    {# Area en donde se ingresa correo electrónico del paciente a quien se le hará la venta #}    
-                                    <div id="correoPaciente-venta">
-                                        <label>Correo electronico</label>
-                                        <input type="text" name="dgplusbellebundle_venta[correo]" id="dgplusbellebundle_venta_correo" class="form-control" style="width: 100%" value="{{ paciente.persona.email}}">     
-                                    </div>
-                                </div> 
-                                <div class="col-md-2">
                                     {# Area en donde se ingresa DUI del paciente a quien se le hará la venta #}    
                                     <div id="DUIPaciente-venta">
                                         <label>DUI</label>
                                         <input type="text" name="dgplusbellebundle_venta[dui]" id="dgplusbellebundle_venta_dui" class="form-control" style="width: 100%" value="{{ paciente.dui}}">     
                                     </div>
                                 </div> 
-                                <div class="col-md-2">
+                                <div class="col-md-3">
+                                    {# Area en donde se ingresa correo electrónico del paciente a quien se le hará la venta #}    
+                                    <div id="correoPaciente-venta">
+                                        <label>Correo electronico</label>
+                                        <input type="text" name="dgplusbellebundle_venta[correo]" id="dgplusbellebundle_venta_correo" class="form-control" style="width: 100%" value="{{ paciente.persona.email}}">     
+                                    </div>
+                                </div> 
+                                <div class="col-md-3">
                                     {# Area en donde se ingresa estado civil del paciente a quien se le hará la venta #}    
                                     <div id="EcivilPaciente-venta">
                                         <label>Estado civil {{ paciente.estadoCivil }}</label>
@@ -201,7 +167,7 @@
                                 </div>    
                             </div>
                             <div class="row" style="margin-top: 30px;">  
-                                <div class="col-md-2" style="margin-left: 30px;">
+                                <div class="col-md-3">
                                     {# Area en donde se ingresa estado civil del paciente a quien se le hará la venta #}    
                                     <div id="sexoPaciente-venta">
                                         <label>Sexo </label>
@@ -226,7 +192,7 @@
                                         <input type="text" name="dgplusbellebundle_venta[lugar]" id="dgplusbellebundle_venta_lugar" class="form-control" style="width: 100%" value="{{ paciente.lugarTrabajo}}">     
                                     </div>
                                 </div> 
-                                <div class="col-md-2">
+                                <div class="col-md-3">
                                     {# Area en donde se selecciona la fecha de naciemto del paciente a quien se le hará la venta #}    
                                     <div id="fechaNacimiemtoPaciente-venta">
                                         <label>Fecha de Nacimiento</label>
@@ -235,21 +201,21 @@
                                 </div>    
                             </div> 
                             <div class="row" style="margin-top: 30px;">
-                                <div class="col-md-4" style="margin-left: 30px;">
+                                <div class="col-md-4">
                                     {# Area en donde se ingresa el nombre de la persona a quien llamar en caso de emergencia #}    
                                     <div id="referidoporPaciente-venta">
                                         <label>Referido por</label>
                                         <input type="text" name="dgplusbellebundle_venta[referidopor]" id="dgplusbellebundle_venta_referidopor" class="form-control" style="width: 100%" value="{{ paciente.referidoPor }}">      
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-5">
                                     {# Area en donde se ingresa el nombre de la persona a quien llamar en caso de emergencia #}    
                                     <div id="nombreEmergenciaPaciente-venta">
                                         <label>En caso de emergencia llamar a</label>
                                         <input type="text" name="dgplusbellebundle_venta[nombreEmergencia]" id="dgplusbellebundle_venta_nombreEmergencia" class="form-control" style="width: 100%" value="{{ paciente.personaEmergencia }}">      
                                     </div>
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-md-3">
                                     {# Area en donde se ingresa el telefono de la persona a quien llamar en caso de emergencia #}    
                                     <div id="telefonoEmergenciaPaciente-venta">
                                         <label>Al telefono</label>
@@ -352,7 +318,7 @@
                                     
                                 <div class="row" style="margin-top:30px;" id="detalle-vacunas-vendidas"> 
                                     <hr>
-                                    <div class="col-md-offset-2 col-md-3">
+                                    <div class="col-md-offset-1 col-md-3">
                                         <label>Vacuna</label>
                                     </div>
                                     <div class="col-md-2">
@@ -521,10 +487,10 @@
                             
                                     
                             {% else %}
-                                <div class="row" style="margin-top: 30px;">
+                                <div class="row" >
                                     {# Selección de qué tipo de venta se va a realizar #}    
                                     <div class="col-md-2 {# hide #}">
-                                        <label class="pull-right">Tipo de venta:</label>      
+                                        <label class="pull-left">Tipo de venta:</label>      
                                     </div>
                                     <div class="col-md-2 {#hide#}">
                                         <div id="label-tipo-venta">
@@ -577,7 +543,7 @@
                                             </select>   
                                         </div>
                                     </div>
-                                    <div class="col-md-4" style="margin-left: 30px;">
+                                    <div class="col-md-4" >
                                         {# Area en donde se selecciona  el empleado que ha realizado la venta #}  
                                         <div id="empleados-venta" {#style="display:none;"#}>
                                             <label>Vendido por</label>
@@ -590,7 +556,7 @@
                                             </select>   
                                         </div>
                                     </div> 
-                                    <div class="col-md-3">
+                                    <div class="col-md-4">
                                         {# Area en donde se seleciona  el descuento que se le va a aplicar a la venta en el caso de ser necesario #} 
                                         <div id="descuento-venta" {#style="display:none;"#}>
                                             <label>Descuento</label>
@@ -603,7 +569,7 @@
                                             </select>   
                                         </div>
                                     </div>        
-                                    <div class="col-md-2">
+                                    <div class="col-md-4">
                                         <div id="cuotas-venta" {#style="display:none;"#}>
                                             <label>Cuotas</label>
                                             <input type="text" name="dgplusbellebundle_venta[cuotas]" id="dgplusbellebundle_venta_cuotas" class="form-control" style="width: 100%">   
@@ -612,19 +578,19 @@
                                 </div>     
                                 <div class="row">
                                     <div id="vventa-observaciones" class="col-md-7 col-sm-7" style="margin-top: 30px; margin-bottom: 10px; {#display:none;#}">
-                                        <div id="venta-observaciones-label" style="margin-left: 30px;">
+                                        <div id="venta-observaciones-label">
                                             <label>Observaciones</label>
                                         </div>
                                         <div class="clearfix"></div>
-                                        <div id="observaciones" style="margin-left: 30px;">
+                                        <div id="observaciones" >
                                             <textarea rows="4" cols="100" name="dgplusbellebundle_abono[observaciones]" id="dgplusbellebundle_venta_observaciones" class="form-control"></textarea>
                                         </div>
                                     </div>    
                                 </div> 
                                 <hr>        
                                 <div class="row" style="margin-top: 50px;">
-                                    <div class="col-md-9" style="margin-left: 125px;">
-                                        <div class="row" style="margin-top:30px; display: none;" id="detalle-medicamentos-vendidos">
+                                    <div class="col-md-12" {#style="margin-left: 125px;"#}>
+                                        <div class="row" style="margin-top:-20px; display: none;" id="detalle-medicamentos-vendidos">
                                             <div class="col-md-2">
                                                 <label>Medicamentos: </label>
                                             </div>
@@ -638,8 +604,8 @@
                                                 <input type="text" id="costoMedicamento" value=""/>
                                             </div>
                                         </div>
-                                        <div class="row vacuna-content" style="display:none;" id="detalle-vacunas-vendidas">
-                                            <div class="col-md-3">
+                                        <div class="row vacuna-content" style="margin-top: -40px;display:none;" id="detalle-vacunas-vendidas">
+                                            <div class="col-md-4">
                                                 {# Area en donde se seleciona  el descuento que se le va a aplicar a la venta en el caso de ser necesario #} 
                                                 <div id="vacuna-venta" {#style="display:none;"#}>
                                                     <label>Vacuna</label>
@@ -683,12 +649,12 @@
                                     </div>    
                                 </div>            
                                 <div class="row">
-                                    <div class="col-md-12 col-sm-12 text-center" style="margin-top: 30px; margin-bottom: 10px; {#display:none;#}" id="registrar-venta">
+                                    <div class="col-md-12 col-sm-12 text-center" style="margin-top: -30px; margin-bottom: 10px; {#display:none;#}" id="registrar-venta">
                                         <hr>
                                         <input type="submit" value="Registrar venta" style="margin-bottom: 10px; background-color: #39a58a; color: #FFF;" class="btn" id="registro-venta"/>
                                     </div>  
 
-                                    <div class="col-md-12 col-sm-12 text-center" style="margin-top: 30px; margin-bottom: 10px; display:none;" id="modificar-venta">
+                                    <div class="col-md-12 col-sm-12 text-center" style="margin-top: -10px; margin-bottom: 10px; display:none;" id="modificar-venta">
                                         <hr>
                                         <input type="submit" value="Editar venta" style="margin-bottom: 10px; background-color: #39a58a; color: #FFF;" class="btn" id="edit-venta"/>
                                     </div>
@@ -729,7 +695,7 @@
                                             </select>   
                                         </div>
                                     </div> 
-                                    <div class="col-md-3" {#style="display:none;"#} id="seguimiento-sesiones-tratamiento">
+                                    <div class="col-md-4" {#style="display:none;"#} id="seguimiento-sesiones-tratamiento">
                                         <div id="sesiones-tratamiento">
                                             <label>Vacuna</label>
                                             <select id="dgplusbellebundle_sesiones_tratamiento" name="dgplusbellebundle_venta_sesiones[tratamiento]" class="sesion_tratamiento" style="width: 100%">
@@ -1007,8 +973,15 @@
     </div>
     {% endblock %}
     
-    {% block javascripts_step %}
+    {%block javascripts_step %}
+        
         <script src="{{ asset('Resources/alertifyjs/alertify.js') }}"></script>
+        <script src="{{ asset('Resources/wrapkit/scripts/jquery.mask.js') }}"></script>
+        <script src="{{ asset('Resources/wrapkit/scripts/dataTables.bootstrap.js') }}"></script>
+        <script src="{{ asset('Resources/wrapkit/scripts/dataTables.tableTools.js') }}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/js/select2.min.js"></script>
+        <script src="{{ asset('Resources/Zebra/js/zebra_datepicker.js') }}"></script>
+        <script src="{{ asset('Resources/Zebra/inicializacioncalendarios.js') }}"></script>
         <script>
             var id_ventapaquete = 0;
             var id_ventatratamiento = 0;
@@ -1021,8 +994,7 @@
                 {% if(abonos.abonos) %}
                     deuda_total = {{abonos.abonos}};
                 {%else%}
-                    {% for vacuna in vacunas %}
-                        deuda_total = {{vacunas[0].costo}};
+                    deuda_total = {{vacunas[0].costo}};
                 {% endif %}
                 console.log("deuda total: "+deuda_total);
             {% endif %}
@@ -2291,7 +2263,7 @@
                 $(document).on('click','#masVacuna', function(){
 
                     var nuevaVacuna='<div class=\"nueva vacuna\" style=\"margin-top:10px;\" class=\"col-md-12\">\n\
-                                        <div style=\"margin-top:10px;\" class=\"col-md-3\">\n\
+                                        <div style=\"margin-top:10px;\" class=\"col-md-4\">\n\
                                             <select class=\"col-md-12 editorVacuna valores form-control input-sm\" id=\"vacunas'+idvacuna+'\"></select>\n\
                                         </div>\n\
                                         <div style=\"margin-top:10px;\" class=\"col-md-3\">\n\
@@ -2300,7 +2272,7 @@
                                         <div style=\"margin-top:10px;\" class=\"col-md-3\">\n\
                                             <input value=\"\" name=\"costoVacuna\" class=\"form-control valores input-sm form-control\" placeholder=\"#\"/>\n\
                                         </div>\n\
-                                        <div style=\"margin-top:10px;\" class=\"col-md-3\">\n\
+                                        <div style=\"margin-top:10px;\" class=\"col-md-2\">\n\
                                             <i class="deleteVacuna fa fa-times" aria-hidden="true"></i>\n\
                                         </div>\n\
                                         <div class=\"clearfix\"></div>\n\
@@ -2346,13 +2318,13 @@
                     $(this).parent().parent().remove();
                 });
                 
-                $('#dgplusbellebundle_consulta_fechaConsulta').daterangepicker({
+                {#$('#dgplusbellebundle_consulta_fechaConsulta').daterangepicker({
                     singleDatePicker: true,
                     showDropdowns: true,
                     locale: {
                         format: 'YYYY-MM-DD'
                     },
-                }); 
+                }); #}
                 
                 //Seleccionar un registro
                 $('#datatables1>tbody>tr').on('click', function(event) {

@@ -148,7 +148,10 @@ $(document).ready(function() {
             }
         
     });#}
-    
+    $(document).on('click','.dropdown-toggle', function(event){
+        $('.dropdown-menu').toggle();
+        console.log("Prueba");
+    });
     $(document).on('click','#botonBuscar', function(event){
         {#if($(this).val()==''){
             //paciente = $(this).val();

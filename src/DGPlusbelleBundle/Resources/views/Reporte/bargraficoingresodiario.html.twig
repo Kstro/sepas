@@ -46,7 +46,7 @@
         <table id = "datatables1" class="table table-bordered table-hover display dt-responsive" style="margin-top: 30px">
             <thead>
                 <tr>
-                    <th style="width:10%;">N°</th>
+                    {#<th style="width:10%;">N°</th>#}
                     <th><center>Paciente</center></th>
                     <th><center>Fecha transacción</center></th>
                     <th><center>Transacción</center></th>
@@ -58,11 +58,11 @@
             <tbody>
                 {% for key, entity in listadoP|sort %}
                     <tr>
-                        <td style="width:10%;">
+                        {#<td style="width:10%;">
                             {{key+1}}
-                        </td>
+                        </td>#}
                         <td>{{ entity.nombres|upper|trim(' ') }} {{ entity.apellidos|upper|trim(' ') }}</td>
-                        <td class="text-center">{{ entity.fechatransaccion|date('d-m-Y') }}</td>
+                        <td class="text-center">{{ entity.fechatransaccion|date('d-m-Y H:i') }}</td>
                         <td class="text-center">{{ entity.tipocosto}}</td>
                         <td>{{ entity.nempleado|upper|trim(' ') }} {{ entity.aempleado|upper|trim(' ') }}</td>
 {#                        <td>{{ entity.sucursal}}</td>#}
@@ -77,24 +77,26 @@
 
   {% block javascripts_step %}
       
-        
+    <script src="{{ asset('Resources/wrapkit/scripts/dataTables.bootstrap.js') }}"></script>
+    <script src="{{ asset('Resources/wrapkit/scripts/dataTables.tableTools.js') }}"></script>    
           
-       <script>
+<script>
     $(document).ready(function(){
 
-
+    
         
 
 
         $('#datatables1').DataTable({ 
                     searching:true,
-                    "order":[0,"desc"],
+                    dom:'ftp',
+                    "order":[1,"desc"],
                     "columnDefs": [
                            { "orderable": false, "targets": 0 },
                            { "orderable": false, "targets": 2 },
                            { "orderable": false, "targets": 3 }
                                  
-                           //{ "orderData": [ 2, 3, 4 ], "targets": 2 }
+                           {#{ "orderData": [ 2 ], "targets": 2 }#}
                     ],
                     "language": {
                     "info": "Mostrando página _PAGE_ de _PAGES_",
