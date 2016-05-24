@@ -33,7 +33,7 @@
 {#                      <p class="text-muted mb-4x"><span class="mr-2x">Senior UI Design</span> <span><i class="fa fa-map-marker fa-fw"></i> San Francisco, CA</span></p>#}
                     </div>
                     <div class="col-md-2">
-                        {% if paciente.foto is null %}
+                        {% if paciente.foto is null or paciente.foto=="" %}
                             <img id="fotoPaciente" style="border-radius: 50px; margin-top:-20px;width:100%;" src="{{ asset('Photos/Paciente/')}}generico02.jpg">
                         {% else %}
                             <img id="fotoPaciente" style="border-radius: 50px; margin-top:-20px;width:100%;" src="{{ asset('Photos/Paciente/')}}{{paciente.foto}}">
@@ -138,7 +138,7 @@
             </ul>
             <div class="panel-body">
                 <div class="tab-content col-md-9">
-                    <div class="tab-pane fade in" id="botabs1">
+                    <div class="tab-pane fade in" id="botabs1" style="background-color: #FFF;">
                         <p><strong></strong>
                             
                             <div class="col-md-3">
@@ -264,7 +264,7 @@
                                 <select id="sexo" name="sexo" class="form-control input-sm" style="width:100%;">
                                     <option {% if paciente.sexo== ''%} selected {% endif %} value="">Seleccione estado civil...</option>            
                                     <option {% if paciente.sexo== 'm' or paciente.sexo=='M' %} selected {% endif %} value="M">Masculino</option>            
-                                    <option {% if paciente.sexo== 'f' or paciente.sexo=='F' %} selected {% endif %} value="M">Femenino</option>            
+                                    <option {% if paciente.sexo== 'f' or paciente.sexo=='F' %} selected {% endif %} value="F">Femenino</option>            
                                 </select>
                             </div>                                
                             <div class="col-md-3">
@@ -327,14 +327,14 @@
                             <div class="row  pull-left" {#style="margin-top:10px;"#}>
                                 <div class="col-md-12">
                                     <div class="form-grouphide col-sm-12">
-                                        <button type="submit" id="guardarNuevoDatosGenerales" name="dgplusbellebundle_consulta[submit]" class="btn btn-success text-light btn-xs btn btn">Guardar</button>
+                                        <button type="submit" id="guardarNuevoDatosGenerales" name="dgplusbellebundle_consulta[submit]" class="btn btn-primary text-light btn-xs btn btn">Guardar</button>
                                     </div>
                                 </div>
                             </div>
                       </p>
                     </div>
 
-                    <div class="tab-pane active fade in" id="botabs2">
+                    <div class="tab-pane active fade in" id="botabs2" style="background-color: #FFF;">
                       
 {#                          <strong>Registrar consultas</strong>#}
                             <div class="row">
@@ -490,7 +490,7 @@
                                         <div class="col-md-12">
                                             <div class="form-grouphide col-sm-12">
 {#                                                <a class="btn btn-default btn-xs" id="cancelarNuevoConsulta">Cancelar</a>#}
-                                                <button type="submit" id="guardarNuevoConsulta" name="dgplusbellebundle_consulta[submit]" class="btn btn-success text-light btn-xs btn btn">Guardar</button>
+                                                <button type="submit" id="guardarNuevoConsulta" name="dgplusbellebundle_consulta[submit]" class="btn btn-primary text-light btn-xs btn btn">Guardar</button>
                                             </div>
                                         </div>
                                     </div>
@@ -502,7 +502,7 @@
                             </div>
                       
                     </div>
-                    <div class="tab-pane fade in" id="botabs3">
+                    <div class="tab-pane fade in" id="botabs3" style="background-color: #FFF;">
                         <p>
                             <strong>Signos</strong>
                             <div class="row">
@@ -595,7 +595,7 @@
                                     <div class="row  pull-left" style="margin-top:10px;">
                                         <div class="col-md-12">
                                             <div class="form-grouphide col-sm-12">
-                                                <button type="submit" id="guardarSignosConsulta" name="dgplusbellebundle_consulta[submit]" class="btn btn-success text-light btn-xs btn btn">Guardar</button>
+                                                <button type="submit" id="guardarSignosConsulta" name="dgplusbellebundle_consulta[submit]" class="btn btn-primary text-light btn-xs btn btn">Guardar</button>
                                             </div>
                                         </div>
                                     </div>
@@ -604,7 +604,7 @@
                         </p>
                     </div>
                     
-                    <div class="tab-pane fade in" id="botabs5">
+                    <div class="tab-pane fade in" id="botabs5" style="background-color: #FFF;">
                         <p><strong></strong>
                             <div class="row">
                                 <div class="col-md-4">
@@ -627,13 +627,13 @@
                                 <div class="col-md-12">
                                     <div class="form-grouphide col-sm-12">
                                         {#<a class="btn btn-default btn-xs" id="cancelarNuevoConsulta">Cancelar</a>#}
-                                        <button type="submit" id="guardarCostoConsulta" name="dgplusbellebundle_antecedentes[submit]" class="btn btn-success text-light btn-xs btn btn">Guardar</button>
+                                        <button type="submit" id="guardarCostoConsulta" name="dgplusbellebundle_antecedentes[submit]" class="btn btn-primary text-light btn-xs btn btn">Guardar</button>
                                     </div>
                                 </div>
                             </div>
                         </p>
                     </div>
-                    <div class="tab-pane fade in" id="botabs6">
+                    <div class="tab-pane fade in" id="botabs6" style="background-color: #FFF;">
                         <p>
                         <strong>Subir imagen</strong>
                         
@@ -649,7 +649,10 @@
                             
                         
                         <div style="margin-top:20px;" class="col-md-12" id="listadoImagenes">
-                            <strong style="margin-top:100px;">Archivos adjuntos</strong>
+                            <div class="col-md-4" style="margin-top:10px;">
+                                <strong style="margin-top:100px;">Archivos adjuntos</strong>
+                            </div>
+                            <div class="clearfix"></div>
                             {% for imagen in archivos %}
                                 <div class="col-md-2" style="margin-top:10px;">
                                     <a class="verImagen" href="{{ asset('Photos/Tmp/')}}{{imagen.foto}}">
@@ -669,7 +672,7 @@
                             <div class="col-md-12">
                                 <div class="pull-left form-grouphide col-sm-12">
                                     {#<a class="btn btn-default btn-xs" id="cancelarNuevoConsulta">Cancelar</a>#}
-                                    <button type="submit" id="guardarImagenes" name="dgplusbellebundle_antecedentes[submit]" class="btn btn-success text-light btn-xs btn">Guardar</button>
+                                    <button type="submit" id="guardarImagenes" name="dgplusbellebundle_antecedentes[submit]" class="btn btn-primary text-light btn-xs btn">Guardar</button>
                                 </div>
                             </div>
                         </div>
@@ -716,7 +719,7 @@
                                         <div class="col-md-12">
                                             <div class="form-grouphide col-sm-12">
                                                 {#<a class="btn btn-default btn-xs" id="cancelarNuevoConsulta">Cancelar</a>#}
-                                {#                <button type="submit" id="guardarPlantilla" name="dgplusbellebundle_antecedentes[submit]" class="btn btn-success btn-xs btn btn">Guardar</button>
+                                {#                <button type="submit" id="guardarPlantilla" name="dgplusbellebundle_antecedentes[submit]" class="btn btn-primary btn-xs btn btn">Guardar</button>
                                             </div>
                                         </div>
                                     </div>
@@ -766,7 +769,7 @@
                                             <div class="col-md-12">
                                                 <div class="form-grouphide col-sm-12">#}
                                                     {#<a class="btn btn-default btn-xs" id="cancelarNuevoConsulta">Cancelar</a>#}
-{#                                                    <button type="submit" id="guardarPlantilla" name="dgplusbellebundle_antecedentes[submit]" class="btn btn-success btn-xs btn btn">Guardar</button>
+{#                                                    <button type="submit" id="guardarPlantilla" name="dgplusbellebundle_antecedentes[submit]" class="btn btn-primary btn-xs btn btn">Guardar</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -788,7 +791,7 @@
                         </p>
                 </div><!-- /tab-content -->#}
                 
-                 <div class="tab-pane fade in" id="botabs8">
+                 <div class="tab-pane fade in" id="botabs8" style="background-color: #FFF;">
                         <p>
                             <strong></strong>
                             
@@ -816,7 +819,7 @@
                                         <div class="col-md-12">
                                             <div class="form-grouphide col-sm-12">
                                                 {#<a class="btn btn-default btn-xs" id="cancelarNuevoConsulta">Cancelar</a>#}
-                                                <button type="submit" id="guardarReceta" name="dgplusbellebundle_antecedentes[submit]" class="btn btn-success text-light btn-xs btn btn">Guardar</button>
+                                                <button type="submit" id="guardarReceta" name="dgplusbellebundle_antecedentes[submit]" class="btn btn-primary text-light btn-xs btn btn">Guardar</button>
                                             </div>
                                         </div>
                                     </div>
@@ -827,12 +830,12 @@
                         </p>
                     
                     </div><!-- /tab-content -->
-                 <div class="tab-pane fade in" id="botabs9"> {#vacunas#}
+                 <div class="tab-pane fade in" id="botabs9" style="background-color: #FFF;"> {#vacunas#}
                         <p>
                             <strong></strong>
                                 {% if existenVacunas %}
                                     <div class="row" style="font-size: 18px;">
-                                        <div class="col-md-3">
+                                        <div class="col-md-4">
                                             <label style="float:left;">Costo: $</label>
                                             <input readonly id="costoTotalVacuna" class="pull-left" style="margin-left: 10px; border:0px solid #000; background: transparent;"/>
                                         </div>
@@ -840,25 +843,26 @@
                                             <label style="float:left;">Descuento: %</label>
                                             <input readonly id="costoDescTotalVacuna" class="pull-left" style="margin-left: 10px; float:right;border:0px solid #000; background: transparent;"/>
                                         </div>
-                                        <div class="col-md-3">
+                                        <div class="col-md-4">
                                             <label style="float:left;">Total a pagar: $</label>
                                             <input readonly id="totalPagar" class="pull-left" style="margin-left: 10px; border:0px solid #000; background: transparent;"/>
                                         </div>
                                         {% if vacunas[0].ventaVacuna is null %}
-                                            <div class="col-md-2 pull-right">
-                                                <a href="{{path('admin_historial_consulta')}}?id=P{{consulta.paciente.id}}&idtransaccion=c-{{consulta.id}}" class="pull-left">Realizar venta</a>
+                                            <div class="clearfix"></div>
+                                            <div class="col-md-6" style="margin-top: 2  0px;">
+                                                <a href="{{path('admin_historial_consulta')}}?id=P{{consulta.paciente.id}}&idtransaccion=c-{{consulta.id}}" class="btn btn-xs btn-primary pull-left">Realizar venta</a>
                                             </div>
                                         {% endif %}
                                     </div>
                                     <hr>
                                     <div class="row">
-                                        <div class="col-md-offset-3 col-md-2">
+                                        <div class="col-md-4">
                                             <label>Vacuna</label>
                                         </div>
-                                        <div class="col-md-2">
+                                        <div class="col-md-4">
                                             <label>Costo ($)</label>
                                         </div>
-                                        <div class="col-md-2">
+                                        <div class="col-md-4">
                                             <label>Número de aplicaciones</label>
                                         </div>
                                         <div class="clearfix">
@@ -867,17 +871,17 @@
                                         <div class="row vacuna-content" style="margin-top:10px;">      
                                             {% for row in vacunas %}
                                                 
-                                                <div class="col-md-offset-3 col-md-2">
+                                                <div class="col-md-4">
                                                     <label style="">{{row.vacuna.nombre}}</label>
                                                     {#<select style="width:100%;" class="col-md-12 valores editorVacuna form-control input-sm" id="vacunas0" >
                                                         <option value="{{row.vacuna.id}}">{{row.vacuna.nombre}}</option>
                                                     </select>#}
                                                 </div>
-                                                <div class="col-md-2" style="text-align: right;">
+                                                <div class="col-md-4" style="text-align: right;">
                                                     <label style="margin-right:140px;">{{row.costo|number_format(2, '.', ',') }}</label>
 {#                                                    <input value="{{row.costo}}" name="costoVacuna" class="costoVacuna valores form-control input-sm form-control" placeholder="$"/>#}
                                                 </div>
-                                                <div class="col-md-2" style="text-align: right;">
+                                                <div class="col-md-4" style="text-align: right;">
                                                     <label style="margin-right:70px;">{{row.aplicaciones}}</label>
 {#                                                    <input value="{{row.aplicaciones}}" name="aplicacionesVacuna" class="aplicacionesVacuna valores form-control input-sm form-control" placeholder="#"/>#}
                                                 </div>
@@ -895,7 +899,7 @@
                                             <div class="col-md-12">
                                                 <div class="form-grouphide col-sm-12">
                                                     {#<a class="btn btn-default btn-xs" id="cancelarNuevoConsulta">Cancelar</a>#}
-                                                    {#<button type="submit" id="guardarVacunas" name="dgplusbellebundle_antecedentes[submit]" class="btn btn-success text-light btn-xs btn btn">Guardar</button>#}
+                                                    {#<button type="submit" id="guardarVacunas" name="dgplusbellebundle_antecedentes[submit]" class="btn btn-primary text-light btn-xs btn btn">Guardar</button>#}
                                                 </div>
                                             </div>
                                         </div>
@@ -908,7 +912,7 @@
                                         <div class="col-md-3">
                                             <input readonly id="costoTotalVacuna" class="pull-left" style="border:0px; background: transparent;"/>
                                         </div>
-                                        <div class="col-md-3">
+                                        <div style="" class="col-md-3">
                                             <label>Descuento: </label>
                                         </div>
                                         <div class="col-md-3">
@@ -920,8 +924,9 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <hr>
                                     <div class="clearfix"></div>
+                                    <hr>
+                                    
                                         <div class="col-md-3">
                                             <label>Vacuna</label>
                                         </div>
@@ -956,22 +961,18 @@
                                                 <hr>
                                             </div>
                                         <div class="clearfix"></div>
-
-                                        
                                             <div class="col-md-12">
                                                 <div class="form-grouphide col-sm-12">
                                                     {#<a class="btn btn-default btn-xs" id="cancelarNuevoConsulta">Cancelar</a>#}
-                                                    <button type="submit" id="guardarVacunas" name="dgplusbellebundle_antecedentes[submit]" class="btn btn-success text-light btn-xs btn btn">Guardar</button>
+                                                    <button type="submit" id="guardarVacunas" name="dgplusbellebundle_antecedentes[submit]" class="btn btn-primary text-light btn-xs btn btn">Guardar</button>
                                                 </div>
                                             </div>
-                                        
-                                    
                                 {% endif %}
                         </p>
                     
                     </div><!-- /tab-content -->
-                    <div class="tab-pane fade in" id="botabs10">
-                        <p>
+                    <div class="tab-pane fade in" id="botabs10" style="background-color: #FFF;">
+                        
                             <strong></strong>
                             
                             
@@ -981,8 +982,52 @@
                                 <div class="col-md-4">Notas/Observaciones</div>
                             </div>#}
                             
-                            <div class="row">
-                                <div class="col-md-8" style="border-right: 1px solid #7C7E81;">
+                            <div class="row" style="background-color:#FFF;">
+                                <div class="col-md-12" style="background-color:#FFF;">
+                                    <div class="col-md-12">
+                                        <label><strong>Registrar nueva incapacidad</strong></label>
+                                    </div>
+                                    <div class="clearfix" style="margin-bottom:50px;"></div>
+                                    <div class="col-md-6">
+                                        <label>Fecha de inicio</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>Fecha de fin</label>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <div class="col-md-6">
+                                        <input id="dgplusbellebundle_incapacidad_fechaInicial" class="form-control"/>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input id="dgplusbellebundle_incapacidad_fechaFinal" class="form-control"/>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <div class="col-md-12" style="margin-top:20px;">
+                                        <label>Notas/Observaciones</label>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <textarea id="incapaciadNotas" class="form-control"></textarea>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <hr>
+                                    <div class="row pull-left" >
+                                        <div class="col-md-12">
+                                            <div class="form-grouphide col-sm-12">
+                                                <button type="submit" id="guardarIncapacidad" name="dgplusbellebundle_antecedentes[submit]" class="btn btn-primary text-light btn-xs btn btn">Guardar</button>
+                                            </div>
+                                            <hr>
+                                        </div>
+                                    </div>
+                                    
+                                </div>   
+                            </div>
+                            
+                            <div class="row" style="background-color:#FFF;">
+                                <div class="col-md-12">
+                                    <label><strong>Incapacidades generadas al paciente</strong></label>
+                                </div>
+                                <div class="clearfix"></div>
+                                <div class="col-md-12" {#style="border-right: 1px solid #7C7E81;"#}>
                                     <table id = "datatables1" class="table table-bordered table-hover display dt-responsive" style="margin-top: 30px">
                                         <thead>
                                             <tr>
@@ -1004,7 +1049,7 @@
                                     </table>
                                 </div>
                                 
-                                <div class="col-md-4">
+                                {#<div class="col-md-4">
                                     <div class="col-md-6">
                                         <label>Fecha de inicio</label>
                                     </div>
@@ -1030,18 +1075,18 @@
                                     <div class="row pull-right" >
                                         <div class="col-md-12">
                                             <div class="form-grouphide col-sm-12">
-                                                <button type="submit" id="guardarIncapacidad" name="dgplusbellebundle_antecedentes[submit]" class="btn btn-success text-light btn-xs btn btn">Guardar</button>
+                                                <button type="submit" id="guardarIncapacidad" name="dgplusbellebundle_antecedentes[submit]" class="btn btn-primary text-light btn-xs btn btn">Guardar</button>
                                             </div>
                                         </div>
                                     </div>
-                                </div>                
+                                </div>   #}             
                             </div>
                             
                             
-                        </p>
+                        
                     
                     </div><!-- /tab-content -->
-                    <div class="tab-pane fade in" id="botabs11">
+                    <div class="tab-pane fade in" id="botabs11" style="background-color: #FFF;">
                         <p>
                             <strong></strong>
                             <div class="row">
@@ -1057,13 +1102,13 @@
                             </div>
                             <div class="row" style="margin-top:20px;">
                                 <div class="col-md-4">
-                                    <textarea maxlength="400" style="height:100px;" id="diagnostico" class="form-control">{{evaluacion.diagnostico}}</textarea>
+                                    <textarea maxlength="400" style="height:200px;" id="diagnostico" class="form-control">{{evaluacion.diagnostico}}</textarea>
                                 </div>
                                 <div class="col-md-4">
-                                    <textarea maxlength="400" style="height:100px;" id="estLaboratorios" class="form-control">{{evaluacion.estLaboratorio}}</textarea>
+                                    <textarea maxlength="400" style="height:200px;" id="estLaboratorios" class="form-control">{{evaluacion.estLaboratorio}}</textarea>
                                 </div>
                                 <div class="col-md-4">
-                                    <textarea maxlength="400" style="height:100px;" id="medicamentos" class="form-control">{{evaluacion.medicamentos}}</textarea>
+                                    <textarea maxlength="400" style="height:200px;" id="medicamentos" class="form-control">{{evaluacion.medicamentos}}</textarea>
                                 </div>
                             </div>
                         <div class="row" style="margin-top:10px;">
@@ -1076,7 +1121,7 @@
                                         <div class="col-md-12">
                                             <div class="form-grouphide col-sm-12">
                                                 {#<a class="btn btn-default btn-xs" id="cancelarNuevoConsulta">Cancelar</a>#}
-                                                <button type="submit" id="guardarEvaluacion" name="dgplusbellebundle_antecedentes[submit]" class="btn btn-success text-light btn-xs btn btn">Guardar</button>
+                                                <button type="submit" id="guardarEvaluacion" name="dgplusbellebundle_antecedentes[submit]" class="btn btn-primary text-light btn-xs btn btn">Guardar</button>
                                             </div>
                                         </div>
                                     </div>
@@ -1133,7 +1178,7 @@
                         <div class="col-md-12">
                             <div class="form-grouphide col-sm-12">
                                 {#<a class="btn btn-default btn-xs" id="cancelarNuevoConsulta">Cancelar</a>#}
-                                <button type="submit" id="guardarAntecedentes" name="dgplusbellebundle_antecedentes[submit]" class="btn btn-success text-light btn-xs btn btn">Guardar</button>
+                                <button type="submit" id="guardarAntecedentes" name="dgplusbellebundle_antecedentes[submit]" class="btn btn-primary text-light btn-xs btn btn">Guardar</button>
                             </div>
                         </div>
                     </div>
@@ -3487,7 +3532,7 @@
                     if(idconsulta!=''){
                         {#bootbox.confirm("Desea registrar esta consulta para el paciente?", function(result) {#}
                             {#Example.show("Confirm result: "+result);#}
-{#                            if(result){#}w
+{#                            if(result){#}
                                 //console.log(result);
                                 $.ajax({
                                     data:{codigo:codigo,motivo:motivo,sintomas:sintomas,aparatos:aparatos,id:id,medico:medico,tipoConsulta:tipoConsulta,sucursal:sucursal,observaciones:observaciones,idconsulta:idconsulta,costoconsulta:costoconsulta},
@@ -3766,7 +3811,8 @@
             direction:1,
             show_icon: false,
         });
-        
+        var url = "{{path('admin_incapacidad_data')}}?id="+$('#idPaciente').val();
+        console.log(url);
         var tabla = $('#datatables1').DataTable({ 
                     {#searching:true,
                     order:[[1,"asc"]],#}
@@ -3775,7 +3821,7 @@
                     "processing": false,
                     "serverSide": true,
                     "ajax": {
-                        "url": '{{path('admin_incapacidad_data')}}',
+                        "url": url,
                         "type": 'GET'
                     },
                     "columns": [

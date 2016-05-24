@@ -15,6 +15,8 @@
         <span class="icon-bar"></span>
       </button>
       <a class="navbar-brand " href="{{ path('admin_cita') }}"><img src="{{ asset('Resources/src/img/brand.png')}}" style="width: 25px;"></a>
+{#      <a class="navbar-brand " href="{{ path('admin_cita') }}"><img src="{{ asset('Resources/img/dgplusbelle/images/logo01.jpg')}}" style="width: 200px;"></a>#}
+
       {#<a href="#"><i class="fa fa-chevron-right" style="margin-top: 16px;"> </i>
       <strong> </strong></a>
       <a href="#" style="margin-left: 10px;"><i class="fa fa-chevron-right" style="margin-top: 16px;"></i>
@@ -24,7 +26,7 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav navbar-right">
-        <li><input type="text" class="form-control" style="width: 300px; margin-top: 5px;" placeholder="Realize una busqueda - (Ctrl+G)"></li>
+        {#<li><input type="text" class="form-control" style="width: 300px; margin-top: 5px;" placeholder="Realize una busqueda - (Ctrl+G)"></li>#}
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <img src="{{ asset('Photos/Empleado/')}}{{app.user.persona.empleado[0].foto}}" style="width: 25px;"> &nbsp; {{app.user.persona.nombres}} {{app.user.persona.apellidos}}<span class="caret"></span></a>
           <ul class="dropdown-menu">

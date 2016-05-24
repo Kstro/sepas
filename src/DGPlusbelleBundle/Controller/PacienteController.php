@@ -147,7 +147,7 @@ class PacienteController extends Controller
 
         $form->add('submit', 'submit', array('label' => 'Guardar',
                                                'attr'=>
-                                                        array('class'=>'btn btn-success btn-sm text-light')
+                                                        array('class'=>'btn btn-primary btn-sm text-light')
                                                  
          ));
 
@@ -240,7 +240,7 @@ class PacienteController extends Controller
 
         $form->add('submit', 'submit', array('label' => 'Modificar',
                                                'attr'=>
-                                                        array('class'=>'btn btn-success btn-sm')));
+                                                        array('class'=>'btn btn-primary btn-sm')));
 
         return $form;
     }
@@ -268,11 +268,11 @@ class PacienteController extends Controller
         if ($editForm->isValid()) {
             $path = $this->container->getParameter('photo.paciente');
             $foto = $entity->getFoto();
-            if($foto!=null){
-                unlink($path.$foto);
-            }
             if($entity->getFile()!=null){
-                
+                if($foto!=null){
+                    unlink($path.$foto);
+                    $entity->setFoto(null);
+                }
 
                 $fecha = date('Y-m-d His');
                 $extension = $entity->getFile()->getClientOriginalExtension();
@@ -769,9 +769,9 @@ class PacienteController extends Controller
             
             $sql = "SELECT id as id, DATE_FORMAT(fecha, '%d-%m-%Y %H:%i') as fecha,transaccion,upper(atendido) as atendido,realizado, 
                 CASE
-                WHEN transaccion='Consulta' THEN CONCAT('<a id=\"',idtransaccion,'\" class=\"link_ SD\">', 'Ver detalles</a>',' <a class=\"pull-right link\" id=\"',idtransaccion,'\">Eliminar consulta</a>')
-                WHEN transaccion = 'Venta paquete' THEN CONCAT('<a id=\"',idtransaccion,'\" class=\"link_ paquete\">', 'Ver detalles</a>')
-                ELSE CONCAT('<a id=\"',idtransaccion,'\" class=\"link_ tratamiento\">', 'Ver detalles</a>')
+                WHEN transaccion='Consulta' THEN CONCAT('<a id=\"',idtransaccion,'\" class=\"pull-right link_ SD\">', 'Ver detalles</a>',' <a class=\"pull-right link\" id=\"',idtransaccion,'\">Eliminar consulta</a>')
+                WHEN transaccion = 'Venta paquete' THEN CONCAT('<a id=\"',idtransaccion,'\" class=\"pull-right link_ paquete\">', 'Ver detalles</a>')
+                ELSE CONCAT('<a id=\"',idtransaccion,'\" class=\"pull-right link_ tratamiento\">', 'Ver detalles</a>')
                 
                 END AS detalles FROM listadoexpediente WHERE expediente like '%".strtoupper($busqueda['value'])."' ORDER BY fecha DESC LIMIT ".$start.",".$longitud;
         

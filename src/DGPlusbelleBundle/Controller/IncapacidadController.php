@@ -288,12 +288,13 @@ class IncapacidadController extends Controller
     {
         $entity = new Incapacidad();
         $form = $this->createCreateForm($entity);
-     
+        
 
         $start = $request->query->get('start');
         $draw = $request->query->get('draw');
         $longitud = $request->query->get('length');
         $busqueda = $request->query->get('search');
+        $id = $request->query->get('id');
         
         $em = $this->getDoctrine()->getEntityManager();
         $expedientesTotal = $em->getRepository('DGPlusbelleBundle:Incapacidad')->findAll();
@@ -338,11 +339,13 @@ class IncapacidadController extends Controller
         }
         else{
 //            $dql = "SELECT exp.numero as expediente, pac.id as id,CONCAT(per.nombres, per.apellidos) as nombres, '<a ><i style=\"cursor:pointer;\"  class=\"infoPaciente fa fa-info-circle\"></i></a>' as link FROM DGPlusbelleBundle:Incapacidad inc "
-            $dql = "SELECT exp.numero as expediente, inc.id as id,CONCAT(CONCAT(per.nombres,' '), per.apellidos) as nombres, DATE_FORMAT(inc.fechaInicial,'%d-%m-%Y') as fechaInicial, DATE_FORMAT(inc.fechaFinal,'%d-%m-%Y') as fechaFinal,inc.notas, concat(concat('<a id=\"',inc.id),'\"><i style=\"cursor:pointer;color:#000\" data-toggle=\"tooltip\" data-original-title=\"Atrás\" class=\"infoIncapacidad fa fa-list-alt\"></i></a>','<a style=\"margin-left:5px;\" id=\"',inc.id,'\"><i style=\"cursor:pointer;color:#000\" data-toggle=\"tooltip\" data-original-title=\"Atrás\" class=\"eliminarIncapacidad fa fa-times\"></i></a>')  as link FROM DGPlusbelleBundle:Incapacidad inc "
+            $dql = "SELECT exp.numero as expediente, inc.id as id,CONCAT(CONCAT(per.nombres,' '), per.apellidos) as nombres, DATE_FORMAT(inc.fechaInicial,'%d-%m-%Y') as fechaInicial, DATE_FORMAT(inc.fechaFinal,'%d-%m-%Y') as fechaFinal,CONCAT(SUBSTRING(inc.notas,1,20),'...') as notas, concat(concat('<a id=\"',inc.id),'\"><i style=\"cursor:pointer;color:#000\" data-toggle=\"tooltip\" data-original-title=\"Atrás\" class=\"infoIncapacidad fa fa-list-alt\"></i></a>','<a style=\"margin-left:5px;\" id=\"',inc.id,'\"><i style=\"cursor:pointer;color:#000\" data-toggle=\"tooltip\" data-original-title=\"Atrás\" class=\"eliminarIncapacidad fa fa-times\"></i></a>')  as link FROM DGPlusbelleBundle:Incapacidad inc "
                 . "JOIN inc.paciente pac "
                 . "JOIN pac.persona per "
-                . "JOIN pac.expediente exp ORDER BY inc.id DESC ";
+                . "JOIN pac.expediente exp "
+                . "WHERE pac.id=:id ORDER BY inc.id DESC ";
             $paciente['data'] = $em->createQuery($dql)
+                    ->setParameter('id',$id)
                     ->setFirstResult($start)
                     ->setMaxResults($longitud)
                     ->getResult();

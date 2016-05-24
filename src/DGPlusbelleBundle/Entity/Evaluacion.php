@@ -40,7 +40,7 @@ class Evaluacion
     /**
      * @var int
      *
-     * @ORM\Column(name="medicamentos", type="integer", length=30, nullable=false)
+     * @ORM\Column(name="medicamentos", type="string", length=30, nullable=false)
      */
     private $medicamentos;
     

@@ -1,0 +1,32 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    
+
+    {#{{ form(edit_form) }}#}
+    <div class="panel panel-default">
+        <!-- Default panel contents -->
+        <div class="panel-heading"><p><strong>Modificar vacuna</strong></p></div>
+        <div class="panel-body">
+        {{ form_start(edit_form) }}
+          {{ form_errors(edit_form) }}
+
+              <div class="col-md-8">
+              {{ form_row(edit_form.nombre) }}
+             {# {{ form_row(form.estado) }}#}
+
+              </div>
+
+                   <div class="form-grouphide col-sm-9">
+                      <a href="{{ path('admin_vacuna') }}" class="btn btn-default btn-sm" id="cancelarNuevo">Cancelar</a>
+                      {{ form_widget(edit_form.submit) }} 
+                    </div>
+
+
+          {{ form_end(edit_form) }}
+        </div>
+
+
+    </div>   
+
+{% endblock %}

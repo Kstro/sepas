@@ -13,7 +13,7 @@
                             
                             <link rel="stylesheet" href="{{ asset('Resources/src/css/bootstrap.css')}}" >
                             <link rel="stylesheet" href="{{ asset('Resources/Zebra/css/bootstrap.css') }}">
-                            <link rel="stylesheet" href="{{ asset('Resources/wrapkit/styles/dependencies.css') }}">
+{#                            <link rel="stylesheet" href="{{ asset('Resources/wrapkit/styles/dependencies.css') }}">#}
                             <!-- Stylesheet Personales -->
                             <link href="{{ asset('Resources/src/css/style.css')}}" rel="stylesheet">
                             <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
@@ -114,6 +114,27 @@
                     $('.grid-stack').gridstack(options);
                 });
                 
+                </script>#}
+                {#<script>
+                    window.onbeforeunload = function (event) {
+                        var message = 'Important: Please click on \'Save\' button to leave this page.';
+                        if (typeof event == 'undefined') {
+                            event = window.event;
+                        }
+                        if (event) {
+                            event.returnValue = message;
+                        }
+                        return message;
+                    };
+
+                    $(function () {
+                        $("a").not('#lnkLogOut').click(function () {
+                            window.onbeforeunload = null;
+                        });
+                        $(".btn").click(function () {
+                            window.onbeforeunload = null;
+                    });
+                    });
                 </script>#}
                 {% block js_extend %}
                     

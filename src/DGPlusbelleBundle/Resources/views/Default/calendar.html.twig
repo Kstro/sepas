@@ -491,9 +491,9 @@ $(document).ready(function() {
                             var mensaje = "";
   {#                        if(data.regs!=0){#}
                             //alert(data.regs[0].numero);
-                            console.log(data.regs[0]);
+                            var expediente=data.regs[0].numero;
                             var hinicio=(data.regs[0].horaCita);
-                            var hfin=(data.regs[0].horaFin);
+                            var hfin=(data.regs[0].horaFinCita);
                             var telef=(data.regs[0].telefono);
                             
                             mensaje += "<div class='container-fluid'>";
@@ -502,7 +502,7 @@ $(document).ready(function() {
                             mensaje += "<div class='clearfix'></div>";
                             
                             if ( data.regs[0].numero !== 0){
-                                mensaje += "<div class='col-md-6 text-right'><b>Expediente: </b></div><div class='col-md-6'>"+data.regs[0].numero+"</div>";
+                                mensaje += "<div class='col-md-6 text-right'><b>Expediente: </b></div><div class='col-md-6'>"+expediente+"</div>";
                                 mensaje += "<div class='clearfix'></div>";
                                 mensaje += "<div class='col-md-6 text-right'><b>Nombre del paciente: </b></div><div class='col-md-6'>"+data.regs[0].nombres+" "+data.regs[0].apellidos+"</div>";
                                 mensaje += "<div class='clearfix'></div>";
@@ -519,6 +519,8 @@ $(document).ready(function() {
                             mensaje += "<div class='col-md-6 text-right'><b>Tratamiento: </b></div><div class='col-md-6'>"+data.regs[0].nombreTratamiento+"</div>";
                             mensaje += "<div class='clearfix'></div>";
                             mensaje += "<div class='col-md-6 text-right'><b>Fecha: </b></div><div class='col-md-6'>"+data.regs[0].fechaCita+"</div>";
+                            mensaje += "<div class='clearfix'></div>";
+                            mensaje += "<div class='col-md-6 text-right'><b>Descripción: </b></div><div class='col-md-6'>"+data.regs[0].descripcion+"</div>";
                             mensaje += "<div class='clearfix'></div>";
                             
                             if(!hinicio){
@@ -539,7 +541,7 @@ $(document).ready(function() {
                               
                             } else{
                                 
-                              mensaje += "<div class='col-md-6 text-right'><b>Hora final: </b></div><div class='col-md-6'>"+data.regs[0].horaFin+"</div>";  
+                              mensaje += "<div class='col-md-6 text-right'><b>Hora final: </b></div><div class='col-md-6'>"+data.regs[0].horaFinCita+"</div>";  
                             
                             } 
                             mensaje += "<div class='clearfix'></div>";
@@ -561,13 +563,55 @@ $(document).ready(function() {
                               alert('iguales');
                           }*/
                             
-                            if(data.regs[0].estado=="Pendiente" && data.regs[0].fechaCita==hoy){
+                            if(data.regs[0].estado=="Pendiente" || data.regs[0].estado=="No asistio"){
+                                
                               bootbox.dialog({
                                 message: mensaje,
                                 title: "Información de la cita",
                                 buttons: {
-                                    
-                                 danger: {
+                                    {#reminder: {
+                                        label: "Recordar cita",
+                                        className: "btn-default btn-warning",
+                                        callback: function() {
+                                            var evento = calendario.fullCalendar('clientEvents',startDate.id);
+                                            var tituloEvento = "";
+                                            var id=0;
+                                            console.log(evento);
+                                            console.log(evento.id);
+                                            Object.keys(evento).forEach(function (key) {
+                                                    tituloEvento = evento[key].title;
+                                                    console.log();
+                                                    id=evento[key].id;
+                                                    
+                                                });
+                                            console.log(id);
+                                            $.getJSON(Routing.generate('admin_cita_reminder', { id: id}), 
+                                                        function(data) {
+                                                            var mensaje = "";
+                                                            console.log(data);
+                                                            if(data==0){// correo enviado
+                                                                mensaje += "<div class='row'><div class='col-md-12'><b><p class='text-left'>Recordatorio...</p></b></div></div>";
+                                                                mensaje += "<hr>";
+                                                                mensaje += "<div class='row'><div class='col-md-12'>¡Recordatorio enviado con éxito!</div></div>"
+                                                                bootbox.alert(mensaje, function() {
+
+                                                                });
+                                                                
+                                                            }
+                                                            else{//correo no enviado
+                                                                mensaje += "<div class='row'><div class='col-md-12'><b><p class='text-left'>Error...</p></b></div></div>";
+                                                                mensaje += "<hr>";
+                                                                mensaje += "<div class='row'><div class='col-md-12'>¡El paciente no ha proporciado su correo, no se puede enviar un recordatorio de cita!</div></div>"
+                                                                calendario.fullCalendar('updateEvent', evento);
+                                                                
+                                                                bootbox.alert(mensaje, function() {
+
+                                                                });
+                                                            }
+                                                        });
+                                        }
+                                    },#}
+                                    danger: {
                                             label: "Cancelar cita",
                                             className: "btn-danger",
                                             callback: function() {
@@ -591,6 +635,7 @@ $(document).ready(function() {
                                                             mensaje += "<hr>";
                                                             mensaje += "<div class='row'><div class='col-md-12'>¡Cita cancelada satisfactoriamente!</div></div>"
                                                             calendario.fullCalendar('updateEvent', evento);
+                                                            console.log('estado');
                                                             bootbox.alert(mensaje, function() {
 
                                                             });
@@ -724,9 +769,51 @@ $(document).ready(function() {
                                         }
                                     },#}
                                     main: {
-                                        label: "Aceptar",
+                                        label: "Ver expediente",
                                         className: "btn-primary",
                                         callback: function() {
+                                            {#var evento = calendario.fullCalendar('clientEvents',startDate.id);
+                                            var tituloEvento = "";
+                                            var eventoId = 0;
+                                            console.log(evento);
+                                            console.log(expediente);
+                                            var evento = calendario.fullCalendar('clientEvents',startDate.id);
+                                            var tituloEvento = "";
+                                            var eventoId = 0;#}
+                                            var url = '{{path('admin_consulta_expediente_sd')}}'+"?id="+expediente;
+                                            console.log(url);
+                                            {#Object.keys(evento).forEach(function (key) {
+                                                tituloEvento = evento[key].title;
+                                        
+                                                console.log(evento[key].id);
+                                                var subTituloEvento = tituloEvento.split(" | ");
+                                                var iconoX = '<div class="fa fa-calendar-check-o" style="width: 17px; height: 100%; float: left; background: #69BD45;  position: absolute; margin-left: -3px; padding-left:2px "></div> <div style="width: 91%; height: 100%; float: right; position: relative; ">  | ';
+                                                //console.log(subTituloEvento);
+                                                var nuevoTitulo = iconoX+' | '+subTituloEvento[1]+' | '+subTituloEvento[2];
+                                                evento[key].title = nuevoTitulo;#}
+                                                {#$.getJSON(Routing.generate('get_asistidaCita', { id: evento[key].id}), 
+                                                function(data) {
+                                                    var mensaje = "";
+                                                    if(data.regs==0){
+                                                        mensaje += "<div class='row'><div class='col-md-12'><b><p class='text-left'>Actualización exitosa...</p></b></div></div>";
+                                                            mensaje += "<hr>";
+                                                            mensaje += "<div class='row'><div class='col-md-12'>¡Cita registrada como asistida satisfactoriamente!</div></div>"
+                                                        calendario.fullCalendar('updateEvent', evento);
+                                                        bootbox.alert(mensaje, function() {
+
+                                                        });
+                                                    }
+                                                    else{
+                                                        mensaje += "<div class='row'><div class='col-md-12'><b><p class='text-left'>Error...</p></b></div></div>";
+                                                            mensaje += "<hr>";
+                                                            mensaje += "<div class='row'><div class='col-md-12'>¡La cita no pudo modificarse, intente de nuevo!</div></div>"
+                                                        bootbox.alert(mensaje, function() {
+
+                                                        });
+                                                    }
+                                                });#}
+{#                                            });#}
+                                            window.location = url;
                                             
                                         }
                                     }

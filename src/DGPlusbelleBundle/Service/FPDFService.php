@@ -1364,7 +1364,7 @@ class FPDFService {
         
         
         
-        $this->pdf->SetWidths(array(40,50,40,50));  
+        $this->pdf->SetWidths(array(190,50,40,50));  
         $this->pdf->SetFont('Arial','',10);
         $this->pdf->Row(array(utf8_decode($consulta[0]->getNotas()))) ;
         //var_dump(count($consulta[0]->getPlacas()));

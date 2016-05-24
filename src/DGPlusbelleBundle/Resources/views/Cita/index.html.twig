@@ -185,7 +185,7 @@
 {% block javascripts_step -%}
     <!-- Aspectos generales de la plantilla -->
     {{parent()}}
-    
+    <script src="{{ asset('Resources/wrapkit/scripts/bootbox.js') }}"></script>
     <script type="text/javascript">
         $(function () {
           $('[data-toggle="tooltip"]').tooltip();

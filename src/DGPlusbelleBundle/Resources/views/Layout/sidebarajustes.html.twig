@@ -1,19 +1,19 @@
 <aside class="sidebar" role="complementary">
 <!-- profile -->
-<div class="sidebar-block">
+{#<div class="sidebar-block">
   <div class="media">
-    <div class="media-left">
+    <div class="media-left">#}
       {#<a href="page-profile.html">#}
-        <span class="status dotted dotted-primary" data-toggle="tooltip" data-container="body" title="Conectado"></span>
-        {% block imagenPerfil %}
+        {#<span class="status dotted dotted-primary" data-toggle="tooltip" data-container="body" title="Conectado"></span>
+        {% block imagenPerfil %}#}
             {#<div class="row">
                 <div class="col-md-2">#}
-                    <img class="media-object img-circle" style="width:50px;" src="{{ asset('Photos/Empleado/')}}{{app.user.persona.empleado[0].foto}}" alt="photo profile">
+{#                    <img class="media-object img-circle" style="width:50px;" src="{{ asset('Photos/Empleado/')}}{{app.user.persona.empleado[0].foto}}" alt="photo profile">#}
                 {#</div>
             </div>#}
-        {% endblock %}
+{#        {% endblock %}#}
 {#      </a>#}
-    </div>
+{#    </div>
     {% block perfil %}
         <div class="media-body">
             <h4 class="media-heading">{{app.user.persona.nombres}} {{app.user.persona.apellidos}}</h4>  <!-- nombre de usuario conectado -->
@@ -24,7 +24,7 @@
 
     {% endblock %}
   </div>
-</div><!-- /.sidebar-block -->
+</div><!-- /.sidebar-block -->#}
 <!-- /profile -->
 
 <!-- /navigation -->
@@ -108,7 +108,7 @@
     {% endif %}
     {% if is_granted('ROLE_ADMIN') %}
         <li class="nav-item" role="presentation">
-          <a href="{{ path('admin_producto') }}">
+          <a href="{{ path('admin_vacuna') }}">
             <span class="nav-icon"><i class="fa fa-database"></i></span>
             <span class="nav-text">Gestionar vacunas</span>
           </a>
@@ -140,10 +140,10 @@
         
         
         <li class="nav-item" role="presentation">
-          <a href="{{ path('admin_empleado') }}">
-            <span class="nav-icon"><i class="fa fa-user-md"></i></span>
-            <span class="nav-text">Gestionar empleado</span>
-          </a>
+            <a href="{{ path('admin_empleado') }}">
+                <span class="nav-icon"><i class="fa fa-user-md"></i></span>
+                <span class="nav-text">Gestionar empleado</span>
+            </a>
         </li>
         
         
