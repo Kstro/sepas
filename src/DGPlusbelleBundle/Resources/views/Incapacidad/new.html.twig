@@ -1,8 +1,8 @@
-{% extends 'DGPlusbelleBundle:Layout:layout.html.twig' %} 
+{#{% extends 'DGPlusbelleBundle:Layout:layouterp.html.twig' %} #}
 
 
 {% block css %}
-    {{parent()}}
+{#    {{parent()}}#}
     <style>
         #dgplusbellebundle_incapacidad_notas{
             resize: vertical;
@@ -16,7 +16,7 @@
     
     <div class="panel panel-default">
   <!-- Default panel contents -->
-  <div class="panel-heading"><p>Nueva incapacidad</p></div>
+  <div class="panel-heading"><p><strong>Nueva incapacidad</strong></p></div>
   <div class="panel-body">
   {{ form_start(form) }}
     {{ form_errors(form) }}
@@ -55,7 +55,8 @@
 {% endblock %}
 
 {% block javascripts_step %}
-       <script src="{{ asset('Resources/js/Paciente.js') }}"></script>
+        <script src="{{ asset('Resources/Zebra/js/zebra_datepicker.js') }}"></script>
+{#        <script src="{{ asset('Resources/js/Paciente.js') }}"></script>#}
        
     
     
@@ -67,11 +68,8 @@
                 
                 
                 
-              // validando campos  
-              $('#dgplusbellebundle_paciente_dui').mask('00000000-0');  
-              $('#dgplusbellebundle_paciente_persona_telefono').mask('0000-0000'); 
-              $('#dgplusbellebundle_paciente_persona_telefono2').mask('0000-0000'); 
-              $('#dgplusbellebundle_paciente_telefonoEmergencia').mask('0000-0000'); 
+              
+              
               
                 //Seleccionar un registro
                 
@@ -136,7 +134,7 @@
         $('#filterDatatables1').val('');
         
         
-           validarPaciente();  
+           {#validarPaciente();  #}
         
     });//Fin document ready
         

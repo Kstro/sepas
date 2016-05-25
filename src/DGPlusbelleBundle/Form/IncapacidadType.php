@@ -32,7 +32,8 @@ class IncapacidadType extends AbstractType
                      'empty_value'   => 'Seleccione un paciente...',
                      'class'         => 'DGPlusbelleBundle:Paciente',
                      'attr'=>array(
-                     'class'=>'form-control input-sm pacienteConsulta'
+                     'class'=>'form-control input-sm pacienteConsulta',
+                     'style'=>'width:100%;'
                      )
                    ))
         ;

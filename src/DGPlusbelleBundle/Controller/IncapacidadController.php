@@ -64,7 +64,7 @@ class IncapacidadController extends Controller
             $em->flush();
 
 //            return $this->redirect($this->generateUrl('admin_incapacidad_show', array('id' => $entity->getId())));
-            return $this->redirect($this->generateUrl('admin_incapacidad_index'));
+            return $this->redirect($this->generateUrl('admin_incapacidad'));
         }
 
         return array(
@@ -88,7 +88,7 @@ class IncapacidadController extends Controller
         ));
 
         $form->add('submit', 'submit', array('label' => 'Guardar','attr'=>
-                                                        array('class'=>'btn btn-success btn-sm')
+                                                        array('class'=>'btn btn-primary btn-sm')
          ));
 
         return $form;
@@ -194,7 +194,7 @@ class IncapacidadController extends Controller
         ));
 
         $form->add('submit', 'submit', array('label' => 'Modificar','attr'=>
-                                                        array('class'=>'btn btn-success btn-sm')
+                                                        array('class'=>'btn btn-primary btn-sm')
          ));
 
         return $form;
@@ -463,6 +463,92 @@ class IncapacidadController extends Controller
     
     
     
+    
+    
+    /**
+     * 
+     *
+     * @Route("/incapacidad/data/todo", name="admin_incapacidad_data_todo")
+     */
+    public function dataIncapacidadTodoAction(Request $request)
+    {
+        
+        
+        
+
+        $start = $request->query->get('start');
+        $draw = $request->query->get('draw');
+        $longitud = $request->query->get('length');
+        $busqueda = $request->query->get('search');
+        
+        
+        $em = $this->getDoctrine()->getEntityManager();
+        $expedientesTotal = $em->getRepository('DGPlusbelleBundle:Incapacidad')->findAll();
+        
+        $paciente['draw']=$draw++;  
+        $paciente['recordsTotal'] = count($expedientesTotal);
+        $paciente['recordsFiltered']= count($expedientesTotal);
+        $paciente['data']= array();
+        
+        $arrayFiltro = explode(' ',$busqueda['value']);
+        
+        
+        $busqueda['value'] = str_replace(' ', '%', $busqueda['value']);
+        if($busqueda['value']!=''){
+            
+                    
+                    $dql = "SELECT exp.numero as expediente, inc.id as id,CONCAT(CONCAT(per.nombres,' '), per.apellidos) as nombres, DATE_FORMAT(inc.fechaInicial,'%d-%m-%Y') as fechaInicial, DATE_FORMAT(inc.fechaFinal,'%d-%m-%Y') as fechaFinal,inc.notas, concat(concat('<a id=\"',inc.id),'\"><i style=\"cursor:pointer;color:#000\" data-toggle=\"tooltip\" data-original-title=\"Atrás\" class=\"infoIncapacidad fa fa-list-alt\"></i></a>','<a style=\"margin-left:5px;\" id=\"',inc.id,'\"><i style=\"cursor:pointer;color:#000\" data-toggle=\"tooltip\" data-original-title=\"Atrás\" class=\"eliminarIncapacidad fa fa-times\"></i></a>')  as link FROM DGPlusbelleBundle:Incapacidad inc "
+                        . "JOIN inc.paciente pac "
+                        . "JOIN pac.persona per "
+                        . "JOIN pac.expediente exp "
+                        . "WHERE CONCAT(upper(per.nombres),upper(per.apellidos)) LIKE upper(:busqueda) "
+                        . "ORDER BY per.nombres ASC ";
+                    
+                    $paciente['data'] = $em->createQuery($dql)
+                            ->setParameters(array('busqueda'=>"%".$busqueda['value']."%"))
+                            ->getResult();
+                    
+                    $paciente['recordsFiltered']= count($paciente['data']);
+                    
+                    $dql = "SELECT exp.numero as expediente, inc.id as id,CONCAT(CONCAT(per.nombres,' '), per.apellidos) as nombres, DATE_FORMAT(inc.fechaInicial,'%d-%m-%Y') as fechaInicial, DATE_FORMAT(inc.fechaFinal,'%d-%m-%Y') as fechaFinal,inc.notas, concat(concat('<a id=\"',inc.id),'\"><i style=\"cursor:pointer;color:#000\" data-toggle=\"tooltip\" data-original-title=\"Atrás\" class=\"infoIncapacidad fa fa-list-alt\"></i></a>','<a style=\"margin-left:5px;\" id=\"',inc.id,'\"><i style=\"cursor:pointer;color:#000\" data-toggle=\"tooltip\" data-original-title=\"Atrás\" class=\"eliminarIncapacidad fa fa-times\"></i></a>')  as link FROM DGPlusbelleBundle:Incapacidad inc "
+                        . "JOIN inc.paciente pac "
+                        . "JOIN pac.persona per "
+                        . "JOIN pac.expediente exp "
+                        . "WHERE CONCAT(upper(per.nombres),upper(per.apellidos)) LIKE upper(:busqueda) "
+                        . "ORDER BY per.nombres ASC ";
+                    
+                    $paciente['data'] = $em->createQuery($dql)
+                            ->setParameters(array('busqueda'=>"%".$busqueda['value']."%"))
+                            ->setFirstResult($start)
+                            ->setMaxResults($longitud)
+                            ->getResult();
+        }
+        else{
+//            $dql = "SELECT exp.numero as expediente, pac.id as id,CONCAT(per.nombres, per.apellidos) as nombres, '<a ><i style=\"cursor:pointer;\"  class=\"infoPaciente fa fa-info-circle\"></i></a>' as link FROM DGPlusbelleBundle:Incapacidad inc "
+            $dql = "SELECT CONCAT('<a class=\"link_expediente\" id=\"',inc.id,'\">',exp.numero,'</a>') as expediente, inc.id as id,CONCAT(CONCAT(per.nombres,' '), per.apellidos) as nombres, DATE_FORMAT(inc.fechaInicial,'%d-%m-%Y') as fechaInicial, DATE_FORMAT(inc.fechaFinal,'%d-%m-%Y') as fechaFinal,CONCAT(SUBSTRING(inc.notas,1,20),'...') as notas, concat(concat('<a id=\"',inc.id),'\"><i style=\"cursor:pointer;color:#000\" data-toggle=\"tooltip\" data-original-title=\"Atrás\" class=\"infoIncapacidad fa fa-list-alt\"></i></a>','<a style=\"margin-left:5px;\" id=\"',inc.id,'\"><i style=\"cursor:pointer;color:#000\" data-toggle=\"tooltip\" data-original-title=\"Atrás\" class=\"eliminarIncapacidad fa fa-times\"></i></a>')  as link FROM DGPlusbelleBundle:Incapacidad inc "
+                . "JOIN inc.paciente pac "
+                . "JOIN pac.persona per "
+                . "JOIN pac.expediente exp "
+                . "ORDER BY inc.id DESC ";
+            
+            $paciente['data'] = $em->createQuery($dql)
+                    ->setFirstResult($start)
+                    ->setMaxResults($longitud)
+                    ->getResult();
+        }
+        //$longitud = $request->query->get('length');
+        //var_dump($start);
+        
+        //var_dump(count($pacientesTotal));
+        
+        //$array = array("draw"=>23);
+//        $paciente['draw']=23;
+//        $paciente['recordsTotal']=57;
+//        $paciente['recordsFiltered']=57;
+        
+        
+        return new Response(json_encode($paciente));
+    }
     
     
     

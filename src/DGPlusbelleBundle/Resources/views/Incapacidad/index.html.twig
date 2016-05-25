@@ -9,24 +9,22 @@
 {% endblock %}
 
 
-{% block contenido -%}
-    <div class="content-body">
-          <div class="panel" data-fill-color="true">
-            <div class="panel-heading">
-              <div class="panel-control pull-right">
-                {#<a href="#" class="btn btn-icon" data-toggle="panel-refresh" rel="tooltip" data-placement="bottom" title="refresh"><i class="icon-refresh"></i></a>
-                <a href="#" class="btn btn-icon" data-toggle="panel-expand" rel="tooltip" data-placement="bottom" title="expand"><i class="arrow_expand"></i></a>
-                <a href="#" class="btn btn-icon" data-toggle="panel-collapse" rel="tooltip" data-placement="bottom" title="collapse"><i class="icon_minus_alt2"></i></a>#}
-              </div>
-              <h3 class="panel-title"><strong>Incapacidades<strong></h3>
-            </div><!-- /.panel-heading -->
+{% block descripcion %}
+    <div class="col-md-6">
+        <p class="robo" style="font-weight: 300; margin-bottom: 0px; font-size: 30px;">Incapacidades</p>
+        <p class="robo" style="font-weight: 300; font-size: 14px; height: 40px;">Genere, edite y consulte incapacidades de los pacientes. </p>
+    </div>
+{% endblock %}
 
-            <div class="panel-body">
-              <div class="btn-toolbar clearfix" role="toolbar">
+{% block acciones %}
+    <div class="panel-body">
+              <div class="btn-toolbar clearfix pull-right" role="toolbar">
                
                 <div class="btn-group btn-group-sm pull-left">
-                    <button style="height:30px;" data-toggle="tooltip" data-container="body" title="Nueva incapacidad" id="add-datatables1" class="btn btn-default" role="button">
-                        <i class="icon-user-follow"></i>
+                    <button style="height:30px;" data-toggle="tooltip" data-container="body" title="Nueva incapacidad" id="add-datatables1" class="btn btn-primary" role="button">
+                        {#<i class="icon-user-follow"></i>#}
+{#                        <i class="fa fa-user-plus"></i>#}
+                        Nueva
                     </button> 
                 </div>
                 {#<div class="btn-group btn-group-sm pull-left">
@@ -58,8 +56,9 @@
                     </button> #}
                 </div>
                 <div class="btn-group btn-group-sm pull-left">
-                  <button style="height:30px;" id="edit-datatables1" data-toggle="tooltip" data-container="body" title="Modificar incapacidad" class="btn btn-default datatables1-actions disabled" role="button">
+                  <button style="height:30px;" id="edit-datatables1" data-toggle="tooltip" data-container="body" title="Modificar incapacidad" class="btn btn-primary datatables1-actions disabled" role="button">
                     <i class="fa fa-edit"></i>
+                    Modificar
                   </button>
                   
                 </div>
@@ -68,10 +67,17 @@
                 </div>
               </div><!-- /btn-toolbar -->
             </div><!-- /.panel-body -->
+{% endblock acciones %}
 
-            {#<div class="panel-body hide" id="addFormContainer">
+
+{% block contenido -%}
+    <div class="content-body">
+          <div class="panel" data-fill-color="true">
+            
+
+            <div class="panel-body hide" id="addFormContainer">
               {% include 'DGPlusbelleBundle:Incapacidad:new.html.twig' %}
-            </div><!-- /.panel-body -->#}
+            </div><!-- /.panel-body -->
             
             <div class="panel-body hide" id="editFormContainer">
             
@@ -84,10 +90,10 @@
        
  
 
-    <table id = "datatables1" class="table table-bordered table-hover display dt-responsive" style="margin-top: 30px">
+    <table id = "datatables1" class="table table-bordered table-hover display dt-responsive" style="margin-top: 00px">
         <thead>
             <tr>
-                <th>ID</th>
+{#                <th>ID</th>#}
                 <th>Expediente</th>
                 
                 <th>Nombre</th>
@@ -161,14 +167,19 @@
     
     {% block javascripts_step %}
         
-{#       <script src="{{ asset('Resources/js/Paciente.js') }}"></script>#}
-        <script src="{{ asset('Resources/wrapkit/scripts/jquery.mask.js') }}"></script>
+{#        <script src="{{ asset('Resources/js/Paciente.js') }}"></script>#}
+        {#<script src="{{ asset('Resources/wrapkit/scripts/jquery.mask.js') }}"></script>#}
         <script src="{{ asset('Resources/Zebra/js/zebra_datepicker.js') }}"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/js/select2.min.js"></script>
-        <script src="{{ asset('Resources/wrapkit/scripts/dataTables.bootstrap.js') }}"></script>
-        <script src="{{ asset('Resources/wrapkit/scripts/dataTables.tableTools.js') }}"></script>
+        {#<script src="{{ asset('Resources/wrapkit/scripts/dataTables.bootstrap.js') }}"></script>
+        <script src="{{ asset('Resources/wrapkit/scripts/dataTables.tableTools.js') }}"></script>#}
     
-    
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.1.0/material.min.css">
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.11/css/dataTables.material.min.css">
+        
+        
+        <script src="https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"></script>
+	<script src="https://cdn.datatables.net/1.10.11/js/dataTables.material.min.js "></script>
 
         <script>
            
@@ -178,16 +189,16 @@
                 
                 
               // validando campos  
-              $('#dgplusbellebundle_paciente_dui').mask('00000000-0');  
+              {#$('#dgplusbellebundle_paciente_dui').mask('00000000-0');  
               $('#dgplusbellebundle_paciente_persona_telefono').mask('0000-0000'); 
               $('#dgplusbellebundle_paciente_persona_telefono2').mask('0000-0000'); 
-              $('#dgplusbellebundle_paciente_telefonoEmergencia').mask('0000-0000'); 
-              
+              $('#dgplusbellebundle_paciente_telefonoEmergencia').mask('0000-0000'); #}
+                $('#dgplusbellebundle_incapacidad_paciente').select2();
         
                                 //Seleccionar un registro
                 $(document).on('click','#datatables1>tbody>tr,.infoPaciente', function(event) {
-                    idPaciente=$(this).children().html();
-                    
+                    idPaciente=$(this).children().children().attr('id');
+                    console.log(idPaciente);
                     //alert($(this).prop("tagName"));
                     if($(this).prop("tagName")=="I"){
                         idPaciente=$(this).parent().parent().parent().children().html();
@@ -356,8 +367,8 @@
                 
                 
                 $("#add-datatables1").click(function(){
-                    var url="{{path('admin_incapacidad_new')}}";
-                    window.location=url;
+                    {#var url="{{path('admin_incapacidad_new')}}";
+                    window.location=url;#}
                     if($("#addFormContainer").hasClass("hide")){
                         $("#addFormContainer").removeClass("hide");
                         $("#editFormContainer").addClass("hide");
@@ -475,11 +486,11 @@
                     "dom": 'ftp',
                     "serverSide": true,
                     "ajax": {
-                        "url": '{{path('admin_incapacidad_data')}}',
+                        "url": '{{path('admin_incapacidad_data_todo')}}',
                         "type": 'GET'
                     },
                     "columns": [
-                        { "data": "id" },   
+{#                        { "data": "id" },   #}
                         { "data": "expediente" },                       
 
                         { "data": "nombres" },
@@ -496,6 +507,7 @@
                     ],
                     "columnDefs": [
                            { "orderable": false, "targets": 0 },
+                           { "orderable": false, "targets": 1 },
                            { "orderable": false, "targets": 2 },
                            { "orderable": false, "targets": 3 },
                            { "orderable": false, "targets": 4 },
