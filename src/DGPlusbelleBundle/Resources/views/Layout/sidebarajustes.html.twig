@@ -4,7 +4,7 @@
         <!-- Left Navigation -->
         <ul style="list-style: none; padding: 0;">
             
-            <a href="#" class="leftnava"><li class="leftnav left">Reportes</li></a>
+{#            <a href="#" class="leftnava"><li class="leftnav left">Reportes</li></a>#}
             {% if is_granted('ROLE_ADMIN') %}
                 <a href="{{ path('admin_vacuna') }}" class="leftnava"><li class="leftnav left active">Vacunas<span class="pull-right right"><i class="fa fa-arrow-right"></i></span></li></a>
             {% endif %}
