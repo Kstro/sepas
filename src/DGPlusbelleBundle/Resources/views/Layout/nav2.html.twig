@@ -26,7 +26,13 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav navbar-right">
-        {% block busqueda %}<li><input id="busquedaRapida" type="text" class="form-control" style="width: 300px; margin-top: 5px;" placeholder="Realize una búsqueda - (Ctrl+G)"></li>{% endblock busqueda %}
+        {% block busqueda %}<li style="margin-top: 10px !important;">
+                {#<input id="busquedaRapida" type="text" class="form-control" style="width: 300px; margin-top: 5px;" placeholder="Realize una búsqueda - (Ctrl+G)">#}
+                <select id="busquedaRapida" style="width: 250px;" class="form-control">
+                    <option value="0">Realice una búsqueda</option>
+                </select>
+            </li>
+        {% endblock busqueda %}
         <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <img src="{{ asset('Photos/Empleado/')}}{{app.user.persona.empleado[0].foto}}" style="width: 25px;"> &nbsp; {{app.user.persona.nombres}} {{app.user.persona.apellidos}}<span class="caret"></span></a>
             <ul class="dropdown-menu">

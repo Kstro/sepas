@@ -6,16 +6,25 @@
 	font-weight: 300;
 }
 
+.robo>thead>tr>th {
+	font-family: 'Roboto', sans-serif;
+	font-weight: 500;
+}
+
 .leftnav {
 	padding: 7px;
 	border-radius: 6px;
 	margin-top: 2px;
 	margin-bottom: 2px;
+        height: 30px;
 }
 
 a {
-	color: #666666;
-	text-decoration: none;
+	color: #666666 !important;
+	text-decoration: none !important;
+}
+li{
+    list-style: none;
 }
 
 a:hover{

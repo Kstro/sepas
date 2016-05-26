@@ -1,5 +1,63 @@
 {% extends 'DGPlusbelleBundle:Layout:layouterpajustes.html.twig' %}
 
+
+
+{% block navegacion %}
+{#        {{parent()}}#}
+        
+            {% if is_granted('ROLE_ADMIN') %}
+                    <a href="{{ path('admin_vacuna') }}" class="leftnava"><li class="leftnav left">Vacunas<span class="pull-right right"><i class=""></i></span></li></a>
+            {% endif %}
+            {% if is_granted('ROLE_ADMIN') %}
+                <a href="{{ path('admin_empleado') }}" class="leftnava"><li class="leftnav left ">Empleado<span class="pull-right right"><i class=""></i></span></li></a>
+            {% endif %}
+            {% if is_granted('ROLE_ADMIN') %}
+{#                <a href="{{ path('admin_sucursal') }}" class="leftnava"><li class="leftnav left active">Sucursal<span class="pull-right right"><i class="fa fa-arrow-right"></i></span></li></a>#}
+            {% endif %}
+            {% if is_granted('ROLE_ADMIN') %}
+                <a href="{{ path('admin_descuento') }}" class="leftnava"><li class="leftnav left ">Descuento<span class="pull-right right"><i class=""></i></span></li></a>
+            {% endif %}
+            {% if is_granted('ROLE_ADMIN') %}
+                <a href="{{ path('admin_usuario') }}" class="leftnava"><li class="leftnav left ">Usuarios<span class="pull-right right"><i class=""></i></span></li></a>
+            {% endif %}
+        
+    {% endblock navegacion %}
+
+    
+
+{% block descripcion %}
+    <div class="col-md-6">
+        <p class="robo" style="font-weight: 300; margin-bottom: 0px; font-size: 30px;">Sucursal</p>
+        <p class="robo" style="font-weight: 300; font-size: 14px; height: 40px;">Agregue, modifique o elimine recursos de su staff.</p>
+    </div>
+{% endblock %}
+
+{% block acciones %}
+    <div class="panel-body pull-right">
+        <div class="btn-toolbar clearfix" role="toolbar">
+
+          <div class="btn-group btn-group-sm pull-left">
+            <button style="height:30px;" data-toggle="tooltip" data-container="body" title="Nuevo empleado" id="add-datatables1" class="btn btn-primary btn-sm" role="button">
+              {#<i class="fa fa-plus"></i>#}Nuevo
+            </button> 
+          </div>
+          <div class="btn-group btn-group-sm pull-left">
+                <button style="height:30px;" id="edit-datatables1" data-toggle="tooltip" data-container="body" title="Modificar empleado" class="btn btn-default datatables1-actions disabled" role="button">
+                    {#<i class="fa fa-edit"></i>#}Modificar empleado
+                </button>
+                <button style="height:30px;" id="delete-datatables1" data-toggle="tooltip" data-container="body" title="Cambiar estado" class="btn btn-default datatables1-actions disabled" role="button">
+                    <i class="fa fa-toggle-off"></i>
+                </button>
+          </div>
+          <div class="btn-group pull-left">
+            <input id="filterDatatables1" class="form-control input-sm" placeholder="Buscar...">
+          </div>
+        </div><!-- /btn-toolbar -->
+    </div><!-- /.panel-body -->
+{% endblock acciones %}
+    
+    
+    
 {% block contenido -%}
  
  <!-- ============================================

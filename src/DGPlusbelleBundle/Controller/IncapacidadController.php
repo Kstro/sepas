@@ -525,11 +525,11 @@ class IncapacidadController extends Controller
         }
         else{
 //            $dql = "SELECT exp.numero as expediente, pac.id as id,CONCAT(per.nombres, per.apellidos) as nombres, '<a ><i style=\"cursor:pointer;\"  class=\"infoPaciente fa fa-info-circle\"></i></a>' as link FROM DGPlusbelleBundle:Incapacidad inc "
-            $dql = "SELECT CONCAT('<a class=\"link_expediente\" id=\"',inc.id,'\">',exp.numero,'</a>') as expediente, inc.id as id,CONCAT(CONCAT(per.nombres,' '), per.apellidos) as nombres, DATE_FORMAT(inc.fechaInicial,'%d-%m-%Y') as fechaInicial, DATE_FORMAT(inc.fechaFinal,'%d-%m-%Y') as fechaFinal,CONCAT(SUBSTRING(inc.notas,1,20),'...') as notas, concat(concat('<a id=\"',inc.id),'\"><i style=\"cursor:pointer;color:#000\" data-toggle=\"tooltip\" data-original-title=\"Atrás\" class=\"infoIncapacidad fa fa-list-alt\"></i></a>','<a style=\"margin-left:5px;\" id=\"',inc.id,'\"><i style=\"cursor:pointer;color:#000\" data-toggle=\"tooltip\" data-original-title=\"Atrás\" class=\"eliminarIncapacidad fa fa-times\"></i></a>')  as link FROM DGPlusbelleBundle:Incapacidad inc "
+            $dql = "SELECT CONCAT('<a class=\"link_expediente\" id=\"',inc.id,'\">',exp.numero,'</a>') as expediente, inc.id as id,CONCAT(CONCAT(per.nombres,' '), per.apellidos) as nombres, DATE_FORMAT(inc.fechaRegistro,'%d-%m-%Y %H:%i') as fechaRegistro, CONCAT(SUBSTRING(inc.notas,1,20),'...') as notas, concat(concat('<a id=\"',inc.id),'\"><i style=\"cursor:pointer;color:#000\" data-toggle=\"tooltip\" data-original-title=\"Atrás\" class=\"infoIncapacidad fa fa-list-alt\"></i></a>','<a style=\"margin-left:5px;\" id=\"',inc.id,'\"><i style=\"cursor:pointer;color:#000\" data-toggle=\"tooltip\" data-original-title=\"Atrás\" class=\"eliminarIncapacidad fa fa-times\"></i></a>')  as link FROM DGPlusbelleBundle:Incapacidad inc "
                 . "JOIN inc.paciente pac "
                 . "JOIN pac.persona per "
                 . "JOIN pac.expediente exp "
-                . "ORDER BY inc.id DESC ";
+                . "ORDER BY inc.fechaRegistro DESC ";
             
             $paciente['data'] = $em->createQuery($dql)
                     ->setFirstResult($start)

@@ -199,10 +199,14 @@
         
 {% endblock %}
 
-{% block javascripts_step -%}
+{% block javascripts_step %}
     <!-- Aspectos generales de la plantilla -->
     {{parent()}}
+    
+    <script type="text/javascript" src="{{ asset('bundles/adesignscalendar/js/fullcalendar/jquery.fullcalendar.min.js') }}"></script>
+    <script src="{{ asset('Resources/jquery-ui/ui/jquery-ui.js') }}"></script>
     <script src="{{ asset('Resources/wrapkit/scripts/bootbox.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('Resources/bootstrap-3/js/bootstrap.js') }}"></script>  
     <script type="text/javascript">
         $(function () {
           $('[data-toggle="tooltip"]').tooltip();

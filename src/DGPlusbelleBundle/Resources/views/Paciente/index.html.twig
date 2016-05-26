@@ -114,7 +114,7 @@
        
      {#<a href="{{ path('admin_paciente_new') }}" class="btn btn-success"> Crear nuevo paciente</a>  #}
 
-    <table id = "datatables1" class="table table-bordered table-hover display dt-responsive" style="margin-top: 10px">
+    <table id = "datatables1" class="robo table table-bordered table-hover display dt-responsive" style="margin-top: 10px">
         <thead>
             <tr>
 {#                <th>N°</th>  #}
@@ -209,7 +209,9 @@
         <script src="{{ asset('Resources/wrapkit/scripts/dataTables.tableTools.js') }}"></script>#}
         <script type="text/javascript" src="{{ asset('Resources/bValidator-0.73/jquery.bvalidator.js')}}"></script>
         <script type="text/javascript" src="{{ asset('Resources/bValidator-0.73/bvalidator.lang.es.js')}}" ></script>
+        
         <script src="{{ asset('Resources/wrapkit/scripts/bootbox.js') }}"></script>
+        <script src="{{ asset('Resources/src/js/bootstrap.js')}}"></script>
         <script src="{{ asset('Resources/js/Paciente.js') }}"></script>
         
          
@@ -509,6 +511,7 @@
                             mensaje += "<div class='col-md-6 text-right'><b>Al teléfono: </b></div><div class='col-md-6'>"+telefonoEmergencia+"</div>";
                             mensaje += "<div class='clearfix'></div>";
                             mensaje += "</div>";
+                            console.log("modal");
                             bootbox.dialog({
                                   message: mensaje,
                                   title: "Información del paciente",
@@ -522,6 +525,9 @@
                                     }
                                   }
                             });
+                            {#bootbox.alert("Hello world!", function() {
+                                Example.show("Hello world callback");
+                            });#}
                         });
                     }
                     else{
@@ -674,6 +680,7 @@
                         { "data": "fechaNacimiento" },
                         { "data": "link" }
                     ],
+                    "order":[[1, "asc"]],
                     "columnDefs": [
                            { "orderable": false, "targets": 0 },
                            { "orderable": false, "targets": 1 },

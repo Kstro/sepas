@@ -15,6 +15,7 @@
 
 
 {% block jquery -%}
+    
 <script type="text/javascript">     
 var calendario = null;
 var sucursal = $('#sucursal').val();
@@ -99,27 +100,17 @@ var source =
         setsource();
         //return false;
     });
+    
+    
+    
+    
 $(document).ready(function() {        
     // page is now ready, initialize the calendar...
     Date.prototype.timeNow = function () {
          return ((this.getHours() < 10)?"0":"") + this.getHours() +":"+ ((this.getMinutes() < 10)?"0":"") + this.getMinutes()/* +":"+ ((this.getSeconds() < 10)?"0":"") + this.getSeconds()*/;
     }
     
-    $("#nombrePaciente").tooltip({
- 
-        // place tooltip on the right edge
-        position: "center right",
-
-        // a little tweaking of the position
-        offset: [-2, 10],
-
-        // use the built-in fadeIn/fadeOut effect
-        effect: "fade",
-
-        // custom opacity setting
-        opacity: 0.7
- 
-    });
+    
     
     {#$(document).on('click','#nombrePaciente', function(event){
         if($(this).val()==''){

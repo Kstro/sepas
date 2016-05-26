@@ -26,6 +26,14 @@
                                 .link_expediente,.infoPaciente,.link{
                                     color:#666666;
                                 }
+                                
+                                .select2-selection__choice__remove {
+                                    display: none !important;
+                                }
+
+                                .select2-container--focus .select2-autocomplete .select2-selection__choice {
+                                    display: none;
+                                }
                             </style>
                             
                             
@@ -36,6 +44,7 @@
                             
                             <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
                             <script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
+                            
                             <link rel="shortcut icon" href="{{ asset('Resources/imagenes/favicon.png')}}" type="image/x-icon">
                             <link rel="icon" href="{{ asset('Resources/imagenes/favicon.png')}}" type="image/x-icon">
        {#                  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>#}
@@ -102,16 +111,133 @@
                 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
                 
                 <!-- Include all compiled plugins (below), or include individual files as needed -->
-                <script src="{{ asset('Resources/src/js/bootstrap.js')}}"></script>
+{#                <script src="{{ asset('Resources/src/js/bootstrap.js')}}"></script>#}
                 <script src="{{ asset('Resources/src/js/shortcut.js')}}"></script> <!-- http://www.openjs.com/scripts/events/keyboard_shortcuts/v1.php -->
-                <script src="{{ asset('Resources/wrapkit/scripts/select2.js') }}"></script>
-                
+                {#<script src="{{ asset('Resources/wrapkit/scripts/select2.js') }}"></script>#}
+                <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.css" rel="stylesheet"/>
+
+                <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.js"></script>
+                <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.full.js"></script>
                 <script type="text/javascript">
                         $( document ).ready(function() {
+                            $(document).on('change','#busquedaRapida',function(){
+                                var expediente = $(this).val();
+                                var url = "{{path('admin_consulta_expediente_sd')}}"+"?id="+expediente;
+                                console.log(url);
+                                window.location=url;
+                            });
+
+                            $('#busquedaRapida').select2({
+                                ajax: {
+                                    url: "{{path('busqueda_paciente_select')}}",
+                                    dataType: 'json',
+                                    delay: 250,
+                                    data: function (params) {
+                                      return {
+                                        q: params.term, 
+                                        page: params.page
+                                      };
+                                    },
+                                    processResults: function (data, params) {
+                                        var select2Data = $.map(data.data, function (obj) {
+                                            obj.id = obj.numero;
+                                            obj.text = obj.numero+" "+obj.nombres+" "+obj.apellidos;
+
+                                            return obj;
+                                        });
+
+                                        return {
+                                            results: select2Data
+                                            {#pagination: {
+                                                more: (params.page * 30) < data.total_count
+                                            }#}
+                                                    };
+                                    },
+                                    cache: true
+                                },
+                                escapeMarkup: function (markup) { return markup; }, 
+                                minimumInputLength: 1,
+                                templateResult: formatRepo, 
+                                templateSelection: formatRepoSelection 
+                            });
                             shortcut.add("Ctrl+g",function() {
-                                $('#busquedaRapida').focus();
+                                {#busqueda.click();
+                                console.log('click');#}
+                                $("#busquedaRapida").select2('destroy');
+                                var busqueda = $('#busquedaRapida').select2({
+                                    
+                                    ajax: {
+                                        url: "{{path('busqueda_paciente_select_exp')}}",
+                                        dataType: 'json',
+                                        delay: 250,
+                                        data: function (params) {
+                                          return {
+                                            q: params.term, 
+                                            page: params.page
+                                          };
+                                        },
+                                        processResults: function (data, params) {
+                                            var select2Data = $.map(data.data, function (obj) {
+                                                obj.id = obj.numero;
+                                                obj.text = obj.numero+" "+obj.nombres+" "+obj.apellidos;
+
+                                                return obj;
+                                            });
+
+                                            return {
+                                                results: select2Data
+                                                {#pagination: {
+                                                    more: (params.page * 30) < data.total_count
+                                                }#}
+                                            };
+                                        },
+                                        cache: true
+                                    },
+                                    escapeMarkup: function (markup) { return markup; }, 
+                                    minimumInputLength: 1,
+                                    templateResult: formatRepo, 
+                                    templateSelection: formatRepoSelection 
+                                });
+                                $("#busquedaRapida").select2('open');
                             });
                             
+                            $(document).on('click','.dropdown-toggle', function(event){
+                                $('.dropdown-menu').toggle();
+                                console.log("Prueba");
+                            });
+                            
+                            function formatRepo (data) {
+                                if(data.numero){
+                                    var markup = "<div class='select2-result-repository clearfix'>" +
+                                                 "<div class='select2-result-repository__meta'>" +
+                                                 "<div class='select2-result-repository__title'>" + data.numero+" | "+data.nombres+" "+data.apellidos+"</div>" +
+                                                 "</div></div>";
+                                } else {
+                                    var markup = "Realice una búsqueda (Ctrl+g)"; 
+                                }
+
+
+                                {#if (repo.description) {
+                                  markup += "<div class='select2-result-repository__description'>" + repo.description + "</div>";
+                                }
+
+                                markup += "<div class='select2-result-repository__statistics'>" +
+                                        "<div class='select2-result-repository__forks'><i class='fa fa-flash'></i> " + repo.forks_count + " Forks</div>" +
+                                        "<div class='select2-result-repository__stargazers'><i class='fa fa-star'></i> " + repo.stargazers_count + " Stars</div>" +
+                                        "<div class='select2-result-repository__watchers'><i class='fa fa-eye'></i> " + repo.watchers_count + " Watchers</div>" +
+                                    "</div>" +
+                                    "</div></div>";#}
+
+                                return markup;
+                            }
+
+                            function formatRepoSelection (data) {
+                                if(data.numero){
+                                    return data.numero+" | "+data.nombres+" "+data.apellidos;
+                                } else {
+                                    return "Realice una búsqueda (Ctrl+g)"; 
+                                }    
+                            }
                             
 {#                            dropdown-toggle#}
                             

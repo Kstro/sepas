@@ -32,32 +32,10 @@
                         <i class="fa fa-book"></i><a href="{{ path('admin_historial_consulta') }}"> </a>
                     </button> 
                 </div>#}
+                
                 <div class="btn-group btn-group-sm pull-left">
-                    {#<button id="nueva-cita" data-toggle="tooltip" data-container="body" title="Nueva incapacidad" class="btn btn-default datatables1-actions {#disabled#} {#opciones" role="button">
-                        {#<i class="fa fa-calendar-plus-o"></i><a href="{{ path('admin_cita_new') }}"> </a>
-                    </button>#}
-                    {#<button id="nueva-consulta" data-toggle="tooltip" data-container="body" title="Nueva consulta" class="btn btn-default datatables1-actions disabled opciones" role="button">
-                        <i class="fa fa-folder-open"></i><a href="{{ path('admin_consulta_nueva_paciente') }}"> </a>
-                    </button>#}
-                    {#<button id="nueva-consulta" data-toggle="tooltip" data-container="body" title="Nueva consulta emergencia" class="btn btn-default datatables1-actions disabled opciones" role="button">
-                        <i class="fa fa-folder-open"></i><a href="{{ path('admin_consulta_nueva_paciente') }}"> </a>
-                    </button>#}
-                    {#<button id="nueva-devolucion" data-toggle="tooltip" data-container="body" title="Nueva devolucion" class="btn btn-default datatables1-actions disabled opciones" role="button">
-                        <i class="fa fa-money"></i><a href="{{ path('admin_devolucion_new') }}"> </a>
-                    </button> 
-                    <button id="vender-paquete" data-toggle="tooltip" data-container="body" title="Vender paquete" class="btn btn-default datatables1-actions disabled opciones" role="button">
-                        <i class="fa fa-briefcase"></i><a href="{{ path('admin_ventapaquete_new') }}"> </a>
-                    </button> 
-                    <button id="vender-tratamiento" data-toggle="tooltip" data-container="body" title="Vender tratamiento" class="btn btn-default datatables1-actions disabled opciones" role="button">
-                        <i class="fa fa-leanpub"></i><a href="{{ path('admin_personatratamiento_new') }}"> </a>
-                    </button> 
-                     <button id="nuevo-abono" data-toggle="tooltip" data-container="body" title="Nuevo abono" class="btn btn-default datatables1-actions disabled opciones" role="button">
-                        <i class="fa fa-dollar"></i><a href="{{ path('admin_abono_new') }}"> </a>
-                    </button> #}
-                </div>
-                <div class="btn-group btn-group-sm pull-left">
-                  <button style="height:30px;" id="edit-datatables1" data-toggle="tooltip" data-container="body" title="Modificar incapacidad" class="btn btn-primary datatables1-actions disabled" role="button">
-                    <i class="fa fa-edit"></i>
+                  <button style="height:30px;" id="edit-datatables1" data-toggle="tooltip" data-container="body" title="Modificar incapacidad" class="btn btn-default datatables1-actions disabled" role="button">
+{#                    <i class="fa fa-edit"></i>#}
                     Modificar
                   </button>
                   
@@ -87,10 +65,7 @@
             
             </div>
 
-       
- 
-
-    <table id = "datatables1" class="table table-bordered table-hover display dt-responsive" style="margin-top: 00px">
+    <table id = "datatables1" class="robo table table-bordered table-hover display dt-responsive" style="margin-top: 00px">
         <thead>
             <tr>
 {#                <th>ID</th>#}
@@ -103,8 +78,8 @@
                 <th>Email</th>#}
                 {#<th>Ocupación</th>#}
                 {#<th>Lugar de trabajo</th> #}
-                <th>Fecha inicio</th>
-                <th>Fecha final</th>
+                <th>Fecha generada</th>
+{#                <th>Fecha final</th>#}
                 <th>Notas</th>
                 <th>Detalle</th>
 {#                <th>Detalle</th>#}
@@ -117,51 +92,6 @@
     </div>
     </div>
       
-      
-      
-      
-      
-      
-
-    {#<table class="records_list">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Fechainicial</th>
-                <th>Fechafinal</th>
-                <th>Notas</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for entity in entities %}
-            <tr>
-                <td><a href="{{ path('admin_incapacidad_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
-                <td>{% if entity.fechaInicial %}{{ entity.fechaInicial|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>{% if entity.fechaFinal %}{{ entity.fechaFinal|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>{{ entity.notas }}</td>
-                <td>
-                <ul>
-                    <li>
-                        <a href="{{ path('admin_incapacidad_show', { 'id': entity.id }) }}">show</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('admin_incapacidad_edit', { 'id': entity.id }) }}">edit</a>
-                    </li>
-                </ul>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>#}
-
-        {#<ul>
-        <li>
-            <a href="{{ path('admin_incapacidad_new') }}">
-                Create a new entry
-            </a>
-        </li>
-    </ul>#}
     {% endblock %}
 
     
@@ -177,7 +107,7 @@
         <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.1.0/material.min.css">
         <link rel="stylesheet" href="https://cdn.datatables.net/1.10.11/css/dataTables.material.min.css">
         
-        <script src="{{ asset('Resources/Zebra/js/zebra_datepicker.js') }}"></script>
+        <script src="{{ asset('Resources/zebra/js/zebra_datepicker.js') }}"></script>
         <script src="https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"></script>
 	<script src="https://cdn.datatables.net/1.10.11/js/dataTables.material.min.js "></script>
         
@@ -499,19 +429,20 @@
 {#                        { "data": "telefono" },#}
                         {#{ "data": "email" },
                         { "data": "lugarTrabajo" },#}
-                        { "data": "fechaInicial" },
-                        { "data": "fechaFinal" },
+                        { "data": "fechaRegistro" },
+{#                        { "data": "fechaFinal" },#}
                         { "data": "notas" },
                         { "data": "link" },
 {#                        { "data": "link" }#}
                     ],
+                    "order":[[2, "desc"]],
                     "columnDefs": [
                            { "orderable": false, "targets": 0 },
                            { "orderable": false, "targets": 1 },
                            { "orderable": false, "targets": 2 },
                            { "orderable": false, "targets": 3 },
-                           { "orderable": false, "targets": 4 },
-                           { "orderable": false, "targets": 5 }
+                           { "orderable": false, "targets": 4 }{#,
+                           { "orderable": false, "targets": 5 }#}
                                    {#
                            { "orderable": false, "targets": 6 }#}
                            

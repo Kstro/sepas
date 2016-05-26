@@ -42,7 +42,7 @@
             </div><!-- /.panel-body -->
    <!--     <a href="{{ path('admin_empleado_new') }}" class="btn btn-success"> Crear nuevo empleado</a>  -->
 
-    <table id = "datatables1" class="table table-bordered table-hover display dt-responsive" style="margin-top: 30px">
+    <table id = "datatables1" class="robo table table-bordered table-hover display dt-responsive" style="margin-top: 30px">
         <thead>
             <tr>
 {#                <th>Id</th>#}
@@ -278,9 +278,11 @@
                 $('#datatables1').DataTable({ 
                     dom:'ftp',
                     searching:true,
-                    "order":[[0, "desc"],[1,"desc"]],
+                    "order":[1,"desc"],
                     "columnDefs": [
                            
+                           { "orderable": false, "targets": 0 },
+                           { "orderable": false, "targets": 1 },
                            { "orderable": false, "targets": 2 },
                            { "orderable": false, "targets": 3 },
                            { "orderable": false, "targets": 4 }
