@@ -12,6 +12,8 @@
     </style>
 {#        <link rel="stylesheet" href="{{asset('Resources/datatables/serversideprocessing.css')}}" />#}
         <link rel="stylesheet" href="{{ asset('Resources/alertifyjs/css/alertify.css') }}">
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.1.0/material.min.css">
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.11/css/dataTables.material.min.css">
 {% endblock %}
 
 
@@ -177,8 +179,14 @@
     
        
   {% block javascripts_step %}
-        <script src="{{ asset('Resources/wrapkit/scripts/dataTables.bootstrap.js') }}"></script>
-        <script src="{{ asset('Resources/wrapkit/scripts/dataTables.tableTools.js') }}"></script>
+        {#<script src="{{ asset('Resources/wrapkit/scripts/dataTables.bootstrap.js') }}"></script>
+        <script src="{{ asset('Resources/wrapkit/scripts/dataTables.tableTools.js') }}"></script>#}
+        
+        
+        
+        <script src="https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"></script>
+	<script src="https://cdn.datatables.net/1.10.11/js/dataTables.material.min.js "></script>
+        
         <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
         <script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
         <script src="{{ asset('Resources/wrapkit/scripts/bootbox.js') }}"></script>
@@ -269,6 +277,8 @@
                         "type": 'GET'
                     },
                     "columns": [
+{#                        {"name": "fecha", "orderable": false},#}
+                        
                         
                         { "data": "fecha"},
                         { "data": "transaccion" },
@@ -278,11 +288,15 @@
                         
                     ],
                     "columnDefs": [
-                           { "orderable": false, "targets": 0 }
+                           { "orderable": false, "targets": 'no-sort' },
+                           { "orderable": false, "targets": 1 },
+                           { "orderable": false, "targets": 2 },
+                           { "orderable": false, "targets": 3 },
+                           { "orderable": false, "targets": 4 },
                            
                            
                            
-                           //{ "orderData": [ 2, 3, 4 ], "targets": 2 }
+                           { "orderData": [ 2, 3, 4 ], "targets": 2 }
                     ],
                     "language": {
                     "info": "Mostrando página _PAGE_ de _PAGES_",
