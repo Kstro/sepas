@@ -97,7 +97,7 @@
                 {# Aquí se encuentran las secciones de las tabs #}    
                 <div class="tab-content">
                     {# Sección en donde se registra la información general del paciente a quien se le va a efectuar la venta #}
-                    <div id="datos-generales" class="tab-pane fade" style="margin-top: 20px;">
+                    <div id="datos-generales" class="tab-pane fade" style="margin-top: 20px; background: transparent;">
                         <form id="formulario-datos-gnales" method="POST" enctype="multipart/form-data">
                             <div class="row" style="margin-top: 30px;">
                                 <div class="col-md-3">
@@ -234,7 +234,7 @@
                     </div>
                                    
                     {# Sección en donde se registran ventas de paqutes/tratamientos #}                
-                    <div id="registros-venta" class="tab-pane fade in active" style="margin-top: 20px;">
+                    <div id="registros-venta" class="tab-pane fade in active" style="margin-top: 20px;background: transparent;">
                         <form id="formulario-venta" method="POST" enctype="multipart/form-data">
                             
                             
@@ -667,7 +667,7 @@
                     </div>
                     
                     {# Sección en donde se registran las sesiones de un tratamiento #}
-                    <div id="registro-sesiones" class="tab-pane fade" style="margin-top: 20px;">
+                    <div id="registro-sesiones" class="tab-pane fade" style="margin-top: 20px; background: transparent;"">
                         <form id="formulario-sesiones-tratamiento" method="POST" enctype="multipart/form-data">
                             {% if vacunasPaquete or not ventaVacuna %}
                                 <div class="row" style="margin-top: 35px;" style="display:none;">
@@ -723,7 +723,7 @@
                     </div>
                     
                     {# Sección en donde se encuentran las imagenes de un determinado tratamiento #}
-                    <div id="imagenes" class="tab-pane fade" style="margin-top: 20px;">
+                    <div id="imagenes" class="tab-pane fade" style="margin-top: 20px; background: transparent;">
                         <div class="row" style="margin-top: 35px; padding: 30px;" style="display:none;">
                             <form id="formImagen" role="form" enctype="multipart/form-data" method="post">
                             <div class="col-md-3 pull-center" id="imagenes-sesiones-tratamiento">
@@ -772,7 +772,7 @@
                     </div>
                     
                     {# Sección en donde se muestra el seguimiento de la venta #}
-                    <div id="seguimiento-venta" class="tab-pane fade" style="margin-top: 20px;">
+                    <div id="seguimiento-venta" class="tab-pane fade" style="margin-top: 20px; background: transparent;">
                         <div class="row" style="margin-top: 30px;" id="detalle-venta-info">
                             <div class="col-md-3" style="margin-left: 30px;">
                                 <div class="row">
@@ -817,7 +817,11 @@
                                                 {% else %} 
                                                     <span id="detalle-venta-deuda">$ {% if ventaVacuna %}{{ (ventaVacuna.montoTotal - (0 * ventaVacuna.montoTotal)/100)|number_format(2, '.', ',') }}{% endif %}</span>
                                                 {% endif %} 
+                                            {% else %}
+                                                <span id="detalle-venta-deuda"></span>
                                             {% endif %}
+                                            
+                                            
                                         {% endif %}
                                         
                                         {#{% if ventaVacuna.descuento %}
@@ -910,7 +914,7 @@
                     </div>                
                                     
                     {# Sección en donde se registran los abonos y devoluciones de un paquete o tratamiento #}
-                    <div id="abonos-devoluciones" class="tab-pane fade" style="margin-top: 20px;">
+                    <div id="abonos-devoluciones" class="tab-pane fade" style="margin-top: 20px; background: transparent;">
                         <form id="formulario-sesiones-tratamiento" method="POST" enctype="multipart/form-data">
                             <div class="row" style="margin-top: 35px;">
                                 {#<div class="col-md-3"  style="margin-left: 30px;" style="display:none;">
@@ -981,7 +985,9 @@
         <script src="{{ asset('Resources/wrapkit/scripts/dataTables.tableTools.js') }}"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/js/select2.min.js"></script>
         <script src="{{ asset('Resources/Zebra/js/zebra_datepicker.js') }}"></script>
+        <script src="{{ asset('Resources/wrapkit/scripts/bootbox.js') }}"></script>
         <script src="{{ asset('Resources/Zebra/inicializacioncalendarios.js') }}"></script>
+        {#<script src="{{ asset('Resources/src/js/bootstrap.js')}}"></script>#}
         <script>
             var id_ventapaquete = 0;
             var id_ventatratamiento = 0;
@@ -1542,6 +1548,7 @@
                     var draw2 = '';
                     var draw3 = '';
                     var draw4 = '';
+                    var draw7 = '';
                     var errores = 0;
                     var valores = new Array();
                     var reg = new Array();
@@ -1608,7 +1615,7 @@
                                     }
                                     
                                     var costo = response.ventaVacunas.costo;
-                                    
+                                    console.log(deuda_total);
                                     $('#detalle-venta-costo').html('$ ' + costo.toFixed(2));
                                     $('#detalle-venta-cuotas').html(response.ventaVacunas.cuotas);
                                     $('#detalle-venta-deuda').html('$ ' + deuda_total);
@@ -1647,6 +1654,18 @@
                                         draw4+= '</div>';
                                         draw4+= '</div>';
                                     });
+                                    draw7+= '<label>Vacuna</label>';
+                                    draw7+= '<select id="dgplusbellebundle_sesiones_tratamiento" name="dgplusbellebundle_venta_sesiones[tratamiento]" class="sesion_tratamiento" style="width: 100%">';
+                                    draw7+= '<option value="" disabled selected>Seleccione una vacuna...</option>';
+                                    console.log(response);
+                                    $.each( response.vacunasPaquete, function( key, value ) {
+                                        console.log(value);
+                                        draw7+= '<option value="' + value.id + '">'+ value.nombre +'</option>';
+                                    });
+                                    draw7+= '</select>';
+
+                                    $('#sesiones-tratamiento').html(draw7);
+                                    $('#dgplusbellebundle_sesiones_tratamiento').select2();
                                     console.log(draw4);
                                     //$('#seguimiento-tratamientos-realizados').html(mensaje);
                                     $('#detalle-venta-tratamientos').html(draw4);
@@ -2171,7 +2190,7 @@
                             id_ventavacuna : id_ventavacuna
                         };
                         console.log(deuda_total);
-                        if(monto <= deuda_total){
+                        if(parseFloat(monto) <= parseFloat(deuda_total)){
                             // Se procede a registrar la sesion del tratamiento mediante ajax
                             $.ajax({
                                 data:  data,

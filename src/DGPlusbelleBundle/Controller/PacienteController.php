@@ -29,7 +29,7 @@ class PacienteController extends Controller
     /**
      * Lists all Paciente entities.
      *
-     * @Route("/", name="admin_paciente")
+     * @Route("/", name="admin_paciente", options={"expose"=true}))
      * @Method("GET")
      * @Template()
      */

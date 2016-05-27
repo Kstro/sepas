@@ -74,7 +74,7 @@
                 </div>
                 <div class="btn-group btn-group-sm {#pull-right#}">
                   <button style="height:30px;" id="edit-datatables1" data-toggle="tooltip" data-container="body" title="Modificar paciente" class="btn btn-default datatables1-actions disabled" role="button">
-                    {#<i class="fa fa-edit"></i>#}Modificar paciente
+                    {#<i class="fa fa-edit"></i>#}Modificar
                   </button>
                   {#<button id="delete-datatables1" data-toggle="tooltip" data-container="body" title="Eliminar registro" class="btn btn-default datatables1-actions disabled" role="button">
                     <i class="fa fa-trash-o"></i>
@@ -221,7 +221,10 @@
            
             $(document).ready(function(){
                 var idPaciente = 0;
-                
+                $(document).on('click','.dropdown-toggle', function(event){
+                                $('.dropdown-menu').toggle();
+                                console.log("Prueba");
+                            });
                 $(document).on('click','.link_expediente',function(){
                     var exp = $(this).attr('id');
                     var url = "{{path('admin_consulta_expediente_sd')}}";

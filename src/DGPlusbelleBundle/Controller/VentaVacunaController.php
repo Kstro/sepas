@@ -565,6 +565,26 @@ class VentaVacunaController extends Controller
                                     );
             
             $this->get('bitacora')->escribirbitacora("Se registro una nueva venta de vacunas ", $usuario->getId());
+            $vacunas = $em->getRepository('DGPlusbelleBundle:VacunaConsulta')->findBy(array('ventaVacuna' => $ventaid));
+            $idvacunas = array();      
+            foreach ($vacunas as $trat){
+                $idvac = $trat->getVacuna()->getId();
+
+                $seguimiento = $em->getRepository('DGPlusbelleBundle:SeguimientoAplicacionVacuna')->findOneBy(array('vacuna' => $trat->getVacuna(),
+                                                                                                                    'ventaVacuna' => $ventaVacuna
+                                                                                                                ));
+
+                if($seguimiento->getNumAplicacion() < $trat->getAplicaciones()){
+                    array_push($idvacunas, $idvac); 
+                }            
+            }
+
+            $dql = "SELECT t.id, t.nombre FROM DGPlusbelleBundle:Vacuna t "
+                        . "WHERE t.id IN (:ids) ";
+
+            $vacunasPaquete = $em->createQuery($dql)
+                               ->setParameter('ids', $idvacunas)
+                               ->getResult();  
             
             $response = new JsonResponse();
             $response->setData(array(
@@ -573,6 +593,7 @@ class VentaVacunaController extends Controller
                                 'ventasVacuna' => $mensaje,
                                 'porcentaje' => $porcentaje,
                                 'abonos' => $abonos,
+                                'vacunasPaquete' => $vacunasPaquete,
                                 'empleado' => $ventaVacuna->getEmpleado()->getPersona()->getNombres().' '.$ventaVacuna->getEmpleado()->getPersona()->getApellidos(),
                                 'ventaVacunas' => $ventaPaqueteTratamientos
                                ));  

@@ -85,6 +85,10 @@
         <script src="{{ asset('Resources/Zebra/js/zebra_datepicker.js') }}"></script>
         <script src="{{ asset('Resources/wrapkit/scripts/dataTables.bootstrap.js') }}"></script>
         <script src="{{ asset('Resources/wrapkit/scripts/dataTables.tableTools.js') }}"></script>
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.1.0/material.min.css">
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.11/css/dataTables.material.min.css">
+        <script src="https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"></script>
+	<script src="https://cdn.datatables.net/1.10.11/js/dataTables.material.min.js "></script>
         <script>
             
             $(document).ready(function(){
@@ -101,9 +105,10 @@
                 $('#datatables1').DataTable({ 
                     searching:true,
                     dom:"ftp",
-                    "order":[[0, "desc"],[1,"desc"]],
+                    "order":[0, "desc"],
                     "columnDefs": [
                            { "orderable": false, "targets": 0 },
+                           { "orderable": false, "targets": 1 },
                            { "orderable": false, "targets": 2 },
                            { "orderable": false, "targets": 3 },
                            { "orderable": false, "targets": 4 }

@@ -12,9 +12,12 @@
                             <!-- Stylesheet de Bootstrap -->
                             
                             <link rel="stylesheet" href="{{ asset('Resources/src/css/bootstrap.css')}}" >
+                            <link rel="stylesheet" href="{{ asset('Resources/fontawesome/css/font-awesome.min.css')}}" >
                             <link rel="stylesheet" href="{{ asset('Resources/Zebra/css/bootstrap.css') }}">
 {#                            <link rel="stylesheet" href="{{ asset('Resources/wrapkit/styles/dependencies.css') }}">#}
                             <!-- Stylesheet Personales -->
+                            <link rel="stylesheet" href="{{ asset('Resources/bValidator-0.73/themes/bvalidator.theme.bootstrap.rt.css') }}" />
+                            <link rel="stylesheet" href="{{ asset('Resources/bValidator-0.73/themes/bvalidator.theme.bootstrap.rt.css') }}" />
                             <link href="{{ asset('Resources/src/css/style.css')}}" rel="stylesheet">
                             <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
                             
@@ -111,13 +114,14 @@
                 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
                 
                 <!-- Include all compiled plugins (below), or include individual files as needed -->
-{#                <script src="{{ asset('Resources/src/js/bootstrap.js')}}"></script>#}
+                
                 <script src="{{ asset('Resources/src/js/shortcut.js')}}"></script> <!-- http://www.openjs.com/scripts/events/keyboard_shortcuts/v1.php -->
                 {#<script src="{{ asset('Resources/wrapkit/scripts/select2.js') }}"></script>#}
                 <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.css" rel="stylesheet"/>
 
                 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.js"></script>
                 <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.full.js"></script>
+                <script src="{{ asset('Resources/src/js/bootstrap.js')}}"></script>
                 <script type="text/javascript">
                         $( document ).ready(function() {
                             $(document).on('change','#busquedaRapida',function(){
@@ -171,10 +175,10 @@
                                         dataType: 'json',
                                         delay: 250,
                                         data: function (params) {
-                                          return {
-                                            q: params.term, 
-                                            page: params.page
-                                          };
+                                            return {
+                                              q: params.term, 
+                                              page: params.page
+                                            };
                                         },
                                         processResults: function (data, params) {
                                             var select2Data = $.map(data.data, function (obj) {
@@ -201,10 +205,10 @@
                                 $("#busquedaRapida").select2('open');
                             });
                             
-                            $(document).on('click','.dropdown-toggle', function(event){
+                            {#$(document).on('click','.dropdown-toggle', function(event){
                                 $('.dropdown-menu').toggle();
                                 console.log("Prueba");
-                            });
+                            });#}
                             
                             function formatRepo (data) {
                                 if(data.numero){
@@ -213,12 +217,12 @@
                                                  "<div class='select2-result-repository__title'>" + data.numero+" | "+data.nombres+" "+data.apellidos+"</div>" +
                                                  "</div></div>";
                                 } else {
-                                    var markup = "Realice una búsqueda (Ctrl+g)"; 
+                                    var markup = "Realice una búsqueda (Ctrl+g)";
                                 }
 
 
                                 {#if (repo.description) {
-                                  markup += "<div class='select2-result-repository__description'>" + repo.description + "</div>";
+                                    markup += "<div class='select2-result-repository__description'>" + repo.description + "</div>";
                                 }
 
                                 markup += "<div class='select2-result-repository__statistics'>" +

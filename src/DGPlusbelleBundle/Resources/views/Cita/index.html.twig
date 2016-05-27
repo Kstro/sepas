@@ -52,6 +52,8 @@
           {#  margin-top:-2px;
         }#}
     </style>
+    <link rel="stylesheet" href="{{ asset('Resources/bValidator-0.73/themes/bvalidator.theme.bootstrap.rt.css') }}" />
+    <link rel="stylesheet" href="{{ asset('Resources/bValidator-0.73/themes/bvalidator.theme.bootstrap.rt.css') }}" />
 {% endblock %}
 
 
@@ -69,11 +71,11 @@
     <div class="col-md-6" style="margin-top:10px;">
 
 {#        <input class="input-sm form-group nombrePaciente col-md-4"></input>#}
-        <div class="col-md-7">
+        <div class="col-md-6">
             <input style="height: 30px;" placeholder="Buscar citas de paciente..." id="nombrePaciente" class="clearable form-control input-sm pull-left" type="text">
         </div>
         <div class="col-md-1">
-            <button style="height: 30px;border-top-left-radius: 0px;border-bottom-left-radius: 0px;" data-toggle="tooltip" data-original-title="Buscar paciente" id="botonBuscar" class="btn btn-default pull-right"><i class="fa fa-search"></i></button>
+            <button style="height: 30px;" data-toggle="tooltip" data-original-title="Buscar paciente" id="botonBuscar" class="btn btn-default pull-right"><i class="fa fa-search"></i></button>
         </div>
         
             {#<select  id="filtroSucursales" class="col-md-12 input-sm form-control">
@@ -84,7 +86,7 @@
             </select>#}
         
         
-        <div class="col-md-4 pull-right" style="height:20px;">
+        <div class="col-md-5 pull-right" style="height:20px;">
         
             <button data-toggle="tooltip" data-container="body" title="Cita completada" class="btn btn-default datatables1-actions" style="color:#FFF;background:#69BD45; height: 30px;" >
                 <i class="fa fa-calendar-check-o" aria-hidden="true"></i>
@@ -206,7 +208,11 @@
     <script type="text/javascript" src="{{ asset('bundles/adesignscalendar/js/fullcalendar/jquery.fullcalendar.min.js') }}"></script>
     <script src="{{ asset('Resources/jquery-ui/ui/jquery-ui.js') }}"></script>
     <script src="{{ asset('Resources/wrapkit/scripts/bootbox.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('Resources/bootstrap-3/js/bootstrap.js') }}"></script>  
+    
+    <script type="text/javascript" src="{{ asset('Resources/bValidator-0.73/jquery.bvalidator.js')}}"></script>
+    <script type="text/javascript" src="{{ asset('Resources/bValidator-0.73/bvalidator.lang.es.js')}}" ></script>
+    <script src="{{ asset('Resources/wrapkit/scripts/bootbox.js') }}"></script>
+    <script src="{{ asset('Resources/src/js/bootstrap.js')}}"></script>
     <script type="text/javascript">
         $(function () {
           $('[data-toggle="tooltip"]').tooltip();

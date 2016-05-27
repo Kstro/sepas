@@ -58,6 +58,10 @@ and open the template in the editor.
             cursor:pointer;
         }
         
+        .editorArea{
+            height: 150px !important;
+        }
+        
         .col-md-4{
             padding-top: 40px;
         }

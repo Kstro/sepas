@@ -1,8 +1,10 @@
 {% extends 'DGPlusbelleBundle:Layout:layouterp.html.twig' %}
 
-
-
-
+{% block css %}
+    {{parent()}}
+    <link rel="stylesheet" href="{{ asset('Resources/bValidator-0.73/themes/bvalidator.theme.bootstrap.rt.css') }}" />
+    <link rel="stylesheet" href="{{ asset('Resources/bValidator-0.73/themes/bvalidator.theme.bootstrap.rt.css') }}" />
+{% endblock css%}
 
 {% block descripcion %}
     <div class="col-md-6">
@@ -106,11 +108,12 @@
         <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.1.0/material.min.css">
         <link rel="stylesheet" href="https://cdn.datatables.net/1.10.11/css/dataTables.material.min.css">
         
-        <script src="{{ asset('Resources/Zebra/js/zebra_datepicker.js') }}"></script>
+        
         <script src="https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"></script>
 	<script src="https://cdn.datatables.net/1.10.11/js/dataTables.material.min.js "></script>
         <script type="text/javascript" src="{{ asset('Resources/bValidator-0.73/jquery.bvalidator.js')}}"></script>
         <script type="text/javascript" src="{{ asset('Resources/bValidator-0.73/bvalidator.lang.es.js')}}" ></script>
+        <script src="{{ asset('Resources/wrapkit/scripts/bootbox.js') }}"></script>
         
 {#       <script type="text/javascript" src="{{ asset('Resources/zebra/inicializacioncalendarios.js')}}" ></script>#}
        <script>
