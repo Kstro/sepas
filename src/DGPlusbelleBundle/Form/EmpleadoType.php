@@ -19,7 +19,7 @@ class EmpleadoType extends AbstractType
             ->add('persona', new PersonaType())
                 
             ->add('cargo','choice',array('label' => 'Cargo','required'=>false, 'empty_value'=>'Seleccione cargo...',
-                    'choices'  => array('Esteticista' => 'Esteticista', 'Medico' => 'Medico', 'Secretaria' => 'Secretaria'),
+                    'choices'  => array('Admin' => 'Admin', 'Medico' => 'Médico', 'Secretaria' => 'Secretaria'),
                     'attr'=>array(
                     'class'=>'form-control input-sm cargoEmpleado'
                     )))
@@ -57,6 +57,25 @@ class EmpleadoType extends AbstractType
             ->add('file',null, array('label'=>'Foto de perfil','required'=>false,
                     'attr'=>array('class'=>'fotoEmpleado'
                     )))
+                
+            ->add('username',null,array('label' => 'Usuario','required'=>false,
+                    'attr'=>array(
+                    'class'=>'form-control input-sm nombreUsuario'
+                    )))   
+            ->add('password','repeated', array(
+                    'type' => 'password',
+                    'invalid_message' => 'La contraseña no son iguales',
+                    'options' => array('attr' => array('class' => 'password-field')),
+                    'required' => false,
+                    'first_options'  => array('label' => 'Contraseña','required'=>false,
+                    'attr'=>array(
+                    'class'=>'form-control input-sm firstPassword'
+                    )),
+                    'second_options' => array('label' => 'Confirmar contraseña','required'=>false,
+                    'attr'=>array(
+                    'class'=>'form-control input-sm secondPassword'
+                    )),
+                ))
         ;
     }
     

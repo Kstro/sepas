@@ -15,12 +15,12 @@
         {% include 'DGPlusbelleBundle:Persona:form.html.twig' with { 'form': form.persona }%}  
         
          
-          <div class="row">
-               <div class="col-md-12">
-                  <h3 class="text">Meta</h3>
-                  <hr>
-                </div>
-          </div>
+        <div class="row">
+             <div class="col-md-12">
+                <h3 class="text">Meta</h3>
+                <hr>
+              </div>
+        </div>
         <div class="col-md-3">
             {{ form_row(form.cargo) }}
         </div>
@@ -38,6 +38,10 @@
         {{ form_row(form.sucursal) }}
         </div> #}
         
+     
+        
+     
+     
         <div class="col-xs-12 col-sm-6">
             <label class="control-label" for="dgplusbellebundle_empleado_sucursal">Foto de perfil</label>
             
@@ -57,22 +61,50 @@
                 </div><!-- /.fileinput -->
             </div>
            #}
-                        
+              
+              
         </div> 
-       
-        <div class="col-xs-12 col-sm-6">
+        <div class="row">
             <div class="col-md-12">
-                {{ form_row(form.username) }}
-            </div>
-            <div class="col-md-3 hidden">
-                {{ form_row(form.password.first) }}
-            </div>
-            <div class="col-md-3 hidden">
-                {{ form_row(form.password.second) }}
+                <h3 class="text">Opciones de usuario (opcional)</h3>
+                <hr>
             </div>
         </div>
-        
-        
+        <div class="col-md-3">
+            <label class="control-label" for="username">Nombre de usuario</label>
+            <input class="form-control" id="username" value="">
+        </div>
+        <div class="col-md-3">
+            <label class="control-label" for="password">Contraseña</label>
+            <input class="form-control" id="password" value="" type="password">
+        </div>
+              
+        <div class="col-md-6">
+            <label class="control-label" for="roles">Roles de usuario</label>
+            <div class="cleafix">
+                
+            </div>
+            <div id="dgplusbellebundle_empleado_tratamiento" class="tratamientoEmpleado" class="col-md-12">
+                <div class="checkbox">
+                    <label class="">
+                        <input data-bvalidator="required,required" id="dgplusbellebundle_empleado_tratamiento_172" name="dgplusbellebundle_empleado[tratamiento][]" value="172" type="checkbox"> ROLE_ADMIN
+                    </label>
+                </div><div class="checkbox">
+                    <label class="">
+                        <input data-bvalidator="required,required" id="dgplusbellebundle_empleado_tratamiento_173" name="dgplusbellebundle_empleado[tratamiento][]" value="173" type="checkbox"> ROLE_MEDICO
+                    </label>
+                </div>
+                <div class="checkbox">
+                    <label class="">
+                        <input data-bvalidator="required,required" id="dgplusbellebundle_empleado_tratamiento_174" name="dgplusbellebundle_empleado[tratamiento][]" value="174" type="checkbox"> ROLE_SECRETARIA
+                    </label>
+                </div>
+            </div>
+        </div>
+              
+              
+       
+       
          <div class="col-xs-12 col-sm-3">
      {#  {% include 'DGPlusbelleBundle:Photo:test.html.twig' %}  #}
      {#   {{ form_row(form.foto) }} #}

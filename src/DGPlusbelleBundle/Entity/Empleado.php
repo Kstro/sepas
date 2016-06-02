@@ -128,6 +128,23 @@ class Empleado
     private $file;
 
     
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="username", type="string", length=40, nullable=false)
+     */
+    private $username;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="password", type="string", length=255, nullable=false)
+     */
+    private $password;
+    
+    
+    
     /**
      * Sets file.
      *
@@ -441,4 +458,53 @@ class Empleado
     //return $this->cargo ? $this->cargo : '';
     return $this->persona->getNombres().' '.$this->persona->getApellidos();
     }
+    
+    /**
+     * Set username
+     *
+     * @param string $username
+     *
+     * @return Usuario
+     */
+    public function setUsername($username)
+    {
+        $this->username = $username;
+
+        return $this;
+    }
+
+    /**
+     * Get username
+     *
+     * @return string
+     */
+    public function getUsername()
+    {
+        return $this->username;
+    }
+
+    /**
+     * Set password
+     *
+     * @param string $password
+     *
+     * @return Usuario
+     */
+    public function setPassword($password)
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * Get password
+     *
+     * @return string
+     */
+    public function getPassword()
+    {
+        return $this->password;
+    }
+    
 }

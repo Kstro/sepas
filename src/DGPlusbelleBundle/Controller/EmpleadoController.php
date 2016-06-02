@@ -10,6 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use DGPlusbelleBundle\Entity\Empleado;
 use DGPlusbelleBundle\Entity\Persona;
+use DGPlusbelleBundle\Entity\Usuario;
 use DGPlusbelleBundle\Form\EmpleadoType;
 use DGPlusbelleBundle\Form\PersonaType;
 use Doctrine\ORM\EntityRepository;
@@ -68,6 +69,16 @@ class EmpleadoController extends Controller
             'foto' => $foto,
         );
     }
+    
+    
+    private function setSecurePassword(&$entity) {
+        $entity->setSalt(md5(time()));
+        $encoder = new \Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder('sha512', true, 10);
+        $password = $encoder->encodePassword($entity->getPassword(), $entity->getSalt());
+        $entity->setPassword($password);
+    }
+    
+    
     /**
      * Creates a new Empleado entity.
      *
@@ -83,6 +94,12 @@ class EmpleadoController extends Controller
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
 
+        $user = new Usuario();
+        $user->setUsername($entity->getUsername());
+        $user->setEstado(true);
+        $user->isEnabled(true);
+        $user->setPassword('sepes123');
+        $this->setSecurePassword($user);
         
         
         
@@ -109,7 +126,20 @@ class EmpleadoController extends Controller
                 $em->persist($entity);
             }
             
-            $em->flush();
+            //$em->flush();
+            $persona = $entity->getPersona();
+            
+//            var_dump($entity);
+//            var_dump($user);
+//            die();
+            $rol= $em->getRepository('DGPlusbelleBundle:Rol')->find(2);//ROLE_USER por defecto
+            $user->setPersona($persona);
+            $user->addRol($rol);
+            if($entity->getUsername()!=''){
+                $em->persist($user);
+                $em->flush();
+            }
+            
             $usuario= $this->get('security.token_storage')->getToken()->getUser();
             $this->get('bitacora')->escribirbitacora("Se registro un nuevo empleado",$usuario->getId());
             
@@ -161,6 +191,35 @@ class EmpleadoController extends Controller
             'form'   => $form->createView(),
         );
     }
+    
+    
+    
+    
+    
+    /**
+     * Displays a form to create a new Empleado entity.
+     *
+     * @Route("/new2", name="admin_empleado_new2")
+     * @Method("GET")
+     * @Template()
+     */
+    public function new2Action()
+    {
+        $em = $this->getDoctrine()->getManager();
+//        $entity = new Empleado();
+//        $form   = $this->createCreateForm($entity);
+        $roles = $em->getRepository('DGPlusbelleBundle:Rol')->findAll();
+        var_dump($roles);
+        return array(
+            'entity' => $entity,
+            'form'   => $form->createView(),
+            'roles' =>  $roles,
+        );
+    }
+    
+    
+    
+    
 
     /**
      * Finds and displays a Empleado entity.

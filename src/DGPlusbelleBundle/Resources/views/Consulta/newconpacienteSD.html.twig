@@ -4,6 +4,7 @@
     {{parent()}}
     <link rel="stylesheet" href="{{ asset('Resources/alertifyjs/css/alertify.css') }}">
     <link rel="stylesheet" href="{{ asset('Resources/css/estilopersonalizado.css') }}">
+    <link rel="stylesheet" href="{{ asset('Resources/swal/sweetalert2.min.css') }}">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.1.0/material.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.11/css/dataTables.material.min.css">
@@ -1202,6 +1203,7 @@
     
 
     <script src="{{ asset('Resources/alertifyjs/alertify.js') }}"></script>
+    <script src="{{ asset('Resources/swal/sweetalert2.min.js') }}"></script>
     <script src="{{ asset('Resources/js/ConsultaPaciente.js') }}"></script>
     <script src="{{ asset('Resources/wrapkit/scripts/jquery.mask.js') }}"></script>
     <script src="{{ asset('Resources/Zebra/js/zebra_datepicker.js') }}"></script>
@@ -3375,7 +3377,8 @@
                             $('#nombrePaciente').html(nombres+" "+apellidos);
                             $('#ocupacionPaciente').html(ocup+" "+ocupacion);
 {#                            bootbox.alert("Cambios guardados!", function() {});#}
-                            alertify.success("Cambios guardados!");
+{#                            alertify.success("Cambios guardados!");#}
+                            swal('','Datos de paciente actualizados!','success');
                         }
                         
                         {#console.log("pagina actual: "+data);
@@ -3443,7 +3446,8 @@
                 });
                 console.log(valores);
                 if(errores!=0){
-                    bootbox.alert("Debe ingresar todos las opciones!", function() {});
+{#                    bootbox.alert("Debe ingresar todos las opciones!", function() {});#}
+                    swal('','Debe ingresar todas las opciones!','error');
                 }
                 else{
                     console.log("todos");
@@ -3463,7 +3467,8 @@
 
                                     $('#nombrePaciente').html(nombres+" "+apellidos);
                                     $('#ocupacionPaciente').html(ocup+" "+ocupacion);#}
-                                    alertify.success("Vacunas guardadas!");
+{#                                    alertify.success("Vacunas guardadas!");#}
+                                    swal('','Vacunas guardadas!','success');
                                 }
                             },
                         error: function (data) {
@@ -3475,7 +3480,8 @@
                 
             }
             else{
-                bootbox.alert("Debe ingresar una consulta primero!", function() {});
+                {#bootbox.alert("Debe ingresar una consulta primero!", function() {});#}
+                swal('','Debe ingresar una consulta primero!','error');
             }
             
         });
@@ -3527,11 +3533,13 @@
             }
             else{#}
             if(codigo==0){
-                bootbox.alert("Debe seleccionar un código de consulta!", function() {});
+                {#bootbox.alert("Debe seleccionar un código de consulta!", function() {});#}
+                swal('','Debe seleccionar un código de consulta!','error');
             }
             else{
                 if(tipoConsulta==0){
-                    bootbox.alert("Debe seleccionar un tipo de consulta!", function() {});
+                    {#bootbox.alert("Debe seleccionar un tipo de consulta!", function() {});#}
+                    swal('','Debe seleccionar un tipo de consulta!','error');
                 }
                 else{
                     if(idconsulta!=''){
@@ -3579,7 +3587,8 @@
                                                 $('#idConsulta').val(data);
                                                 console.log(data);
 {#                                                bootbox.alert("Consulta registrada!", function() {});#}
-                                                alertify.success("Consulta registrada!");
+                                                {#alertify.success("Consulta registrada!");#}
+                                                    swal('','Consulta registrada!','success');
                                                 console.log($('#idConsulta').val());
                                             }
                                         },
@@ -3616,7 +3625,8 @@
                             
                         }
                         else{
-                            alertify.error("Hubo un error, intente de nuevo recargando la página!");
+                            {#alertify.error("Hubo un error, intente de nuevo recargando la página!");#}
+                            swal('','Ocurrió un error, intente de nuevo recargando la página!','error');
                         }
                         
                         {#console.log("pagina actual: "+data);
@@ -3648,7 +3658,8 @@
                         //inicio = data.inicio++;
                         if(data==0){
 {#                            bootbox.alert("Cambios guardados!", function() {});#}
-                            alertify.success("Antecedentes guardados!");
+{#                            alertify.success("Antecedentes guardados!");#}
+                            swal('','Antecedentes guardados!','success');
                         }
                         
                         {#console.log("pagina actual: "+data);
@@ -3687,7 +3698,8 @@
                             //inicio = data.inicio++;
                             if(data!=0){
     {#                            bootbox.alert("Cambios guardados!", function() {});#}
-                                alertify.success("Signos vitales guardados!");
+{#                                alertify.success("Signos vitales guardados!");#}
+                                swal('','Signos vitales actualizados!','success');
                                 $('#idConsulta').val(data);
 
                             }
@@ -3710,7 +3722,7 @@
                             //inicio = data.inicio++;
                             if(data!=0){
     {#                            bootbox.alert("Cambios guardados!", function() {});#}
-                                alertify.success("Signos vitales actualizados!");
+                                swal('','Signos vitales actualizados!','success');
                                 $('#idConsulta').val(data);
 
                             }
@@ -3755,7 +3767,8 @@
                             //inicio = data.inicio++;
                             if(data==0){
     {#                            bootbox.alert("Cambios guardados!", function() {});#}
-                                alertify.success("Evaluación guardada!");
+{#                                alertify.success("Evaluación guardada!");#}
+                                swal('','Evaluación guardada!','success');
                                 //$('#idConsulta').val(data);
 
                             }
@@ -3764,10 +3777,12 @@
 
                         },
                     error: function (data) {
-                        alertify.error("Hubo un error al guardar la evaluación, intente de nuevo!");
-
+                        swal('','Ocurrió un error al guardar la evaluación, intente de nuevo!','error');
                     }
                 });
+            }
+            else{
+                swal('','Debe ingresar una consulta antes de guardar la evaluación!','error');
             }
             {#else{
                 $.ajax({
@@ -3886,19 +3901,21 @@
                     success: function (data) {
                             //inicio = data.inicio++;
                             if(data==0){
-                                alertify.success("Incapacidad eliminada!");
+                                {#alertify.success("Incapacidad eliminada!");#}
                                 tabla.ajax.reload();
+                                swal('','Incapacidad eliminada!','success');
                             }
                             else{
-                                alertify.error("Hubo un error, intente de nuevo!");
+                                swal('','Ocurrió un error, intente de nuevo!','error');
                             }
     {#                        console.log("pagina actual: "+data);
                             console.log("Inicio de registro: "+data.inicioRegistro);#}
 
                         },
                     error: function (data) {
-                        alertify.error("{#Hubo un error, intente de nuevo!#}");
-                        bootbox.alert("Hubo un error, intente de nuevo!", function() {});
+                        
+{#                        bootbox.alert("Hubo un error, intente de nuevo!", function() {});#}
+                        swal('','Ocurrió un error, intente de nuevo!','error');
                     }
                 });
         });
@@ -3915,24 +3932,28 @@
                     success: function (data) {
                             //inicio = data.inicio++;
                             if(data==0){
-                                alertify.success("Costo de consulta guardado!");
+                                {#alertify.success("Costo de consulta guardado!");#}
+                                swal('','Costo de consulta guardado!','success');
                             }
                             else{
-                                alertify.error("Hubo un error, intente de nuevo!");
+                                {#alertify.error("Hubo un error, intente de nuevo!");#}
+                                swal('','Ocurrió un error, intente de nuevo!','success');
                             }
     {#                        console.log("pagina actual: "+data);
                             console.log("Inicio de registro: "+data.inicioRegistro);#}
 
                         },
                     error: function (data) {
-                        alertify.error("{#Hubo un error, intente de nuevo!#}");
-                        bootbox.alert("Hubo un error, intente de nuevo!", function() {});
+                        {#alertify.error("{#Hubo un error, intente de nuevo!#}{#");
+                        bootbox.alert("Hubo un error, intente de nuevo!", function() {});#}
+                        swal('','Ocurrió un error, intente de nuevo!','error');
                     }
                 });
             }
             else{
 {#                alertify.error("Debe ingresar una consulta primero!");#}
-                bootbox.alert("Debe ingresar una consulta primero!", function() {});
+                {#bootbox.alert("", function() {});#}
+                swal('','Debe ingresar una consulta primero!','error');
             }
         });
         
@@ -3953,27 +3974,30 @@
                             //inicio = data.inicio++;
                             if(data==0){
                                 tabla.ajax.reload();
-                                alertify.success("Incapacidad guardada!");
+                                {#alertify.success("Incapacidad guardada!");#}
+                                swal('','Incapacidad guardada!','success');
                                 $('#dgplusbellebundle_incapacidad_fechaInicio').val();
                                 $('#dgplusbellebundle_incapacidad_fechaFinal').val();
                                 $('#incapaciadNotas').val();
                             }
                             else{
-                                alertify.error("Hubo un error, intente de nuevo!");
+                                {#alertify.error("Hubo un error, intente de nuevo!");#}
+                                swal('','Ocurrión un error, intente de nuevo!','error');
                             }
     {#                        console.log("pagina actual: "+data);
                             console.log("Inicio de registro: "+data.inicioRegistro);#}
 
                         },
                     error: function (data) {
-                        alertify.error("{#Hubo un error, intente de nuevo!#}");
-                        bootbox.alert("Hubo un error, intente de nuevo!", function() {});
+                        
+                        {#bootbox.alert("Hubo un error, intente de nuevo!", function() {});#}
+                        swal('','Ocurrión un error, intente de nuevo!','error');
                     }
                 });
             }
             else{
 {#                alertify.error("Debe ingresar una consulta primero!");#}
-                bootbox.alert("Debe ingresar una consulta primero!", function() {});
+                swal('','Ocurrión un error, intente de nuevo!','error');
             }
         });
         
@@ -4046,12 +4070,14 @@
                                     console.log("Inicio de registro: "+data.inicioRegistro);#}
                                 },
                             error: function (data) {
-                                alertify.error("Hubo un error, intente de nuevo!");
+                                {#alertify.error("Hubo un error, intente de nuevo!");#}
+                                swal('','Ocurrió un error, intente de nuevo!','error');
                             }
                         });
                     }
                     else{
-                        bootbox.alert("Debe ingresar una consulta primero!", function() {});
+                        {#bootbox.alert("Debe ingresar una consulta primero!", function() {});#}
+                        swal('','Debe ingresar una consulta primero!','error');
                     }
                     
                 }
@@ -4148,7 +4174,8 @@
                                             $('.opcionHistorial').hide();
                                             $('#guardarPlantilla').hide();
 
-                                            alertify.success("Plantilla guardada!");
+                                            {#alertify.success("Plantilla guardada!");#}
+                                            swal('','Plantilla guardada!','success');
 
                                         }
                                         else{
@@ -4165,8 +4192,10 @@
                                             $('#dgplusbellebundle_consulta_plantilla').next().hide();
 
                                             $('#guardarPlantilla').hide();
-                                            alertify.success("Cambios guardados!");
-                                            console.log("otro mensaje");
+                                            {#alertify.success("Cambios guardados!");#}
+                                            swal('','Cambios guardados!','success');
+                                            
+                                            {#console.log("otro mensaje");#}
                                         }
 
                                         {#console.log("pagina actual: "+data);
@@ -4201,9 +4230,15 @@
         
         //obtenemos un array con los datos del archivo
         var file = $('#file-input')[0].files[0];
+        console.log(file);
+        if(file==null){
+            swal('','Debe seleccionar una imagen!','error');
+            return false;
+        }
         //obtenemos el nombre del archivo
         var idconsulta =$('#idConsulta').val();
         var fileName = file.name;
+        
         //obtenemos la extensión del archivo
         fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1);
         //obtenemos el tamaño del archivo
@@ -4231,7 +4266,7 @@
                     }else{  
 
                          var pesoKb=(fileSize/1024);
-                         if (pesoKb<=1024){
+                         if (pesoKb<=6144){
                             var frm = new FormData($("#formImagen")[0]);
                             console.log(frm);
                                  if (flag != false) {
@@ -4248,7 +4283,8 @@
                                     success: function(data){
                                         $("#prev").attr('src', "/abgsistema/web/"+data.direccion);
                                         $('#file-input').val('');
-                                        alertify.success("Imagenes guardadas!");
+                                        {#alertify.success("Imagenes guardadas!");#}
+                                        swal('','Imágenes guardadas!','success');
                                         console.log(data);
                                         console.log(data.length);
                                         for(i=0;i<data.length;i++){
@@ -4257,21 +4293,24 @@
                                         }
                                     },
                                     error: function(data){
-                                        bootbox.alert('Hubo un error al subir las fotos');
+                                        {#bootbox.alert('Hubo un error al subir las fotos');#}
+                                        swal('','Ocurrió un error al subir las fotos, intente de nuevo!','error');
                                     }
                                 });
                                 }
                             }
                             else{
                                 console.log(pesoKb);
-                                bootbox.alert('Imagen demasiado grande, intente con una mas pequeña');
+                                {#bootbox.alert('Imagen demasiado grande, intente con una mas pequeña');#}
+                                swal('','Imagen demasiado grande, intente con una mas pequeña!','error');
                                 //alert("Imagen demasiado grande, intente con una mas pequeña");
                             }
                     }
 
         }
         else{
-            bootbox.alert('Debe ingresar una consulta antes de subir fotos!');
+            {#bootbox.alert('Debe ingresar una consulta antes de subir fotos!');#}
+            swal('','Debe ingresar una consulta para subir fotos!','error');
         }
         });
         
@@ -4328,19 +4367,22 @@
                             {#alertify.success("Cambios guardados!");#}
                             }
                             else{
-                                alertify.success("Receta guardada!");
+                                {#alertify.success("Receta guardada!");#}
+                                swal('','Receta Debe ingresar una consulta primero!','success');
                                 $('#receta').hide();
                             }
                             {#console.log("pagina actual: "+data);
                             console.log("Inicio de registro: "+data.inicioRegistro);#}
                                     },
                     error: function (data) {
-                        alertify.error("Hubo un error, intente de nuevo!");
+                        {#alertify.error("Hubo un error, intente de nuevo!");#}
+                        swal('','Ocurrió un error, intente de nuevo!','error');
                     }
                 });
             }
             else{
-                bootbox.alert("Debe ingresar una consulta antes!", function() {});
+                {#bootbox.alert("Debe ingresar una consulta antes!", function() {});#}
+                swal('','Debe ingresar una consulta antes!','error');
             }
             return false;
         });
@@ -4912,13 +4954,13 @@ if(editar!='editar_usuario'){
     </script>
     <script>
         $(document).ready(function(){
-            $('.caducidad').daterangepicker({
+            {#$('.caducidad').daterangepicker({
                 singleDatePicker: true,
                 showDropdowns: true,
                 locale: {
                     format: 'YYYY-MM-DD'
                 },
-            }); 
+            }); #}
         });
     </script>
     {#<script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
