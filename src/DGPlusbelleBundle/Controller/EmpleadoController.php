@@ -98,7 +98,7 @@ class EmpleadoController extends Controller
         $user->setUsername($entity->getUsername());
         $user->setEstado(true);
         $user->isEnabled(true);
-        $user->setPassword('sepes123');
+        $user->setPassword($entity->getPassword());
         $this->setSecurePassword($user);
         
         

@@ -18,6 +18,38 @@ use Doctrine\ORM\Query\ResultSetMapping;
 class ReporteController extends Controller
 {
 
+    
+    
+    
+    /**
+     * Lists all Usuario entities.
+     *
+     * @Route("/", name="admin_reporte_index")
+     * @Method("GET")
+     * @Template()
+     */
+    public function indexAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+//        $entity = new Usuario();
+//        $form = $this->createCreateForm($entity);
+//        $entities = $em->getRepository('DGPlusbelleBundle:Usuario')->findBy(array('estado' => true));
+
+        return array(
+//            'entities' => $entities,
+//            'form'   => $form->createView(),
+        );
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     /**
      * 
      *

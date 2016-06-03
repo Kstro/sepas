@@ -3,7 +3,7 @@
 {% block contenido -%}
  <div class="panel panel-default">
   <!-- Default panel contents -->
-  <div class="panel-heading"><p>Empleado nuevo</p></div>
+  <div class="panel-heading"><p><strong>Empleado nuevo</strong></p></div>
   <div class="panel-body">
   {{ form_start(form) }}
     {{ form_errors(form) }}
@@ -13,8 +13,18 @@
       {#  </div> #}
      
         {% include 'DGPlusbelleBundle:Persona:form.html.twig' with { 'form': form.persona }%}  
-        
-         
+        <div class="row">
+               <div class="col-md-12">
+                  <h3 class="text">Credenciales de acceso al sistema</h3>
+                  <hr>
+                </div>
+          </div>
+         <div class="col-md-6">
+                {{ form_row(form.username) }}
+            </div>
+            <div class="col-md-6 ">
+                {{ form_row(form.password) }}
+            </div>
           <div class="row">
                <div class="col-md-12">
                   <h3 class="text">Meta</h3>
@@ -33,6 +43,7 @@
         <div class="col-md-3">
             {{ form_row(form.bono) }}
         </div>  
+        
         
      {# <div class="col-xs-12 col-sm-2">
         {{ form_row(form.sucursal) }}
@@ -61,15 +72,16 @@
         </div> 
        
         <div class="col-xs-12 col-sm-6">
-            <div class="col-md-12">
-                {{ form_row(form.username) }}
-            </div>
-            <div class="col-md-3 hidden">
+            
+            {#<div class="col-md-3 ">
+                {{ form_row(form.password.second) }}
+            </div>#}
+            {#<div class="col-md-3 ">
                 {{ form_row(form.password.first) }}
             </div>
-            <div class="col-md-3 hidden">
+            <div class="col-md-3 ">
                 {{ form_row(form.password.second) }}
-            </div>
+            </div>#}
         </div>
         
         

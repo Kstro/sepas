@@ -68,21 +68,21 @@ class CitaController extends Controller
                 . "WHERE c.fechaCita <:hoy AND c.horaCita <:horaActual AND c.estado='P'";*/
         $dql = "SELECT c from DGPlusbelleBundle:Cita c "
                 . "WHERE c.fechaCita <:hoy  OR (c.fechaCita =:hoy AND c.horaCita <:horaActual) AND c.estado='P'";
-        $citaspasadas = $em->createQuery($dql)
-                    ->setParameters(array('hoy'=>$hoy,'horaActual'=>$horaActual))
-                     ->getResult();
+//        $citaspasadas = $em->createQuery($dql)
+//                    ->setParameters(array('hoy'=>$hoy,'horaActual'=>$horaActual))
+//                     ->getResult();
         //var_dump($hoy);
         //var_dump($horaActual);
         //echo count($citaspasadas);
         //$citaspasadas = $em->getRepository('DGPlusbelleBundle:Cita')->findBy(array('estado'=>'P'));
         //var_dump($citaspasadas);
         
-        foreach($citaspasadas as $row){
-            $row->setEstado('N');
-            $em->persist($row);
-            //$em->flush();
-        }
-        $em->flush();
+//        foreach($citaspasadas as $row){
+//            $row->setEstado('N');
+//            $em->persist($row);
+//            //$em->flush();
+//        }
+//        $em->flush();
         
        
         return array(

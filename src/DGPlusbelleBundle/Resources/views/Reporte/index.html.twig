@@ -1,0 +1,325 @@
+{% extends 'DGPlusbelleBundle:Layout:layouterpajustes.html.twig' %}
+
+
+{% block navegacion %}
+{#        {{parent()}}#}
+    {% if is_granted('ROLE_ADMIN') %}
+        <a href="{{ path('admin_reporte_emergencia') }}" class="leftnava"><li class="leftnav left">Ingresos consulta<span class="pull-right right"><i class="fa fa-arrow-right"></i></span></li></a>
+    {% endif %}
+    {% if is_granted('ROLE_ADMIN') %}
+        <a href="{{ path('admin_reporte_diario') }}" class="leftnava"><li class="leftnav left">Ingresos diarios<span class="pull-right right"><i class=""></i></span></li></a>
+    {% endif %}
+    {% if is_granted('ROLE_ADMIN') %}
+        <a href="{{ path('admin_reporte_referidos') }}" class="leftnava"><li class="leftnav left ">Pacientes referidos<span class="pull-right right"><i class=""></i></span></li></a>
+    {% endif %}
+    {#{% if is_granted('ROLE_ADMIN') %}
+        <a href="{{ path('admin_tratamiento') }}" class="leftnava"><li class="leftnav left">Tratamientos<span class="pull-right right"><i class=""></i></span></li></a>
+    {% endif %}
+    {% if is_granted('ROLE_ADMIN') %}
+        <a href="{{ path('admin_categoria') }}" class="leftnava"><li class="leftnav left">Categorias<span class="pull-right right"><i class=""></i></span></li></a>
+    {% endif %}#}
+    {% if is_granted('ROLE_ADMIN') %}
+        <a href="{{ path('admin_empleado_progreso_venta') }}" class="leftnava"><li class="leftnav left ">Progreso empleado<span class="pull-right right"><i class=""></i></span></li></a>
+    {% endif %}
+    {% if is_granted('ROLE_ADMIN') %}
+        {#<a href="{{ path('admin_sucursal') }}" class="leftnava"><li class="leftnav left ">Sucursal<span class="pull-right right"><i class=""></i></span></li></a>#}
+    {% endif %}
+    {% if is_granted('ROLE_ADMIN') %}
+        
+    {% endif %}
+        
+            {#<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ path('admin_reporte_consolidado_paquete') }}"><span class="nav-text">Consolidado de paquetes</span></a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="{{ path('admin_reporte_tratamiento_frecuente') }}"><span class="nav-text">Tratamiento más vendido</span></a></li>#}
+            
+            
+            
+        
+{% endblock navegacion %}
+
+{% block descripcion %}
+    <div class="col-md-6">
+        <p class="robo" style="font-weight: 300; margin-bottom: 0px; font-size: 30px;">Reportes</p>
+        <p class="robo" style="font-weight: 300; font-size: 14px; height: 40px;">Genere reportes de ingresos.</p>
+    </div>
+{% endblock %}
+
+
+
+{% block contenido -%}
+    
+        <div class="content-body">
+          <div class="panel" data-fill-color="true">
+            <div class="panel-body hide" id="addFormContainer">
+{#              {% include 'DGPlusbelleBundle:Usuario:new.html.twig' %}#}
+            </div><!-- /.panel-body -->
+
+            <div class="panel-body hide" id="editFormContainer">
+     
+            </div><!-- /.panel-body -->
+    
+    
+   <!--     <a href="{{ path('admin_empleado_new') }}" class="btn btn-success"> Crear nuevo empleado</a>  -->
+
+
+        </div><!-- /.panel -->
+
+<!-- Template Setups -->
+    {#    <div class="modal fade" id="templateSetup">
+          <div class="modal-dialog">
+            <!-- modal-content -->
+            <div class="modal-content"></div>
+          </div><!-- /.modal-dialog -->
+        </div><!-- /.templateSetup -->  #}
+
+      </div><!-- /.content -->
+   
+
+{% endblock %}
+
+{% block javascripts_step %}
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/css/select2.min.css" rel="stylesheet" />   
+        <script src="{{ asset('Resources/wrapkit/scripts/jquery.mask.js') }}"></script>
+        <script src="{{ asset('Resources/Zebra/js/zebra_datepicker.js') }}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/js/select2.min.js"></script>
+        
+        <script type="text/javascript" src="{{ asset('Resources/bValidator-0.73/jquery.bvalidator.js')}}"></script>
+        <script type="text/javascript" src="{{ asset('Resources/bValidator-0.73/bvalidator.lang.es.js')}}" ></script>
+        <script src="{{ asset('Resources/wrapkit/scripts/bootbox.js') }}"></script>
+        <script src="{{ asset('Resources/js/Usuario.js') }}"></script>  
+      
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.1.0/material.min.css">
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.11/css/dataTables.material.min.css">
+        <script src="https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"></script>
+	<script src="https://cdn.datatables.net/1.10.11/js/dataTables.material.min.js "></script>
+        <script>
+            $(document).ready(function(){
+                 var link=0;
+                 var estadoPrevio = "";
+                            
+        
+        
+        
+        
+                $(document).on('click','#dgplusbellebundle_empleado_submit',function(event){
+                    alert('');
+                    return false;
+                });
+        
+        
+        
+        
+                $('#dgplusbellebundle_usuario_persona').select2();
+                //Seleccionar un registro
+                $('#datatables1>tbody>tr').on('click', function(event) {
+                    //Se limpia los otros que esten activos
+                    link=$(this).attr("id");
+                    if(link!=1){
+                        $('#datatables1>tbody>tr').each(function(index, val) {
+                            $(this).removeClass("active");
+                        });
+                        //Se activa el registro en el que se hizo click
+                        $(this).addClass("active");
+                    //Se habilitan los botones de editar y borrar
+                    
+                    
+                        $("#edit-datatables1").removeClass("disabled");
+                        $("#delete-datatables1").removeClass("disabled");
+                    
+                    //var link=$('#datatables1>tbody>tr>td>a').attr("href");
+                    //var link=$(this).children("td:first").children().attr("href");
+                    //Obtener el id del registro
+                    
+                    //alert(link);
+                    //Carga del form modificar
+                    
+                        $("#editFormContainer").load(link+"/edit");
+                    }
+                    else{
+                        bootbox.alert("Administrador no se puede editar", function() {
+                                        //Example.show("Hello world callback");
+                                    });
+                    }
+                    
+                    
+                     //Hay que cambiar el numero de la columna para las otras tablas
+                    estadoPrevio = $(this).children('td:nth-child(4)').html();
+                    estadoPrevio = estadoPrevio.trim();
+                    if(estadoPrevio==="Inactivo"){//se muestran los iconos de desactivado
+                        $('#delete-datatables1').children().removeClass("fa fa-toggle-on");
+                        $('#delete-datatables1').children().addClass("fa fa-toggle-off");
+                    }
+                    else{//se muestran los iconos de activado
+                        $('#delete-datatables1').children().removeClass("fa fa-toggle-off");
+                        $('#delete-datatables1').children().addClass("fa fa-toggle-on");
+                    }
+                    //var href=link.attr("href");
+                    //alert(object);
+                    
+                    
+                });
+                
+                
+                $("#add-datatables1").click(function(){
+                    if($("#addFormContainer").hasClass("hide")){
+                        $("#addFormContainer").removeClass("hide");
+                        $("#editFormContainer").addClass("hide");
+                    }
+                    else{
+                        $("#addFormContainer").addClass("hide");
+                        limpiarCampos();
+                        //$("#editFormContainer").removeClass("hide");
+                    }
+
+                });
+                
+                 $("#delete-datatables1").click(function(){
+                     if(!$(this).hasClass('disabled')){                     
+                     bootbox.confirm("¿Desea cambiar el estado de este registro?", function(result) {
+                        if(result){
+                        $.getJSON(Routing.generate('admin_usuario_desactivar', { id: link}), 
+                          function(data) {
+                          var mensaje="";
+                                    if(data.regs==0){
+                                        //Se cambia a desactivado
+                                        mensaje ="Usuario desactivado con éxito";
+                                        $('#'+link + ' > td:nth-child(4)').html('Inactivo');
+                                        $('#delete-datatables1').children().removeClass("fa fa-toggle-on");
+                                        $('#delete-datatables1').children().addClass("fa fa-toggle-off");
+                                    //$('#datatables1>tbody>tr>td:nth-child(5)').html('Inactivo');
+                                    }
+                                    if(data.regs==1){
+                                        //Se cambia a activado
+                                        mensaje ="Usuario activada con éxito";
+                                        $('#'+link + ' > td:nth-child(4)').html('Activo');
+                                        $('#delete-datatables1').children().removeClass("fa fa-toggle-off");
+                                        $('#delete-datatables1').children().addClass("fa fa-toggle-on");
+                                    }
+                                    if(data.regs==2){
+                                        //Se cambia a activado
+                                        mensaje ="Usuario administrador no puede ser desactivado";
+                                    }
+                                    bootbox.alert(mensaje, function() {
+                                        //Example.show("Hello world callback");
+                                    });
+                                    
+                                // alert(link);
+                            }); 
+                        }
+                                    
+                    });     
+                        } 
+
+                }); 
+                
+                //Accion cancelar del boton nuevo
+                $("#cancelarNuevo").click(function(){
+                    $("#add-datatables1").click();
+                    limpiarCampos();
+                    return false;
+                });
+                
+                //Accion cancelar del boton modificar
+                $("#cancelarModificar").click(function(){
+                    $("#edit-datatables1").click();
+                    return false;
+                });
+                
+                
+                $("#edit-datatables1").click(function(){
+                    if(!$(this).hasClass('disabled')){
+                        if(link != 1){
+                            if(!$("#edit-datatables1").hasClass("disabled")){
+                                if($("#editFormContainer").hasClass("hide")){
+                                    $("#addFormContainer").addClass("hide");
+                                    $("#editFormContainer").removeClass("hide");
+                                }
+                                else{
+                                    //$("#addFormContainer").removeClass("hide");
+                                    $("#editFormContainer").addClass("hide");
+                                }
+                            }
+                        }
+                        else{
+                            bootbox.alert("Administrador no se puede editar", function() {
+                                            //Example.show("Hello world callback");
+                                        });
+                        }
+                    }
+                });
+                /*
+                $("#dgplusbellebundle_sucursal_submit").click(function(){
+                    $(".icon-refresh").click();
+                    return false;
+                });
+                */
+                $('#filterDatatables1').on('keyup', function(event) {
+                    var filtro = $(this).val(); 
+                    //alert(filtro);
+                    $('#datatables1_filter>label>input').val($(this).val());
+                    $('#datatables1_filter>label>input').keyup();
+
+                });
+                
+                
+                $('#datatables1').DataTable({ 
+                    dom:'ftp',
+                    searching:true,
+                    "order":[[0, "desc"]],
+                    "columnDefs": [
+                           { "orderable": false, "targets": 0 },
+                           { "orderable": false, "targets": 1 },
+                           { "orderable": false, "targets": 2 },
+                           { "orderable": false, "targets": 3 }
+                          
+                        
+
+                           
+                           //{ "orderData": [ 2, 3, 4 ], "targets": 2 }
+                    ],
+                    "language": {
+                    "info": "Mostrando página _PAGE_ de _PAGES_",
+                    "infoEmpty": "",
+                    "emptyTable": "No se encontraron registros",
+                    "paginate": { 
+                        "next": "Siguiente",
+                        "previous": "Anterior"
+                    },
+                    "processing": "Procesando petición...",
+                    "search": "Buscar registros:",
+                    "lengthMenu": "Mostrar _MENU_ registros"
+                }, 
+                    
+        });
+        
+       
+        //Oculta el filtro de la tabla
+        $('#datatables1_filter').hide();
+        $('#filterDatatables1').val('');
+        
+        
+     validarUsuario();    
+        //validarEmpleado(); 
+        
+    });//Fin document ready
+        
+    //Definición de funciones
+    function limpiarCampos(){
+        //Limpiar los campos de tipo text
+        $("input[type=text]").each(function(index, val) {
+            $(this).val("");
+        });
+        //Seleccionar el primer elemento de los dropdown
+        $('select option').each( function(index, val) {
+            if(index == 0){
+                $(this).attr("selected","selected");
+            }
+            else{
+                $(this).removeAttr("selected");
+            }
+            
+        
+	});             
+    };
+        </script>
+
+    {% endblock %} 

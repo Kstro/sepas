@@ -62,20 +62,27 @@ class EmpleadoType extends AbstractType
                     'attr'=>array(
                     'class'=>'form-control input-sm nombreUsuario'
                     )))   
-            ->add('password','repeated', array(
-                    'type' => 'password',
-                    'invalid_message' => 'La contraseña no son iguales',
-                    'options' => array('attr' => array('class' => 'password-field')),
-                    'required' => false,
-                    'first_options'  => array('label' => 'Contraseña','required'=>false,
+            ->add('password','password', array(
+                    
+                    
                     'attr'=>array(
-                    'class'=>'form-control input-sm firstPassword'
-                    )),
-                    'second_options' => array('label' => 'Confirmar contraseña','required'=>false,
-                    'attr'=>array(
-                    'class'=>'form-control input-sm secondPassword'
-                    )),
+                    'class'=>'form-control input-sm firstPassword' 
+                    ),
                 ))
+//            ->add('password','repeated', array(
+//                    'type' => 'password',
+//                    'invalid_message' => 'La contraseña no son iguales',
+//                    'options' => array('attr' => array('class' => 'password-field')),
+//                    'required' => false,
+//                    'first_options'  => array('label' => 'Contraseña','required'=>false,
+//                    'attr'=>array(
+//                    'class'=>'form-control input-sm firstPassword'
+//                    )),
+//                    'second_options' => array('label' => 'Confirmar contraseña','required'=>false,
+//                    'attr'=>array(
+//                    'class'=>'form-control input-sm secondPassword'
+//                    )),
+//                ))
         ;
     }
     

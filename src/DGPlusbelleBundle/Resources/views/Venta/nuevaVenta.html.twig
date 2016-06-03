@@ -1329,7 +1329,8 @@
                                     success:  function (response) {
                                         id_ventavacuna = response.ventaVacuna;
 
-                                        alertify.success('Se ha resgistrado con exito la venta de vacunas');
+                                        {#alertify.success('Se ha resgistrado con exito la venta de vacunas');#}
+                                        swal('','Venta de vacunas registrada!','success');
                                         $('#detalle-vacunas-vendidas').html('');
 
                                         draw1+='<label>Vendido por</label>';                            
@@ -1521,7 +1522,8 @@
                                                                             </div>\n\
                                                                             <div class='col-md-2'><strong>$ "+response.costoMedicamento+"</strong></div>");
             
-                                    alertify.success("Venta realizada!");
+                                    {#alertify.success("Venta realizada!");#}
+                                    swal('','Venta realizada!','success');
                                 }  
                             },
                             error:  function (response) {
