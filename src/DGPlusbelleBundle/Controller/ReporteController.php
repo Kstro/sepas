@@ -586,7 +586,7 @@ class ReporteController extends Controller
 //        var_dump($consulta);
         
         $medico = array(
-                    "nombre" => "Dr. Jorge Panameño",
+                    "nombre" => "Dr. Jorge Panameño MSc.",
                     "cargo" => "DOCTOR EN MEDICINA",
                     "codigo" => "JVPM 4309",
                 );
@@ -633,7 +633,7 @@ class ReporteController extends Controller
 //                    "codigo" => "JVPM 7370",
 //                );
             $medico = array(
-                    "nombre" => "Dr. Jorge Panameño",
+                    "nombre" => "Dr. Jorge Panameño MSc.",
                     "cargo" => "Médico tropical",
                     "codigo" => "JVPM ",
                 );
@@ -2126,7 +2126,7 @@ class ReporteController extends Controller
 //                    "codigo" => "JVPM 7370",
 //                );
             $medico = array(
-                    "nombre" => "Dr. Jorge Panameño",
+                    "nombre" => "Dr. Jorge Panameño MSc.",
                     "cargo" => "Medico tropical",
                     "codigo" => "JVPM ",
                 );
@@ -2220,7 +2220,7 @@ class ReporteController extends Controller
                     ->getResult();
         
         $medico = array(
-                    "nombre" => "Dr. Jorge Panameño",
+                    "nombre" => "Dr. Jorge Panameño MSc.",
                     "cargo" => "DOCTOR EN MEDICINA",
                     "codigo" => "JVPM 4309",
                 );

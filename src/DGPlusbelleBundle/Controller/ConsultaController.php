@@ -3347,6 +3347,32 @@ class ConsultaController extends Controller
     /**
     * Ajax utilizado para buscar informacion de una consulta de estetica
     *  
+    * @Route("/busqueda-vacuna-costo-select/data", name="busqueda_vacuna_costo_select")
+    */
+    public function busquedaVacunaCostoAction(Request $request)
+    {
+        $id= $request->get('id');
+        
+        
+        //var_dump($id);
+        $response = new JsonResponse();
+        $em = $this->getDoctrine()->getEntityManager();
+        $dql = "SELECT vac.costo as costo "
+                        . "FROM DGPlusbelleBundle:Vacuna vac "
+                        . "WHERE vac.id=:id ";
+        
+        $paciente['data'] = $em->createQuery($dql)
+                ->setParameters(array('id'=>$id))
+                
+                ->getResult();
+        $response->setData($paciente);
+        return $response;
+    }
+    
+    
+    /**
+    * Ajax utilizado para buscar informacion de una consulta de estetica
+    *  
     * @Route("/busqueda-descuento-select/data/porc", name="busqueda_descuento_porcentaje_select")
     */
     public function getDescuentoAction(Request $request)

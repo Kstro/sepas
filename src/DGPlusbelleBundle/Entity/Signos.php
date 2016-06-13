@@ -77,6 +77,12 @@ class Signos
      * @ORM\Column(name="spo", type="integer", length=30, nullable=false)
      */
     private $spo;
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="examen", type="text", length=30, nullable=false)
+     */
+    private $examen;
 
     
     /**
@@ -328,6 +334,31 @@ class Signos
     public function getSpo()
     {
         return $this->spo;
+    }
+    
+    
+    /**
+     * Set examen
+     *
+     * @param int $examen
+     *
+     * @return int
+     */
+    public function setExamen($examen)
+    {
+        $this->examen= $examen;
+
+        return $this;
+    }
+
+    /**
+     * Get spo
+     *
+     * @return int
+     */
+    public function getExamen()
+    {
+        return $this->examen;
     }
    
 }

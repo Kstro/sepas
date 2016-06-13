@@ -5,7 +5,11 @@
     {{parent()}}
     <link rel="stylesheet" href="{{asset('Resources/datatables/serversideprocessing.css')}}" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/css/select2.min.css" rel="stylesheet" />
-    
+    <style>
+        #dgplusbellebundle_incapacidad_notas{
+            height: 150px;
+        }
+    </style>
 {% endblock %}
 
 
@@ -116,7 +120,12 @@
             $(document).ready(function(){
                 var idPaciente = 0;
                 
+                $(document).on('change', '#dgplusbellebundle_incapacidad_paciente',function(){
+                    var nombrePaciente = $('#dgplusbellebundle_incapacidad_paciente option:selected').text();
+                    $('#dgplusbellebundle_incapacidad_notas').html("A quien interese: \n\n Por este medio hago constar que "+nombrePaciente);
+                });
                 
+                $('#dgplusbellebundle_incapacidad_notas').html("A quien interese: \n\n Por este medio hago constar que ");
                 
               // validando campos  
               {#$('#dgplusbellebundle_paciente_dui').mask('00000000-0');  

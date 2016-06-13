@@ -270,7 +270,8 @@
                                                 <option value="" selected>Seleccione un tipo de descuento ...</option>
 
                                                 {% for descuento in descuentos %}
-                                                    <option value="{{descuento.id}}"> {{descuento.nombre}} - {{descuento.porcentaje}}%</option>
+                                                    
+                                                    <option value="{{descuento.id}}" {#{% if descuento.porcentaje==0 %}selected {% endif %}#}  > {{descuento.nombre}} - {{descuento.porcentaje}}%</option>
                                                 {% endfor %}
                                             </select>   
                                         </div>

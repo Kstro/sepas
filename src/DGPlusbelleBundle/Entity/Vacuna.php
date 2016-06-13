@@ -35,6 +35,18 @@ class Vacuna
      * @ORM\Column(name="estado", type="integer", length=30, nullable=false)
      */
     private $estado;  
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="costo", type="float", length=30, nullable=false)
+     */
+    private $costo;  
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="codigo_vacuna", type="string", length=30, nullable=false)
+     */
+    private $codigo;  
    
     /**
      * Get id
@@ -93,6 +105,30 @@ class Vacuna
     public function getEstado()
     {
         return $this->estado;
+    }
+    
+    /**
+     * Set costo
+     *
+     * @param float $costo
+     *
+     * @return float
+     */
+    public function setCosto($costo)
+    {
+        $this->costo = $costo;
+
+        return $this;
+    }
+
+    /**
+     * Get costo
+     *
+     * @return float
+     */
+    public function getCosto()
+    {
+        return $this->costo;
     }
    
 }

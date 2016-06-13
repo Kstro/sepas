@@ -43,7 +43,7 @@
                         {% endif %}
                     </div>
                     <div class="hidden-xs">
-                      <h2 class="media-heading text-light" id="nombrePaciente">{{ paciente.persona.nombres}} {{ paciente.persona.apellidos}}</h2>
+                      <h3 class="robo media-heading text-light" id="nombrePaciente">{{ paciente.persona.nombres}} {{ paciente.persona.apellidos}}</h3>
                         <p class="mb-4x text-light">
                             <span class="mr-1x" id="expediente">
                                 <i class="fa fa-clipboard"></i> {#{{ expediente }}#}
@@ -71,7 +71,6 @@
                             
                             <span class="mr-1x" id="edad">
                                 <i class="fa fa-birthday-cake"></i>
-                                
                                     {{edad}}
                             </span>
                             
@@ -128,16 +127,17 @@
               {#<li class="active"><a aria-expanded="false" href="#botabs1" data-toggle="tab">Datos generales</a></li>#}
               <li class=""><a href="#botabs1" data-toggle="tab">Datos generales</a></li>
               <li class="active"><a href="#botabs2" data-toggle="tab">Consulta</a></li>
+              <li class=""><a href="#botabs6" data-toggle="tab">Imágenes</a></li>
               <li class=""><a href="#botabs3" data-toggle="tab">Exploración física</a></li>
-              
+              <li class=""><a href="#botabs11" data-toggle="tab">Evaluación</a></li>
               {#<li class=""><a href="#botabs4" data-toggle="tab">Antecedentes y alergias</a></li>#}
               {#<li class=""><a href="#botabs5" data-toggle="tab">Costo</a></li>#}
-              <li class=""><a href="#botabs6" data-toggle="tab">Imágenes</a></li>
+              
 {#              <li class=""><a href="#botabs7" data-toggle="tab">Historia clínica</a></li>#}
               <li class=""><a href="#botabs8" data-toggle="tab">Receta médica</a></li>
               <li class=""><a href="#botabs9" data-toggle="tab">Vacunas</a></li>
               <li class=""><a href="#botabs10" data-toggle="tab">Incapacidades</a></li>
-              <li class=""><a href="#botabs11" data-toggle="tab">Evaluación</a></li>
+              
             </ul>
             <div class="panel-body">
                 <div class="tab-content col-md-9">
@@ -413,7 +413,7 @@
                                     
                                         <div class="col-md-4">
                                             <label>
-                                                Motivos
+                                                Consulta por
                                             </label>
                                         </div>
                                         <div class="col-md-4">
@@ -421,11 +421,11 @@
                                                 Historia clínica
                                             </label>
                                         </div>
-                                        <div class="col-md-4">
+                                        {#<div class="col-md-4">
                                             <label>
                                                 Aparatos
                                             </label>
-                                        </div>
+                                        </div>#}
                                         
                                         {#<div class="col-md-6">
                                             <label>
@@ -443,9 +443,9 @@
                                         <div class="col-md-4">
                                             <textarea class="col-md-12 editorArea form-control" id="sintomasConsulta">{{consulta.sintomas}}</textarea>
                                         </div>
-                                        <div class="col-md-4">
+                                        {#<div class="col-md-4">
                                             <textarea class="col-md-12 editorArea form-control" id="aparatosConsulta">{{consulta.aparatos}}</textarea>
-                                        </div>
+                                        </div>#}
                                         
                                         {#<div class="col-md-6">
                                             <select id="sucursal_consulta" class="form-control input-sm">#}
@@ -515,12 +515,15 @@
                                         Peso (Kg)/ Libras:
                                     </label>
                                     <label id="libras">
-
+                                        0 lbs
                                     </label>
                                 </div>
                                 <div class="col-md-4">
                                     <label>
-                                        Talla (cm)
+                                        Talla (cm)/ Talla (m):
+                                    </label>
+                                    <label id="metros">
+                                        0 m
                                     </label>
                                 </div>
                                 <div class="col-md-4">
@@ -535,10 +538,10 @@
                                     <input id="pesoPaciente" value="{{signos.peso}}" name="peso_paciente" class="form-control input-sm form-control"/>
                                 </div>
                                 <div class="col-md-4">
-                                    <input id="tallaPaciente" value="{{signos.talla}}" name="peso_paciente" class="form-control input-sm form-control"/>
+                                    <input id="tallaPaciente" value="{{signos.talla}}" name="talla_paciente" class="form-control input-sm form-control"/>
                                 </div>
                                 <div class="col-md-4">
-                                    <input id="frecRespiratoria" value="{{signos.frecRespiratoria}}" name="peso_paciente" class="form-control input-sm form-control"/>
+                                    <input id="frecRespiratoria" value="{{signos.frecRespiratoria}}" name="frec_respiratoria" class="form-control input-sm form-control"/>
                                 </div>
 
                                 <div class="clearfix"></div>
@@ -586,10 +589,19 @@
                                     <label>
                                         SPO2
                                     </label>
-                                </div>                               
+                                </div>  
+                                <div class="col-md-4">
+                                    <label>
+                                        Examen físico
+                                    </label>
+                                </div>  
                                 <div class="clearfix"></div>
                                 <div class="col-md-4">
                                     <input id="spo" value="{{signos.spo}}" name="spo" class="form-control input-sm form-control"/>
+                                </div>
+                                <div class="col-md-8">
+                                    {#<textarea id="examenFisico" value="{{signos.examen}}" name="examenfisico" class="form-control input-sm"/>#}
+                                    <textarea id="examenFisico" value="{{signos.examen}}" name="examenFisico" class="form-control input-sm col-md-8" placeholder="Exámen físico"></textarea>
                                 </div>
                                     <div class="col-md-12">
                                         <hr>
@@ -1009,7 +1021,7 @@
                                         <label>Notas/Observaciones</label>
                                     </div>
                                     <div class="col-md-12">
-                                        <textarea id="incapaciadNotas" class="form-control"></textarea>
+                                        <textarea id="incapaciadNotas" style="height: 250px;" class="form-control">A quien interese: Por este medio </textarea>
                                     </div>
                                     <div class="clearfix"></div>
                                     <hr>
@@ -1021,7 +1033,6 @@
                                             <hr>
                                         </div>
                                     </div>
-                                    
                                 </div>   
                             </div>
                             
@@ -1100,10 +1111,9 @@
                                     <label>Estudios de laboratorios</label>
                                 </div>
                                 <div class="col-md-4">
-                                    <label>Medicamentos</label>
+                                    <label>Tratamiento</label>
                                 </div>
-                            </div>
-                            <div class="row" style="margin-top:20px;">
+                                <div class="clearfix" style="margin-top:0px;"></div>
                                 <div class="col-md-4">
                                     <textarea maxlength="400" style="height:200px;" id="diagnostico" class="form-control">{{evaluacion.diagnostico}}</textarea>
                                 </div>
@@ -1113,12 +1123,22 @@
                                 <div class="col-md-4">
                                     <textarea maxlength="400" style="height:200px;" id="medicamentos" class="form-control">{{evaluacion.medicamentos}}</textarea>
                                 </div>
+                                <div class="clearfix"></div>
+                                <div class="col-md-4">
+                                    <label>Diagnóstico final</label>
+                                </div>
+                                <div class="clearfix"></div>
+                                <div class="col-md-8">
+                                    <select id="diagnosticoRepor" class="form-control" style="width:100%;">
+                                        <option value="">Selecccione un diagnóstico...</option>
+                                    </select>
+                                </div>
                             </div>
                         <div class="row" style="margin-top:10px;">
-                                        <div class="col-md-12">
-                                            <hr>
-                                        </div>
-                                    </div>
+                            <div class="col-md-12">
+                                <hr>
+                            </div>
+                        </div>
 
                                     <div class="row pull-left" style="margin-top:10px;">
                                         <div class="col-md-12">
@@ -2992,11 +3012,6 @@
     
     
     
-    
-    
-    
-    
-    
      
 
     jQuery(document).ready(function() {
@@ -3004,6 +3019,17 @@
         $('.editorVacuna').select2();
         $('#descuentoVacuna').select2();
         $('#codigo_consulta').select2();
+        $('#diagnosticoRepor').select2();
+        
+        {#$('#incapaciadNotas').val("A quien interese: \n\r\n\r Por este medio hago constar que ");#}
+        $(document).on('change', '#dgplusbellebundle_incapacidad_paciente',function(){
+            var nombrePaciente = $('#dgplusbellebundle_incapacidad_paciente option:selected').text();
+            $('#dgplusbellebundle_incapacidad_notas').html("A quien interese: \n\n Por este medio hago constar que "+nombrePaciente);
+        });
+
+        $('#dgplusbellebundle_incapacidad_notas').html("A quien interese: \n\n Por este medio hago constar que ");
+        
+        $('#incapaciadNotas').html("A quien interese: \n\n Por este medio hago constar que ");
         
         $('.calZebra').Zebra_DatePicker({
             months:['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
@@ -3012,6 +3038,25 @@
             show_clear_date:false,
             show_select_today: "Hoy",
             
+        });
+        
+        
+        $(document).on('change','.valores',function(){
+            var id = $(this).val();
+            console.log(id);
+            $.ajax({
+                data:{'id':id
+                },
+                url:"{{path('busqueda_vacuna_costo_select')}}",
+                type: "post",
+                success: function (data) {
+                   console.log(data);
+                    $('.costoVacuna').val(data.data[0].costo);
+                },
+                error: function (data) {
+                    swal('','Ocurrió un error, seleccione un paciente de nuevo!','error');
+                }
+            });
         });
             
         $('#dui').mask('00000000-0');  
@@ -3326,6 +3371,20 @@
                 }
             });
         });
+        if($('#metros').val()!=''){
+            
+            $('#metros').html(($('#tallaPaciente').val()/100).toFixed(2)+ " m");
+        }
+      
+        $(document).on('input', '#tallaPaciente',function(){
+            $('#metros').html(($(this).val()/100).toFixed(2)+" m");
+        });
+        
+        
+        $(document).on('input', '#medicamentos',function(){
+            $('#receta').val($(this).val());
+        });
+        
         if($('#pesoPaciente').val()!=''){
             
             $('#libras').html(($('#pesoPaciente').val()*2.20).toFixed(2)+ " lbs");
@@ -3558,6 +3617,7 @@
                                                 console.log(data);
 {#                                                bootbox.alert("Consulta registrada!", function() {});#}
                                                 alertify.success("Consulta actualizada!");
+                                                swal('','Consulta actualizada!','success');
                                                 console.log($('#idConsulta').val());
                                             }
                                         },
@@ -3588,7 +3648,7 @@
                                                 console.log(data);
 {#                                                bootbox.alert("Consulta registrada!", function() {});#}
                                                 {#alertify.success("Consulta registrada!");#}
-                                                    swal('','Consulta registrada!','success');
+                                                swal('','Consulta registrada!','success');
                                                 console.log($('#idConsulta').val());
                                             }
                                         },
@@ -3685,13 +3745,14 @@
             var frecCardiaca = $('#frecCardiaca').val();
             var frecCardiaca = $('#frecCardiaca').val();
             var spo = $('#spo').val();
+            var examen = $('#examenFisico').val();
             var medico = $('#medico_consulta').val();
             var sucursal = $('#sucursal_consulta').val();
             console.log(id);
             
             if(idConsulta==''){
                 $.ajax({
-                    data:{spo:spo,sucursal:sucursal,medico:medico,id:id,peso:peso,talla:talla,frecRespiratoria:frecRespiratoria,presionDiastolica:presionDiastolica,presionSistolica:presionSistolica,temperatura:temperatura,frecCardiaca:frecCardiaca},
+                    data:{examen:examen, spo:spo,sucursal:sucursal,medico:medico,id:id,peso:peso,talla:talla,frecRespiratoria:frecRespiratoria,presionDiastolica:presionDiastolica,presionSistolica:presionSistolica,temperatura:temperatura,frecCardiaca:frecCardiaca},
                     url:"{{path('admin_paciente_guardar_signos_ajax')}}",
                     type: "post",
                     success: function (data) {
@@ -3715,7 +3776,7 @@
             }
             else{
                 $.ajax({
-                    data:{spo:spo,medico:medico,idConsulta:idConsulta,id:id,peso:peso,talla:talla,frecRespiratoria:frecRespiratoria,presionDiastolica:presionDiastolica,presionSistolica:presionSistolica,temperatura:temperatura,frecCardiaca:frecCardiaca},
+                    data:{examen:examen, spo:spo,medico:medico,idConsulta:idConsulta,id:id,peso:peso,talla:talla,frecRespiratoria:frecRespiratoria,presionDiastolica:presionDiastolica,presionSistolica:presionSistolica,temperatura:temperatura,frecCardiaca:frecCardiaca},
                     url:"{{path('admin_paciente_actualizar_signos_ajax')}}",
                     type: "post",
                     success: function (data) {

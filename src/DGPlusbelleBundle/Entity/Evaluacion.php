@@ -45,6 +45,15 @@ class Evaluacion
     private $medicamentos;
     
     
+    
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="diagnostico_repor", type="string", length=30, nullable=false)
+     */
+    private $diagnosticoRepor;
+    
+    
     /**
      * @var \Paciente
      *
@@ -112,6 +121,31 @@ class Evaluacion
     public function getDiagnostico()
     {
         return $this->diagnostico;
+    }
+    
+    
+    /**
+     * Set diagnosticoRepor
+     *
+     * @param int $diagnosticoRepor
+     *
+     * @return int
+     */
+    public function setDiagnosticoRepor($diagnosticoRepor)
+    {
+        $this->diagnosticoRepor= $diagnosticoRepor;
+
+        return $this;
+    }
+
+    /**
+     * Get diagnosticoRepor
+     *
+     * @return int
+     */
+    public function getDiagnosticoRepor()
+    {
+        return $this->diagnosticoRepor;
     }
     
     

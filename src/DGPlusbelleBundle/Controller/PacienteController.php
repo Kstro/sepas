@@ -1214,6 +1214,7 @@ class PacienteController extends Controller
         $temperatura = $request->get('temperatura');
         $frecCardiaca = $request->get('frecCardiaca');
         $spo= $request->get('spo');
+        $examen = $request->get('examen');
         $medico= $request->get('medico');
 //        var_dump($spo);
         //$sucursal= $request->get('sucursal');
@@ -1251,6 +1252,7 @@ class PacienteController extends Controller
             $signos->setTemperatura($temperatura);
             $signos->setConsulta($consulta);
             $signos->setSpo($spo);
+            $signos->setExamen($examen);
             date_default_timezone_set('America/El_Salvador');
             $consulta->setHoraInicio(new \DateTime('now'));
             $consulta->setHoraFin(new \DateTime('now'));
@@ -1307,6 +1309,7 @@ class PacienteController extends Controller
         $temperatura = $request->get('temperatura');
         $frecCardiaca = $request->get('frecCardiaca');
         $spo= $request->get('spo');
+        $examen = $request->get('examen');
         $idConsulta = $request->get('idConsulta');
         $medico= $request->get('medico');
 //        var_dump($spo);
@@ -1337,6 +1340,7 @@ class PacienteController extends Controller
                 $signos->setTemperatura($temperatura);
                 $signos->setConsulta($consulta);
                 $signos->setSpo($spo);
+                $signos->setExamen($examen);
                 $em->persist($signos);
                 $em->flush();
             }
@@ -1350,6 +1354,7 @@ class PacienteController extends Controller
                 $signos[0]->setTemperatura($temperatura);
                 $signos[0]->setConsulta($consulta);
                 $signos[0]->setSpo($spo);
+                $signos[0]->setExamen($examen);
                 $em->merge($signos[0]);
                 $em->flush();
             }

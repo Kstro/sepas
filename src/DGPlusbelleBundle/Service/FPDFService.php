@@ -1382,6 +1382,78 @@ class FPDFService {
         
         //$espacio = 
         //$pdf->Ln(55);
+        $fecha = "";
+        
+//        echo date('N');
+        switch(intval(date('N'))){
+            case 1:
+                $fecha = "lunes ";
+                break;
+            case 2:
+                $fecha = "martes ";
+                break;
+            case 3:
+                $fecha = "miércoles ";
+                break;
+            case 4:
+                $fecha = "jueves ";
+                break;
+            case 5:
+                $fecha = "viernes ";
+                break;
+            case 6:
+                $fecha = "sábado ";
+                break;
+            case 7:
+                $fecha = " domingo ";
+                break;
+        }
+        
+        $fecha .= date('m');
+        
+        switch(intval(date('m'))){
+            case 1:
+                $fecha .= " Enero";
+                break;
+            case 2:
+                $fecha .= " Febrero";
+                break;
+            case 3:
+                $fecha .= " Marzo";
+                break;
+            case 4:
+                $fecha .= " Abril";
+                break;
+            case 5:
+                $fecha .= " Mayo";
+                break;
+            case 6:
+                $fecha .= " Junio";
+                break;
+            case 7:
+                $fecha .= " Julio";
+                break;
+            case 8:
+                $fecha .= " Agosto";
+                break;
+            case 9:
+                $fecha .= " Septiembre";
+                break;
+            case 10:
+                $fecha .= " Octubre";
+                break;
+            case 11:
+                $fecha .= " Noviembre";
+                break;
+            case 12:
+                $fecha .= " Diciembre";
+                break;
+            
+        }
+        $fecha .= " de ".date("Y").".";
+        date_default_timezone_set('America/El_Salvador');
+        setlocale(LC_ALL,"esm");
+        $this->pdf->Cell(85, 27, utf8_decode('Y para los usos que la interesada estime convenientes se extiende la presente el día '.$fecha ));
         $this->pdf->SetY(241);
         $this->pdf->SetX(20);
         $this->pdf->SetFont('Arial','',9);

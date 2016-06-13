@@ -4,28 +4,28 @@
 {#        {{parent()}}#}
         
             {% if is_granted('ROLE_ADMIN') %}
-                    <a href="{{ path('admin_vacuna') }}" class="leftnava"><li class="leftnav left active">Vacunas<span class="pull-right right"><i class="fa fa-arrow-right"></i></span></li></a>
+                <a href="{{ path('admin_usuario') }}" class="leftnava"><li class="leftnav left">Usuarios<span class="pull-right right"><i class=""></i></span></li></a>
             {% endif %}
-            {#{% if is_granted('ROLE_ADMIN') %}
-                    <a href="{{ path('admin_tratamiento') }}" class="leftnava"><li class="leftnav left">Tratamientos<span class="pull-right right"><i class=""></i></span></li></a>
-            {% endif %}
-            {% if is_granted('ROLE_ADMIN') %}
-                    <a href="{{ path('admin_categoria') }}" class="leftnava"><li class="leftnav left">Categorias<span class="pull-right right"><i class=""></i></span></li></a>
-            {% endif %}#}
             {% if is_granted('ROLE_ADMIN') %}
                 <a href="{{ path('admin_tipoconsulta') }}" class="leftnava"><li class="leftnav left">Tipos consulta<span class="pull-right right"><i class=""></i></span></li></a>
             {% endif %}
             {% if is_granted('ROLE_ADMIN') %}
+                <a href="{{ path('admin_vacuna') }}" class="leftnava"><li class="leftnav left active">Vacunas<span class="pull-right right"><i class="fa fa-arrow-right"></i></span></li></a>
+            {% endif %}
+            {#{% if is_granted('ROLE_ADMIN') %}
+                <a href="{{ path('admin_tratamiento') }}" class="leftnava"><li class="leftnav left">Tratamientos<span class="pull-right right"><i class=""></i></span></li></a>
+            {% endif %}
+            {% if is_granted('ROLE_ADMIN') %}
+                <a href="{{ path('admin_categoria') }}" class="leftnava"><li class="leftnav left">Categorias<span class="pull-right right"><i class=""></i></span></li></a>
+            {% endif %}#}
+            {% if is_granted('ROLE_ADMIN') %}
                 <a href="{{ path('admin_empleado') }}" class="leftnava"><li class="leftnav left ">Empleados<span class="pull-right right"><i class=""></i></span></li></a>
             {% endif %}
             {% if is_granted('ROLE_ADMIN') %}
-{#                <a href="{{ path('admin_sucursal') }}" class="leftnava"><li class="leftnav left ">Sucursal<span class="pull-right right"><i class=""></i></span></li></a>#}
+                {#<a href="{{ path('admin_sucursal') }}" class="leftnava"><li class="leftnav left ">Sucursal<span class="pull-right right"><i class=""></i></span></li></a>#}
             {% endif %}
             {% if is_granted('ROLE_ADMIN') %}
                 <a href="{{ path('admin_descuento') }}" class="leftnava"><li class="leftnav left ">Descuentos<span class="pull-right right"><i class=""></i></span></li></a>
-            {% endif %}
-            {% if is_granted('ROLE_ADMIN') %}
-                <a href="{{ path('admin_usuario') }}" class="leftnava"><li class="leftnav left ">Usuarios<span class="pull-right right"><i class=""></i></span></li></a>
             {% endif %}
         
     {% endblock navegacion %}
