@@ -130,5 +130,30 @@ class Vacuna
     {
         return $this->costo;
     }
+    
+    
+    /**
+     * Set codigo
+     *
+     * @param float $codigo
+     *
+     * @return float
+     */
+    public function setCodigo($codigo)
+    {
+        $this->codigo= $codigo;
+
+        return $this;
+    }
+
+    /**
+     * Get codigo
+     *
+     * @return float
+     */
+    public function getCodigo()
+    {
+        return $this->codigo;
+    }
    
 }

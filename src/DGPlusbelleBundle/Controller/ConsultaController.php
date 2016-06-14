@@ -2182,7 +2182,7 @@ class ConsultaController extends Controller
             
             
             
-            
+            //var_dump($idConsulta);
             
 //            var_dump(count($_FILES['file']['name']));
             $em = $this->getDoctrine()->getManager();
@@ -2190,13 +2190,15 @@ class ConsultaController extends Controller
             $totalImagen = $em->getRepository('DGPlusbelleBundle:ImagenConsulta')->findBy(array('consulta'=>$idConsulta));
 //            var_dump($totalImagen);
             $arr = Array();
-            for($i=0;$i<count($_FILES['file']['name']);$i++){
-                $nombreimagen=$_FILES['file']['name'][$i];    
+//            for($i=0;$i<count($_FILES['file']['name']);$i++){
+                //$nombreimagen=$_FILES['file']['name'][$i];    
+                $nombreimagen=$_FILES['file']['name'];
 
                 
 
 
-                $tipo = $_FILES['file']['type'][$i];
+                //$tipo = $_FILES['file']['type'][$i];
+                $tipo = $_FILES['file']['type'];
                 $extension= explode('/',$tipo);
                 $nombreimagen2.=".".$extension[1];
             
@@ -2221,7 +2223,8 @@ class ConsultaController extends Controller
                     $nombreBASE=str_replace(" ","", $nombreBASE);
                     $nombreSERVER =str_replace(" ","", $nombreArchivo);
                     $imagen->setFoto($nombreSERVER);
-                    $resultado = move_uploaded_file($_FILES["file"]["tmp_name"][$i], $path1.$nombreSERVER);
+                    //$resultado = move_uploaded_file($_FILES["file"]["tmp_name"][$i], $path1.$nombreSERVER);
+                    $resultado = move_uploaded_file($_FILES["file"]["tmp_name"], $path1.$nombreSERVER);
                     $em->persist($imagen);
                     $em->flush();
                     $arregloim=Array();
@@ -2241,7 +2244,7 @@ class ConsultaController extends Controller
 
 
                 }
-            }
+//            }
          
             
             return new Response(json_encode($arr));

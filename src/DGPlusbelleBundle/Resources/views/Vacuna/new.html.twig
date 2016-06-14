@@ -12,11 +12,22 @@
         {{ form_start(form) }}
           {{ form_errors(form) }}
 
-              <div class="col-md-8">
+              <div class="col-md-4">
               {{ form_row(form.nombre) }}
              {# {{ form_row(form.estado) }}#}
 
               </div>
+              <div class="col-md-4">
+              {{ form_row(form.costo) }}
+             {# {{ form_row(form.estado) }}#}
+
+              </div>
+              <div class="col-md-4">
+              {{ form_row(form.codigo) }}
+             {# {{ form_row(form.estado) }}#}
+
+              </div>
+              
 
                    <div class="form-grouphide col-sm-9">
                       <a href="{{ path('admin_vacuna_new') }}" class="btn btn-default btn-sm" id="cancelarNuevo">Cancelar</a>

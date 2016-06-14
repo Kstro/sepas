@@ -3,6 +3,7 @@
 {% block css %}
     {{parent()}}
     <link rel="stylesheet" href="{{ asset('Resources/alertifyjs/css/alertify.css') }}">
+    <link rel="stylesheet" href="{{ asset('Resources/dropzone/dropzone.css') }}">
     <link rel="stylesheet" href="{{ asset('Resources/css/estilopersonalizado.css') }}">
     <link rel="stylesheet" href="{{ asset('Resources/swal/sweetalert2.min.css') }}">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/css/select2.min.css" rel="stylesheet" />
@@ -22,7 +23,7 @@
             <div class="clearfix"></div>
             <div class="content-hero content-hero-lg" style="min-height:140px;" id="infoExpediente" >
 {#            <img class="content-hero-embed" src="{{ asset('Photos/')}}logo-01.png" alt="cover" style="background: #649579;height:200px;">#}
-          <div style="height:50px;background: #39a58a; opacity: 1.0" class="content-hero-overlay "></div>
+          <div style="height:0px;background: #39a58a; opacity: 1.0" class="content-hero-overlay "></div>
           <div style="" class="content-hero-body">
           </div>
           <div class="content-hero-bar" {#style="margin-top:-180px; background-color: red; position: relative;"#}>
@@ -32,7 +33,7 @@
                 <div class="float-bar clearfix" >
                   <div class="col-sm-11">
                     <div class="visible-xs">
-                      <h2 class="display-name media-heading text-teal"></h2>
+                      <h3 class="display-name media-heading text-teal"></h3>
 {#                      <p class="text-muted mb-4x"><span class="mr-2x">Senior UI Design</span> <span><i class="fa fa-map-marker fa-fw"></i> San Francisco, CA</span></p>#}
                     </div>
                     <div class="col-md-2">
@@ -650,20 +651,63 @@
                     </div>
                     <div class="tab-pane fade in" id="botabs6" style="background-color: #FFF;">
                         <p>
-                        <strong>Subir imagen</strong>
-                        
-                            <div class="col-md-12">
-                                <form id="formImagen" role="form" enctype="multipart/form-data" method="post">
-                                    <input id="file-input" required type="file" name="file[]" multiple>
-                                    <input type="hidden" id="idConsulta" value="{% if consulta.id is null %}{%else%}{{consulta.id}}{%endif%}" name="idConsulta" class="form-control input-sm"/>
-                                </form>
+                        <div class="imagenMensaje row" style="margin-top:20px;">
+                                <strong>Subir imagen</strong>
+                                <p>Debe ingresar una consulta antes</p>
+                            </div>
+                            <div class="imagenContent hidden row" style="margin-top:20px;">
+                                <strong>Subir imagen</strong>
+                                <div class="col-md-12">
+                                    {#<form id="formImagen" role="form" enctype="multipart/form-data" method="post" class="dropzone">
+                                        <input id="file-input" required type="file" name="file[]" multiple>
+                                        <input type="text" id="idConsulta" value="{% if consulta.id is null %}{%else%}{{consulta.id}}{%endif%}" name="idConsulta" class="hidden form-control input-sm"/>
+                                    </form>#}
+                                    
+                                    <form class="dropzone" id="formImagen" role="form" enctype="multipart/form-data" method="post" action="/sepes/app_dev.php/admin/consulta/ingresar_empresa_persona/get?id={{consulta.id}}">
+                                        <div class="fallback">
+                                            <input name="file[]" type="file" multiple required id="file-input"/>
+                                        </div>
+                                        <input type="text" id="idConsulta" value="{% if consulta.id is null %}{%else%}{{consulta.id}}{%endif%}" name="idConsulta" class="hidden form-control input-sm"/>
+                                    </form>
+                                    
+                                    
+                                    {#<form action="#" id="formImagen" enctype="multipart/form-data"  method="post">
+                                        <div class="form-group">
+                                          <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                                            <div class="form-control" data-trigger="fileinput"><i class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span></div>
+                                            <div class="input-group-btn">
+                                              <span class="btn btn-default btn-file"><span class="fileinput-new">Select file</span><span class="fileinput-exists">Change</span><input name="..." type="file"></span>
+                                              <a href="#" class="btn btn-danger fileinput-exists" data-dismiss="fileinput">Remove</a>
+                                            </div>
+                                          </div><!-- /.fileinput -->
+                                        </div><!-- /.form-group -->
+                                    </form>#}
+                                </div>
+                            </div>
+                            
+                            <div class="row imagenContent hidden" style="margin-top:20px;">
+                                <strong style="margin-top:80px;">Archivos adjuntos</strong>
+                                <div class="col-md-12" id="listadoImagenes">
+                                    {% for imagen in archivos %}
+                                        <div class="col-md-2" style="margin-top:10px;">
+                                            <a class="verImagen" href="{{ asset('Photos/Tmp/')}}{{imagen.foto}}">
+                                            <img style="width:100%;" src="{{ asset('Photos/Tmp/')}}{{imagen.foto}}"></a>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            
+                            <div class="row imagenContent hidden" style="margin-top:10px;">
+                                <div class="col-md-12">
+                                    <hr>
+                                </div>
                             </div>
                         
                         
                         <div class="clearfix"></div>
                             
                         
-                        <div style="margin-top:20px;" class="col-md-12" id="listadoImagenes">
+                        {#<div style="margin-top:20px;" class="col-md-12" id="listadoImagenes">
                             <div class="col-md-4" style="margin-top:10px;">
                                 <strong style="margin-top:100px;">Archivos adjuntos</strong>
                             </div>
@@ -680,14 +724,14 @@
                             
                         <div class="col-md-12">
                             <hr>
-                        </div>
+                        </div>#}
                         
 
                         <div class="row  pull-left" style="margin-top:10px;">
                             <div class="col-md-12">
                                 <div class="pull-left form-grouphide col-sm-12">
                                     {#<a class="btn btn-default btn-xs" id="cancelarNuevoConsulta">Cancelar</a>#}
-                                    <button type="submit" id="guardarImagenes" name="dgplusbellebundle_antecedentes[submit]" class="btn btn-primary text-light btn-xs btn">Guardar</button>
+                                    {#<button type="submit" id="guardarImagenes" name="dgplusbellebundle_antecedentes[submit]" class="btn btn-primary text-light btn-xs btn">Guardar</button>#}
                                 </div>
                             </div>
                         </div>
@@ -957,10 +1001,10 @@
                                     <div class="clearfix"></div>
                                         <div class="row vacuna-content" style="margin-top:10px;">
                                             <div class="col-md-3">
-                                                <select style="width:100%;" class="col-md-12 valores editorVacuna form-control input-sm" id="vacunas0" placeholder=""></select>
+                                                <select style="width:100%;" class="col-md-12 valores editorVacuna form-control input-sm" id="vacunas-0" placeholder=""></select>
                                             </div>
                                             <div class="col-md-3">
-                                                <input value="" name="costoVacuna" class="costoVacuna valores form-control input-sm form-control" placeholder="$"/>
+                                                <input value="" name="costoVacuna" class="costoVacuna valores form-control input-sm form-control" id="costo-0" placeholder="$"/>
                                             </div>
                                             <div class="col-md-3">
                                                 <input value="" name="aplicacionesVacuna" class="aplicacionesVacuna valores form-control input-sm form-control" placeholder="#"/>
@@ -1233,7 +1277,8 @@
     <script src="{{ asset('Resources/wrapkit/scripts/bootbox.js') }}"></script>
     <script src="https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.11/js/dataTables.material.min.js "></script>
-    <script src="{{ asset('Resources/src/js/bootstrap.js')}}"></script>
+    <script src="{{ asset('Resources/dropzone/dropzone.js') }}"></script>
+    {#<script src="{{ asset('Resources/src/js/bootstrap.js')}}"></script>#}
 {#     <script src="{{ asset('Resources/js/ConsultaEstetica.js') }}"></script>#}
     
     <script>
@@ -3043,6 +3088,11 @@
         
         $(document).on('change','.valores',function(){
             var id = $(this).val();
+            var idObj = $(this).attr('id');
+            //var idObj = $(this).attr('id');
+            
+            var idString = idObj.split('-');
+            
             console.log(id);
             $.ajax({
                 data:{'id':id
@@ -3050,8 +3100,8 @@
                 url:"{{path('busqueda_vacuna_costo_select')}}",
                 type: "post",
                 success: function (data) {
-                   console.log(data);
-                    $('.costoVacuna').val(data.data[0].costo);
+                   console.log("Precio: "+data.data[0].costo);
+                    $('#costo-'+idString[1]).val(data.data[0].costo);
                 },
                 error: function (data) {
                     swal('','Ocurrió un error, seleccione un paciente de nuevo!','error');
@@ -3169,7 +3219,7 @@
         
         var idvacuna=1;//facilita la creación de select2 dinamicos
         {% if not existenVacunas %}
-            $('#vacunas0').select2({
+            $('#vacunas-0').select2({
                 ajax: {
                     url: "{{path('busqueda_vacuna_select')}}",
                     dataType: 'json',
@@ -3253,13 +3303,13 @@
             
             var nuevaVacuna='<div class=\"clearfix\"></div><div class=\"nueva vacuna\" style=\"margin-top:10px;\" class=\"col-md-12\">\n\
                                 <div style=\"margin-top:10px;\" class=\"col-md-3\">\n\
-                                    <select class=\"col-md-12 valores editorVacuna form-control input-sm\" id=\"vacunas'+idvacuna+'\"></select>\n\
+                                    <select class=\"col-md-12 valores editorVacuna form-control input-sm\" id=\"vacunas-'+idvacuna+'\"></select>\n\
                                 </div>\n\
                                 <div style=\"margin-top:10px;\" class=\"col-md-3\">\n\
-                                    <input value=\"\" name=\"aplicacionesVacuna\" class=\"valores costoVacuna form-control input-sm form-control\" placeholder=\"$\"/>\n\
+                                    <input value=\"\" name=\"aplicacionesVacuna\" id=\"costo-'+idvacuna+'\" class=\"valores costoVacuna form-control input-sm form-control\" placeholder=\"$\"/>\n\
                                 </div>\n\
                                 <div style=\"margin-top:10px;\" class=\"col-md-3\">\n\
-                                    <input value=\"\" name=\"costoVacuna\" class=\"aplicacionesVacuna valores form-control input-sm form-control\" placeholder=\"#\"/>\n\
+                                    <input value=\"\" name=\"costoVacuna\" id=\"aplicacion-'+idvacuna+'\" class=\"aplicacionesVacuna valores form-control input-sm form-control\" placeholder=\"#\"/>\n\
                                 </div>\n\
                                 <div style=\"margin-top:10px;\" class=\"col-md-3\">\n\
                                     <i class="deleteVacuna fa fa-times" aria-hidden="true"></i>\n\
@@ -3267,7 +3317,7 @@
                                 <div class=\"clearfix\"></div>\n\
                             </div>';
             $('.vacuna-content').append(nuevaVacuna);
-                $('#vacunas'+idvacuna).select2({
+                $('#vacunas-'+idvacuna).select2({
                 ajax: {
                     url: "{{path('busqueda_vacuna_select')}}",
                     dataType: 'json',
@@ -3352,6 +3402,7 @@
                             var monto = valorTotal;
                             porcDescuento=data;
                             var nuevoTotal = monto*(1-(data/100));
+                            $('#costoTotalVacuna').val();
                             $('#costoTotalVacuna').val((monto*(1-(data/100))).toFixed(2));
 {#                            $('#costoTotalVacuna').val(""+(monto*(1-(data/100))));#}
                             
@@ -3481,22 +3532,9 @@
                     if(valor==="" || valor === null){
                         errores++;
                     }
-                    {#if($(this).hasClass('costoVacuna')){
-                        if(valor % 1 === 0){//verifica si es entero
-                            console.log("entero: "+valor);
-                            
-                            reg.push(valor+".00");
-                            console.log("entero despues: "+valor+".00");
-                        }
-                        else{
-                            console.log("decimal: "+valor);
-                            reg.push(valor);
-                            console.log("decimal despues: "+valor);
-                        }
-                    }
-                    else{#}
+                    
                         reg.push(valor);
-{#                    }#}
+
                     
                     if(((index+1)%3)==0 ){
                         valores.push(reg);
@@ -3544,6 +3582,11 @@
             }
             
         });
+        
+        if(idConsulta!==''){
+            $('.imagenMensaje').addClass('hidden');
+            $('.imagenContent').removeClass('hidden');    
+        }
         
         $('.costoVacuna').trigger('input');
         
@@ -3618,6 +3661,8 @@
 {#                                                bootbox.alert("Consulta registrada!", function() {});#}
                                                 alertify.success("Consulta actualizada!");
                                                 swal('','Consulta actualizada!','success');
+                                                $('.imagenMensaje').addClass('hidden');
+                                                $('.imagenContent').removeClass('hidden');
                                                 console.log($('#idConsulta').val());
                                             }
                                         },
@@ -3761,6 +3806,8 @@
     {#                            bootbox.alert("Cambios guardados!", function() {});#}
 {#                                alertify.success("Signos vitales guardados!");#}
                                 swal('','Signos vitales actualizados!','success');
+                                $('.imagenMensaje').addClass('hidden');
+                                $('.imagenContent').removeClass('hidden');
                                 $('#idConsulta').val(data);
 
                             }

@@ -7,7 +7,10 @@
     <link rel="stylesheet" href="{{ asset('Resources/swal/sweetalert2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('Resources/css/nuevaventa.css') }}">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.1.0/material.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.11/css/dataTables.material.min.css">
 
+    
     
     
 {% endblock %}
@@ -27,7 +30,7 @@
     {#                <div class="col-md-12"><hr></div>#}
                 </div>
                 <div class="content-hero content-hero-lg" style="min-height:140px;">
-                    <div style="height:50px;background: #39a58a; opacity: 1.0" class="content-hero-overlay "></div>
+                    <div style="height:0px;background: #39a58a; opacity: 1.0" class="content-hero-overlay "></div>
                     <div  style="" class="content-hero-body" ></div>
                     <div  style="" class="content-hero-bar" {#style="margin-top:-180px; background-color: red; position: relative;"#}>
                         <div class="row" {#style="margin-top:-180px; background-color: red; position: relative;"#}>
@@ -42,11 +45,11 @@
                                             {% endif %}
                                         </div>
                                         <div class="visible-xs">{#display-name media-heading text-teal#}
-                                            <h2 class="media-heading text-light" id="nombrePaciente">{{ paciente.persona.nombres}} {{ paciente.persona.apellidos}}</h2>
+                                            <h3 class="robo media-heading text-light" id="nombrePaciente">{{ paciente.persona.nombres}} {{ paciente.persona.apellidos}}</h3>
                                         </div>
                                         <div class="hidden-xs">
-                                            <h2 class="media-heading text-light">{{ paciente.persona.nombres}} {{ paciente.persona.apellidos}}</h2>
-                                            <p class="mb-4x text-light">
+                                            <h3 class="robo media-heading text-light">{{ paciente.persona.nombres}} {{ paciente.persona.apellidos}}</h3>
+                                            <p class="mb-4x text-light robo">
                                                 <span class="mr-1x" id="expediente">
                                                     <i class="fa fa-clipboard"></i> {#{{ expediente }}#}
                                                     <a style="color:#000;text-decoration: underline;" href="{{path('admin_consulta_expediente_sd',{id:paciente.expediente[0].numero})}}">{{paciente.expediente[0].numero}}</a>
@@ -89,7 +92,7 @@
                 <ul class="nav nav-tabs" style="margin-top: 30px;">
                     <li><a data-toggle="tab" href="#datos-generales">Datos generales</a></li>
                     <li class="active"><a data-toggle="tab" href="#registros-venta">Registro de venta</a></li>
-                    <li><a data-toggle="tab" href="#registro-sesiones" {% if ventaVacuna %} style="display:block;" {% else %} style="display:none;" {% endif %} id="tabs-sesiones">Registro de aplicaciones de vacuna</a></li>
+                    <li style="display:none;"><a data-toggle="tab" href="#registro-sesiones" {% if ventaVacuna %} style="display:block;" {% else %} style="display:none;" {% endif %} id="tabs-sesiones">Registro de aplicaciones de vacuna</a></li>
                     <li><a data-toggle="tab" href="#seguimiento-venta" {% if ventaVacuna %} style="display:block;" {% else %} style="display:none;" {% endif %} id="tabs-seguimiento">Seguimiento de la venta</a></li>
                     <li><a data-toggle="tab" href="#abonos-devoluciones" {% if ventaVacuna %} style="display:block;" {% else %} style="display:none;" {% endif %} id="tabs-abdev">Abonos{# / Devoluciones#}</a></li>
                     <li><a data-toggle="tab" href="#imagenes" style="display:none;" id="tabs-imagenes">Imagenes</a></li>
@@ -669,59 +672,8 @@
                     </div>
                     
                     {# Sección en donde se registran las sesiones de un tratamiento #}
-                    <div id="registro-sesiones" class="tab-pane fade" style="margin-top: 20px; background: transparent;"">
-                        <form id="formulario-sesiones-tratamiento" method="POST" enctype="multipart/form-data">
-                            {% if vacunasPaquete or not ventaVacuna %}
-                                <div class="row" style="margin-top: 35px;" style="display:none;">
-                                    {#<div class="col-md-3"  style="margin-left: 30px;">
-                                        <div id="sucursal-sesion">
-                                            <label>Sucursal</label>
-                                            <select id="dgplusbellebundle_sesiones_sucursal" name="dgplusbellebundle_venta_sesiones[sucursal]" class="sesion-sucursal" style="width: 100%">
-                                                <option value="" disabled selected>Seleccione una sucursal ...</option>
-
-                                                {% for sucursal in sucursales %}
-                                                    <option value="{{sucursal.id}}"> {{sucursal.nombre}}</option>
-                                                {% endfor %}
-                                            </select>   
-                                        </div>
-                                    </div>#}
-                                    <div class="col-md-4" style="margin-left: 30px;">
-                                        {# Area en donde se selecciona  el empleado que ha realizado la venta #}  
-                                        <div id="empleado-sesion">
-                                            <label>Empleado</label>
-                                            <select id="dgplusbellebundle_sesiones_empleado" name="dgplusbellebundle_venta_sesiones[empleado]" class="sesion-empleado" style="width: 100%">
-                                                <option value="" disabled selected>Seleccione un empleado ...</option>
-                                                {% for empleado in empleadosVenta %}
-                                                    <option value="{{empleado.id}}"> {{empleado.persona}}</option>
-                                                {% endfor %}
-                                            </select>   
-                                        </div>
-                                    </div> 
-                                    <div class="col-md-4" {#style="display:none;"#} id="seguimiento-sesiones-tratamiento">
-                                        <div id="sesiones-tratamiento">
-                                            <label>Vacuna</label>
-                                            <select id="dgplusbellebundle_sesiones_tratamiento" name="dgplusbellebundle_venta_sesiones[tratamiento]" class="sesion_tratamiento" style="width: 100%">
-                                                <option value="" disabled selected>Seleccione una vacuna...</option>
-                                                 {% for vacuna in vacunasPaquete %}
-                                                    <option value="{{vacuna.id}}"> {{vacuna.nombre}}</option>
-                                                {% endfor %}
-                                            </select>    
-                                        </div>    
-                                    </div>        
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12 col-sm-12 text-center" style="margin-top: 30px; margin-bottom: 10px;" id="registrar-sesiones-tratamiento">
-                                        <hr>
-                                        <input type="submit" value="Registrar sesión de tratamiento" style="margin-bottom: 10px; background-color: #39a58a; color: #FFF;" class="btn" id="registro-sesiones-tratamiento"/>
-                                    </div>    
-                                </div>             
-                            {% else %}
-                                <div style="margin-left: 30px;">
-                                    <p style="font-size: 20px;">Las aplicaciones de vacuna para ésta venta, se han completado.</p>
-                                </div>
-                            {% endif %}    
-                        </form>
-                        <div class="row" style="margin-top: 50px;"></div>                
+                    <div id="registro-sesiones" class="tab-pane fade" style="margin-top: 20px; background: transparent;">
+                                       
                     </div>
                     
                     {# Sección en donde se encuentran las imagenes de un determinado tratamiento #}
@@ -775,6 +727,58 @@
                     
                     {# Sección en donde se muestra el seguimiento de la venta #}
                     <div id="seguimiento-venta" class="tab-pane fade" style="margin-top: 20px; background: transparent;">
+                        <form id="formulario-sesiones-tratamiento" method="POST" enctype="multipart/form-data">
+                            {% if vacunasPaquete or not ventaVacuna %}
+                                <div class="row" style="margin-top: 35px;" style="display:none;">
+                                    {#<div class="col-md-3"  style="margin-left: 30px;">
+                                        <div id="sucursal-sesion">
+                                            <label>Sucursal</label>
+                                            <select id="dgplusbellebundle_sesiones_sucursal" name="dgplusbellebundle_venta_sesiones[sucursal]" class="sesion-sucursal" style="width: 100%">
+                                                <option value="" disabled selected>Seleccione una sucursal ...</option>
+
+                                                {% for sucursal in sucursales %}
+                                                    <option value="{{sucursal.id}}"> {{sucursal.nombre}}</option>
+                                                {% endfor %}
+                                            </select>   
+                                        </div>
+                                    </div>#}
+                                    <div class="col-md-4" style="margin-left: 30px;">
+                                        {# Area en donde se selecciona  el empleado que ha realizado la venta #}  
+                                        <div id="empleado-sesion">
+                                            <label>Empleado</label>
+                                            <select id="dgplusbellebundle_sesiones_empleado" name="dgplusbellebundle_venta_sesiones[empleado]" class="sesion-empleado" style="width: 100%">
+                                                <option value="" disabled selected>Seleccione un empleado ...</option>
+                                                {% for empleado in empleadosVenta %}
+                                                    <option value="{{empleado.id}}"> {{empleado.persona}}</option>
+                                                {% endfor %}
+                                            </select>   
+                                        </div>
+                                    </div> 
+                                    <div class="col-md-4" {#style="display:none;"#} id="seguimiento-sesiones-tratamiento">
+                                        <div id="sesiones-tratamiento">
+                                            <label>Vacuna</label>
+                                            <select id="dgplusbellebundle_sesiones_tratamiento" name="dgplusbellebundle_venta_sesiones[tratamiento]" class="sesion_tratamiento" style="width: 100%">
+                                                <option value="" disabled selected>Seleccione una vacuna...</option>
+                                                 {% for vacuna in vacunasPaquete %}
+                                                    <option value="{{vacuna.id}}"> {{vacuna.nombre}}</option>
+                                                {% endfor %}
+                                            </select>    
+                                        </div>    
+                                    </div>        
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-12 text-center" style="margin-top: 30px; margin-bottom: 10px;" id="registrar-sesiones-tratamiento">
+                                        <hr>
+                                        <input type="submit" value="Registrar sesión de tratamiento" style="margin-bottom: 10px;" class="btn btn-primary btn-xs" id="registro-sesiones-tratamiento"/>
+                                    </div>    
+                                </div>             
+                            {% else %}
+                                <div style="margin-left: 30px;">
+                                    <p style="font-size: 20px;">Las aplicaciones de vacuna para ésta venta, se han completado.</p>
+                                </div>
+                            {% endif %}    
+                        </form>
+                        <div class="clearfix"></div> 
                         <div class="row" style="margin-top: 30px;" id="detalle-venta-info">
                             <div class="col-md-3" style="margin-left: 30px;">
                                 <div class="row">
@@ -916,7 +920,7 @@
                     </div>                
                                     
                     {# Sección en donde se registran los abonos y devoluciones de un paquete o tratamiento #}
-                    <div id="abonos-devoluciones" class="tab-pane fade" style="margin-top: 20px; background: transparent;">
+                    <div id="abonos-devoluciones" class="tab-pane fade" style=" background: transparent;">
                         <form id="formulario-sesiones-tratamiento" method="POST" enctype="multipart/form-data">
                             <div class="row" style="margin-top: 35px;">
                                 {#<div class="col-md-3"  style="margin-left: 30px;" style="display:none;">
@@ -932,34 +936,57 @@
                                         </select>   
                                     </div>
                                 </div>#}
-                                <div class="col-md-4" style="margin-left: 30px;">
-                                    {# Area en donde se selecciona  el empleado que ha realizado la venta #}  
-                                    <div id="empleado-sesion">
-                                        <label>Empleado</label>
-                                        <select id="dgplusbellebundle_abono_empleado" name="dgplusbellebundle_abono[empleado]" class="sesion-empleado" style="width: 100%">
-                                            <option value="" disabled selected>Seleccione un empleado ...</option>
+                                <div class="col-md-6">
+                                    <div class="col-md-8">
+                                        {# Area en donde se selecciona  el empleado que ha realizado la venta #}  
+                                        <div id="empleado-sesion">
+                                            <label>Empleado</label>
+                                            <select id="dgplusbellebundle_abono_empleado" name="dgplusbellebundle_abono[empleado]" class="sesion-empleado" style="width: 100%">
+                                                <option value="" disabled selected>Seleccione un empleado ...</option>
 
-                                            {% for empleado in empleadosVenta %}
-                                                <option value="{{empleado.id}}"> {{empleado.persona}}</option>
-                                            {% endfor %}
-                                        </select>   
+                                                {% for empleado in empleadosVenta %}
+                                                    <option value="{{empleado.id}}"> {{empleado.persona}}</option>
+                                                {% endfor %}
+                                            </select>   
+                                        </div>
                                     </div>
-                                </div> 
-                                <div class="col-md-2">
-                                    <div id="abono-monto">
-                                        <label>Monto ($)</label>
-                                        <input type="text" name="dgplusbellebundle_abono[monto]" id="dgplusbellebundle_abono_monto" class="form-control" style="width: 100%">        
-                                    </div>    
-                                </div>   
-                                <div class="col-md-5 col-sm-5" {#style="margin-top: 30px; margin-bottom: 10px;"#} id="abono">
-                                    <div id="abono-descripcion-label" style="margin-left: 30px;">
-                                        <label>Descripcion</label>
-                                    </div> 
-                                    <div class="clearfix"></div>
-                                    <div id="abono-descripcion" style="margin-left: 30px;">
-                                        <textarea rows="3" cols="100" name="dgplusbellebundle_abono[descripcion]" id="dgplusbellebundle_abono_descripcion" class="form-control"></textarea> 
-                                    </div>     
-                                </div>         
+                                    <div class="col-md-4">
+                                        <div id="abono-monto">
+                                            <label>Monto ($)</label>
+                                            <input type="text" name="dgplusbellebundle_abono[monto]" id="dgplusbellebundle_abono_monto" class="form-control" style="width: 100%">        
+                                        </div>    
+                                    </div>   
+                                            <div class="clearfix"></div>
+                                    <div class="col-md-8 col-sm-5" {#style="margin-top: 30px; margin-bottom: 10px;"#} id="abono">
+                                        <div id="abono-descripcion-label">
+                                            <label>Descripcion</label>
+                                        </div> 
+                                        <div class="clearfix"></div>
+                                        <div id="abono-descripcion">
+                                            <textarea rows="3" cols="100" name="dgplusbellebundle_abono[descripcion]" id="dgplusbellebundle_abono_descripcion" class="form-control"></textarea> 
+                                        </div>     
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-md-12 col-sm-5">
+                                        <div class="row">
+                                            <div class="col-md-12 col-sm-12">
+                                                <table id="listadoAbono" class="listados table table-bordered table-hover" style="width:100%;">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="text-center">Fecha</th>
+                                                            <th class="text-center">Empleado</th>
+                                                            {#<th class="text-center">Sucursal</th>#}
+                                                            <th class="text-center">Monto ($)</th>
+                                                        </tr>
+                                                    </thead>
+
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
                             </div>
                             <div class="row">
                                    
@@ -967,7 +994,7 @@
                             <div class="row">
                                 <div class="col-md-12 col-sm-12 text-center" style="margin-top: 30px; margin-bottom: 10px;" id="registrar-abonos-sesiones">
                                     <hr>
-                                    <input type="submit" value="Registrar abono" style="margin-bottom: 10px; background-color: #39a58a; color: #FFF;" class="btn" id="registro-abono"/>
+                                    <input type="submit" value="Registrar abono" style="margin-bottom: 10px; " class="btn btn-xs btn-primary" id="registro-abono"/>
                                 </div>    
                             </div>              
                         </form>
@@ -985,8 +1012,8 @@
         <script src="{{ asset('Resources/swal/sweetalert2.min.js') }}"></script>
         
         <script src="{{ asset('Resources/wrapkit/scripts/jquery.mask.js') }}"></script>
-        <script src="{{ asset('Resources/wrapkit/scripts/dataTables.bootstrap.js') }}"></script>
-        <script src="{{ asset('Resources/wrapkit/scripts/dataTables.tableTools.js') }}"></script>
+        <script src="https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.10.11/js/dataTables.material.min.js "></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/js/select2.min.js"></script>
         <script src="{{ asset('Resources/Zebra/js/zebra_datepicker.js') }}"></script>
         <script src="{{ asset('Resources/wrapkit/scripts/bootbox.js') }}"></script>
@@ -1135,6 +1162,53 @@
                 if(!($('#tipo-venta-tratamiento').is(':checked') || $('#tipo-venta-paquete').is(':checked'))){
                     $('#registro-venta').hide();
                 }
+                
+                
+                var url = "{{path('admin_abonos_paciente_data_vacuna')}}"+'?id='+id_ventavacuna;
+                var tableABONO = $('#listadoAbono').DataTable({
+                    dom:'tp',
+                    "processing": false,
+                    "serverSide": true,
+                    "pageLength": 3,
+                    "ajax": {
+                        "url": url,
+                        "type": 'GET'
+                    },
+                    "columns": [
+                        {#{ "data": "id" },   #}
+                        { "data": "fechaAbono" },
+                        { "data": "empleado" },
+                        { "data": "monto" }
+                        {#{ "data": "dui" },#}
+{#                        { "data": "telefono" },#}
+                        {#{ "data": "email" },
+                        { "data": "lugarTrabajo" },#}
+                    ],
+                        "columnDefs": [
+                               {"width":10, "orderable": false, "targets": 0 },
+                               {"width":45, "orderable": false, "targets": 1 },
+                               {"width":15, "orderable": false, "targets": 2 }
+                               
+                               
+                               //{ "orderData": [ 2, 3, 4 ], "targets": 2 }
+                        ],
+                        "language": {
+                        "info": "Mostrando página _PAGE_ de _PAGES_",
+                        "infoEmpty": "",
+                        "infoFiltered": "filtrando de _MAX_ registros",
+                        "emptyTable": "No se encontraron registros",
+                        "paginate": { 
+                            "next": "Siguiente",
+                            "previous": "Anterior"
+                        },
+                        "processing": "Procesando petición...",
+                        "search": "Buscar registros:",
+                        "lengthMenu": "Mostrar _MENU_ registros"
+                    }, 
+
+                    });
+                
+                
                 
                 // Al seleccionar un paquete
                 $(document).on("change","#dgplusbellebundle_venta_paquete", function(){
@@ -1949,18 +2023,28 @@
                                 {#if(deuda <= 0){ #}
                             
                                     var tratamiento = $('#dgplusbellebundle_sesiones_tratamiento').val();
+                                    //var vacuna = $('#dgplusbellebundle_sesiones_tratamiento').val();
+                                    
+                                    console.log(tratamiento);
+                                    console.log(empleado);
+                                    
+                                    
+                                    if(tratamiento!==null && empleado!==null){
+                                        var datos = {
+                                            id : id_ventavacuna,
+                                            idpac : idpac,
+                                            empleado: empleado,
+                                            vacuna: tratamiento
+                                        };
 
-                                    var datos = {
-                                        id : id_ventavacuna,
-                                        idpac : idpac,
-                                        empleado: empleado,
-                                        vacuna: tratamiento
-                                    };
-                                    
-                                    console.log(datos);
-                                    
-                                    nuevaSesionPaqueteTratamiento(datos);
-                                    return false;
+                                        console.log(datos);
+
+                                        nuevaSesionPaqueteTratamiento(datos);
+                                        return false;
+                                    }
+                                    else{
+                                        swal('','Debe seleccionar un empleado y vacuna!','error');
+                                    }
                                     
                                 // Si el paciente tiene deuda pendiente en el paquete seleccionado        
                                 {# } else {
@@ -2197,7 +2281,7 @@
                     var monto = $('#dgplusbellebundle_abono_monto').val();
                     var descripcion = $('#dgplusbellebundle_abono_descripcion').val();
                     var draw = '';
-                
+                    console.log(empleado);
                     // Si se ha chequeado en el tipo de venta Paquete
                     //if(id_ventapaquete > 0) {
                         var data = {
@@ -2208,24 +2292,40 @@
                             id_ventavacuna : id_ventavacuna
                         };
                         console.log(deuda_total);
-                        if(parseFloat(monto) <= parseFloat(deuda_total)){
-                            // Se procede a registrar la sesion del tratamiento mediante ajax
-                            $.ajax({
-                                data:  data,
-                                url:   '{{path('admin_abonovacuna_nuevo')}}',
-                                type:  'post',
-                                success:  function (response) {
-                                    {#alertify.success('Se ha resgistrado con exito un abono del paquete');#}
-                                    swal('','Abono registrado!','success');
-                                    deuda_total = (response.costo - ((response.descuento * response.costo)/100) - response.abonos).toFixed(2);
+                        if(!isNaN(monto)){
+                            if(parseFloat(monto) <= parseFloat(deuda_total)){
+                                if(empleado!==null){
+                                    // Se procede a registrar la sesion del tratamiento mediante ajax
+                                    $.ajax({
+                                        data:  data,
+                                        url:   '{{path('admin_abonovacuna_nuevo')}}',
+                                        type:  'post',
+                                        success:  function (response) {
+                                            {#alertify.success('Se ha resgistrado con exito un abono del paquete');#}
+                                            swal('','Abono registrado!','success');
+                                            deuda_total = (response.costo - ((response.descuento * response.costo)/100) - response.abonos).toFixed(2);
 
-                                    $('#detalle-venta-deuda').html('$ ' + deuda_total);
-                                    return false;
+                                            $('#detalle-venta-deuda').html('$ ' + deuda_total);
+
+                                            $('#dgplusbellebundle_abono_monto').val('');
+                                            $('#dgplusbellebundle_abono_descripcion').val('');
+                                            $('#dgplusbellebundle_abono_empleado').val('').change();
+                                            tableABONO.ajax.reload();
+                                            return false;
+                                        }
+                                    });
                                 }
-                            });
-                        }  else {
-                            {#bootbox.alert('No se puede realizar esta operacion. El monto ingresado es mayor a la deuda de este paquete');#}
-                            swal('','Abono es mayor a la deuda!','error');
+                                else{
+                                    swal('','Debe seleccionar un empleado!','error');
+                                }
+                            }  else {
+                                {#bootbox.alert('No se puede realizar esta operacion. El monto ingresado es mayor a la deuda de este paquete');#}
+                                swal('','Abono es mayor a la deuda!','error');
+                                return false;
+                            }
+                        }
+                        else{
+                            swal('','El monto ingresado no es correcto!','error');
                             return false;
                         }
                         return false;
@@ -2709,7 +2809,8 @@
                     } else {
                         $('#formulario-sesiones-tratamiento').html('<div style="margin-left: 30px;"><p style="font-size: 20px;">Las aplicaciones de vacuna para esta venta, se han completado.</p></div>');
                     }
-
+                    $('#dgplusbellebundle_sesiones_tratamiento').val('').change();
+                    $('#dgplusbellebundle_sesiones_tratamiento').val('').change();
                     //$('#dgplusbellebundle_sesiones_tratamiento option[value=""]').attr("selected",true);
                 }
             });

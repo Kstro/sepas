@@ -16,7 +16,9 @@ class VacunaType extends AbstractType
     {
         $builder
             ->add('nombre')
-//            ->add('estado')
+            ->add('costo')
+            ->add('codigo')
+            //->add('estado')
         ;
     }
     
