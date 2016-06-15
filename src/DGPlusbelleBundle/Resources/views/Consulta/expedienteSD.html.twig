@@ -200,6 +200,7 @@
                     var idPac = $('#consulta').children().attr('href');
 {#                    var idPacArray2 = id.split('-');#}
                     var idPacArray = idPac.split('=');
+                    var idArray = id.split('-');
                     //console.log(idPacArray);
                     switch(id[0]){
                         case "c":
@@ -221,6 +222,11 @@
                             break;
                         case "m":
                             url = Routing.generate('admin_historial_consulta', { id: idPacArray[1],idtransaccion:id});
+                        case "i":
+                            //url = Routing.generate('admin_historial_consulta', { id: idPacArray[1],idtransaccion:id});
+                            url = Routing.generate('admin_incapacidad_pdf', {'id': idArray[1]});
+                            window.open(url,'_blank');
+                            return false;
                             break;
                     }
                     console.log(url);

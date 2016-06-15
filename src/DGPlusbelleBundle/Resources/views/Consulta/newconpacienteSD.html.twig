@@ -651,7 +651,7 @@
                     </div>
                     <div class="tab-pane fade in" id="botabs6" style="background-color: #FFF;">
                         <p>
-                        <div class="imagenMensaje row" style="margin-top:20px;">
+                            <div class="imagenMensaje row" style="margin-top:20px;">
                                 <strong>Subir imagen</strong>
                                 <p>Debe ingresar una consulta antes</p>
                             </div>
@@ -667,7 +667,7 @@
                                         <div class="fallback">
                                             <input name="file[]" type="file" multiple required id="file-input"/>
                                         </div>
-                                        <input type="text" id="idConsulta" value="{% if consulta.id is null %}{%else%}{{consulta.id}}{%endif%}" name="idConsulta" class="hidden form-control input-sm"/>
+                                        <input type="hidden" id="idConsulta" value="{% if consulta.id is null %}{%else%}{{consulta.id}}{%endif%}" name="idConsulta" class="form-control input-sm"/>                                    
                                     </form>
                                     
                                     
@@ -896,14 +896,21 @@
                                     <div class="row" style="font-size: 18px;">
                                         <div class="col-md-4">
                                             <label style="float:left;">Costo: $</label>
-                                            <input readonly id="costoTotalVacuna" class="pull-left" style="margin-left: 10px; border:0px solid #000; background: transparent;"/>
                                         </div>
                                         <div class="col-md-4">
                                             <label style="float:left;">Descuento: %</label>
-                                            <input readonly id="costoDescTotalVacuna" class="pull-left" style="margin-left: 10px; float:right;border:0px solid #000; background: transparent;"/>
                                         </div>
                                         <div class="col-md-4">
                                             <label style="float:left;">Total a pagar: $</label>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <div class="col-md-4">
+                                            <input readonly id="costoTotalVacuna" class="pull-left" style="margin-left: 10px; border:0px solid #000; background: transparent;"/>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <input readonly id="costoDescTotalVacuna" class="pull-left" style="margin-left: 10px; float:right;border:0px solid #000; background: transparent;"/>
+                                        </div>
+                                        <div class="col-md-4">
                                             <input readonly id="totalPagar" class="pull-left" style="margin-left: 10px; border:0px solid #000; background: transparent;"/>
                                         </div>
                                         {% if vacunas[0].ventaVacuna is null %}
@@ -1173,9 +1180,10 @@
                                 </div>
                                 <div class="clearfix"></div>
                                 <div class="col-md-8">
-                                    <select id="diagnosticoRepor" class="form-control" style="width:100%;">
+                                    <textarea id="diagnosticoRepor" type="text" placeholder="Diagnóstico final..." class="form-control"> </textarea>
+                                    {#<select id="diagnosticoRepor" class="form-control" style="width:100%;">
                                         <option value="">Selecccione un diagnóstico...</option>
-                                    </select>
+                                    </select>#}
                                 </div>
                             </div>
                         <div class="row" style="margin-top:10px;">
@@ -3064,7 +3072,7 @@
         $('.editorVacuna').select2();
         $('#descuentoVacuna').select2();
         $('#codigo_consulta').select2();
-        $('#diagnosticoRepor').select2();
+        //$('#diagnosticoRepor').select2();
         
         {#$('#incapaciadNotas').val("A quien interese: \n\r\n\r Por este medio hago constar que ");#}
         $(document).on('change', '#dgplusbellebundle_incapacidad_paciente',function(){
@@ -3501,7 +3509,7 @@
             });
         });
         
-        
+        var idConsulta = $('#idConsulta').val();
         $(document).on('click','#guardarVacunas', function(){
             
             var idConsulta = $('#idConsulta').val();
@@ -3514,7 +3522,7 @@
             var reg = new Array();
             var valores = new Array();
             
-{#            console.log(idConsulta);#}
+            
                 
             
             
@@ -3582,10 +3590,14 @@
             }
             
         });
-        
-        if(idConsulta!==''){
+        console.log('consulta: "'+idConsulta+'"');
+        if(idConsulta!=''){
             $('.imagenMensaje').addClass('hidden');
             $('.imagenContent').removeClass('hidden');    
+        }
+        else{
+            $('.imagenMensaje').removeClass('hidden');
+            $('.imagenContent').addClass('hidden');    
         }
         
         $('.costoVacuna').trigger('input');
@@ -3805,7 +3817,7 @@
                             if(data!=0){
     {#                            bootbox.alert("Cambios guardados!", function() {});#}
 {#                                alertify.success("Signos vitales guardados!");#}
-                                swal('','Signos vitales actualizados!','success');
+                                swal('','Signos vitales guardados!','success');
                                 $('.imagenMensaje').addClass('hidden');
                                 $('.imagenContent').removeClass('hidden');
                                 $('#idConsulta').val(data);
@@ -3859,8 +3871,11 @@
             
             var medico = $('#medico_consulta').val();
             var sucursal = $('#sucursal_consulta').val();
+            
+            var diagnosticoRepor = $('#diagnosticoRepor').val();
             console.log("Consulta: "+idConsulta);
             console.log("Diagnostico: "+diagnostico);
+            console.log("DiagnosticoRepor: "+diagnosticoRepor);
             console.log("Lab: "+estLaboratorios);
             console.log("medicamentos: "+medicamentos);
             console.log("Medico: "+medico);

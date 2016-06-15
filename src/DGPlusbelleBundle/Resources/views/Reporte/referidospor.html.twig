@@ -123,6 +123,11 @@
         <script src="{{ asset('Resources/wrapkit/scripts/bootbox.js') }}"></script>
         <script src="{{ asset('Resources/wrapkit/scripts/chartjs.js') }}"></script>
         <script type="text/javascript" src="{{ asset('Resources/Zebra/inicializacioncalendarios.js')}}" ></script>
+        
+        <script src="https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.10.11/js/dataTables.material.min.js "></script>
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.1.0/material.min.css">
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.11/css/dataTables.material.min.css">
         <script>
         $(document).ready(function(){ 
                
@@ -155,7 +160,8 @@
                     anioFinUser = $('#fecha-fin').val();
                     if(anioFinUser!==""){
                         var url = "{{ path('admin_reporte_referidos_por') }}";
-{#                        url+="?anioInicioUser="+anioInicioUser+"&anioFinUser="+anioFinUser+"&sucursal="+sucursal;#}
+                        {#url+="?anioInicioUser="+anioInicioUser+"&anioFinUser="+anioFinUser+"&sucursal="+sucursal;#}
+                        url+="?anioInicioUser="+anioInicioUser+"&anioFinUser="+anioFinUser;
                         $('#contenedorGrafico').html('<div class="container-fluid"><div class="col-md-12 text-center"><i class="fa fa-circle-o-notch fa-spin"></i> Realizando búsqueda...</div></div>');
                         $('#contenedorGrafico').load(url);
                         console.log(url);
