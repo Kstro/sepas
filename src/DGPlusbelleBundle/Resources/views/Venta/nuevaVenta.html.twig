@@ -769,7 +769,7 @@
                                 <div class="row">
                                     <div class="col-md-12 col-sm-12 text-center" style="margin-top: 30px; margin-bottom: 10px;" id="registrar-sesiones-tratamiento">
                                         <hr>
-                                        <input type="submit" value="Registrar sesión de tratamiento" style="margin-bottom: 10px;" class="btn btn-primary btn-xs" id="registro-sesiones-tratamiento"/>
+                                        <input type="submit" value="Registrar aplicacion de vacuna" style="margin-bottom: 10px;" class="btn btn-primary btn-xs" id="registro-sesiones-tratamiento"/>
                                     </div>    
                                 </div>             
                             {% else %}
@@ -846,7 +846,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-7" style="margin-left: 30px;">
+                            <div class="clearfix"></div>
+                            <div class="col-md-7" style="">
                                 <div class="row">
                                     <div class="col-md-3" style="margin-bottom: 20px;">
                                             <strong id="num-label-ses"># de aplicaciones:</strong><span></span>
@@ -876,7 +877,7 @@
                                 </div> 
                                 <div id="detalle-venta-tratamientos"></div>    
                                 <div id="precarga" class="row">
-                                    <div class="col-md-12" style="margin-bottom: 10px;">
+                                    <div class="col-md-12 " style="margin-bottom: 10px;">
                                         {% if ventaVacuna %}
                                             {% for vacuna in aplicacionesVenta %}
                                                 <div class="row">
@@ -915,6 +916,19 @@
                                     </div>
                                 </div>             
                             </div>
+                                        
+                                        <div class="col-md-5">
+                                            <table id="listadoSesiones" class="listados table table-bordered table-hover" style="width:100%;">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="text-center">Fecha</th>
+                                                        <th class="text-center">Vacuna</th>
+                                                        <th class="text-center">Empleado</th>
+                                                    </tr>
+                                                </thead>
+                                            </table>
+                                        </div>
+                                        
                         </div>
                         <div class="row" style="margin-top: 50px;"></div>                
                     </div>                
@@ -1179,6 +1193,50 @@
                         { "data": "fechaAbono" },
                         { "data": "empleado" },
                         { "data": "monto" }
+                        {#{ "data": "dui" },#}
+{#                        { "data": "telefono" },#}
+                        {#{ "data": "email" },
+                        { "data": "lugarTrabajo" },#}
+                    ],
+                        "columnDefs": [
+                               {"width":10, "orderable": false, "targets": 0 },
+                               {"width":45, "orderable": false, "targets": 1 },
+                               {"width":15, "orderable": false, "targets": 2 }
+                               
+                               
+                               //{ "orderData": [ 2, 3, 4 ], "targets": 2 }
+                        ],
+                        "language": {
+                        "info": "Mostrando página _PAGE_ de _PAGES_",
+                        "infoEmpty": "",
+                        "infoFiltered": "filtrando de _MAX_ registros",
+                        "emptyTable": "No se encontraron registros",
+                        "paginate": { 
+                            "next": "Siguiente",
+                            "previous": "Anterior"
+                        },
+                        "processing": "Procesando petición...",
+                        "search": "Buscar registros:",
+                        "lengthMenu": "Mostrar _MENU_ registros"
+                    }, 
+
+                    });
+                var urlAplicacion = "{{path('admin_abonos_paciente_data_vacuna_aplicacion')}}"+'?id='+id_ventavacuna;
+                
+                var tableAp = $('#listadoSesiones').DataTable({
+                    dom:'tp',
+                    "processing": false,
+                    "serverSide": true,
+                    "pageLength": 3,
+                    "ajax": {
+                        "url": urlAplicacion,
+                        "type": 'GET'
+                    },
+                    "columns": [
+                        {#{ "data": "id" },   #}
+                        { "data": "fechaAplicacion" },
+                        { "data": "vacuna" },
+                        { "data": "empleado" }
                         {#{ "data": "dui" },#}
 {#                        { "data": "telefono" },#}
                         {#{ "data": "email" },
@@ -2039,7 +2097,7 @@
 
                                         console.log(datos);
 
-                                        nuevaSesionPaqueteTratamiento(datos);
+                                        nuevaSesionPaqueteTratamiento(datos,tableAp);
                                         return false;
                                     }
                                     else{
@@ -2736,7 +2794,7 @@
     
     <script>
         // Se procede a registrar la sesion del tratamiento mediante ajax
-        function nuevaSesionPaqueteTratamiento(data){
+        function nuevaSesionPaqueteTratamiento(data,tableAp){
             var mensaje = '';
             //console.log(data);
             $('#detalle-venta-tratamientos div').html('');
@@ -2812,6 +2870,7 @@
                     $('#dgplusbellebundle_sesiones_tratamiento').val('').change();
                     $('#dgplusbellebundle_sesiones_tratamiento').val('').change();
                     //$('#dgplusbellebundle_sesiones_tratamiento option[value=""]').attr("selected",true);
+                    tableAp.ajax.reload();
                 }
             });
         }

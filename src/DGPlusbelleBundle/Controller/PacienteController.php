@@ -798,14 +798,16 @@ class PacienteController extends Controller
                 CASE
                 WHEN transaccion='Consulta' THEN CONCAT('<a id=\"',idtransaccion,'\" class=\"pull-right link_ SD\">', 'Ver detalles</a>',' <a class=\"pull-right link\" id=\"',idtransaccion,'\">Eliminar consulta</a>')
                 WHEN transaccion = 'Venta paquete' THEN CONCAT('<a id=\"',idtransaccion,'\" class=\"pull-right link_ paquete\">', 'Ver detalles</a>')
+                WHEN transaccion = 'Venta medicamento' THEN CONCAT('<a id=\"',idtransaccion,'\" class=\"pull-right link_ paquete\">', '</a>')
                 ELSE CONCAT('<a id=\"',idtransaccion,'\" class=\"pull-right link_ tratamiento\">', 'Ver detalles</a>')
                 
-                END AS detalles FROM listadoexpediente WHERE expediente like '%".strtoupper($busqueda['value'])."' ORDER BY fecha DESC LIMIT ".$start.",".$longitud;
+                END AS detalles FROM listadoexpediente WHERE expediente like '%".strtoupper($busqueda['value'])."' ORDER BY 2 DESC LIMIT ".$start.",".$longitud;
         
 //            $em = $this->getDoctrine()->getManager();
             $stmt = $em->getConnection()->prepare($sql);
             $stmt->execute();
             $paciente['data'] = $stmt->fetchAll();
+            //var_dump($paciente['data']);
 //            $paciente['recordsTotal'] = count($paciente['data']);
 //            $paciente['recordsFiltered']= count($paciente['data']);
             

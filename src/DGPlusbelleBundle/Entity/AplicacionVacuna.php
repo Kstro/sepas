@@ -26,7 +26,7 @@ class AplicacionVacuna {
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="fecha_aplicacion", type="date", nullable=false)
+     * @ORM\Column(name="fecha_aplicacion", type="datetime", nullable=false)
      */
     private $fechaAplicacion;
 
