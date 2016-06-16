@@ -55,25 +55,25 @@
           <div class="panel" data-fill-color="true">
               
            
-            <div class="content-hero content-hero-lg" style="min-height:140px; display:none;" id="infoExpediente" >
+            <div class="content-hero content-hero-lg" style="min-height:140px; display:none;" id="infoExpediente" style="border-bottom:1px solid #C3C3C3;" >
 {#            <img class="content-hero-embed" src="{{ asset('Photos/')}}logo-01.png" alt="cover" style="background: #649579;height:200px;">#}
           <div style="height:00px;background: #39a58a; opacity: 1.0" class="content-hero-overlay "></div>
           <div  style="" class="content-hero-body" >
           </div>
-          <div class="content-hero-bar" {#style="margin-top:-180px; background-color: red; position: relative;"#}>
+          <div class="content-hero-bar" style="border-bottom: 1px solid #C3C3C3 ;">
             <div class="row" {#style="margin-top:-180px; background-color: red; position: relative;"#}>
               
               <div class="col-lg-6" >
                 <div class="float-bar clearfix" >
                   <div class="col-md-11">
-                    <div class="hidden-xs col-md-1">
+                    {#<div class="hidden-xs col-md-1">
                         
                       <h2 class="display-name media-heading text-teal"></h2>
-{#                      <p class="text-muted mb-4x"><span class="mr-2x">Senior UI Design</span> <span><i class="fa fa-map-marker fa-fw"></i> San Francisco, CA</span></p>#}
-                    </div>
-                    <div class="col-md-2 col-xs-2">
+                      <p class="text-muted mb-4x"><span class="mr-2x">Senior UI Design</span> <span><i class="fa fa-map-marker fa-fw"></i> San Francisco, CA</span></p>
+                    </div>#}
+                    {#<div class="col-md-2 col-xs-2">
                             <img id="fotoPaciente" style="border-radius: 50px; margin-top:-24px;width:100%;" src="">
-                    </div>
+                    </div>#}
                     <div class="hidden-xs">
                         
                       <h3 class="robo media-heading text-light" id="nombrePaciente">{#{{ paciente.persona.nombres}} {{ paciente.persona.apellidos}}#}</h3>
@@ -197,6 +197,49 @@
                     var id = $(this).attr('id');
                     var url="";
                     //alert(""+id[0]);
+                    var idPac = $('#consulta').children().attr('href');
+{#                    var idPacArray2 = id.split('-');#}
+                    var idPacArray = idPac.split('=');
+                    var idArray = id.split('-');
+                    //console.log(idPacArray);
+                    switch(id[0]){
+                        case "c":
+                            if($(this).hasClass('SD')){
+                                url = Routing.generate('admin_consulta_nueva_paciente_SD', { id: idPacArray[1],idtransaccion:id});
+                            }
+                            else{
+                                url = Routing.generate('admin_consulta_nueva_paciente_SD', { id: idPacArray[1],idtransaccion:id});
+                            }
+                            break;
+                        case "t":
+                            url = Routing.generate('admin_editarventa_tratamiento', { id: id});
+                            break;
+                        case "p":
+                            url = Routing.generate('admin_editarventa_paquete', { id: id});
+                            break;
+                        case "v":
+                            url = Routing.generate('admin_historial_consulta', { id: idPacArray[1],idtransaccion:id});
+                            break;
+                        case "m":
+                            url = Routing.generate('admin_historial_consulta', { id: idPacArray[1],idtransaccion:id});
+                        case "i":
+                            //url = Routing.generate('admin_historial_consulta', { id: idPacArray[1],idtransaccion:id});
+                            url = Routing.generate('admin_incapacidad_pdf', {'id': idArray[1]});
+                            window.open(url,'_blank');
+                            return false;
+                            break;
+                    }
+                    console.log(url);
+                    window.location = url;
+                });
+                $(document).on('dblclick','#datatables1>tbody>tr',function(){
+                    var elem = $(this).children().last('td').children().attr('id');
+                    console.log(elem);
+                    //var id = $(this).attr('id');
+                    var id= elem;
+                    var url="";
+                    //alert(""+id[0]);
+                    //console.log('prueba');
                     var idPac = $('#consulta').children().attr('href');
 {#                    var idPacArray2 = id.split('-');#}
                     var idPacArray = idPac.split('=');

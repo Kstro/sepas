@@ -32,18 +32,18 @@
                 <div class="content-hero content-hero-lg" style="min-height:140px;">
                     <div style="height:0px;background: #39a58a; opacity: 1.0" class="content-hero-overlay "></div>
                     <div  style="" class="content-hero-body" ></div>
-                    <div  style="" class="content-hero-bar" {#style="margin-top:-180px; background-color: red; position: relative;"#}>
+                    <div  class="content-hero-bar" style="border-bottom: 1px solid #C3C3C3;">
                         <div class="row" {#style="margin-top:-180px; background-color: red; position: relative;"#}>
                             <div class="col-lg-6" >
                                 <div class="float-bar clearfix" >
                                     <div class="col-sm-11">
-                                        <div class="col-md-2">
+                                        {#<div class="col-md-2">
                                             {% if paciente.foto is null %}
                                                 <img id="fotoPaciente" style="border-radius: 50px; margin-top:-20px;width:100%;" src="{{ asset('Photos/Paciente/')}}generico02.jpg">
                                             {% else %}
                                                 <img id="fotoPaciente" style="border-radius: 50px; margin-top:-20px;width:100%;" src="{{ asset('Photos/Paciente/')}}{{paciente.foto}}">
                                             {% endif %}
-                                        </div>
+                                        </div>#}
                                         <div class="visible-xs">{#display-name media-heading text-teal#}
                                             <h3 class="robo media-heading text-light" id="nombrePaciente">{{ paciente.persona.nombres}} {{ paciente.persona.apellidos}}</h3>
                                         </div>
@@ -1040,6 +1040,11 @@
                 {#var totalTratamientos = {{totalTratamientos}};
                 var totalPaquetes = {{totalPaquetes}};
                 var totalConsultas= {{totalConsultas}};#}
+                
+                
+                $('#');
+                
+                
                 
                 $("#dgplusbellebundle_venta_paquete").select2();
                 $("#dgplusbellebundle_venta_tratamiento").select2();

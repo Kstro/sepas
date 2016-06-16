@@ -8,10 +8,11 @@
    {% endblock %}
    <title>{% block title %} SEPES S.A. de C.V {% endblock %}</title>
    {% block css -%}
-       <link rel="stylesheet" href="{{ asset('Resources/wrapkit/styles/bootstrap.css') }}">
+        <link rel="stylesheet" href="{{ asset('Resources/wrapkit/styles/bootstrap.css') }}">
         <link rel="stylesheet" href="{{ asset('Resources/wrapkit/styles/dependencies.css') }}">
         <link rel="stylesheet" href="{{ asset('Resources/wrapkit/styles/wrapkit.css') }}">
         <link rel="stylesheet" href="{{ asset('Resources/wrapkit/styles/pages.css') }}">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/css/select2.min.css" rel="stylesheet" />
    {% endblock %}
    
    {% block js -%}
@@ -42,6 +43,10 @@
       -o-background-size: cover;
       background-size: cover;
     }
+    .select2-selection.select2-selection--single{
+        border:0px solid #000 !important;
+        
+    }
    </style>
 {% endblock %}
 </head>
@@ -68,7 +73,12 @@
                 {% endblock %}    
             <div class="input-group input-group-in">
                 <span class="input-group-addon"><i class="icon-user"></i></span>
-                <input class="form-control" type="text" id="username" name="_username" value="{{ last_username }}" placeholder="Usuario" />
+{#                <input class="form-control" type="text" id="username" name="_username" value="{{ last_username }}" placeholder="Usuario" />#}
+                <select class="form-control" type="text" id="username" name="_username" value="{{ last_username }}" placeholder="Usuario">
+                {% for user in users %}
+                    <option value="{{user.username}}">{{user.persona.nombres}} {{user.persona.apellidos}}</option>
+                {% endfor%}
+                </select>
             </div>
           </div><!-- /.form-group -->
           <div class="form-group">
@@ -145,7 +155,14 @@
 </div>
 
 {% block javascripts %}
-<script></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            console.log('prueba');
+            $('#username').select2();
+        });
+        
+    </script>
 {% endblock %}  
 {% block footer %}{% endblock %}
 </body>

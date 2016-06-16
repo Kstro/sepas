@@ -26,7 +26,7 @@
           <div style="height:0px;background: #39a58a; opacity: 1.0" class="content-hero-overlay "></div>
           <div style="" class="content-hero-body">
           </div>
-          <div class="content-hero-bar" {#style="margin-top:-180px; background-color: red; position: relative;"#}>
+          <div class="content-hero-bar" style="border-bottom: 1px solid #C3C3C3;">
             <div class="row" {#style="margin-top:-180px; background-color: red; position: relative;"#}>
               
               <div class="col-lg-6" >
@@ -36,13 +36,13 @@
                       <h3 class="display-name media-heading text-teal"></h3>
 {#                      <p class="text-muted mb-4x"><span class="mr-2x">Senior UI Design</span> <span><i class="fa fa-map-marker fa-fw"></i> San Francisco, CA</span></p>#}
                     </div>
-                    <div class="col-md-2">
+                    {#<div class="col-md-2">
                         {% if paciente.foto is null or paciente.foto=="" %}
                             <img id="fotoPaciente" style="border-radius: 50px; margin-top:-20px;width:100%;" src="{{ asset('Photos/Paciente/')}}generico02.jpg">
                         {% else %}
                             <img id="fotoPaciente" style="border-radius: 50px; margin-top:-20px;width:100%;" src="{{ asset('Photos/Paciente/')}}{{paciente.foto}}">
                         {% endif %}
-                    </div>
+                    </div>#}
                     <div class="hidden-xs">
                       <h3 class="robo media-heading text-light" id="nombrePaciente">{{ paciente.persona.nombres}} {{ paciente.persona.apellidos}}</h3>
                         <p class="mb-4x text-light">
@@ -556,6 +556,9 @@
                                 <div class="col-md-4">
                                     <label>
                                         Temperatura (°C)
+                                    </label>
+                                    <label id="temperaturaFa">
+                                        0 F
                                     </label>
                                 </div>
                                 <div class="col-md-4">
@@ -3069,6 +3072,13 @@
 
     jQuery(document).ready(function() {
         
+        
+        $('#medicamentos').on('input','click',function(){
+            var valor = $(this).val();
+            $('#receta').val(valor);
+        });
+        
+        
         $('.editorVacuna').select2();
         $('#descuentoVacuna').select2();
         $('#codigo_consulta').select2();
@@ -3434,6 +3444,9 @@
             
             $('#metros').html(($('#tallaPaciente').val()/100).toFixed(2)+ " m");
         }
+        if($('#temperaturaPaciente').val()!=''){
+            $('#temperaturaFa').html((($('#temperaturaPaciente').val()*1.8+32)).toFixed(2)+" ºF");
+        }
       
         $(document).on('input', '#tallaPaciente',function(){
             $('#metros').html(($(this).val()/100).toFixed(2)+" m");
@@ -3451,6 +3464,9 @@
       
         $(document).on('input', '#pesoPaciente',function(){
             $('#libras').html(($(this).val()*2.20).toFixed(2)+" lbs");
+        });
+        $(document).on('input', '#temperaturaPaciente',function(){
+            $('#temperaturaFa').html((($(this).val()*1.8+32)).toFixed(2)+" ºF");
         });
         $(document).on('click','#guardarNuevoDatosGenerales', function(){
             var id = $('#idPaciente').val();

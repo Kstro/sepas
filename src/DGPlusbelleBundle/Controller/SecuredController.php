@@ -46,10 +46,15 @@ class SecuredController extends Controller
         $lastUsername = (null === $session) ? '' : $session->get($lastUsernameKey);
 
         //ladybug_dump($error);
+        
+        $em = $this->getDoctrine()->getEntityManager();
+        $users = $em->getRepository('DGPlusbelleBundle:Usuario')->findAll();
+        
+        
         return array(
             'last_username' => $lastUsername,
             'error' => $error,
-            
+            'users' => $users,
         );
         /*ladybug_dump($error);
         return array(

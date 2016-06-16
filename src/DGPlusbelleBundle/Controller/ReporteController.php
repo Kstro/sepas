@@ -231,7 +231,10 @@ class ReporteController extends Controller
         
         $mesint = intval($mes);
         $mesLabel = array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
-                
+//        var_dump($anioInicioUser);      
+//        var_dump($anioFinUser);      
+//        var_dump($sucursal);      
+//        var_dump($tipoconsulta);      
         $ingresos = array();
         //var_dump($mes);
             //echo $i."\n";

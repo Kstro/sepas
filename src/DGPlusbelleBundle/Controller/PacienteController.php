@@ -613,7 +613,7 @@ class PacienteController extends Controller
                     
                     $dql = "SELECT CONCAT('<a class=\"link_expediente\" id=\"',exp.numero,'\">',exp.numero,'</a>') as expediente, pac.id as id,per.nombres,per.apellidos,pac.dui,per.telefono,per.email,pac.lugarTrabajo,DATE_FORMAT(pac.fechaNacimiento,'%d-%m-%Y') as fechaNacimiento, '<a ><i style=\"cursor:pointer;\"  class=\"infoPaciente fa fa-info-circle\"></i></a>' as link FROM DGPlusbelleBundle:Paciente pac "
                         . "JOIN pac.persona per JOIN pac.expediente exp "
-                        . "WHERE CONCAT(upper(per.nombres),upper(per.apellidos)) LIKE upper(:busqueda) "
+                        . "WHERE pac.estado=1 AND CONCAT(upper(per.nombres),upper(per.apellidos)) LIKE upper(:busqueda) "
                         . "ORDER BY per.nombres ASC ";
                     $paciente['data'] = $em->createQuery($dql)
                             ->setParameters(array('busqueda'=>"%".$busqueda['value']."%"))
@@ -623,7 +623,7 @@ class PacienteController extends Controller
                     
                     $dql = "SELECT CONCAT('<a class=\"link_expediente\" id=\"',exp.numero,'\">',exp.numero,'</a>') as expediente, pac.id as id,per.nombres,per.apellidos,pac.dui,per.telefono,per.email,pac.lugarTrabajo,DATE_FORMAT(pac.fechaNacimiento,'%d-%m-%Y') as fechaNacimiento, CONCAT('<a ><i id=\"',pac.id,'\" style=\"cursor:pointer;\"  class=\"infoPaciente fa fa-info-circle\"></i></a>') as link FROM DGPlusbelleBundle:Paciente pac "
                         . "JOIN pac.persona per JOIN pac.expediente exp "
-                        . "WHERE CONCAT(upper(per.nombres),upper(per.apellidos)) LIKE upper(:busqueda) "
+                        . "WHERE pac.estado=1 AND CONCAT(upper(per.nombres),upper(per.apellidos)) LIKE upper(:busqueda) "
                         . "ORDER BY per.nombres ASC ";
                     $paciente['data'] = $em->createQuery($dql)
                             ->setParameters(array('busqueda'=>"%".$busqueda['value']."%"))
@@ -646,7 +646,7 @@ class PacienteController extends Controller
         }
         else{
             $dql = "SELECT CONCAT('<a class=\"link_expediente\" id=\"',exp.numero,'\">',exp.numero,'</a>') as expediente,pac.id as id,per.nombres,per.apellidos,pac.dui,per.telefono,per.email,pac.lugarTrabajo,DATE_FORMAT(pac.fechaNacimiento,'%d-%m-%Y') as fechaNacimiento, CONCAT('<a ><i id=\"',pac.id,'\" style=\"cursor:pointer;\"  class=\"infoPaciente fa fa-info-circle\"></i></a>') as link FROM DGPlusbelleBundle:Paciente pac "
-                . "JOIN pac.persona per JOIN pac.expediente exp ORDER BY per.nombres ASC ";
+                . "JOIN pac.persona per JOIN pac.expediente exp WHERE pac.estado=1 ORDER BY per.nombres ASC ";
             $paciente['data'] = $em->createQuery($dql)
                     ->setFirstResult($start)
                     ->setMaxResults($longitud)
@@ -853,7 +853,43 @@ class PacienteController extends Controller
     
     
     
-    
+    /**
+     * 
+     *
+     * @Route("/pacientedeshabilitar/data/pacienteDes", name="deshabilitar_paciente_ajax")
+     */
+    public function dataPacienteDeshabilitarAction(Request $request)
+    {
+        
+        /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+	 * Easy set variables
+	 */
+	
+	/* Array of database columns which should be read and sent back to DataTables. Use a space where
+	 * you want to insert a non-database field (for example a counter or static image)
+	 */
+        
+
+        $id = $request->get('idPaciente');
+        
+ 
+        
+        $em = $this->getDoctrine()->getEntityManager();
+        
+        $paciente = $em->getRepository('DGPlusbelleBundle:Paciente')->find($id);
+        //var_dump($paciente);
+        
+        if(count($paciente)!=0){
+            //$persona = $em->getRepository('DGPlusbelleBundle:Persona')->find($paciente->getPersona()->getId());
+            $paciente->setEstado(0);
+            $em->merge($paciente);
+            $em->flush();
+            return new Response(json_encode(0));
+        }
+        else{
+            return new Response(json_encode(1));
+        }   
+    }
     
     
     
