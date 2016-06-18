@@ -1565,7 +1565,7 @@ class PacienteController extends Controller
         $paciente->setSexo($sexo);
         $paciente->setOcupacion($ocupacion);
         $paciente->setLugarTrabajo($lugarTrabajo);
-        $paciente->setFechaNacimiento($fechaNacimiento);
+        $paciente->setFechaNacimiento(new \DateTime($fechaNacimiento));
         $paciente->setReferidoPor($referidoPor);
         $paciente->setPersonaEmergencia($personaEmergencia);
         $paciente->setTelefonoEmergencia($telefonoEmergencia);
@@ -1633,7 +1633,7 @@ class PacienteController extends Controller
         $paciente->setSexo($sexo);
         $paciente->setOcupacion($ocupacion);
         $paciente->setLugarTrabajo($lugarTrabajo);
-        $paciente->setFechaNacimiento($fechaNacimiento);
+        $paciente->setFechaNacimiento(new \DateTime($fechaNacimiento));
         $paciente->setReferidoPor($referidoPor);
         $paciente->setPersonaEmergencia($personaEmergencia);
         $paciente->setTelefonoEmergencia($telefonoEmergencia);
