@@ -355,7 +355,7 @@
                                     {% if not ventaVacuna %}
                                     <div class="col-md-12 col-sm-12 text-center" style="margin-top: 30px; margin-bottom: 10px; {#display:none;#}" id="registrar-venta">
                                         <hr>
-                                        <input type="submit" value="Registrar venta" style="margin-bottom: 10px; background-color: #39a58a; color: #FFF;" class="btn" id="registro-consulta-venta"/>
+                                        <input type="submit" value="Registrar venta" style="margin-bottom: 10px; background-color: #39a58a; color: #FFF;" class="btn btn-primary btn-xs" id="registro-consulta-venta"/>
                                     </div>  
 
                                     <div class="col-md-12 col-sm-12 text-center" style="margin-top: 30px; margin-bottom: 10px; display:none;" id="modificar-venta">
@@ -625,7 +625,7 @@
                                                 <div id="costo-venta" {#style="display:none;"#}>
                                                     <label>Costo ($)</label>
                                                     {#<input type="text" name="dgplusbellebundle_venta[costo]" id="dgplusbellebundle_venta_costo" class="form-control" style="width: 100%" placeholder="$">     #}
-                                                    <input value="" name="costoVacuna" class="form-control valores costoVacuna input-sm form-control" placeholder="$"/>
+                                                    <input value="" name="costoVacuna" class="form-control valores costoVacuna input-sm form-control" id="costo0" placeholder="$"/>
                                                 </div>
                                             </div>
                                             <div class="col-md-3">
@@ -656,7 +656,7 @@
                                 <div class="row">
                                     <div class="col-md-12 col-sm-12 text-center" style="margin-top: -30px; margin-bottom: 10px; {#display:none;#}" id="registrar-venta">
                                         <hr>
-                                        <input type="submit" value="Registrar venta" style="margin-bottom: 10px; background-color: #39a58a; color: #FFF;" class="btn" id="registro-venta"/>
+                                        <input type="submit" value="Registrar venta" style="margin-bottom: 10px; color: #FFF;" class="btn btn-primary btn-xs" id="registro-venta"/>
                                     </div>  
 
                                     <div class="col-md-12 col-sm-12 text-center" style="margin-top: -10px; margin-bottom: 10px; display:none;" id="modificar-venta">
@@ -1578,7 +1578,8 @@
                                         });
                                         draw7+= '</select>';
 
-                                        $('#sesiones-tratamiento').html(draw7);
+                                        //$('#sesiones-tratamiento').html(draw7);
+                                        $('#dgplusbellebundle_sesiones_tratamiento').html(draw7);
                                         $('#dgplusbellebundle_sesiones_tratamiento').select2();
 
                                         //console.log(draw6);
@@ -2462,6 +2463,32 @@
                     templateResult: formatRepo, 
                     templateSelection: formatRepoSelection 
                 });
+                
+                
+                 $(document).on('change','.editorVacuna ',function(){
+                    var id = $(this).val();
+                    var idObj = $(this).attr('id');
+                    //var idObj = $(this).attr('id');
+
+                    var idString = idObj.split('vacunas');
+
+                    console.log(id);
+                    $.ajax({
+                        data:{'id':id
+                        },
+                        url:"{{path('busqueda_vacuna_costo_select')}}",
+                        type: "post",
+                        success: function (data) {
+                           console.log("Precio: "+data.data[0].costo);
+                            $('#costo'+idString[1]).val(data.data[0].costo);
+                        },
+                        error: function (data) {
+                            swal('','Ocurrió un error, seleccione un paciente de nuevo!','error');
+                        }
+                    });
+                });
+                
+                
                 $(document).on('click','#masVacuna', function(){
 
                     var nuevaVacuna='<div class=\"nueva vacuna\" style=\"margin-top:10px;\" class=\"col-md-12\">\n\
@@ -2469,10 +2496,10 @@
                                             <select class=\"col-md-12 editorVacuna valores form-control input-sm\" id=\"vacunas'+idvacuna+'\"></select>\n\
                                         </div>\n\
                                         <div style=\"margin-top:10px;\" class=\"col-md-3\">\n\
-                                            <input value=\"\" name=\"aplicacionesVacuna\" class=\"form-control valores input-sm form-control\" placeholder=\"$\"/>\n\
+                                            <input value=\"\" name=\"costoVacuna\" class=\"form-control valores input-sm form-control\" id=\"costo'+idvacuna+'\" placeholder=\"$\"/>\n\
                                         </div>\n\
                                         <div style=\"margin-top:10px;\" class=\"col-md-3\">\n\
-                                            <input value=\"\" name=\"costoVacuna\" class=\"form-control valores input-sm form-control\" placeholder=\"#\"/>\n\
+                                            <input value=\"\" name=\"aplicacionesVacuna\" class=\"form-control valores input-sm form-control\" placeholder=\"#\"/>\n\
                                         </div>\n\
                                         <div style=\"margin-top:10px;\" class=\"col-md-2\">\n\
                                             <i class="deleteVacuna fa fa-times" aria-hidden="true"></i>\n\

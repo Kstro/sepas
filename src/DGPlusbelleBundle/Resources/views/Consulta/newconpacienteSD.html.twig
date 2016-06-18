@@ -3073,6 +3073,31 @@
     jQuery(document).ready(function() {
         
         
+        
+        $(document).on('click','.borrarCon',function(){
+            // Se obtiene el id del link que se ha hecho click
+            id = $(this).attr('id');
+            
+            var actualElem = id.split("-");
+            
+            // Se obtiene todos elementos que contengan la clase comparativoBotox
+            var elements1 = document.getElementsByClassName('comparativoBotox-' + actualElem[1]);
+            var elements2 = document.getElementsByClassName('botox-' + actualElem[1]);
+            
+            // Se borran todos los elementohtmls que se encuentran en el div con id = campos
+            //$('#campos div').html('');
+
+            // Se borran todos los elementos que contengan la clase = parametro
+            while(elements1.length > 0){
+                elements1[0].parentNode.removeChild(elements1[0]);
+            }
+            
+            while(elements2.length > 0){
+                elements2[0].parentNode.removeChild(elements2[0]);
+            }
+        });
+        
+        
         $('#medicamentos').on('input','click',function(){
             var valor = $(this).val();
             $('#receta').val(valor);
@@ -4186,7 +4211,8 @@
                                         $('.camposPlantilla').hide();
                                         $('.opcionHistorial').hide();
                                         $('#guardarPlantilla').hide();
-                                        alertify.success("Cambios guardados!");
+                                        {#alertify.success("Cambios guardados!");#}
+                                        swal('','Cambios guardados!','success');
                                     }
                                     else{
                                         $('.camposPlantilla').hide();
@@ -4202,8 +4228,9 @@
                                         $('#dgplusbellebundle_consulta_plantilla').next().hide();
 
                                         $('#guardarPlantilla').hide();
-                                        alertify.success("Cambios guardados!");
-                                        console.log("otro mensaje");
+                                        {#alertify.success("Cambios guardados!");#}
+                                        swal('','Cambios guardados!','success');
+                                        {#console.log("otro mensaje");#}
                                     }
                                     {#console.log("pagina actual: "+data);
                                     console.log("Inicio de registro: "+data.inicioRegistro);#}

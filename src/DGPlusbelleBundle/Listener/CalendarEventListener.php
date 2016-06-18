@@ -79,7 +79,8 @@ class CalendarEventListener
         if($nombre!=''){
             $dql = "SELECT pac.id , per.nombres,per.apellidos FROM DGPlusbelleBundle:Paciente pac "
                     . "JOIN pac.persona per "
-                    . "WHERE CONCAT(upper(per.nombres),upper(per.apellidos)) LIKE upper(:nombre) ";
+                    . "JOIN pac.expediente exp "
+                    . "WHERE CONCAT(upper(per.nombres),' ',upper(per.apellidos),' ', upper(exp.numero)) LIKE upper(:nombre) ";
                 
             $paciente = $this->em->createQuery($dql)
                         ->setParameters(array('nombre'=>'%'.$nombre.'%'))
@@ -91,6 +92,14 @@ class CalendarEventListener
         //var_dump($sucursal);
         //var_dump($paciente);
         //die();
+        //Arreglo con id de todos los paciente que coinciden con la busqueda
+        $arrayID=[];
+        if($paciente!=1){
+            foreach ($paciente as $row){
+                array_push($arrayID, $row['id']);
+            }
+        }
+        //var_dump($arrayID);
         if($sucursal!=''){
             if($user==0){
                 if($nombre==''){
@@ -103,10 +112,12 @@ class CalendarEventListener
                 }
                 else{
                     $dql = "SELECT c FROM DGPlusbelleBundle:Cita c "
-                        . "WHERE c.sucursal=:sucursal AND c.fechaCita BETWEEN :fechaInicio AND :fechaFin AND c.paciente=:id";
+//                        . "WHERE c.sucursal=:sucursal AND c.fechaCita BETWEEN :fechaInicio AND :fechaFin AND c.paciente=:id";
+                        . "WHERE c.sucursal=:sucursal AND c.fechaCita BETWEEN :fechaInicio AND :fechaFin AND c.paciente in (:id)";
                     if(count($paciente)!=0){
                         $citas = $this->em->createQuery($dql)
-                            ->setParameters(array('sucursal'=>$sucursal,'fechaInicio'=>$startDate,'fechaFin'=>$endDate,'id'=>$paciente[0]['id']))
+//                            ->setParameters(array('sucursal'=>$sucursal,'fechaInicio'=>$startDate,'fechaFin'=>$endDate,'id'=>$paciente[0]['id']))
+                            ->setParameters(array('sucursal'=>$sucursal,'fechaInicio'=>$startDate,'fechaFin'=>$endDate,'id'=>$arrayID))
                             ->getResult();
                     }
                 }
@@ -126,10 +137,12 @@ class CalendarEventListener
                 }
                 else{
                     $dql = "SELECT c FROM DGPlusbelleBundle:Cita c "
-                        . "WHERE c.sucursal=:sucursal AND c.fechaCita BETWEEN :fechaInicio AND :fechaFin AND c.paciente=:id";
+//                        . "WHERE c.sucursal=:sucursal AND c.fechaCita BETWEEN :fechaInicio AND :fechaFin AND c.paciente=:id";
+                        . "WHERE c.sucursal=:sucursal AND c.fechaCita BETWEEN :fechaInicio AND :fechaFin AND c.paciente in(:id)";
                 if(count($paciente)!=0){
                     $citas = $this->em->createQuery($dql)
-                        ->setParameters(array('sucursal'=>$sucursal,'fechaInicio'=>$startDate,'fechaFin'=>$endDate,'id'=>$paciente[0]['id']))
+//                        ->setParameters(array('sucursal'=>$sucursal,'fechaInicio'=>$startDate,'fechaFin'=>$endDate,'id'=>$paciente[0]['id']))
+                        ->setParameters(array('sucursal'=>$sucursal,'fechaInicio'=>$startDate,'fechaFin'=>$endDate,'id'=>$arrayID))
                          ->getResult();
                 }
                 }
