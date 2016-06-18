@@ -346,12 +346,14 @@
                                 window.location = url;
                             }
                             else{
-                                alertify.success("Receta guardada!");
+                                //alertify.success("Receta guardada!");
+                                //swal('','Receta guardada!','success');
                                 $('#receta').hide();
                             }
                         },
                         error: function (data) {
-                            alertify.error("Hubo un error, intente de nuevo!");
+                            //alertify.error("Hubo un error, intente de nuevo!");
+                            swal('','Hubo un error, intente de nuevo!','error');
                         }
                     });
                     return false;
