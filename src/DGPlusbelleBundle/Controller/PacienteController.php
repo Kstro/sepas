@@ -1577,7 +1577,7 @@ class PacienteController extends Controller
         $em->flush();
         $paciente->setPersona($persona);
         $paciente->setFechaRegistro(new \DateTime('now'));
-        $paciente->setFechaNacimiento(null);
+        
         $paciente->setEstado(1);
         
         $em->persist($paciente);
@@ -1645,7 +1645,7 @@ class PacienteController extends Controller
         $em->flush();
         $paciente->setPersona($persona);
         $paciente->setFechaRegistro(new \DateTime('now'));
-        $paciente->setFechaNacimiento(null);
+        
         $paciente->setEstado(1);
         
         $em->persist($paciente);
